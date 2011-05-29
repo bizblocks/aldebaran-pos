@@ -1,0 +1,16 @@
+Source: aldebaran
+Section: unknown
+Priority: extra
+Maintainer: Anton Sokolov <a.sokolov@artel-gnu.org>
+Build-Depends: debhelper (>= 5), qt3-dev-tools, libqt3-mt-dev, qt3-apps-dev, libsqlite3-dev
+Standards-Version: 3.8.1
+Homepage: http://sourceforge.net/projects/aldebaran/
+
+Package: aldebaran
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqt3-mt, libqt3-mt-psql, libsqlite3-0
+Description:  Point-of-Sale (POS). Supports some tradeware, like barcode scanners, card readers, fiscal cash registers.
+ Also supports sirius terminal an VirtualMart WebShop.
+Description-ru: Рабочее место кассира (POS). Поддерживает некоторое торговое оборудование: сканеры штрихкода, 
+ ридеры магнитных карт, фискальные регистраторы. Также поддерживает терминалы самообслуживания Sirius и веб-магазин 
+ VirtueMart.

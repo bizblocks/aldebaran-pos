@@ -1,0 +1,14 @@
+project homepage: http://artel-gnu.org (russian) http://sf.net/projects/aldebaran (english)
+authors: Anton Sokolov (aka knorr) a.sokolov@artel-gnu.org, Alexander Kolovanov director@artel-gnu.org
+
+HOWTO BUILD & INSTALL
+	Requirements: libqt3-mt, libqt3-mt-dev, libqt3-mt-psql, libqt3-headers, qt3-dev-tools, qt3-apps-dev 
+	(optionally libqt3-mt-mysql)
+	
+	Building:
+	on source tree root
+	$ make
+	as root
+	$ make install 
+		
+	The nearest task is deb-packages

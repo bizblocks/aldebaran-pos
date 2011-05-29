@@ -1,0 +1,6 @@
+aldebaran (0.7.9b-1) unstable; urgency=low
+
+  * Initial release of deb-package
+
+ -- Anton Sokolov <a.sokolov@artel-gnu.org>  Mon, 26 May 2008 21:56:26 +0900
+
