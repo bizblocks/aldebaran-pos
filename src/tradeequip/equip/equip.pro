@@ -5,6 +5,8 @@ CONFIG	+= qt warn_on release
 
 unix:LIBS	+= -L../tardeequip-1.1.0/lib -L../tradeequip-drv/lib -lteprinter-cts300 -ltecashregister-felix-rk -ltecashregister-shtrih-fr -ltereader-barcode
 
+INCLUDEPATH	+= ../../aldebaran/data
+
 unix:INCLUDEPATH	+= ../tradeequip-drv/printers/citizen-ct-s300/lib ../tradeequip-drv/printers/citizen-ct-s300/lib ../tradeequip-drv/cashregisters/felix-rk/lib ../tradeequip-drv/cashregisters/shtrih-fr/lib ../tradeequip-1.1.0/src/lib ../../impexp/ ../tradeequip-drv/readers/barcode
 
 HEADERS	+= worker.h \

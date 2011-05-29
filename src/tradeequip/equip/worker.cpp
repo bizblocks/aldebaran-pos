@@ -12,6 +12,7 @@
 #include "mscreader.h"
 #include "barcodereader.h"
 #include "virtualmart.h"
+#include "dataeq.h"
 
 class jobThread : public QThread
 {
@@ -211,3 +212,29 @@ int eqWorkerJob::process()
 {
     return 0;
 }
+
+void eqWorker::initEquipment(alDataEq * eq)
+{
+    eq->select();    
+    if(eq->first()) do
+    {
+	alEqRecord * device = (alEqRecord*)eq->current();
+	if(!device->enabled()) continue;
+	eqDriver * dev = fWorker->createDevice(device->type(), device->name(), FALSE);
+	QStringList opts = device->options();
+	for(uint i=0;i<opts.count();i++)
+	{
+	    dev->setOption(opts[i], device->option(opts[i]));
+//	    qDebug(opts[i]+"="+device->option(opts[i]));
+	}
+	connect(dev, SIGNAL(deviceError(int)), this, SLOT(onError(int)));
+	dev->init();
+	this->addDevice(dev);
+    } while (eq->next());
+}
+
+void eqWorker::onError(int err)
+{
+    emit deviceError(err);
+}
+

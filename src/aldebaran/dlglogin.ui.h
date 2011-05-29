@@ -20,6 +20,7 @@ void dlgLogin::init(alEngine * e)
     userTab->adjustColumns();
     connect(userTab, SIGNAL(currentChanged(int, int)), editPassword, SLOT(setFocus()));
     editPassword->setFocus();
+    connect(fEngine, SIGNAL(event(int, QVariant)), this, SLOT(eqData(int, QVariant)));
 }
 
 void dlgLogin::up()
@@ -32,6 +33,13 @@ void dlgLogin::down()
 {
     userTab->setCurrentRow(userTab->currentRow()+1);
     editPassword->setFocus();
+}
+
+void dlgLogin::eqData(QVariant data)
+{
+    QMap<QString, QVariant> dataMap = data.toMap();
+    editPassword->setText(dataMap["line"].toString());
+    login();
 }
 
 void dlgLogin::login()

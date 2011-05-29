@@ -13,9 +13,11 @@
 class eqJob;
 class eqDriver;
 class QSignal;
+class alDataEq;
 
 class eqWorker : public QObject
 {
+    Q_OBJECT
 public:
     static eqWorker * worker();
     static void kill();
@@ -29,6 +31,11 @@ public:
     QStringList driverList();
     int deviceCount() { return devices.count(); };
     QString getDeviceName(int devnum) { return devices.keys()[devnum]; };
+    void initEquipment(alDataEq * eq);
+protected slots:
+    void onError(int);
+signals:
+    void deviceError(int);
 protected:
     friend class eqWorkerJob;
 private:

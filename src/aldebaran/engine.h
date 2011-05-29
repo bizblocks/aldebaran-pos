@@ -108,6 +108,7 @@ public:
     QString alignStrings(QStringList lst, QValueList<int> tabs, int iWidth);
     QFtp * ftpput(QString host, int port, QString login, QString password, const QFile& local, QString remotefile);
     QFtp * ftpget(QString host, int port, QString login, QString password, QString remote, const QFile& local);
+    eqWorker * worker() { return fWorker; };
 protected:
     virtual void init();
 public slots: 

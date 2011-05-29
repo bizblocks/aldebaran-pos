@@ -22,12 +22,12 @@ void alDataEq::checkTable()
     if(!fEngine->db()) return;
     QStringList check = fEngine->db()->tables();
     if(check.grep(TNAME).size()>0) return;
-#ifdef DEBUG    
+#ifdef DEBUG
     qDebug(QObject::tr("creating table equipment").utf8());
 #endif    
     QString query = Queries::tr("CREATE TABLE equipment ("
 		    "id int8 NOT NULL, name varchar(20),"
-		    "type varchar(20), bool enabled, options bytea,"
+		    "type varchar(20), enabled bool, options bytea,"
 		    "CONSTRAINT id_eq PRIMARY KEY (id))"
 		    "WITHOUT OIDS;");
     fEngine->db()->exec(query);
