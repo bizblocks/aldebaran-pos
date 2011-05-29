@@ -1,0 +1,92 @@
+Сириус
+	БД sqlite с таблицей товаров. Заказ хранится в оперативке. Несколько графических виджетов с приветствием,
+	"таблицей" кнопок-блюд, описанием товара, редактором заказа, и, кончено, о программе. Обмен данными, через 
+	сокеты. 
+
+	0. Сборка QT
+		[-] 3.3.4
+			qglobal.h
+			>#undef Q_PACKED
+			>#define Q_PACKED
+		
+		видимо лучше писать на 2.3.10, куда больше?? посмотрим
+		Вот и приехали в QT2 нет SQL, ничего напишем враппер.
+		[X] Сборка под X11
+		[X] Сборка под QVFB/Embedded
+		[X] Сборка под arm - linux-crater
+			
+	1. БД
+		[X] собрать sqlite под arm
+			 ./configure --host=arm-linux
+		[X] Абстракция над БД
+		[X] таблица товаров
+			NUMERIC id
+			NUMERIC parent
+			NUMERIC isgroup
+			TEXT name
+			TEXT description
+			BLOB picture
+			DOUBLE price			
+		[X] локальный архив заказов
+			Шапка
+				NUMERIC id
+				NUMERIC date
+				NUMERIC time
+				NUMERIC status
+				NUMERIC id_client
+				NUMERIC guests Количество человек
+			Таблица
+				NUMERIC id_orders			
+				NUMERIC rowid
+				NUMERIC id_goods
+				NUMERIC amount
+				DOUBLE price
+				DOUBLE sum
+		[-] Клиенты
+			TEXT id
+			TEXT name
+			DOUBLE percent
+	2 ГУЙ
+		[X] Виджет приветствия отображает html /usr/share/sirius/welcome.html
+		[X] Виджет справка, подсказка /usr/share/sirius/help.html - вторым шагом
+		[X] Виджет с таблицей кнопок-блюд
+			[X] "Таблица" - QScrollView
+				[X] "Кнопки" - QToolButton child
+					[X] 3 в ряд
+					[X] выпуклые
+					[X] картинка на кнопке
+			[X] Таблица заказа
+				[X] Кнопки прокрутки
+				[-] Восстановление заказа				
+				[X] Суммарная информация по заказу
+			[X] Кнопки управления:
+				[X] информация о блюде
+				[X] завершить
+				[X] отменить
+				[X] справка
+				[X] вызов официанта
+				[X] о программе
+			[X] Количество гостей
+		[X] Виджет описания блюда
+		[X] Конечно же About
+		
+	3 Обмен данными
+		[X] Обмен через сокеты
+		[X] импорт справочника
+			Очистка справочника товаров
+			1 байт - код операции "C"
+			элемент справочника
+			число полей, если 00 - конец
+			поля справочника
+				1,2 байты - длина поля l
+				3..l - поле
+				id, parent, isgroup, name, description, picture, price
+		[-] импорт клиентов
+		[X] экспорт заказа
+		[X] импорт (обновление) заказа
+		[X] вызов официанта
+	4 [X] Сборка под arm
+			export PATH=$PATH:/usr/local/arm/4.1.1-920t/bin/
+			export QTDIR=/usr/src/linux-crater_1-0-0/build/qt-2.3.10/
+			make -f Makefile.arm
+Сириус ГОТОВ!!

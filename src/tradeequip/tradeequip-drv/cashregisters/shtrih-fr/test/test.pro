@@ -1,0 +1,24 @@
+TEMPLATE	= app
+LANGUAGE	= C++
+
+CONFIG	+= qt warn_on
+
+LIBS	+= -L../../../../tradeequip-1.1.0/lib -L../../../lib -ltradeequip -ltecashregister-shtrih-fr
+
+DEFINES	+= _CRT_SECURE_NO_DEPRECATE
+
+INCLUDEPATH	+= ../lib ../../../../tradeequip-1.1.0/src/lib
+
+SOURCES	+= main.cpp
+
+FORMS	= mainform.ui
+
+include ( ../../../config.pri )
+TARGET      = tecashregister-shtrih-fr-test
+# -ltecashregister-shtrih-fr
+INCLUDEPATH += ../../../../tradeequip/src/lib
+DESTDIR     = ../../../bin
+
+TRANSLATIONS = \
+    ../../../translations/tecashregister-shtrih-fr-test-en.ts \
+    ../../../translations/tecashregister-shtrih-fr-test-ru.ts 

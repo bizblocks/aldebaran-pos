@@ -1,0 +1,11 @@
+QTDIR		= /usr/share/qt
+TEMPLATE	= app
+CONFIG		+= qt warn_on release
+HEADERS		= sirius.h
+SOURCES		= main.cpp\
+		    sirius.cpp
+FORMS		= mainform.ui
+TARGET		= sirius
+DEPENDPATH= $QTDIR/include
+REQUIRES=
+DESTDIR     = ../bin

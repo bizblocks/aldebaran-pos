@@ -1,0 +1,43 @@
+<!DOCTYPE UI><UI>
+<class>mainForm</class>
+<widget>
+    <class>QDialog</class>
+    <property stdset="1">
+        <name>name</name>
+        <cstring>mainForm</cstring>
+    </property>
+    <property stdset="1">
+        <name>geometry</name>
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>596</width>
+            <height>480</height>
+        </rect>
+    </property>
+    <property stdset="1">
+        <name>caption</name>
+        <string></string>
+    </property>
+    <widget>
+        <class>QTextView</class>
+        <property stdset="1">
+            <name>name</name>
+            <cstring>TextView1</cstring>
+        </property>
+        <property stdset="1">
+            <name>geometry</name>
+            <rect>
+                <x>40</x>
+                <y>20</y>
+                <width>491</width>
+                <height>381</height>
+            </rect>
+        </property>
+        <property stdset="1">
+            <name>text</name>
+            <string>&lt;b&gt;HELLO&lt;/b&gt; my friends</string>
+        </property>
+    </widget>
+</widget>
+</UI>

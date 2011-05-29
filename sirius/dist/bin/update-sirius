@@ -1,0 +1,4 @@
+ftpget -u ftp 192.168.100.99 /tmp/sirius.tar.gz  sirius.tar.gz
+tar -xvvzf /tmp/sirius.tar.gz -C /
+sync
+

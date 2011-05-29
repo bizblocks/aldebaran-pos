@@ -1,0 +1,358 @@
+QT_CXXFLAGS_OPT = -DQT_NO_QWS_SNAP -DQT_NO_QWS_VOODOO3 -DQT_NO_QWS_MACH64 -DQT_NO_QWS_MATROX -DQT_NO_QWS_VNC -DQT_NO_QWS_VGA_16 -DQT_NO_QWS_DEPTH_4 -DQT_NO_QWS_VFB -DQT_BUILTIN_GIF_READER=1 -DQT_NO_IMAGEIO_MNG -DQT_NO_SM_SUPPORT -DQT_NO_XKB -DQT_QWS_TSLIB  -I/usr/src/linux-crater_1-0-0/host/include -DSQLITE_MAX_SQL_LENGTH=1000000000 -USQLITE_THREADSAFE -DSQLITE_THREADSAFE=0
+QT_CFLAGS_OPT   =  -I/usr/src/linux-crater_1-0-0/host/include 
+QT_LIBS_OPT	=   -lts -lm -lpng -lz -ljpeg
+QT_MODULE_OBJ      = \
+	    $(OBJECTS_tools) \
+	    $(OBJECTS_kernel) \
+	    $(OBJECTS_widgets) \
+	    $(OBJECTS_dialogs) \
+	    $(OBJECTS_iconview) \
+	    $(OBJECTS_workspace) \
+	    $(OBJECTS_network) \
+	    $(OBJECTS_canvas) \
+	    $(OBJECTS_table) \
+	    $(OBJECTS_xml) 
+
+# Compiling
+INTERFACE_DECL_PATH 	= .
+SYSCONF_CXX		= /usr/local/arm/4.1.1-920t/bin/arm-linux-g++
+SYSCONF_CC		= /usr/local/arm/4.1.1-920t/bin/arm-linux-gcc
+DASHCROSS		= -arm
+
+# Compiling with support libraries
+SYSCONF_CXXFLAGS_X11	= 
+SYSCONF_CXXFLAGS_QT	= -I$(QTDIR)/include
+SYSCONF_CXXFLAGS_QTOPIA	= -I$(QPEDIR)/include
+SYSCONF_CXXFLAGS_OPENGL	= -I/usr/X11R6/include
+
+# Compiling YACC output
+SYSCONF_CXXFLAGS_YACC     = -Wno-unused -Wno-parentheses
+
+# Linking with support libraries
+SYSCONF_RPATH_X11	= 
+SYSCONF_RPATH_QT	= -Wl,-rpath,$(QTDIR)/lib
+SYSCONF_RPATH_QTOPIA	= -Wl,-rpath,$(QPEDIR)/lib
+SYSCONF_RPATH_OPENGL	= -Wl,-rpath,/usr/X11R6/lib
+
+# Linking with support libraries
+# X11
+SYSCONF_LFLAGS_X11	= 
+SYSCONF_LIBS_X11	= 
+# Qt, Qt+OpenGL
+SYSCONF_LFLAGS_QT	= -L$(QTDIR)/lib
+SYSCONF_LFLAGS_QTOPIA	= -L$(QPEDIR)/lib
+SYSCONF_LIBS_QT		= -lqte$(QT_THREAD_SUFFIX) -ldl -lpthread -lsqlite3 
+SYSCONF_LIBS_QT_OPENGL	= 
+SYSCONF_LIBS_QTOPIA	= -lqtopia
+# OpenGL
+SYSCONF_LFLAGS_OPENGL	= -L/usr/X11R6/lib
+SYSCONF_LIBS_OPENGL =
+# Yacc
+SYSCONF_LIBS_YACC	= 
+
+# Linking applications
+SYSCONF_LINK		= arm-linux-gcc
+SYSCONF_LFLAGS		= 
+SYSCONF_LIBS		= -lm
+
+# Link flags for shared objects
+SYSCONF_LFLAGS_SHOBJ	= -shared
+
+# Flags for threading
+SYSCONF_CFLAGS_THREAD	= -D_REENTRANT
+SYSCONF_CXXFLAGS_THREAD	= -D_REENTRANT
+SYSCONF_LFLAGS_THREAD	= 
+SYSCONF_LIBS_THREAD	=  -lpthread
+
+# Meta-object compiler
+SYSCONF_MOC		= $(QTDIR)/bin/moc
+
+# UI compiler
+SYSCONF_UIC		= $(QTDIR)/bin/uic
+
+# Linking shared libraries
+#   - Build the $(TARGET) library, eg. lib$(TARGET).so.2.2.2
+#   - Place target in $(DESTDIR) - which has a trailing /
+#   - Usually needs to incorporate $(VER_MAJ), $(VER_MIN) and $(VER_PATCH)
+#
+SYSCONF_LINK_SHLIB	= arm-linux-gcc
+SYSCONF_LINK_TARGET_SHARED	= lib$(TARGET).so.$(VER_MAJ).$(VER_MIN).$(VER_PATCH)
+SYSCONF_LINK_LIB_SHARED	=  $(SYSCONF_LINK_SHLIB) -shared -Wl,-soname,lib$(TARGET).so.$(VER_MAJ) \
+				     $(LFLAGS) -o $(SYSCONF_LINK_TARGET_SHARED) \
+				     $(OBJECTS) $(OBJMOC) $(LIBS) && \
+				 mv $(SYSCONF_LINK_TARGET_SHARED) $(DESTDIR); \
+				 cd $(DESTDIR) && \
+				 rm -f lib$(TARGET).so lib$(TARGET).so.$(VER_MAJ) lib$(TARGET).so.$(VER_MAJ).$(VER_MIN); \
+				 ln -s $(SYSCONF_LINK_TARGET_SHARED) lib$(TARGET).so; \
+				 ln -s $(SYSCONF_LINK_TARGET_SHARED) lib$(TARGET).so.$(VER_MAJ); \
+				 ln -s $(SYSCONF_LINK_TARGET_SHARED) lib$(TARGET).so.$(VER_MAJ).$(VER_MIN)
+
+# Linking static libraries
+#   - Build the $(TARGET) library, eg. lib$(TARGET).a
+#   - Place target in $(DESTDIR) - which has a trailing /
+#
+SYSCONF_AR		= arm-linux-ar cqs
+SYSCONF_LINK_TARGET_STATIC = lib$(TARGET).a
+SYSCONF_LINK_LIB_STATIC	= rm -f $(DESTDIR)$(SYSCONF_LINK_TARGET_STATIC) ; \
+				 $(SYSCONF_AR) $(DESTDIR)$(SYSCONF_LINK_TARGET_STATIC) $(OBJECTS) $(OBJMOC) 
+# Compiling application source
+SYSCONF_CXXFLAGS	= -pipe -DQWS -fno-exceptions -fno-rtti -O3 -Wall -W -DNO_DEBUG
+#SYSCONF_CXXFLAGS	= -pipe -DQWS -fno-exceptions -fno-rtti -g -Wall -W -DNO_DEBUG
+SYSCONF_CFLAGS		= -pipe -O2 -Wall -W
+# Default link type (static linking is still be used where required)
+SYSCONF_LINK_LIB	= $(SYSCONF_LINK_LIB_SHARED)
+SYSCONF_LINK_TARGET	= $(SYSCONF_LINK_TARGET_SHARED)
+# Compiling library source
+SYSCONF_CXXFLAGS_LIB	= -fPIC
+SYSCONF_CFLAGS_LIB	= -fPIC
+# Compiling shared-object source
+SYSCONF_CXXFLAGS_SHOBJ	= -fPIC
+SYSCONF_CFLAGS_SHOBJ	= -fPIC
+# Linking Qt
+SYSCONF_LIBS_QTLIB	= $(SYSCONF_LFLAGS_X11) $(QT_LIBS_MT) $(QT_LIBS_OPT)
+# Linking Qt applications
+SYSCONF_LIBS_QTAPP	= 
+#############################################################################
+
+####### Compiler, tools and options
+
+CXX	=	$(SYSCONF_CXX) $(QT_CXX_MT)
+CXXFLAGS=	$(SYSCONF_CXXFLAGS_QT) $(SYSCONF_CXXFLAGS)
+CC	=	$(SYSCONF_CC) $(QT_C_MT)
+CFLAGS	=	$(SYSCONF_CFLAGS)
+INCPATH =	-I./
+LFLAGS	=	$(SYSCONF_LFLAGS_QT) $(SYSCONF_RPATH_QT) $(SYSCONF_LFLAGS) $(QT_LFLAGS_MT) -L../../../sqlite/arm-bld/.libs
+LIBS	=	$(SUBLIBS) $(SYSCONF_LIBS_QT) $(SYSCONF_LIBS) $(SYSCONF_LIBS_QTAPP) 
+MOC	=	$(SYSCONF_MOC)
+UIC	=	$(SYSCONF_UIC)
+
+####### Target
+
+DESTDIR = ../dist/usr/bin/
+VER_MAJ = 1
+VER_MIN = 0
+VER_PATCH = 0
+TARGET	= sirius
+TARGET1 = lib$(TARGET).so.$(VER_MAJ)
+
+####### Files
+
+HEADERS =	sirius.h \
+		mainwin.h \
+		welcome.h \
+		help.h \
+		orderwin.h \
+		goodsinfo.h \
+		data.h \
+		datagoods.h \
+		dataorder.h \
+		server.h \
+		orderview.h
+SOURCES =	main.cpp \
+		sirius.cpp \
+		mainwin.cpp \
+		welcome.cpp \
+		help.cpp \
+		orderwin.cpp \
+		goodsinfo.cpp \
+		data.cpp \
+		datagoods.cpp \
+		dataorder.cpp \
+		server.cpp \
+		orderview.cpp
+OBJECTS =	main.o \
+		sirius.o \
+		mainwin.o \
+		orderwin.o \
+		welcome.o \
+		help.o \
+		goodsinfo.o \
+		data.o \
+		datagoods.o \
+		dataorder.o \
+		server.o \
+		orderview.o
+INTERFACES =    
+UICDECLS =      
+UICIMPLS =      
+SRCMOC	=	moc_sirius.cpp \
+		moc_mainwin.cpp \
+		moc_welcome.cpp \
+		moc_help.cpp \
+		moc_orderwin.cpp \
+		moc_goodsinfo.cpp \
+		moc_datagoods.cpp \
+		moc_dataorder.cpp \
+		moc_data.cpp \
+		moc_server.cpp \
+		moc_orderview.cpp
+OBJMOC	=	moc_sirius.o \
+		moc_mainwin.o \
+		moc_welcome.o \
+		moc_help.o \
+		moc_orderwin.o \
+		moc_goodsinfo.o \
+		moc_datagoods.o \
+		moc_dataorder.o \
+		moc_data.o \
+		moc_server.o \
+		moc_orderview.o
+
+
+####### Implicit rules
+
+.SUFFIXES: .cpp .cxx .cc .C .c
+
+.cpp.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
+
+.cxx.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
+
+.cc.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
+
+.C.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
+
+.c.o:
+	$(CC) -c $(CFLAGS) $(INCPATH) -o $@ $<
+
+####### Build rules
+
+
+all: $(DESTDIR)$(TARGET)
+
+$(DESTDIR)$(TARGET): $(UICDECLS) $(OBJECTS) $(OBJMOC) $(SUBLIBS)
+	$(SYSCONF_LINK) $(LFLAGS) -o $(DESTDIR)$(TARGET) $(OBJECTS) $(OBJMOC) $(LIBS)
+
+moc: $(SRCMOC)
+
+tmake:
+	tmake tictac.pro
+
+clean:
+	-rm -f $(OBJECTS) $(OBJMOC) $(SRCMOC) $(UICIMPLS) $(UICDECLS)
+	-rm -f *~ core
+	-rm -f allmoc.cpp
+
+####### Extension Modules
+
+listpromodules:
+	@echo 
+
+listallmodules:
+	@echo 
+
+listaddonpromodules:
+	@echo 
+
+listaddonentmodules:
+	@echo 
+
+
+REQUIRES=medium-config
+
+####### Sub-libraries
+
+
+###### Combined headers
+
+
+
+####### Compile
+
+main.o: main.cpp \
+		sirius.h
+
+sirius.o: sirius.h \
+		sirius.h
+
+welcome.o: welcome.cpp \
+		welcome.h
+
+help.o: help.cpp \
+	help.h 
+
+mainwin.o: mainwin.cpp \
+		mainwin.h
+
+data.o: data.cpp \
+	data.h
+
+datagoods.o: datagoods.cpp \
+		datagoods.h
+
+datagoods.o: dataorder.cpp \
+		dataorder.h
+
+orderview.o: orderview.cpp \
+		orderview.h
+
+moc_mainwin.o: moc_mainwin.cpp \
+		mainwin.h
+
+moc_mainwin.cpp: mainwin.h
+	$(MOC) mainwin.h -o moc_mainwin.cpp
+
+moc_sirius.o: moc_sirius.cpp \
+		sirius.h 
+
+moc_sirius.cpp: sirius.h
+	$(MOC) sirius.h -o moc_sirius.cpp
+
+moc_welcome.o: moc_welcome.cpp \
+		welcome.h
+
+moc_welcome.cpp: welcome.h
+	$(MOC) welcome.h -o moc_welcome.cpp
+
+moc_help.o: moc_help.cpp \
+		help.h
+
+moc_help.cpp: help.h
+	$(MOC) help.h -o moc_help.cpp
+
+
+moc_orderwin.o: moc_orderwin.cpp \
+		orderwin.h
+
+moc_orderwin.cpp: orderwin.h
+	$(MOC) orderwin.h -o moc_orderwin.cpp
+
+moc_goodsinfo.o: moc_goodsinfo.cpp \
+		goodsinfo.h
+
+moc_goodsinfo.cpp: goodsinfo.h
+	$(MOC) goodsinfo.h -o moc_goodsinfo.cpp
+
+moc_datagoods.o: moc_datagoods.cpp \
+		datagoods.h
+
+moc_datagoods.cpp: datagoods.h
+	$(MOC) datagoods.h -o moc_datagoods.cpp
+
+moc_dataorder.o: moc_dataorder.cpp \
+		dataorder.h
+
+moc_dataorder.cpp: dataorder.h
+	$(MOC) dataorder.h -o moc_dataorder.cpp
+
+moc_orderview.o: moc_orderview.cpp \
+		orderview.h
+
+moc_orderview.cpp: orderview.h
+	$(MOC) orderview.h -o moc_orderview.cpp
+
+moc_data.o: moc_data.cpp \
+		data.h
+
+moc_data.cpp: data.h
+	$(MOC) data.h -o moc_data.cpp
+
+moc_server.o: moc_server.cpp \
+		server.h
+
+moc_server.cpp: server.h
+	$(MOC) server.h -o moc_server.cpp
+
