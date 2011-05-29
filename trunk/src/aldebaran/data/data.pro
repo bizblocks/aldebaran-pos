@@ -3,6 +3,8 @@ LANGUAGE	= C++
 
 CONFIG	+= qt warn_on release
 
+DEFINES	+= DEBUG
+
 INCLUDEPATH	+= .. ../../impexp ../../tradeequip/equip
 
 HEADERS	+= datadiscount.h \

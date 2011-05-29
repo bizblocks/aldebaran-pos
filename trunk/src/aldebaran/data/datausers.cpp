@@ -149,9 +149,9 @@ void alUserRecord::load()
 int alUserRecord::update() 
 {
     primeUpdateInsert();
-    fRecord->setValue("name", fName.utf8());
+    fRecord->setValue("name", UTF8(fName));
     fRecord->setValue("role", fRole);
-    fRecord->setValue("password", fPass.utf8());
+    fRecord->setValue("password", UTF8(fPass));
     return alDataRecord::update();
 //    if(!success) return success;
 //    for(int r=0;r<rEnd;r++)

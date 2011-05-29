@@ -350,6 +350,8 @@ void alOrderWindow::closeEvent(QCloseEvent * e)
 
 void alOrderWindow::onEvent(int type, QVariant data)
 {	
+    if(isHidden())
+	return;
     if(type == EVENT_MSCREADER)
     {
 //	qDebug(QString("data %1").arg(data.toMap()["line"].toString()));

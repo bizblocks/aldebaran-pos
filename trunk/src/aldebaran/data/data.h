@@ -50,4 +50,10 @@ protected:
     bool fIsNew;
 };
 
+#ifdef UTF8_CONV
+#define UTF8(str) (str).utf8()
+#else
+#define UTF8(str) (str)
+#endif
+
 #endif

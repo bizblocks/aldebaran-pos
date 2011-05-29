@@ -93,25 +93,11 @@ void alEngine::initUsers()
 
 void alEngine::initEquipment()
 {
-    fWorker = eqWorker::worker();    
+    fWorker = eqWorker::worker();
     alDataEq * eq = new alDataEq(this);
-    eq->select();
-    if(eq->first()) do
-    {
-	alEqRecord * device = (alEqRecord*)eq->current();
-	if(!device->enabled()) continue;
-	eqDriver * dev = fWorker->createDevice(device->type(), device->name(), FALSE);
-	QStringList opts = device->options();
-	for(uint i=0;i<opts.count();i++)
-	{
-	    dev->setOption(opts[i], device->option(opts[i]));
-//	    qDebug(opts[i]+"="+device->option(opts[i]));
-	}
-	connect(dev, SIGNAL(deviceError(int)), this, SLOT(onError(int)));	
-	dev->init();
-	fWorker->addDevice(dev);
-    } while (eq->next());
-    
+    connect(fWorker, SIGNAL(deviceError(int)), this, SLOT(onError(int)));    
+    fWorker->initEquipment(eq);
+        
     int err;
     eqJob * job = createPrinterJob("", "print");
     if(job) 
@@ -246,9 +232,9 @@ int alEngine::start()
     dbInited = TRUE;	
     emit(initialized());
     initUsers();
+    initEquipment();
     if(!loginLock()) return -1;
     initTables();
-    initEquipment();
 	
     mainWindow = new alMainWindow(this);
     connect(mainWindow, SIGNAL(closed()), this, SLOT(exitApp()));	
