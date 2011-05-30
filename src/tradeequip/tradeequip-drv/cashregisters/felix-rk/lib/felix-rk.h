@@ -193,14 +193,16 @@ public:
 	virtual bool printCheck(bool returnFlag);
 	virtual bool cancelPrint();
 	virtual bool openCheck(int eDocumentType);
+	
 //    	virtual int bueAdd( const QString &name, int dep, double summa, double quantity, int qdec );
 
     	virtual int open();
 
     	virtual QCString utf8ToDevice( const QString &text );
     	virtual QString deviceToUtf8( const QCString &text );
-
+	
 	QString flagsStr(Byte flags);
+	
 protected:
 	Result checkAnswer(Byte * pAnswer, int szAnswerSize);
 	void setDeviceError(Byte bDeviceError)
@@ -533,7 +535,9 @@ public slots:
 	
 	virtual int payingin(double);
 	virtual int payment(double);
-
+	
+	virtual int beep() { return internalRing(); };
+	
 	virtual int checkDeviceReady();	
 
 	int deviceError() const

@@ -1,4 +1,4 @@
-/****************************************************************************
+****************************************************************************
 ** $Id: FELIX-config.h,v 1.3 2006/04/28 12:23:51 red75 Exp $
 **
 ** Trade equipment common portable library project
@@ -23,16 +23,16 @@
 **
 **********************************************************************/
 
-#ifndef CONFIGCTS300_H
+#ifndef CONFIGESCPOS_H
 
-#define CONFIGCTS300_H
+#define CONFIGESCPOS_H
 #include <teglobal.h> // Config from tradeequip
-#ifdef CTS300_BUILD
-#  define CTS300_EXPORT LIB_DLLEXPORT
-#  define CTS300_TEMPLATE_EXTERN
+#ifdef ESCPOS_BUILD
+#  define ESCPOS_EXPORT LIB_DLLEXPORT
+#  define ESCPOS_TEMPLATE_EXTERN
 #else
-#  define CTS300_EXPORT LIB_DLLIMPORT
-#  define CTS300_TEMPLATE_EXTERN TEMPLATE_EXTERN
+#  define ESCPOS_EXPORT LIB_DLLIMPORT
+#  define ESCPOS_TEMPLATE_EXTERN TEMPLATE_EXTERN
 #endif
 
 #endif

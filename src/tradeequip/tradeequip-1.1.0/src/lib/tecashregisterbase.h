@@ -364,12 +364,13 @@ public:
 	virtual int curDocumentNumber(int & iDocnum);
 	
 	virtual int printItemOut(const PurchaseInfo &);
-	virtual int payment(double dSum); // Выплата
-	virtual int payingin(double dSum); // Внесение
+	virtual int payment(double dSum); // cash out
+	virtual int payingin(double dSum); //  cash in	
 // ----------------- End of check related functions. --------------------
-
+	
 // General device status functions
 //!< Is Checks for device readiness for action. 
+	virtual int beep()=0;	
 	virtual int checkDeviceReady()=0;  
 // End
 
