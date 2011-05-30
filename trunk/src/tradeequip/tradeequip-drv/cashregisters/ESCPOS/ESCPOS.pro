@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
-SUBDIRS  = shtrih-fr felix-rk ESCPOS
+SUBDIRS  = lib test
 DEFINES += _CRT_SECURE_NO_DEPRECATE 
