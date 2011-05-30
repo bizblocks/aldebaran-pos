@@ -77,7 +77,8 @@ ESCPOS::Result ESCPOS::sendCmd(Byte * pBuf, int iSize)
 {
     setAbort();
     //    int count = 0;
-    return writeBlock(pBuf, iSize);
+    int res = writeBlock(pBuf, iSize);
+    return res==iSize ? 0 : -1;
 }
 
 QStringList ESCPOS::getCodepages()
@@ -118,7 +119,7 @@ int ESCPOS::print(QString ln)
 ESCPOS::Result ESCPOS::printBoldLine(QString ln)
 {
     Result res;
-    Byte cmdBold[3] = {ESC, '!', 0x08};
+    Byte cmdBold[3] = {ESC, '!', 0x30};
     res = sendCmd(cmdBold, 3);
     if(res) return res;
     res = print(ln);
@@ -133,16 +134,17 @@ ESCPOS::Result ESCPOS::printBarcode(QString barcode)
     Result res;
     Byte cmdPos[3] = {GS, 'H', 2};
     res = sendCmd(cmdPos, 3);
-    if(res) return res;
+    if(res)	return res;
     Byte bcType = 2;
     if(barcode.length()<=8) bcType = 3;
     Byte cmd[3] = {GS, 'k', bcType};
     res = sendCmd(cmd, 3);
-    if(res) return res;
+    if(res)	return res;
     QCString bcstr;
     res = toDeviceStr(barcode, bcstr);
     const Byte * buf = (const char*)bcstr;
-    if((res=sendCmd((char *)buf, bcstr.length()))) return res;
+    if((res=sendCmd((char *)buf, bcstr.length()))) 
+	return res;
     Byte null = 0;
     res = sendCmd(&null , 1);
     return res;
