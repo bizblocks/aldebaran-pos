@@ -27,7 +27,7 @@ ESCPOS::~ESCPOS()
 void ESCPOS::init()
 {
     setName("TEPrinterESCPOS");
-/*
+    /*
     m_ee.addFuncBinding(this,&FelixRK::readMachineNumber,"readMachineNumber");
     m_ee.addFuncBinding<FelixRK,int>(this,&FelixRK::open,"open");
     m_ee.addFuncBinding<FelixRK,int>(this,&FelixRK::close,"close");
@@ -46,14 +46,14 @@ void ESCPOS::init()
     m_ee.addFuncBinding<FelixRK,QVariant,const QString &>(this,&FelixRK::value,"value");
 */
     m_maxPrn = 0; 
-
+    
     codepages << "PC473" << "Katakana" << "PC850" << "PC860" << "PC863";
     codepages << "PC865" << "PC852" << "PC866" << "PC857" << "WPC1252";
-
+    
     qtCodepages << "" << "" << "IBM 850" << "" << "";
     qtCodepages << "" << "" << "IBM 866" << "" << "CP1252";
     fCodepage = "PC866";
-/*    qtCodepages[19] = "";
+    /*    qtCodepages[19] = "";
     qtCodepages[26] = "TIS-620";	
     qtCodepages[40] = "TIS-620";
     qtCodepages[255] = "";    */
@@ -61,6 +61,8 @@ void ESCPOS::init()
 
 void ESCPOS::setAbort()
 {
+    if(connectionType()!=ECT_SERIAL)
+	return;
     //from tunelp.c sources
     Posix_QextSerialPort * p = port();
     int h = p->handle();
@@ -74,17 +76,8 @@ void ESCPOS::setAbort()
 ESCPOS::Result ESCPOS::sendCmd(Byte * pBuf, int iSize)
 {
     setAbort();
-//    int count = 0;
-    for(int b=0;b<iSize;b++)
-    {
-	if(port()->putch(pBuf[b])==-1)
-	{
-//		if(!b || (count++<3)) sendCmd(pBuf, iSize);
-		return RES_TIMEOUT;
-	}
-	usleep(1);    
-    }
-    return RES_OK;
+    //    int count = 0;
+    return writeBlock(pBuf, iSize);
 }
 
 QStringList ESCPOS::getCodepages()
@@ -179,7 +172,7 @@ bool ESCPOS::openCheck()
 
 int ESCPOS::closeCheck(double & dChange, int iReserved)
 {
-//TODO total and change print    
+    //TODO total and change print    
     QCString buf;
     Result res = toDeviceStr(fCheckFooter, buf);
     if(res) return res;
@@ -199,7 +192,7 @@ int ESCPOS::setPayment(double dSum, int iType)
 
 int ESCPOS::cancelCheck(int iReserved)
 {
-//TODO print check cancel msg
+    //TODO print check cancel msg
     return -1;
 }
 
