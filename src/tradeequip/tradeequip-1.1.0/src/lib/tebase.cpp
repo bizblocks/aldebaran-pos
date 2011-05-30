@@ -221,17 +221,18 @@ int TEBase::tcpOpen()
 {
     QStringList addr = QStringList::split(':', portDevice());
     QHostAddress hostaddr;
+    hostaddr.setAddress(addr[0]);
 #ifdef DEBUG
     qDebug(QString("IP address: %1 port: %2").arg(hostaddr.toString()).arg(addr[1].toUInt()));
-#endif    
-    hostaddr.setAddress(addr[0]);
+#endif        
     if(!Socket->connect(hostaddr, addr[1].toUInt()))
     {
 #ifdef DEBUG
 	qDebug(QString("connection error: %1").arg(Socket->error()));
 #endif	
 	return 0;
-    }    
+    }
+    return 1;
 }
 
 int
@@ -332,7 +333,7 @@ TEBase::putch( int b )
 	res=Port->putch( b );
 	break;
     case ECT_TCP:
-	res=Socket->putch(b);
+	res = Socket->putch(b)==b ? 0 : 1;
 	break;
     default:
 	break;
