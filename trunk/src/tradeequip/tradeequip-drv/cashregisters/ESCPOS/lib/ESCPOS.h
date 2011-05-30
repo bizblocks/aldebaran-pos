@@ -39,23 +39,17 @@ public slots:
     
     virtual bool openCheck();    
     virtual int closeCheck(double & dChange, int iReserved);    
-    virtual bool printCheck(bool returnFlag) { 
-#warning TODO    
-    };        
+    virtual bool printCheck(bool) { return FALSE; };        
     virtual bool cancelPrint() { return false; };    
     virtual int cancelCheck(int iReserved);    
     
     virtual int setOperation(int eOperationType) { fOperation = eOperationType; return 0; };
     virtual int setDiscount(double dDiscount); // absolute value of a discount
     virtual int setDiscountPercent(double); // discount in 0.01% units        
-    virtual int setItem(const QString & sName, double dPrice, double dQuantity){
-#warning TODO    
-    };    
+    virtual int setItem(const QString & sName, double dPrice, double dQuantity);
     virtual int setPayment(double dSum, int iType=1);    
     
-    virtual int openCashbox(int n){
-#warning TODO    
-    } ; // open cash box number n   
+    virtual int openCashbox(int); // open cash box number n   
     virtual int ZReport() { return -1; };
     virtual int XReport() { return -1; };
     
@@ -73,6 +67,7 @@ public slots:
 protected:
     Result sendCmd(Byte * pBuf, int iSize);
     Result toDeviceStr(QString str, QCString & dest);
+    void clear();
 private:
     Byte m_maxPrn;
     QStringList codepages;
@@ -80,17 +75,11 @@ private:
     QString fCodepage;
     
     int fOperation;
-    QString fItemName;
-    double fItemPrice;
-    double fItemQuantity;
     double fItemDiscountPercent;
     double fItemDiscount;
     double fSubTotal;
     double fSumm[4];
-    
-    QString fCheckHeader;
-    QString fCheckFooter;
-    
+        
     void init(); // This initialization function incorporates common constructor code
 };
 
