@@ -29,6 +29,8 @@
 */
 #ifndef TEBASE_CPP
 #define TEBASE_CPP
+#include <qsocket.h>
+#include <qsocketdevice.h> 
 #include "tebase.h"
 #include <tserialport.h>
 #include <stdarg.h>
@@ -100,7 +102,9 @@ void TEBase::init(int pn, QString device)
     vDebugLevel = 0;
     vTimeout = 150;
     vTimeoutFlag = false;
+    m_eConnectionType = ECT_SERIAL;
     Port = new TSerialPort();
+    Socket = new QSocketDevice();
 }
 
 /*!
@@ -115,26 +119,24 @@ TEBase::~TEBase()
 int
 TEBase::setConnectionType( int ct )
 {
-	switch (ct) {
-	case ECT_SERIAL:
-	  m_eConnectionType = ct;
-		break;
-	case ECT_KEYBOARD:
-	  m_eConnectionType = ct;
-		break;
-	default:
-		setErrorText(tr("Unknown connection type."));
-		return 1;
-		break;
-	}
-	return 0;
+    switch (ct) 
+    {
+    case ECT_SERIAL: case ECT_KEYBOARD: case ECT_TCP:
+	m_eConnectionType = ct;
+	break;
+    default:
+	setErrorText(tr("Unknown connection type."));
+	return 1;
+	break;
+    }
+    return 0;
 }
 
 
 int
 TEBase::connectionType()
 {
-	return m_eConnectionType;
+    return m_eConnectionType;
 }
 
 
@@ -156,6 +158,11 @@ TEBase::portNumber() const
 
 int TEBase::setPortDevice(QString device)
 {
+    if(device.left(2).upper()="IP")
+    {
+	setConnectionType(ECT_TCP);
+	device = device.mid(2);
+    }
     bool o = isOpen();
     if(o) o = close();
     vPortDevice = device;
@@ -168,21 +175,20 @@ QString TEBase::portDevice() const
     return vPortDevice;    
 }
 
-int
-TEBase::open()
+int TEBase::serialOpen()
 {
     QString pname;
 #ifdef Q_OS_WIN32
     pname=QString("COM%1:").arg( portNumber() );
 #else
     pname=QString("%1").arg( portDevice() );
-#endif
+#endif    
     Port->setName( pname );
     if (!Port->open())
-	{
-		setErrorText(tr("Cannot open serial port '%1'.").arg(pname));
-		return 0;
-	}
+    {
+	setErrorText(tr("Cannot open serial port '%1'.").arg(pname));
+	return 0;
+    }
     if (m_iPBaudRate!=0)
         Port->setCustomBaudRate((Q_ULONG)m_iPBaudRate);
     if (m_PFlow!=FLOW_NOTSET)
@@ -193,11 +199,56 @@ TEBase::open()
         Port->setDataBits(m_PDataBits);
     if (m_PStopBits!=STOP_NOTSET)
         Port->setStopBits(m_PStopBits);
-   	Port->setTimeout(0,(unsigned long)vTimeout);
-    return 1;
+    Port->setTimeout(0,(unsigned long)vTimeout);
+    return 1;    
 }
 
+/*
+int TEBase::waitConnection()
+{
+    for(int i=0;i<10;i++)
+    {
+	QSocket::State state = Socket->state();
+	if(state!=QSocket::Connecting)
+	    return state==QSocket::Connected ? 1 : 0;
+	usleep(100000);
+    }
+    return 0;
+}
+*/
 
+int TEBase::tcpOpen()
+{
+    QStringList addr = QStringList::split(':', portDevice());
+    QHostAddress hostaddr;
+#ifdef DEBUG
+    qDebug(QString("IP address: %1 port: %2").arg(hostaddr.toString()).arg(addr[1].toUInt()));
+#endif    
+    hostaddr.setAddress(addr[0]);
+    if(!Socket->connect(hostaddr, addr[1].toUInt()))
+    {
+#ifdef DEBUG
+	qDebug(QString("connection error: %1").arg(Socket->error()));
+#endif	
+	return 0;
+    }    
+}
+
+int
+TEBase::open()
+{
+    int res = 0;
+    switch(m_eConnectionType)
+    {
+    case ECT_SERIAL:
+	res = serialOpen();
+	break;
+    case ECT_TCP:
+	res = tcpOpen();
+	break;
+    }
+    return res;
+}
 
 int
 TEBase::close()
@@ -273,8 +324,19 @@ Put character
 */
 int
 TEBase::putch( int b )
-{
-    int res=Port->putch( b );
+{        
+    int res = -1;
+    switch(m_eConnectionType)
+    {
+    case ECT_SERIAL:
+	res=Port->putch( b );
+	break;
+    case ECT_TCP:
+	res=Socket->putch(b);
+	break;
+    default:
+	break;
+    }
 #ifdef DEBUG
     if ( vDebugLevel ){
 	    printf(">%02X ", b & 0xff );
@@ -292,26 +354,37 @@ int
 TEBase::getch()
 {
 //    int t = vTimeout;
-    int i;
-
 //    vTimeoutFlag = true;
 //    while ( readCount()<=0 && (t--)>0) Sleep(1);
 //    if (readCount()>0)
 //    {
-        i = (Port->getch());
-        vTimeoutFlag = i==-1;
+    int res = -1;    
+    switch(m_eConnectionType)
+    {
+    case ECT_SERIAL:
+	res=Port->getch();
+	vTimeoutFlag = res==-1;	
+	break;
+    case ECT_TCP:
+	Socket->waitForMore(vTimeout, &vTimeoutFlag);
+	if(vTimeoutFlag) break;
+	res=Socket->getch();
+	break;
+    default:
+	break;
+    }        
 //    }
 //    else
 //        i=-1;
 #ifdef DEBUG
     if ( vDebugLevel )
     {
-	if (i==-1) printf("<XX "); 
-	else printf("<%02X ", i & 0xff );
+	if (res==-1) printf("<XX "); 
+	else printf("<%02X ", res & 0xff );
 	fflush(stdout);
     }
 #endif
-    return i;
+    return res;
 }
 
 
@@ -358,7 +431,18 @@ TEBase::readBlock( char *data, Q_ULONG maxlen )
 Q_ULONG
 TEBase::readCount()
 {
-    int c = Port->bytesWaiting();
+    int c = 0;
+    switch(m_eConnectionType)
+    {
+    case ECT_SERIAL:
+	c = Port->bytesWaiting();
+	break;
+    case ECT_TCP:
+	c = Socket->bytesAvailable();
+	break;
+    default:
+	break;
+    }
     if ( c < 0 ) c = 0;
     return (Q_ULONG)c;
 }

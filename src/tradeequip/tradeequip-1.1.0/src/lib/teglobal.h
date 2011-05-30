@@ -29,7 +29,7 @@
 #include <qgplugin.h>
 #include <qstringlist.h>
 
-#define DEBUG
+#define DEBUG 1
 //#define DEMOVERSION
 
 #ifdef Q_OS_WIN32
