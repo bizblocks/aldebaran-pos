@@ -3,6 +3,8 @@
 #include "posix_qextserialport.h"
 #include "ESCPOS.h"
 
+#define PRINT_WIDTH	41
+
 ESCPOS::ESCPOS() :
 	TECashRegisterBase("/dev/null", 0)
 {    
@@ -160,42 +162,73 @@ ESCPOS::Result ESCPOS::cut()
 
 bool ESCPOS::openCheck()
 {
-    QCString buf;
-    Result res = toDeviceStr(fCheckHeader, buf);
-    if(res) return res;
-    const Byte * pBuf = (const char*)buf;
-    res = sendCmd((char *)pBuf, buf.length());
-    
-    for(int ind=0;ind<4;ind++) fSumm[ind] = 0;
-    fSubTotal = 0;
-    
-    return res;   
+    clear();
+    return true;
 }
 
-int ESCPOS::closeCheck(double & dChange, int iReserved)
+void ESCPOS::clear()
 {
-    //TODO total and change print    
-    QCString buf;
-    Result res = toDeviceStr(fCheckFooter, buf);
-    if(res) return res;
-    const Byte * pBuf = (const char*)buf;
-    res = sendCmd((char *)pBuf, buf.length());
+    for(int ind=0;ind<4;ind++) fSumm[ind] = 0;
+    fSubTotal = 0;        
+}
+
+QString justify(int len, QString left, QString right)
+{
+    return QString(left+right.rightJustify(len-left.length(), ' ', TRUE)).left(len);
+}
+
+int ESCPOS::closeCheck(double & dChange, int /*iReserved*/)
+{
     double summ = 0.0;
     for(int ind=0;ind<4;ind++) summ += fSumm[ind];
     dChange = summ-fSubTotal;
+    int res = 0;
+    if((res = print(QString("").rightJustify(PRINT_WIDTH, '-', TRUE)))) return res;
+    if((res = printBoldLine(justify(PRINT_WIDTH/2, "ИТОГО", QString("=").arg(fSubTotal, 6, 'f', 2))))) return res;
+    if(fSumm[0]>0)
+	if((res = print(justify(PRINT_WIDTH, " Наличные", QString("=").arg(fSumm[0], 6, 'f', 2))))) return res;
+    if(fSumm[1]>0)
+	if((res = print(justify(PRINT_WIDTH, " Платежная карта", QString("=").arg(fSumm[1], 6, 'f', 2))))) return res;
+    if(dChange>0)
+	if((res = print(justify(PRINT_WIDTH, " СДАЧА", QString("=").arg(dChange, 6, 'f', 2))))) return res;
+    clear();
     return res;
+}
+
+int ESCPOS::setItem(const QString & sName, double dPrice, double dQuantity)
+{
+    double sum = dQuantity*dPrice;
+    int res = 0;
+    if((res = print(sName.left(PRINT_WIDTH*2)))) return res;
+    if((res = print(justify(PRINT_WIDTH, QString("%1 X %2").arg(dQuantity, 7, 'f', 3).arg(dPrice, 6, 'f', 2), 
+			    QString("%1").arg(sum, 6, 'f', 2))))) return res;
+    if(fItemDiscountPercent!=0.0)
+    {
+	sum = sum * ( 1 - fItemDiscountPercent/100);
+	if((res = print(justify(PRINT_WIDTH, QString(" Скидка %1 %%").arg(fItemDiscountPercent, 5, 'f', 2), 
+				QString("=%1").arg(dQuantity*dPrice-sum, 6, 'f', 2))))) return res;
+    }
+    if(fItemDiscount!=0.0)
+    {
+	sum = sum - fItemDiscount;
+	if((res = print(justify(PRINT_WIDTH, QString(" Скидка %1").arg(fItemDiscountPercent, 5, 'f', 2), 
+				QString("=%1").arg(fItemDiscount, 6, 'f', 2))))) return res;
+    }
+    return res;
+    fSubTotal += sum;
 }
 
 int ESCPOS::setPayment(double dSum, int iType)
 {
     if(iType<1 || iType>4) return -1;
     fSumm[iType-1] = dSum;
+    return 0;
 }
 
-int ESCPOS::cancelCheck(int iReserved)
-{
-    //TODO print check cancel msg
-    return -1;
+int ESCPOS::cancelCheck(int /*iReserved*/)
+{        
+    clear();
+    return print("\nЧек аннулирован\n");
 }
 
 int ESCPOS::setDiscountPercent(double p)
@@ -212,8 +245,16 @@ int ESCPOS::setDiscount(double s)
 
 int ESCPOS::beep()
 {
-    Result res;
-    Byte cmd[3] = {RS};
+    int res;
+    Byte cmd[1] = {RS};
     res = sendCmd(cmd, 1);
     return res;
+}
+
+int ESCPOS::openCashbox(int)
+{
+    int res;
+    Byte cmd[3] = {ESC, 'p', 48};
+    res = sendCmd(cmd, 3);
+    return res;    
 }
