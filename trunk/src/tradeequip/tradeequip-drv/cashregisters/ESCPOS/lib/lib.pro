@@ -12,7 +12,7 @@ HEADERS	+= ESCPOS.h \
 
 SOURCES	+= ESCPOS.cpp
 
-TARGET      = teprinter-ESCPOS
+TARGET      = tecashregister-ESCPOS
 DESTDIR     = ../../../lib
 
 unix {
@@ -20,9 +20,9 @@ unix {
   MOC_DIR = .moc
   OBJECTS_DIR = .obj
   target.path = $(LIBDIR)/tradeequip
-  teprinter-ESCPOS.path = $(LIBDIR)/tradeequip
-  teprinter-ESCPOS.extra = cd $(INSTALL_ROOT)$(LIBDIR) && ln -sf  tradeequip/libteprinter-ESCPOS.so* $(INSTALL_ROOT)$(LIBDIR)
+  tecashregister-ESCPOS.path = $(LIBDIR)/tradeequip
+  tecashregister-ESCPOS.extra = cd $(INSTALL_ROOT)$(LIBDIR) && ln -sf  tradeequip/libtecashregister-ESCPOS.so* $(INSTALL_ROOT)$(LIBDIR)
 }
 
 INSTALLS += target 
-INSTALLS += teprinter-ESCPOS
+INSTALLS += tecashregister-ESCPOS

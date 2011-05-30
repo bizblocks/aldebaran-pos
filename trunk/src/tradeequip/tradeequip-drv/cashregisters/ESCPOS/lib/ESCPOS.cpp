@@ -1,10 +1,18 @@
 #include <errno.h>
 #include <linux/lp.h>
 #include "posix_qextserialport.h"
-#include "cts300.h"
+#include "ESCPOS.h"
 
-CTS300::CTS300(QString pname) :
-	TEBase( pname )
+ESCPOS::ESCPOS() :
+	TECashRegisterBase("/dev/null", 0)
+{    
+    codepages.clear();    
+    qtCodepages.clear();
+    init();
+}
+
+ESCPOS::ESCPOS(QString pname) :
+	TECashRegisterBase( pname, 0 )
 {    
     codepages.clear();    
     qtCodepages.clear();
@@ -12,13 +20,13 @@ CTS300::CTS300(QString pname) :
     setPortDevice(pname);
 }
 
-CTS300::~CTS300()
+ESCPOS::~ESCPOS()
 {
 }
 
-void CTS300::init()
+void ESCPOS::init()
 {
-    setName("TEPrinterCTS300");
+    setName("TEPrinterESCPOS");
 /*
     m_ee.addFuncBinding(this,&FelixRK::readMachineNumber,"readMachineNumber");
     m_ee.addFuncBinding<FelixRK,int>(this,&FelixRK::open,"open");
@@ -51,7 +59,7 @@ void CTS300::init()
     qtCodepages[255] = "";    */
 }
 
-void CTS300::setAbort()
+void ESCPOS::setAbort()
 {
     //from tunelp.c sources
     Posix_QextSerialPort * p = port();
@@ -63,7 +71,7 @@ void CTS300::setAbort()
     if (ioctl(h, LPABORT - offset, &abort) < 0) qDebug("tunelp: ioctl");
 }
 
-CTS300::Result CTS300::sendCmd(Byte * pBuf, int iSize)
+ESCPOS::Result ESCPOS::sendCmd(Byte * pBuf, int iSize)
 {
     setAbort();
 //    int count = 0;
@@ -79,12 +87,12 @@ CTS300::Result CTS300::sendCmd(Byte * pBuf, int iSize)
     return RES_OK;
 }
 
-QStringList CTS300::getCodepages()
+QStringList ESCPOS::getCodepages()
 {
     return codepages;
 }
 
-CTS300::Result CTS300::toDeviceStr(QString str, QCString & dest)
+ESCPOS::Result ESCPOS::toDeviceStr(QString str, QCString & dest)
 {
     dest = "";
     QTextCodec * utf8=QTextCodec::codecForName("UTF-8");
@@ -95,7 +103,7 @@ CTS300::Result CTS300::toDeviceStr(QString str, QCString & dest)
     return RES_OK;
 }
 
-CTS300::Result CTS300::setCodepage(QString cp)
+ESCPOS::Result ESCPOS::setCodepage(QString cp)
 {
     fCodepage = cp;
     int index = codepages.findIndex(cp);
@@ -104,7 +112,7 @@ CTS300::Result CTS300::setCodepage(QString cp)
     return res;
 }
 
-CTS300::Result CTS300::printLine(QString ln)
+int ESCPOS::print(QString ln)
 {
     QCString buf;
     Result res = toDeviceStr(ln, buf);
@@ -114,19 +122,19 @@ CTS300::Result CTS300::printLine(QString ln)
     return res;
 }
 
-CTS300::Result CTS300::printBoldLine(QString ln)
+ESCPOS::Result ESCPOS::printBoldLine(QString ln)
 {
     Result res;
     Byte cmdBold[3] = {ESC, '!', 0x08};
     res = sendCmd(cmdBold, 3);
     if(res) return res;
-    res = printLine(ln);
+    res = print(ln);
     Byte cmdNorm[3] = {ESC, '!', 0x00};
     res = sendCmd(cmdNorm, 3);
     return res;
 }
 
-CTS300::Result CTS300::printBarcode(QString barcode)
+ESCPOS::Result ESCPOS::printBarcode(QString barcode)
 {
     if(barcode.length()>13) return RES_INVALIDARG0;
     Result res;
@@ -147,7 +155,7 @@ CTS300::Result CTS300::printBarcode(QString barcode)
     return res;
 }
 
-CTS300::Result CTS300::cut()
+ESCPOS::Result ESCPOS::cut()
 {
     Result res;
     Byte cmd[3] = {GS, 'V', 0x01};
@@ -155,3 +163,62 @@ CTS300::Result CTS300::cut()
     return res;
 }
 
+bool ESCPOS::openCheck()
+{
+    QCString buf;
+    Result res = toDeviceStr(fCheckHeader, buf);
+    if(res) return res;
+    const Byte * pBuf = (const char*)buf;
+    res = sendCmd((char *)pBuf, buf.length());
+    
+    for(int ind=0;ind<4;ind++) fSumm[ind] = 0;
+    fSubTotal = 0;
+    
+    return res;   
+}
+
+int ESCPOS::closeCheck(double & dChange, int iReserved)
+{
+//TODO total and change print    
+    QCString buf;
+    Result res = toDeviceStr(fCheckFooter, buf);
+    if(res) return res;
+    const Byte * pBuf = (const char*)buf;
+    res = sendCmd((char *)pBuf, buf.length());
+    double summ = 0.0;
+    for(int ind=0;ind<4;ind++) summ += fSumm[ind];
+    dChange = summ-fSubTotal;
+    return res;
+}
+
+int ESCPOS::setPayment(double dSum, int iType)
+{
+    if(iType<1 || iType>4) return -1;
+    fSumm[iType-1] = dSum;
+}
+
+int ESCPOS::cancelCheck(int iReserved)
+{
+//TODO print check cancel msg
+    return -1;
+}
+
+int ESCPOS::setDiscountPercent(double p)
+{
+    fItemDiscountPercent = p;
+    return 0;
+}
+
+int ESCPOS::setDiscount(double s)
+{
+    fItemDiscount = s;
+    return 0;
+}
+
+int ESCPOS::beep()
+{
+    Result res;
+    Byte cmd[3] = {RS};
+    res = sendCmd(cmd, 1);
+    return res;
+}

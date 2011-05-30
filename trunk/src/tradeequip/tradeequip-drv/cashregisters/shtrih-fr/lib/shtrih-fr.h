@@ -520,6 +520,8 @@ public:
 	virtual int payingin(double);
 	virtual int payment(double);
 
+	virtual int beep() { return internalRing(); };
+	
 	virtual int checkDeviceReady();
 
   virtual QValueList<int> supportedBaudRates()
