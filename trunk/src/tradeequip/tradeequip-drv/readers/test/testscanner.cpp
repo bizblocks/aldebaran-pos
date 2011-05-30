@@ -13,7 +13,7 @@ int main(int argc, char * argv [])
 	ui.connect(sc,SIGNAL(deviceEvent(int)),&ui,SLOT(onDevEvent(int)));
 	ui.show();
 	sc->setDebugLevel(1);
-	sc->setPortDevice("/dev/ttyUSB0");
+	sc->setPortDevice("/dev/ttyS0");
 	sc->startDriver();
 	sc->setPortBaudRate(9600);	
 	sc->setPortDataBits(DATA_8);

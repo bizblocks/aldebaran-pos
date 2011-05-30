@@ -35,7 +35,7 @@ void dlgLogin::down()
     editPassword->setFocus();
 }
 
-void dlgLogin::eqData(QVariant data)
+void dlgLogin::eqData(int, QVariant data)
 {
     QMap<QString, QVariant> dataMap = data.toMap();
     editPassword->setText(dataMap["line"].toString());
