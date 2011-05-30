@@ -294,7 +294,7 @@
 <slots>
     <slot>up()</slot>
     <slot>down()</slot>
-    <slot>eqData( QVariant data )</slot>
+    <slot>eqData(int,  QVariant data )</slot>
     <slot>login()</slot>
 </slots>
 <functions>

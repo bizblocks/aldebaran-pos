@@ -97,7 +97,7 @@ void alEngine::initEquipment()
     alDataEq * eq = new alDataEq(this);
     connect(fWorker, SIGNAL(deviceError(int)), this, SLOT(onError(int)));    
     fWorker->initEquipment(eq);
-        
+    
     int err;
     eqJob * job = createPrinterJob("", "print");
     if(job) 
@@ -110,7 +110,7 @@ void alEngine::initEquipment()
 	job->process();	
 	delete job;
     }
-    
+
     job = createECRJob("", "beep");
     if(!job) error(tr("ERROR: default ECR not connected"));
     else
@@ -128,7 +128,7 @@ void alEngine::initEquipment()
 	eqMSCReader * reader = (eqMSCReader*)fWorker->getDevice(device->name());
 	connect(reader, SIGNAL(data(int, QString)), this, SLOT(readerData(int, QString)));
     }while (eq->next());
-    
+
     eq->select("type='Barcode Reader'");
     if(eq->first()) do
     {
@@ -137,7 +137,7 @@ void alEngine::initEquipment()
 	eqBarcodeReader * reader = (eqBarcodeReader*)fWorker->getDevice(device->name());
 	connect(reader, SIGNAL(data(QString)), this, SLOT(barcodeReaderData(QString)));
     }while (eq->next());    
-    
+
     eq->select("type='Sirius'");
     if(eq->first()) do
     {
@@ -146,7 +146,7 @@ void alEngine::initEquipment()
 	eqSirius * sirius = (eqSirius*)fWorker->getDevice(device->name());
 	connect(sirius, SIGNAL(data(importer*)), this, SLOT(importData(importer*)));
     }while (eq->next());
-    
+
     eq->select("type='Virtual Mart'");
     if(eq->first()) do
     {
@@ -155,7 +155,7 @@ void alEngine::initEquipment()
 	eqVirtualMart * vMart = (eqVirtualMart*)fWorker->getDevice(device->name());
 	connect(vMart, SIGNAL(data(importer*)), this, SLOT(importData(importer*)));
     }while (eq->next());
-    
+
     server = new sServer(this);
     connect(server, SIGNAL(hasData(importer*)), this, SLOT(importData(importer*)));
     server->start();        
@@ -229,20 +229,21 @@ int alEngine::start()
 	else break;
     }while(true);
     Queries::setDialect(dbParams[0]);
-    dbInited = TRUE;	
+    dbInited = TRUE;
     emit(initialized());
     initUsers();
     initEquipment();
     if(!loginLock()) return -1;
+
     initTables();
-	
+
     mainWindow = new alMainWindow(this);
-    connect(mainWindow, SIGNAL(closed()), this, SLOT(exitApp()));	
+    connect(mainWindow, SIGNAL(closed()), this, SLOT(exitApp()));
     qApp->setMainWidget(mainWindow);
-    
+
 //    alDataGoods * goods = new alDataGoods(this);
 //    goods->exportpictures();
-    
+
     return qApp->exec();
 }
 
