@@ -259,13 +259,17 @@ TECashRegisterBase::errorCode()
     return vErrorCode;
 }
 
+QString TECashRegisterBase::errorText( Q_ULONG errcode )
+{
+    return "";
+}
+
 int
 TECashRegisterBase::setMode( enum Mode mode )
 {
     vMode = mode;
     return 0;
 }
-
 
 int
 TECashRegisterBase::mode()

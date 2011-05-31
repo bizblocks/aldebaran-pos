@@ -485,8 +485,11 @@ public:
 		PTAdmin,
 		PTFiscal
 	};
-
-	virtual int openCashbox(int n); // open cash box number n
+	
+#warning TODO reimplement print	
+	virtual int print(const QString & line) { return internalPrintLine(line, true, false, m_bTmpOpNum); };
+	virtual int cut() { 	return internalCutCheck(1); };
+	virtual int openCashbox(int n); // open cash box number n	
 	virtual int ZReport();
 	virtual int XReport();
 

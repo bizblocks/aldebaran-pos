@@ -86,6 +86,8 @@ void dlgDevice::apply()
     
     QStringList opts = fDevice->options();
     for(uint i=0;i<opts.count();i++)
+    {
 	fData->setOption(opts[i], fDevice->option(opts[i]));
+    }
     accept();
 }

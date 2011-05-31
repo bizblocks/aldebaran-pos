@@ -16,4 +16,5 @@ int main(int, char **)
     printer->print("01234567890123456789012345678901234567890123456789\n");        
     printer->print("\n\n\n");
     printer->cut();
+    printer->beep();
 }

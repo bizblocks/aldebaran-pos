@@ -115,7 +115,7 @@ void MainForm::issueCommand()
   delete [] cmd;
 
   QString restxt=resText(res);
-  te_Log->append(tr("sendCommand returns '%1'. Error text: '%2'. Returned bytes:").arg(restxt).arg(res==RSP_OK?QString(""):m_Shtrih->errorText()));
+  te_Log->append(tr("sendCommand returns '%1'. Error text: '%2'. Returned bytes:").arg(restxt).arg(res==RSP_OK?QString(""):m_Shtrih->errorText(0))); //TODO
   QString resptxt;
   for(int j=0;j<rb;j++)
     resptxt+=QString("%1").arg((int)resp[j],2,16);
@@ -144,7 +144,7 @@ void MainForm::readState()
   showResult(res=m_Shtrih->internalReadOptions(0));
   te_Log->append(tr("Calling internalReadOptions... Result: '%1'").arg(resText(res)));
   if (res!=RSP_OK)
-    te_Log->append(tr("Error text: '%1'").arg(m_Shtrih->errorText()));
+    te_Log->append(tr("Error text: '%1'").arg(m_Shtrih->errorText(0))); //TODO
   // table1->setEnabled(false);
   QStringList vsl=m_Shtrih->valueNamesList();
   table1->setNumRows(vsl.size());
@@ -191,7 +191,7 @@ void MainForm::printString()
   statusBar()->message(tr("Communicating..."));
   showResult(res=m_Shtrih->internalPrintLine(le_Command->text(),true,true));
   if (res!=RSP_OK)
-    te_Log->append(tr("Error text: '%1'").arg(m_Shtrih->errorText()));
+    te_Log->append(tr("Error text: '%1'").arg(m_Shtrih->errorText(0))); //TODO
 }
 
 
@@ -295,7 +295,7 @@ void MainForm::showResult( int res )
   if (res==RSP_COMMANDERROR)
     msg+=QString(" ")+m_Shtrih->devErrorText(m_Shtrih->deviceError());
   else
-    msg+=QString(" ")+m_Shtrih->errorText();
+    msg+=QString(" ")+m_Shtrih->errorText(0); //TODO
   statusBar()->message(msg);
 }
 
@@ -467,7 +467,7 @@ void MainForm::commitTableChanges()
       else
         data.longv=text.toLongLong();
       showResult(res=m_Shtrih->internalWriteField(num,j,i,(void*)&data,sz));
-      if (res) te_Log->append(tr("Error at (%1,%2): %3").arg(i).arg(j).arg(m_Shtrih->errorText()));
+      if (res) te_Log->append(tr("Error at (%1,%2): %3").arg(i).arg(j).arg(m_Shtrih->errorText(0))); //TODO
     }
   }
 }

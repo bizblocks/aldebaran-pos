@@ -271,175 +271,183 @@ enum PassType
 class LIB_EXPORT TECashRegisterBase : public TEBase
 {
 Q_OBJECT
-
+    
 public:
 
+    typedef double Decimal;    
+    
 //  enum eventCode {
 //  EVENT_NONE, EVENT_CLOSECHECK, EVENT_ASKBARCODE,
 //  EVENT_RESETCHECK, EVENT_MANUALSALE, EVENT_CONFIRMBUE
 //  };
-
-	enum Mode { MOD_OFF, MOD_ONLINE, MOD_CHECKONLINE };
-
-	TECashRegisterBase(QString pnum, unsigned long nm);
-	~TECashRegisterBase();
-
-	static int EANControl(Q_ULLONG code);
-
-	virtual Q_ULONG readROM( char *buf, Q_ULONG Addr, Q_ULONG Len );
-	virtual Q_ULONG readRAM( char *buf, Q_ULONG Addr, Q_ULONG Len );
-	virtual Q_ULONG readIRAM( char *buf, Q_ULONG Addr, Q_ULONG Len );
-	virtual Q_ULONG readEROM( char *buf, Q_ULONG Addr, Q_ULONG Len );
-	virtual Q_ULONG writeRAM( char *buf, Q_ULONG Addr, Q_ULONG Len );
-	virtual Q_ULONG writeIRAM( char *buf, Q_ULONG Addr, Q_ULONG Len );
-	virtual Q_ULONG writeEROM( char *buf, Q_ULONG Addr, Q_ULONG Len );
-
-	virtual Q_ULONG readMachineNumber();
-	virtual int readSoftwareVersion();
-	virtual int softwareVersion(){return (int)vSoftwareVersion;};
-	virtual Q_ULONG netNumber();
-	virtual void setNetNumber( Q_ULONG nn );
-	virtual Q_ULONG readNetNumber();
-	virtual void writeNetNumber( Q_ULONG nn );
-	virtual int readCashSum();
-	virtual double cashSum() {return vCashSum;};
-	virtual void setCashSum(double cashSum){vCashSum=cashSum;};
-	virtual void setPollPausing(bool bPollPausing){m_bPollPausing=bPollPausing;};
-	virtual bool pollPausing(){return m_bPollPausing;} // pause polling after particular events
-	virtual bool pollPaused() const {return m_bPollPaused;} // unconditionally pause polling
-	virtual void setPollPaused(bool pollPaused){m_bPollPaused=pollPaused;}
-	virtual double buySum(){return vSum;}; // Sum of buyed/returned position
-	virtual void setBuySum(double sum){vSum=sum;};
-	virtual double quantity(){return vQuantity;}; 
-	virtual void setQuantity(double quantity){vQuantity=quantity;};
-	virtual double price(){return vPrice;};
-	virtual void setPrice(double price){vPrice=price;};
-	virtual QString productDesc() {return vProdDesc;};
-	virtual void setProductDesc(const QString & prodDesc){vProdDesc=prodDesc;};
-	virtual int precision(){return vQDec;};
-	virtual void setPrecision(int dec){vQDec=dec;};
-	virtual int checkNum(){return m_iChkNum;};
-	virtual void setCheckNum(int iChkNum){m_iChkNum=iChkNum;};
-	virtual int prodNum(){return m_iProdNum;};
-	virtual void setProdNum(int iProdNum){m_iProdNum=iProdNum;};
-	virtual int prodCount(){return m_iProdCnt;};
-	virtual void setProdCount(int iProdCnt){m_iProdCnt=iProdCnt;};
-	virtual int section(){return m_iSection;};
-	virtual void setSection(int iSection){m_iSection=iSection;};
-	virtual enum Mode currentMode(){return vMode;};
-	virtual void setReturnFlag(bool bReturnFlag){m_bReturnFlag=bReturnFlag;}
-	virtual bool returnFlag(){return m_bReturnFlag;}
-	
-	void setCheckHeader(const QString & sCheckHeader){m_sCheckHeader=sCheckHeader;}
-	QString checkHeader() const {return m_sCheckHeader;}
-
-	// this function puts driver in wait for user action state and returns
-	// When user enters specified command sequense, driver prints check filled with previous call to bueAdd
-	virtual bool printCheck(bool returnFlag)=0; // returns true on ok, false on error
-	virtual bool cancelPrint()=0;
-	virtual bool openCheck()=0;
-
-// ----------------- New check related functions. ------------------------
-	virtual bool isCheckOpened();
-	virtual bool onlinePrintMode();
-	virtual void setOnlinePrintMode(bool bOnlinePM);
-	virtual bool isOnlinePrintModeSupported();
-
-	virtual int openCheck(int eDocumentType, int & iReserved);
-	virtual int beginAdd(int iReserved);
-	virtual int addTax(int iTax);
-	virtual int setDiscount(double dDiscount); // absolute value of a discount
-	virtual int setDiscountPercent(double dDiscProcent);
-	virtual int setItemSection(int iSection);
-	virtual int setOperation(int eOperationType);
-	virtual int setUnit(const QString & sUnit);
-	virtual int setComment(const QString & sComment);
-	virtual int setItem(const QString & sName, double dPrice, double dQuantity);
-	virtual int endAdd(int iReserved);
-	virtual int cancelAdd(int iReserved);
-	virtual int setPayment(double dSum, int iType=0); 
-	virtual int addCheckTax(int iTax); 
-	virtual int cancelCheck(int iReserved);
-	virtual int closeCheck(double & dChange, int iReserved);
-	virtual int curDocumentNumber(int & iDocnum);
-	
-	virtual int printItemOut(const PurchaseInfo &);
-	virtual int payment(double dSum); // cash out
-	virtual int payingin(double dSum); //  cash in	
-// ----------------- End of check related functions. --------------------
-	
-// General device status functions
-//!< Is Checks for device readiness for action. 
-	virtual int beep()=0;	
-	virtual int checkDeviceReady()=0;  
-// End
-
-	virtual void setErrorCode( Q_ULONG errcode );
-	virtual Q_ULONG errorCode();
-
-	virtual int mode();
-	virtual int setMode( enum Mode mod );
-	virtual QString barcode();
-	virtual void setBarcode( const QString &barcode );
-	virtual int controlLineNumber(){ return value("CLNUMBER").toInt();};
-	virtual void setControlLineNumber( int clnumber ){ setValue("CLNUMBER", clnumber);};
-	virtual int eventProcessed();
-	virtual int eventRejected();
-
-	virtual int bueAdd( const QString &name, int dep, double summa, double quantity, int qdec );
-	virtual int bueCount();
-	virtual int bueRemove( int idx );
-
-	static QString addEAN13Checksum(const QString &);
-
-	void setModeInt(int mode){
-		switch(mode){case 0:setMode(TECashRegisterBase::MOD_OFF);break;
-		        case 1:setMode(TECashRegisterBase::MOD_ONLINE);break;
-		        case 2:setMode(TECashRegisterBase::MOD_CHECKONLINE);break;
-		        default:break;//{char buf[]={0x2,0x12,(char)mode};SendCommand(buf,sizeof(buf),false,0);break;};
-		};
-	}
-
-	virtual int setPassword(int pt, const QString & pass);
-
+    enum Mode { MOD_OFF, MOD_ONLINE, MOD_CHECKONLINE };
+    
+    TECashRegisterBase(QString pnum, unsigned long nm);
+    ~TECashRegisterBase();
+    
+    static int EANControl(Q_ULLONG code);
+    
+    virtual Q_ULONG readROM( char *buf, Q_ULONG Addr, Q_ULONG Len );
+    virtual Q_ULONG readRAM( char *buf, Q_ULONG Addr, Q_ULONG Len );
+    virtual Q_ULONG readIRAM( char *buf, Q_ULONG Addr, Q_ULONG Len );
+    virtual Q_ULONG readEROM( char *buf, Q_ULONG Addr, Q_ULONG Len );
+    virtual Q_ULONG writeRAM( char *buf, Q_ULONG Addr, Q_ULONG Len );
+    virtual Q_ULONG writeIRAM( char *buf, Q_ULONG Addr, Q_ULONG Len );
+    virtual Q_ULONG writeEROM( char *buf, Q_ULONG Addr, Q_ULONG Len );
+    
+    virtual Q_ULONG readMachineNumber();
+    virtual int readSoftwareVersion();
+    virtual int softwareVersion(){return (int)vSoftwareVersion;};
+    virtual Q_ULONG netNumber();
+    virtual void setNetNumber( Q_ULONG nn );
+    virtual Q_ULONG readNetNumber();
+    virtual void writeNetNumber( Q_ULONG nn );
+    virtual int readCashSum();
+    virtual double cashSum() {return vCashSum;};
+    virtual void setCashSum(double cashSum){vCashSum=cashSum;};
+    virtual void setPollPausing(bool bPollPausing){m_bPollPausing=bPollPausing;};
+    virtual bool pollPausing(){return m_bPollPausing;} // pause polling after particular events
+    virtual bool pollPaused() const {return m_bPollPaused;} // unconditionally pause polling
+    virtual void setPollPaused(bool pollPaused){m_bPollPaused=pollPaused;}
+    virtual double buySum(){return vSum;}; // Sum of buyed/returned position
+    virtual void setBuySum(double sum){vSum=sum;};
+    virtual double quantity(){return vQuantity;}; 
+    virtual void setQuantity(double quantity){vQuantity=quantity;};
+    virtual double price(){return vPrice;};
+    virtual void setPrice(double price){vPrice=price;};
+    virtual QString productDesc() {return vProdDesc;};
+    virtual void setProductDesc(const QString & prodDesc){vProdDesc=prodDesc;};
+    virtual int precision(){return vQDec;};
+    virtual void setPrecision(int dec){vQDec=dec;};
+    virtual int checkNum(){return m_iChkNum;};
+    virtual void setCheckNum(int iChkNum){m_iChkNum=iChkNum;};
+    virtual int prodNum(){return m_iProdNum;};
+    virtual void setProdNum(int iProdNum){m_iProdNum=iProdNum;};
+    virtual int prodCount(){return m_iProdCnt;};
+    virtual void setProdCount(int iProdCnt){m_iProdCnt=iProdCnt;};
+    virtual int section(){return m_iSection;};
+    virtual void setSection(int iSection){m_iSection=iSection;};
+    virtual enum Mode currentMode(){return vMode;};
+    virtual void setReturnFlag(bool bReturnFlag){m_bReturnFlag=bReturnFlag;}
+    virtual bool returnFlag(){return m_bReturnFlag;}
+    
+    void setCheckHeader(const QString & sCheckHeader){m_sCheckHeader=sCheckHeader;}
+    QString checkHeader() const {return m_sCheckHeader;}
+    
+    // this function puts driver in wait for user action state and returns
+    // When user enters specified command sequense, driver prints check filled with previous call to bueAdd
+    virtual int ZReport()=0;
+    virtual int XReport()=0;    
+    virtual int print(const QString& ln)=0;
+    virtual int cut()=0;
+    virtual int openCashbox(int num)=0;
+    
+    virtual bool printCheck(bool returnFlag)=0; // returns true on ok, false on error
+    virtual bool cancelPrint()=0;
+    virtual bool openCheck()=0;
+    
+    // ----------------- New check related functions. ------------------------
+    virtual bool isCheckOpened();
+    virtual bool onlinePrintMode();
+    virtual void setOnlinePrintMode(bool bOnlinePM);
+    virtual bool isOnlinePrintModeSupported();
+    
+    virtual int openCheck(int eDocumentType, int & iReserved)=0;
+    virtual int beginAdd(int iReserved);
+    virtual int addTax(int iTax);
+    virtual int setDiscount(double dDiscount)=0; // absolute value of a discount
+    virtual int setDiscountPercent(double dDiscProcent)=0;
+    virtual int setItemSection(int iSection);
+    virtual int setOperation(int eOperationType)=0;
+    virtual int setUnit(const QString & sUnit);
+    virtual int setComment(const QString & sComment);
+    virtual int setItem(const QString & sName, double dPrice, double dQuantity)=0;
+    virtual int endAdd(int iReserved);
+    virtual int cancelAdd(int iReserved);
+    virtual int setPayment(double dSum, int iType=0)=0; 
+    virtual int addCheckTax(int iTax);
+    virtual int cancelCheck(int iReserved)=0;
+    virtual int closeCheck(double & dChange, int iReserved)=0;
+    virtual int curDocumentNumber(int & iDocnum);
+    
+    virtual int printItemOut(const PurchaseInfo &);
+    virtual int payment(double dSum); // cash out
+    virtual int payingin(double dSum); //  cash in	        
+    // ----------------- End of check related functions. --------------------
+    
+    // General device status functions
+    //!< Is Checks for device readiness for action. 
+    virtual int beep()=0;	
+    virtual int checkDeviceReady()=0;  
+    // End
+    
+    virtual void setErrorCode( Q_ULONG errcode );
+    virtual Q_ULONG errorCode();
+    virtual QString errorText( Q_ULONG errcode );
+    
+    virtual int mode();
+    virtual int setMode( enum Mode mod );
+    virtual QString barcode();
+    virtual void setBarcode( const QString &barcode );
+    virtual int controlLineNumber(){ return value("CLNUMBER").toInt();};
+    virtual void setControlLineNumber( int clnumber ){ setValue("CLNUMBER", clnumber);};
+    virtual int eventProcessed();
+    virtual int eventRejected();
+    
+    virtual int bueAdd( const QString &name, int dep, double summa, double quantity, int qdec );
+    virtual int bueCount();
+    virtual int bueRemove( int idx );
+    
+    static QString addEAN13Checksum(const QString &);
+    
+    void setModeInt(int mode){
+	switch(mode){case 0:setMode(TECashRegisterBase::MOD_OFF);break;
+			case 1:setMode(TECashRegisterBase::MOD_ONLINE);break;
+			case 2:setMode(TECashRegisterBase::MOD_CHECKONLINE);break;
+			default:break;//{char buf[]={0x2,0x12,(char)mode};SendCommand(buf,sizeof(buf),false,0);break;};
+			};
+    }
+    
+    virtual int setPassword(int pt, const QString & pass);
+    
 public slots:
-	Q_ULONG machineNumber();
-	void setMachineNumber( Q_ULONG nm );
-
-	virtual QVariant value( const QString &name );
-	virtual void setValue(  const QString &name,  const QVariant &val );
-	virtual QString valueDescription( const QString &name );
-	virtual QStringList valueNamesList();
-	virtual QStringList execCommand( const QString &cmd );
-
+    Q_ULONG machineNumber();
+    void setMachineNumber( Q_ULONG nm );
+    
+    virtual QVariant value( const QString &name );
+    virtual void setValue(  const QString &name,  const QVariant &val );
+    virtual QString valueDescription( const QString &name );
+    virtual QStringList valueNamesList();
+    virtual QStringList execCommand( const QString &cmd );
+    
 private:
-	Q_ULONG vMachineNumber, vNetworkNumber, vErrorCode, vSoftwareVersion;
-	enum Mode vMode;
-	QString vBarcode;
-	int vEvent;
-	QDict <QVariant> values;
-	double vCashSum; // sum of cash in hand
-	bool m_bPollPausing;
-
-	double vSum; // cash sum for sale/return without barcode
-	double vQuantity;
-	double vPrice;
-	QString vProdDesc;
-	int vQDec;
-	int Channel;
-	int m_iChkNum; // current check number
-	int m_iProdNum; // product number
-	int m_iProdCnt; // total number of products in check
-	int m_iSection; // section in which current product was buyed
-	bool m_bReturnFlag; //
-	bool m_bPollPaused;
-	QString m_sCheckHeader;
+    Q_ULONG vMachineNumber, vNetworkNumber, vErrorCode, vSoftwareVersion;
+    enum Mode vMode;
+    QString vBarcode;
+    int vEvent;
+    QDict <QVariant> values;
+    double vCashSum; // sum of cash in hand
+    bool m_bPollPausing;
+    
+    double vSum; // cash sum for sale/return without barcode
+    double vQuantity;
+    double vPrice;
+    QString vProdDesc;
+    int vQDec;
+    int Channel;
+    int m_iChkNum; // current check number
+    int m_iProdNum; // product number
+    int m_iProdCnt; // total number of products in check
+    int m_iSection; // section in which current product was buyed
+    bool m_bReturnFlag; //
+    bool m_bPollPaused;
+    QString m_sCheckHeader;
 protected:
-	QValueList<PurchaseInfo> m_vCheckBuffer;
-	CheckInfo m_CheckInfo;
-	bool m_bWaitingForConfirmation;
-
-	void clearCheckInfo();
+    QValueList<PurchaseInfo> m_vCheckBuffer;
+    CheckInfo m_CheckInfo;
+    bool m_bWaitingForConfirmation;
+    
+    void clearCheckInfo();
 };
 
 

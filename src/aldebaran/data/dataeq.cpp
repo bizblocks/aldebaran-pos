@@ -104,6 +104,7 @@ int alEqRecord::update()
     QString sOpt = "";
     for(int i=0;i<(int)fOptions.keys().count();i++)
 	sOpt += fOptions.keys()[i] + "=" + fOptions.values()[i] + "\n";    
+    qDebug(sOpt);
     QByteArray a = QByteArray(sOpt.utf8());
     fRecord->setValue("options", a);
     return alDataRecord::update();

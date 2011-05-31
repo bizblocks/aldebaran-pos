@@ -28,7 +28,7 @@ ESCPOS::~ESCPOS()
 
 void ESCPOS::init()
 {
-    setName("TEPrinterESCPOS");
+    setName("TECashRegisterESCPOS");
     /*
     m_ee.addFuncBinding(this,&FelixRK::readMachineNumber,"readMachineNumber");
     m_ee.addFuncBinding<FelixRK,int>(this,&FelixRK::open,"open");
@@ -108,7 +108,7 @@ ESCPOS::Result ESCPOS::setCodepage(QString cp)
     return res;
 }
 
-int ESCPOS::print(QString ln)
+int ESCPOS::print(const QString& ln)
 {
     QCString buf;
     Result res = toDeviceStr(ln, buf);
@@ -162,6 +162,21 @@ ESCPOS::Result ESCPOS::cut()
 
 bool ESCPOS::openCheck()
 {
+    int tmp;
+    return openCheck(CRO_SELL, tmp);
+}
+
+int ESCPOS::openCheck(int eDocumentType, int &)
+{
+    switch(eDocumentType)
+    {
+    case CRO_SELL: default:
+	fDocTypeStr = "Продажа";
+	break;
+    case CRO_SELLRET:
+	fDocTypeStr = "Возврат";
+	break;
+    }
     clear();
     return true;
 }
@@ -258,3 +273,8 @@ int ESCPOS::openCashbox(int)
     res = sendCmd(cmd, 3);
     return res;    
 }
+
+#include "teplugin.h"
+//template TEPlugin<FelixRK>;
+typedef TEPlugin<ESCPOS> TECashRegisterESCPOSPlugin;
+TE_EXPORT_PLUGIN( TECashRegisterESCPOSPlugin )

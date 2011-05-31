@@ -3,7 +3,9 @@ LANGUAGE	= C++
 
 CONFIG	+= qt warn_on release
 
-unix:LIBS	+= -L../tardeequip-1.1.0/lib -L../tradeequip-drv/lib -lteprinter-cts300 -ltecashregister-felix-rk -ltecashregister-shtrih-fr -ltereader-barcode
+unix:LIBS	+= -L../tardeequip-1.1.0/lib -L../tradeequip-drv/lib -ltereader-barcode
+
+unix:DEFINES	+= DEBUG
 
 INCLUDEPATH	+= ../../aldebaran/data
 
@@ -12,32 +14,24 @@ unix:INCLUDEPATH	+= ../tradeequip-drv/printers/citizen-ct-s300/lib ../tradeequip
 HEADERS	+= worker.h \
 	driver.h \
 	officeprinter.h \
-	cts300printer.h \
-	felixrk.h \
 	siriusterminal.h \
 	mscreader.h \
 	barcodereader.h \
 	virtualmart.h \
-	fr.h \
-	shtrihfr.h
+	fr.h
 
 SOURCES	+= worker.cpp \
 	officeprinter.cpp \
-	cts300printer.cpp \
-	felixrk.cpp \
 	siriusterminal.cpp \
 	mscreader.cpp \
 	barcodereader.cpp \
 	virtualmart.cpp \
-	fr.cpp \
-	shtrihfr.cpp
+	fr.cpp
 
-FORMS	= dlgcts300settings.ui \
-	dlgfelixsettings.ui \
-	dlgsiriussettings.ui \
+FORMS	= dlgsiriussettings.ui \
 	dlgmscreader.ui \
 	dlgvmsettings.ui \
-	dlgshtrihsettings.ui
+	dlgecrsettings.ui
 
 TRANSLATIONS = \
     ../../../translations/equip-en.ts \

@@ -304,13 +304,13 @@ FelixRK::Result FelixRK::checkAnswer(Byte * pAnswer, int szAnswerSize)
 	return RSP_OK;
     if (pAnswer[0]!=0x55)
     {
-	setErrorText(tr("Device returns error code 0x%1. %2").arg(pAnswer[0],0,16).arg(devErrorText(pAnswer[0])));
+	setErrorText(tr("Device returns error code 0x%1. %2").arg(pAnswer[0],0,16).arg(errorText(pAnswer[0])));
 	setDeviceError(pAnswer[0]);
 	return RSP_COMMANDERROR;
     } 
     else if (pAnswer[1])
     {
-	setErrorText(tr("Device returns error code 0x%1. %2").arg(pAnswer[1],0,16).arg(devErrorText(pAnswer[1])));
+	setErrorText(tr("Device returns error code 0x%1. %2").arg(pAnswer[1],0,16).arg(errorText(pAnswer[1])));
 	setDeviceError(pAnswer[1]);
 	return RSP_COMMANDERROR;			
     }
@@ -952,7 +952,7 @@ FelixRK::Result FelixRK::internalDeviceType(Byte * pProtocol, Byte * pType, Byte
     return RSP_OK;
 }
 
-FelixRK::Result FelixRK::internalPrintLine(const QString & line)
+int FelixRK::print(const QString & line)
 {    
     int maxPrn = getMaxPrint();
     m_bTmpOpNum = 0x4C;
@@ -1222,7 +1222,7 @@ FelixRK::Result FelixRK::stringToByteArray(const QString & text, Byte * pBuf, in
 	return RSP_OK;
 }
 
-QString FelixRK::devErrorText(int err)
+QString FelixRK::errorText(int err)
 {
 	QString et=tr("Unknown error 0x%1").arg((int)err,0,16);;
 	switch(err)
@@ -1426,7 +1426,7 @@ bool FelixRK::printCheck(bool bRet)
 		goto errorexit;
 	for(uint i=0;i<m_vCheckBuffer.size();++i)
 	{
-		if(internalPrintLine(m_vCheckBuffer[i].m_name)!=RSP_OK)
+		if(print(m_vCheckBuffer[i].m_name)!=RSP_OK)
 			goto errorexit;
 		if(internalAddOperation(bRet?FOP_SELLRET:FOP_SELL, (Decimal)m_vCheckBuffer[i].m_quantity,(Decimal)m_vCheckBuffer[i].m_price,(Byte)m_vCheckBuffer[i].m_dep)!=RSP_OK)
 			goto errorexit;
@@ -1662,7 +1662,7 @@ int FelixRK::endAdd(int /*iReserved*/)
  */
 int FelixRK::printItemOut(const PurchaseInfo & item)
 {
-	int result = internalPrintLine(item.m_name);
+	int result = print(item.m_name);
 	if(result!=RSP_OK)
 		return CRERROR_DEVICEERROR;
 	result = internalAddOperation(item.m_iOperation, item.m_quantity, item.m_price, item.m_dep);
@@ -1787,7 +1787,7 @@ int FelixRK::closeCheck(Decimal &dChange, int /*iReserved*/)
 		for(uint i=0;i<m_vCheckBuffer.size();++i)
 		{		
 			PurchaseInfo & ci=m_vCheckBuffer[i];
-			if(internalPrintLine(ci.m_name)!=RSP_OK) return CRERROR_DEVICEERROR;
+			if(print(ci.m_name)!=RSP_OK) return CRERROR_DEVICEERROR;
 //			goto checkerror;
 			int op=(ci.m_iOperation==-1)?m_CheckInfo.m_DefaultOperation:ci.m_iOperation;				
 			if(internalAddOperation(op, (Decimal)ci.m_quantity,(Decimal)ci.m_price,(Byte) ci.m_dep)!=RSP_OK) return CRERROR_DEVICEERROR;
@@ -1852,7 +1852,7 @@ void FelixRK::explainCheckPrintError()
 			setErrorText(tr("Mechanical printer error.\nPlease, contact support center."));
 	}
 	else if(res==RSP_COMMANDERROR)
-		setErrorText(devErrorText(deviceError()));
+		setErrorText(errorText(errorCode()));
 	else if(res==RSP_TIMEOUT)
 		setErrorText(tr("Device access timeout"));
 }
@@ -2004,7 +2004,7 @@ int FelixRK::checkDeviceReady()
 			ret = CRERROR_DEVICEERROR;		
 		}
 	} else if(ret==RSP_COMMANDERROR){
-		setErrorText(devErrorText(deviceError()));
+		setErrorText(errorText(errorCode()));
 		return CRERROR_DEVICEERROR;
 	}
 	return ret;

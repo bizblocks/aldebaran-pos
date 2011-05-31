@@ -97,16 +97,13 @@ eqDriver * eqWorker::createDevice(QString driverName, QString deviceName, bool q
 {
     eqDriver * dev = NULL;
     if(driverName=="Office Printer") dev = new eqOfficePrinter(deviceName);
-    else if(driverName=="Citizen CT-S300") dev = new eqCTS300Printer(deviceName);
-    else if(driverName=="Felix-FR") dev = new eqFelixRK(deviceName);
-    else if(driverName=="Shtrih-FR") dev = new eqShtrihFR(deviceName);    
     else if(driverName=="Sirius") dev = new eqSirius(deviceName);
     else if(driverName=="MSC Reader") dev = new eqMSCReader(deviceName);    
     else if(driverName=="Barcode Reader") dev = new eqBarcodeReader(deviceName);
     else if(driverName=="Virtual Mart") dev = new eqVirtualMart(deviceName);
+    else if(driverName=="ECR") dev = new eqFR(deviceName);    
     if(dev && queue)
     {
-	dev->init();
 	addDevice(dev);
     }	
     return dev;
@@ -148,9 +145,7 @@ QStringList eqWorker::driverList()
 {
     QStringList lst;
     lst << "Sirius" 
-	    << "Shtrih-FR" 
-	    << "Felix-FR" 
-	    << "Citizen CT-S300" 
+	    << "ECR"
 	    << "Office Printer" 
 	    << "MSC Reader" 
 	    << "Barcode Reader"
