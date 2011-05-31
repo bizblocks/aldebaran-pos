@@ -175,7 +175,6 @@ public:
 	~FelixRK();
 	
 	typedef int Result;
-	typedef double Decimal;
 	typedef unsigned char Byte;
 	typedef unsigned short UShort;
 
@@ -344,7 +343,6 @@ public:
 
 /*! /en	Prints one line of text (40 chars maximum)./_en
 	/ru /_ru */
-	Result internalPrintLine(const QString & line);
 
 /*! /en	Prints one bold line of text (20 chars maximum)./_en
 	/ru /_ru */
@@ -497,6 +495,11 @@ public:
 
 // --- Common driver functions ---
 public slots:
+	virtual int print(const QString & line);    
+	virtual int cut() { 
+#warning TODO implement felix-rk cut	    
+	};
+	
 	virtual int startDriver();
 	virtual int stopDriver();
 	virtual int setCaptureMode(int iMode);
@@ -540,13 +543,7 @@ public slots:
 	
 	virtual int checkDeviceReady();	
 
-	int deviceError() const
-	{
-		int res = m_bDeviceError;
-		return res;
-	}
-
-	QString devErrorText(int err);
+	virtual QString errorText(int err);
 	
 	int getMaxPrint();
 protected:

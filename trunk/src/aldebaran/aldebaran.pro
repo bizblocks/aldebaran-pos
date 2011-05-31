@@ -3,7 +3,7 @@ LANGUAGE	= C++
 
 CONFIG	+= qt warn_on release
 
-LIBS	+= -L$(QTDIR)/lib -L../../lib -lequip -limpexp -laldebarandata -L../tradeequip/tradeequip-1.1.0/lib -L../tradeequip/tradeequip-drv/lib -ltradeequip -ltereader-barcode -lteprinter-cts300 -ltecashregister-felix-rk -ltecashregister-shtrih-fr -ltereader-barcode
+LIBS	+= -L$(QTDIR)/lib -L../../lib -lequip -limpexp -laldebarandata -L../tradeequip/tradeequip-1.1.0/lib -L../tradeequip/tradeequip-drv/lib -ltradeequip -ltereader-barcode
 
 DEFINES	+= DEBUG
 

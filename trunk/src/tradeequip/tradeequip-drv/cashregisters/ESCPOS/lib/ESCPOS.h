@@ -5,7 +5,7 @@
 
 #define ESC	0x1B
 #define GS	0x1D
-#define RS	0x07
+#define RS	0x1E
 
 #define RES_OK			0
 #define RES_TIMEOUT		1
@@ -19,7 +19,7 @@ class LIB_EXPORT ESCPOS : public TECashRegisterBase
 Q_OBJECT
 
 public:
-
+    typedef TECashRegisterBase super;
     ESCPOS();    
     ESCPOS(QString pnum);
     ~ESCPOS();
@@ -34,10 +34,11 @@ public slots:
     virtual Result setCodepage(QString cp);
     
     //cashregister functions    {
-    virtual int print(QString ln);
+    virtual int print(const QString& ln);
     virtual int cut();
     
-    virtual bool openCheck();    
+    virtual bool openCheck();
+    virtual int openCheck(int eDocumentType, int & piReserved);
     virtual int closeCheck(double & dChange, int iReserved);    
     virtual bool printCheck(bool) { return FALSE; };        
     virtual bool cancelPrint() { return false; };    
@@ -73,6 +74,8 @@ private:
     QStringList codepages;
     QStringList qtCodepages;
     QString fCodepage;
+    
+    QString fDocTypeStr;
     
     int fOperation;
     double fItemDiscountPercent;

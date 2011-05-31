@@ -45,7 +45,7 @@ void ShtrihFR::init()
 	m_ee.addFuncBinding(this,&ShtrihFR::bueAdd,"addBuy");
 	m_ee.addFuncBinding(this,&ShtrihFR::printCheck,"printCheck");
 	m_ee.addFuncBinding(this,&ShtrihFR::internalOpenCashbox,"openCashbox");
-	m_ee.addFuncBinding<ShtrihFR,QString>(this,&ShtrihFR::errorText,"errorText");
+//	m_ee.addFuncBinding<ShtrihFR,QString>(this,&ShtrihFR::errorText,"errorText");
 	m_ee.addFuncBinding<ShtrihFR,int,int>(this,&ShtrihFR::setPortNumber,"setPortNumber");
 	m_ee.addProcBinding1<ShtrihFR,int>(this,&ShtrihFR::setPortBaudRate,"setBaudRate");
 	m_ee.addFuncBinding(this,&ShtrihFR::setPassword,"setPassword");
@@ -906,35 +906,35 @@ ShtrihFR::Result ShtrihFR::internalCloseCheck(Decimal dCashsum, Decimal dSumPT2,
 	res=fromDecimal(dCashsum,lCmd.cashSum,sizeof(lCmd.cashSum),DTPrice);
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting dCashsum into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
 	res=fromDecimal(dSumPT2,lCmd.type2Sum,sizeof(lCmd.type2Sum),DTPrice);
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting dSumPT2 into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
 	res=fromDecimal(dSumPT3,lCmd.type3Sum,sizeof(lCmd.type3Sum),DTPrice);
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting dSumPT3 into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
 	res=fromDecimal(dSumPT4,lCmd.type4Sum,sizeof(lCmd.type4Sum),DTPrice);
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting dSumPT4 into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
 	res=fromDecimal(dDiscount,lCmd.rebate,sizeof(lCmd.rebate),DTPercent);
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting dDiscount into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
@@ -945,7 +945,7 @@ ShtrihFR::Result ShtrihFR::internalCloseCheck(Decimal dCashsum, Decimal dSumPT2,
 	res=stringToByteArray(sText,lCmd.text,sizeof(lCmd.text));
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting sText into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
@@ -1042,7 +1042,7 @@ ShtrihFR::Result ShtrihFR::internalPayingIn(Decimal dSum, Byte & OpNum)
 	res=fromDecimal(dSum,lCmd.sum,sizeof(lCmd.sum),DTPrice);
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting dSum into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
@@ -1075,7 +1075,7 @@ ShtrihFR::Result ShtrihFR::internalPayment(Decimal dSum, Byte & OpNum)
 	res=fromDecimal(dSum,lCmd.sum,sizeof(lCmd.sum),DTPrice);
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting dSum into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
@@ -1105,7 +1105,7 @@ ShtrihFR::Result ShtrihFR::internalCommandSumTaxText(Byte cmd,Decimal dSum,  Byt
 	res=fromDecimal(dSum,lCmd.sum,sizeof(lCmd.sum),DTPrice);
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting dSum into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
@@ -1113,7 +1113,7 @@ ShtrihFR::Result ShtrihFR::internalCommandSumTaxText(Byte cmd,Decimal dSum,  Byt
 	res=stringToByteArray(sText,lCmd.text,sizeof(lCmd.text));
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting sText into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
@@ -1208,7 +1208,7 @@ ShtrihFR::Result ShtrihFR::internalPrintLine(const QString & line, bool bOnCheck
 	res=stringToByteArray(line,lCmd.line,sizeof(lCmd.line));
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting 'line' into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
@@ -1239,7 +1239,7 @@ ShtrihFR::Result ShtrihFR::internalPrintBoldLine(const QString & line, bool bOnC
 	res=stringToByteArray(line,lCmd.line,sizeof(lCmd.line));
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting 'line' into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
@@ -1276,7 +1276,7 @@ ShtrihFR::Result ShtrihFR::internalPrintHeader(const QString & header, int iDocN
 	res=stringToByteArray(header,lCmd.header,sizeof(lCmd.header));
 	if (res!=RSP_OK)
 	{
-		QString error=errorText();
+		QString error=errorText(res);
 		setErrorText(tr("Error while converting 'line' into device format. %1").arg(error));
 		return RSP_INTERNALERROR;
 	}
@@ -1327,7 +1327,7 @@ ShtrihFR::Result ShtrihFR::internalGetMoneyAccumValue(int accumNum, Decimal *pdV
 			res=toDecimal(lResp.value,sizeof(lResp.value),pdValue,DTPrice);
 			if (res!=RSP_OK)
 			{
-				QString err=errorText();
+				QString err=errorText(res);
 				setErrorText(tr("Error while converting 'value' to double. %1").arg(err));
 				return RSP_INTERNALERROR;
 			}
@@ -2632,13 +2632,13 @@ int ShtrihFR::closeCheck(double &dChange, int /*iReserved*/)
 	m_bCheckIsOpen=false;
 	return CRERROR_OK;
 checkerror:
-	QString error=errorText();
+	QString error=errorText(res);
 	clearCheckInfo();
 	m_bCheckIsOpen=false;
 	res=internalClearCheck();
 	if (res)
 	{
-		setErrorText(tr("!!!There was error while adding check positions: %1. And I cannot cancel check due to error: %1.").arg(error).arg(errorText()));
+		setErrorText(tr("!!!There was error while adding check positions: %1. And I cannot cancel check due to error: %1.").arg(error).arg(errorText(res)));
 		return CRERROR_FATALDEVICEERROR;
 	}
 	else
@@ -2649,7 +2649,7 @@ checkerror:
 void ShtrihFR::explainCheckPrintError()
 {
 	Result res=0;
-	QString checkError=errorText();
+	QString checkError=errorText(res);
 	if (deviceError()==0x73)
 	{
 		FRState frState;
@@ -2676,7 +2676,7 @@ void ShtrihFR::explainCheckPrintError()
 	}
 	else if (deviceError()==0x58)
 	{ // Device waits for "continue print" command. Let's give it to it.
-		QString err=errorText();
+		QString err=errorText(res);
 		internalContinuePrint();
 		setErrorText(err+tr("\nContinue print command was issued.\nTry to print check again."));
 	}

@@ -120,7 +120,7 @@ void MainForm::issueCommand()
     delete [] cmd;
 
     QString restxt=resText(res);
-    te_Log->append(tr("sendCommand returns '%1'. Error text: '%2'. Returned bytes:").arg(restxt).arg(res==RSP_OK?QString(""):m_Felix->errorText()));
+    te_Log->append(tr("sendCommand returns '%1'. Error text: '%2'. Returned bytes:").arg(restxt).arg(res==RSP_OK?QString(""):m_Felix->errorText(0))); //TODO
     QString resptxt;
     for(int j=0;j<rb;j++)
 	resptxt+=QString("%1").arg((int)resp[j],2,16);
@@ -146,7 +146,7 @@ void MainForm::readOptions()
     statusBar()->message(tr("Communicating..."));
     showResult(res=m_Felix->internalReadOptions(0));
     te_Log->append(tr("Calling internalReadOptions... Result: '%1'").arg(resText(res)));
-    if (res!=RSP_OK) te_Log->append(tr("Error text: '%1'").arg(m_Felix->errorText()));
+    if (res!=RSP_OK) te_Log->append(tr("Error text: '%1'").arg(m_Felix->errorText(0))); //TODO
     // table1->setEnabled(false);
     QStringList vsl=m_Felix->valueNamesList();
     table1->setNumRows(vsl.size());
@@ -191,8 +191,8 @@ void MainForm::printString()
 {
     int res;
     statusBar()->message(tr("Communicating..."));
-    showResult(res=m_Felix->internalPrintLine(le_Command->text()));
-    if (res!=RSP_OK) te_Log->append(tr("Error text: '%1'").arg(m_Felix->errorText()));
+    showResult(res=m_Felix->print(le_Command->text()));
+    if (res!=RSP_OK) te_Log->append(tr("Error text: '%1'").arg(m_Felix->errorText(0))); //TODO
 }
 
 
@@ -289,8 +289,8 @@ void MainForm::showResult( int res )
 	return;
     }
     QString msg=resText(res);
-    if (res==RSP_COMMANDERROR) msg+=QString(" ")+m_Felix->devErrorText(m_Felix->deviceError());
-    else msg+=QString(" ")+m_Felix->errorText();
+    if (res==RSP_COMMANDERROR) msg+=QString(" ")+m_Felix->errorText(m_Felix->errorCode());
+    else msg+=QString(" ")+m_Felix->errorText(0); //TODO
     statusBar()->message(msg);
 }
 
@@ -384,20 +384,20 @@ void MainForm::commitAction()
     case 0: // Open check for sell
 	showResult(res=m_Felix->internalEnterMode(MODE_REGISTRATION, FelixRK::PTOperator));
 	if(res) te_Log->append(QString("result = %1").arg(res));	
-	if(res) te_Log->append(QString("%1").arg(m_Felix->errorText()));
+	if(res) te_Log->append(QString("%1").arg(m_Felix->errorText(0))); //TODO
 	showResult(res=m_Felix->internalOpenCheck(FDT_SELL));
 	if(res) te_Log->append(QString("result = %1").arg(res));
-	if(res) te_Log->append(QString("%1").arg(m_Felix->errorText()));	
+	if(res) te_Log->append(QString("%1").arg(m_Felix->errorText(0))); //TODO
 	break;
     case 1: // Open check for sell return
 	showResult(res=m_Felix->internalOpenCheck(FDT_SELLRET));
 	break;
     case 2: // Add sell op
-	showResult(res=m_Felix->internalPrintLine(le_ItName->text().utf8()));	
+	showResult(res=m_Felix->print(le_ItName->text().utf8()));	
 	showResult(res=m_Felix->internalAddOperation(FOP_SELL,1,sum,1));
 	break;
     case 3: // Add sell ret op
-	showResult(res=m_Felix->internalPrintLine(le_ItName->text().utf8()));	
+	showResult(res=m_Felix->print(le_ItName->text().utf8()));	
 	showResult(res=m_Felix->internalAddOperation(FOP_SELLRET,1,sum,1));
 	break;
     case 4: // Close check
@@ -496,7 +496,7 @@ void MainForm::commitTableChanges()
       else
         data.longv=text.toLongLong();
       showResult(res=m_Felix->internalWriteField(num,j,i,(void*)&data,sz));
-      if (res) te_Log->append(tr("Error at (%1,%2): %3").arg(i).arg(j).arg(m_Felix->errorText()));
+      if (res) te_Log->append(tr("Error at (%1,%2): %3").arg(i).arg(j).arg(m_Felix->errorText(0))); //TODO
     }
   }
 }
@@ -549,7 +549,7 @@ void MainForm::readState()
     statusBar()->message(tr("Communicating..."));
     showResult(res=m_Felix->internalReadState(&state));
     te_Log->append(tr("Calling internalReadState... Result: '%1'").arg(resText(res)));
-    if (res!=RSP_OK) te_Log->append(tr("Error text: '%1'").arg(m_Felix->errorText()));
+    if (res!=RSP_OK) te_Log->append(tr("Error text: '%1'").arg(m_Felix->errorText(0))); //TODO
     te_Log->append(QString("operatorNumber = %1").arg(state.operatorNumber));
     te_Log->append(QString("numberInRoom = %1").arg(state.numberInRoom));
     te_Log->append(QString("date = %1.%1.%1").arg(state.date[0]).arg(state.date[1]).arg(state.date[2]));

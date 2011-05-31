@@ -1,10 +1,13 @@
+#include "teglobal.h"
 #include "tecashregisterbase.h"
 #include "fr.h"
+#include "dlgecrsettings.h"
 
 eqFR::eqFR(const QString& name) :
 	eqDriver(name)
 {
-    device = NULL;
+    fDriver = "";
+    device = NULL;    
     fPortDevice = "/dev/null";
     accessPassword = "0";
     operatorPassword = "30";
@@ -31,23 +34,62 @@ void eqFR::init()
     {
 	device->close();
 	delete device;
-    }
+	device = NULL;
+    }    
+    if(!te_driverExists("TECashRegister"+fDriver)) 
+	return;
+    device = (TECashRegisterBase *) te_createDriverObject("TECashRegister"+fDriver);
+#ifdef DEBUG
+    if(device)
+	qDebug(QString("Device %1 created").arg(fDriver));
+    else
+	qDebug(QString("Error of device creation %1").arg(fDriver));
+    device->setDebugLevel(1);
+#endif
+//    device->setPassword(FelixRK::PTAccess, accessPassword);
+//    device->setPassword(FelixRK::PTOperator, operatorPassword);
+//    device->setPassword(FelixRK::PTAdmin, adminPassword);
+    device->setPortDevice(fPortDevice);
+    device->setPortBaudRate(fPortBaudRate);
+    device->setPortDataBits((DataBitsType)fPortDataBits);
+    device->setPortParity((ParityType)fPortParity);
+    device->setPortStopBits((StopBitsType)fPortStopBits);
+    device->setPortFlowControl((FlowType)fPortFlowControl);
 }
 
 QStringList eqFR::options()
 {
     QStringList res;
-    res << "device" << "access password";
+    res << "driver" << "device" << "access password";
     res << "operator password" << "administartor password";    
     res << "baudrate" << "data bits" << "parity";
     res << "stopbits" << "flow control";
     return res;
 }
 
+QStringList eqFR::driverList()
+{
+    return te_drivers("TECashRegisterBase");
+}
+
+void eqFR::setOption(QString name, QVariant value)
+{
+    if(name=="device") fPortDevice = value.toString();
+    else if(name=="driver") fDriver = value.toString();
+    else if(name=="access password") accessPassword = value.toString();    
+    else if(name=="operator password") operatorPassword = value.toString();
+    else if(name=="administrator password") adminPassword = value.toString();
+    else if(name=="baudrate") fPortBaudRate = value.toInt();
+    else if(name=="data bits") fPortDataBits = value.toInt();
+    else if(name=="parity") fPortParity = value.toInt();
+    else if(name=="stopbits") fPortStopBits = value.toInt();
+    else if(name=="flow control") fPortFlowControl = value.toInt();
+}
+
 QString eqFR::option(QString name)
 {
-    if(!device) return "";
     if(name=="device") return fPortDevice;
+    else if(name=="driver") return fDriver;    
     else if(name=="access password") return accessPassword;
     else if(name=="operator password") return operatorPassword;
     else if(name=="administrator password") return adminPassword;
@@ -59,18 +101,112 @@ QString eqFR::option(QString name)
     return "";
 }
 
-void eqFR::setOption(QString name, QVariant value)
+void eqFR::print(QString line)
 {
-    if(name=="device") fPortDevice = value.toString();
-    else if(name=="access password") accessPassword = value.toString();    
-    else if(name=="operator password") operatorPassword = value.toString();
-    else if(name=="administrator password") adminPassword = value.toString();
-    else if(name=="baudrate") fPortBaudRate = value.toInt();
-    else if(name=="data bits") fPortDataBits = value.toInt();
-    else if(name=="parity") fPortParity = value.toInt();
-    else if(name=="stopbits") fPortStopBits = value.toInt();
-    else if(name=="flow control") fPortFlowControl = value.toInt();
+    if(!device) return;    
+    checkError(device->print(line));
 }
+
+void eqFR::cut()
+{
+    if(!device) return;    
+    checkError(device->cut());    
+}
+
+void eqFR::openCheck(int oper)
+{
+    fError = 0;    
+    if(!device) return;
+    cancelCheck();
+    if(checkError(device->openCheck())) return;
+    checkError(device->setOperation(oper));
+}
+
+void eqFR::cancelCheck()
+{
+    fError = 0;    
+    if(!device) return;
+    checkError(device->cancelCheck(0));
+}
+
+double eqFR::closeCheck(TItem param)
+{
+    fError = 0;    
+    if(!device) return 0;
+    TECashRegisterBase::Decimal change;
+    if(checkError(device->setPayment(param["summ"].toDouble(), param["summType"].toInt()))) return 0;
+    if(checkError(device->closeCheck(change, 0))) return 0;
+    return change;
+}
+
+void eqFR::addItem(TItem item)
+{
+    fError = 0;        
+    if(!device) return;
+    double price = item["price"].toDouble();
+    double amount = item["amount"].toDouble();
+    qDebug(QString("amount: %1").arg(item["amount"].toString()));
+    if(item["discount"].toDouble()!=0.) 
+    {
+	if(checkError(device->setDiscount(item["discount"].toDouble()))) return;
+    }
+    else
+    {
+	if(checkError(device->setDiscountPercent(item["discountPercent"].toDouble()))) return;	
+    }
+    
+    if(checkError(device->setItem(item["name"].toString().utf8(), price, amount))) return;	    
+}
+
+void eqFR::ZReport()
+{
+    fError = 0;        
+    if(!device) return;
+    checkError(device->ZReport());
+}
+
+void eqFR::XReport()
+{
+    fError = 0;
+    if(!device) return;    
+    checkError(device->XReport());
+}
+
+void eqFR::payin(double summ)
+{
+    fError = 0;    
+    if(!device) return;    
+    checkError(device->payingin(summ));
+}
+
+void eqFR::payout(double summ)
+{
+    fError = 0;        
+    if(!device) return;
+    checkError(device->payment(summ));
+}
+
+void eqFR::openCashbox()
+{
+    fError = 0;    
+    if(!device) return;    
+    checkError(device->openCashbox(0));
+}
+
+void eqFR::beep()
+{
+    fError = 0;    
+    if(!device) return;
+    checkError(device->beep());
+}
+
+bool eqFR::dialog()
+{    
+    dlgECRSettings * dlg = new dlgECRSettings();
+    dlg->init(this);
+    return dlg->exec();
+}
+
 
 eqJob * eqFR::createJob(QString action)
 {
@@ -126,6 +262,8 @@ QStringList eqFR::supportedFlowControl()
 bool eqFR::checkError(int res)
 {
     fResult = res;
+    fError = device->errorCode();
+    fErrorMsg = device->errorText(fError);
     return res;
 }
 
@@ -141,12 +279,17 @@ eqFRJob::~eqFRJob()
 
 void eqFRJob::print()
 {
-    eqFR * device = (eqFR *)fDevice;
-    if(!device) return;
-    device->print(fData.toString());
-    fResult = device->result();
-    fError = device->error();    
-    fErrorMsg = device->errorMsg();    
+    eqFR * device = (eqFR*)fDevice;
+    if(!device) return;    
+    QStringList lines = QStringList::split("\n", QString::fromUtf8(fData.toString()), TRUE);
+    for(uint l=0;l<lines.count();l++)
+    {
+	device->print(lines[l].utf8());
+	fResult = device->result();	
+	fError = device->error();
+	fErrorMsg = device->errorMsg();
+	if(fError) break;
+    }    
 }
 
 void eqFRJob::cut()
