@@ -106,7 +106,9 @@ IMAGES	= images/ok.png \
 	images/textdraw/textright.png \
 	images/textdraw/textunderline.png \
 	images/textdraw/undo.png \
-	images/calc.png
+	images/calc.png \
+	images/Finance.png \
+	images/discount.png
 
 SUBDIRS		= data
 

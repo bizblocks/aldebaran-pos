@@ -40,7 +40,7 @@ public slots:
     virtual int openCheck(int eDocumentType, int & piReserved);
     virtual int closeCheck(double & dChange, int iReserved);    
     virtual bool printCheck(bool) { return FALSE; };        
-    virtual bool cancelPrint() { return false; };    
+    virtual bool cancelPrint();    
     virtual int cancelCheck(int iReserved);    
     
     virtual int setOperation(int eOperationType) { fOperation = eOperationType; return 0; };

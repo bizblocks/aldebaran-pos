@@ -916,6 +916,9 @@ alValueList alEngine::cheque(QString devName, alValueTable tab, alValueTable tot
     job = createECRJob("", "closeCheck");        
     job->setData(totals[0]->asValueList());
     res = processJob(job);
+    if(res["error"].toInt()) return res;    
+    job = createECRJob("", "cut");        
+    res = processJob(job);    
     if(res["error"].toInt()) return res;
     res["error"] = 0;
     res["msg"] = "";
