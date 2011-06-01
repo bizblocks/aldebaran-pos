@@ -107,7 +107,7 @@ void alEngine::initEquipment()
 	if((err=job->error())) error(tr("default printer error: %1").arg(err));
 	delete job;	
 	job = createPrinterJob("", "cut");
-	job->process();	
+	job->process();
 	delete job;
     }
 

@@ -10,6 +10,13 @@ ESCPOS::ESCPOS() :
 {    
     codepages.clear();    
     qtCodepages.clear();
+    
+    codepages << "PC473" << "Katakana" << "PC850" << "PC860" << "PC863";
+    codepages << "PC865" << "PC852" << "PC866" << "PC857" << "WPC1252";
+    
+    qtCodepages << "" << "" << "IBM 850" << "" << "";
+    qtCodepages << "" << "" << "IBM 866" << "" << "CP1252";    
+    
     init();
 }
 
@@ -18,6 +25,13 @@ ESCPOS::ESCPOS(QString pname) :
 {    
     codepages.clear();    
     qtCodepages.clear();
+    
+    codepages << "PC473" << "Katakana" << "PC850" << "PC860" << "PC863";
+    codepages << "PC865" << "PC852" << "PC866" << "PC857" << "WPC1252";
+    
+    qtCodepages << "" << "" << "IBM 850" << "" << "";
+    qtCodepages << "" << "" << "IBM 866" << "" << "CP1252";    
+    
     init();
     setPortDevice(pname);
 }
@@ -47,14 +61,9 @@ void ESCPOS::init()
     m_ee.addFuncBinding(this,&FelixRK::internalCancelCheck,"internalCancelCheck");
     m_ee.addFuncBinding<FelixRK,QVariant,const QString &>(this,&FelixRK::value,"value");
 */
-    m_maxPrn = 0; 
-    
-    codepages << "PC473" << "Katakana" << "PC850" << "PC860" << "PC863";
-    codepages << "PC865" << "PC852" << "PC866" << "PC857" << "WPC1252";
-    
-    qtCodepages << "" << "" << "IBM 850" << "" << "";
-    qtCodepages << "" << "" << "IBM 866" << "" << "CP1252";
-    fCodepage = "PC866";
+    m_maxPrn = PRINT_WIDTH; 
+    super::setCodepage("PC866");
+    setErrorCode(0);
     /*    qtCodepages[19] = "";
     qtCodepages[26] = "TIS-620";	
     qtCodepages[40] = "TIS-620";
@@ -77,9 +86,11 @@ void ESCPOS::setAbort()
 
 ESCPOS::Result ESCPOS::sendCmd(Byte * pBuf, int iSize)
 {
+    QDEBUG("sendCmd begin");
     setAbort();
     //    int count = 0;
     int res = writeBlock(pBuf, iSize);
+    QDEBUG("sendCmd end");
     return res==iSize ? 0 : -1;
 }
 
@@ -93,18 +104,20 @@ ESCPOS::Result ESCPOS::toDeviceStr(QString str, QCString & dest)
     dest = "";
     QTextCodec * utf8=QTextCodec::codecForName("UTF-8");
     QString unicodetext = utf8->toUnicode(str);
-    QTextCodec * cp=QTextCodec::codecForName(qtCodepages[codepages.findIndex(fCodepage)]); 
+    QTextCodec * cp=QTextCodec::codecForName(qtCodepages[codepages.findIndex(codepage())]); 
     if(cp) dest = cp->fromUnicode(unicodetext);
     else dest = QCString(str);
     return RES_OK;
 }
 
-ESCPOS::Result ESCPOS::setCodepage(QString cp)
+int ESCPOS::setCodepage(const QString& cp)
 {
-    fCodepage = cp;
+    QDEBUG("setCodepage begin");
+    super::setCodepage(cp);
     int index = codepages.findIndex(cp);
     Byte cmd[3] = {ESC, 't', (Byte)index};
     Result res = sendCmd(cmd, 3);
+    QDEBUG("setCodepage end");
     return res;
 }
 

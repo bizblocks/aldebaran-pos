@@ -29,9 +29,8 @@ public:
     
     void setAbort();
     QStringList getCodepages();
-    QString codepage() {return fCodepage; };
 public slots:
-    virtual Result setCodepage(QString cp);
+    virtual int setCodepage(const QString& cp);
     
     //cashregister functions    {
     virtual int print(const QString& ln);
@@ -73,7 +72,6 @@ private:
     Byte m_maxPrn;
     QStringList codepages;
     QStringList qtCodepages;
-    QString fCodepage;
     
     QString fDocTypeStr;
     

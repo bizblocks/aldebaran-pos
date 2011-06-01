@@ -381,6 +381,9 @@ public:
     virtual int checkDeviceReady()=0;  
     // End
     
+    virtual int setCodepage(const QString& cp) { fCodepage = cp; return 0; };
+    virtual QString codepage() { return fCodepage; };
+    
     virtual void setErrorCode( Q_ULONG errcode );
     virtual Q_ULONG errorCode();
     virtual QString errorText( Q_ULONG errcode );
@@ -442,7 +445,8 @@ private:
     bool m_bReturnFlag; //
     bool m_bPollPaused;
     QString m_sCheckHeader;
-protected:
+    QString fCodepage;
+protected:    
     QValueList<PurchaseInfo> m_vCheckBuffer;
     CheckInfo m_CheckInfo;
     bool m_bWaitingForConfirmation;
