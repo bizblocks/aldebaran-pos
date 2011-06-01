@@ -49,6 +49,7 @@ protected:
     QString fDriver;
     QString fPortDevice;
     QString accessPassword, operatorPassword, adminPassword;
+    QString fCodepage;
     int fPortBaudRate, fPortDataBits, fPortParity, fPortStopBits, fPortFlowControl;
     int fPrintWidth;
 };

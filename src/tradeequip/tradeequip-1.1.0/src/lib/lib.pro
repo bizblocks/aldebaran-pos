@@ -5,7 +5,7 @@ CONFIG	+= qt warn_on
 
 win32:CONFIG	+= dll
 
-DEFINES	+= TRADEEQUIP_EXPORT
+DEFINES	+= TRADEEQUIP_EXPORT DEBUG
 
 win32:SOURCES	+= win_qextserialport.cpp
 

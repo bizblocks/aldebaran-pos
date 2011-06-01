@@ -76,6 +76,12 @@
 #  define vsnprintf _vsnprintf
 #endif
 
+#ifdef DEBUG
+#define QDEBUG(msg) qDebug(msg)
+#else
+#define QDEBUG(msg)
+#endif
+
 #undef min
 #undef max
 /*

@@ -31,7 +31,7 @@ eqFR::~eqFR()
 void eqFR::init()
 {
     if(device)
-    {
+    {http://vkontakte.ru/album-3517839_136108766
 	device->close();
 	delete device;
 	device = NULL;
@@ -49,12 +49,15 @@ void eqFR::init()
 //    device->setPassword(FelixRK::PTAccess, accessPassword);
 //    device->setPassword(FelixRK::PTOperator, operatorPassword);
 //    device->setPassword(FelixRK::PTAdmin, adminPassword);
-    device->setPortDevice(fPortDevice);
+    device->setPortDevice(fPortDevice);    
     device->setPortBaudRate(fPortBaudRate);
     device->setPortDataBits((DataBitsType)fPortDataBits);
     device->setPortParity((ParityType)fPortParity);
     device->setPortStopBits((StopBitsType)fPortStopBits);
     device->setPortFlowControl((FlowType)fPortFlowControl);
+    if(device->open()!=1) return;
+#warning TODO use codepage from settings    
+    device->setCodepage("PC866");
 }
 
 QStringList eqFR::options()
@@ -63,7 +66,7 @@ QStringList eqFR::options()
     res << "driver" << "device" << "access password";
     res << "operator password" << "administartor password";    
     res << "baudrate" << "data bits" << "parity";
-    res << "stopbits" << "flow control";
+    res << "stopbits" << "flow control" << "codepage";
     return res;
 }
 
@@ -84,6 +87,7 @@ void eqFR::setOption(QString name, QVariant value)
     else if(name=="parity") fPortParity = value.toInt();
     else if(name=="stopbits") fPortStopBits = value.toInt();
     else if(name=="flow control") fPortFlowControl = value.toInt();
+    else if(name=="codepage") fCodepage = value.toString();
 }
 
 QString eqFR::option(QString name)
@@ -98,6 +102,7 @@ QString eqFR::option(QString name)
     else if(name=="parity") return QString("%1").arg(fPortParity);
     else if(name=="stopbits") return QString("%1").arg(fPortStopBits);
     else if(name=="flow control") return QString("%1").arg(fPortFlowControl);
+    else if(name=="codepage") return fCodepage;
     return "";
 }
 
@@ -284,7 +289,7 @@ void eqFRJob::print()
     QStringList lines = QStringList::split("\n", QString::fromUtf8(fData.toString()), TRUE);
     for(uint l=0;l<lines.count();l++)
     {
-	device->print(lines[l].utf8());
+	device->print(QString(lines[l]+"\n").utf8());
 	fResult = device->result();	
 	fError = device->error();
 	fErrorMsg = device->errorMsg();
