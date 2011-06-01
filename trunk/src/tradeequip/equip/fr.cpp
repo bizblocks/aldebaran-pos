@@ -150,7 +150,6 @@ void eqFR::addItem(TItem item)
     if(!device) return;
     double price = item["price"].toDouble();
     double amount = item["amount"].toDouble();
-    qDebug(QString("amount: %1").arg(item["amount"].toString()));
     if(item["discount"].toDouble()!=0.) 
     {
 	if(checkError(device->setDiscount(item["discount"].toDouble()))) return;

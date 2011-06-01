@@ -3,7 +3,7 @@
 #include "posix_qextserialport.h"
 #include "ESCPOS.h"
 
-#define PRINT_WIDTH	41
+#define PRINT_WIDTH	42
 
 ESCPOS::ESCPOS() :
 	TECashRegisterBase("/dev/null", 0)
@@ -61,6 +61,7 @@ void ESCPOS::init()
     m_ee.addFuncBinding(this,&FelixRK::internalCancelCheck,"internalCancelCheck");
     m_ee.addFuncBinding<FelixRK,QVariant,const QString &>(this,&FelixRK::value,"value");
 */
+    clear();
     m_maxPrn = PRINT_WIDTH; 
     super::setCodepage("PC866");
     setErrorCode(0);
@@ -86,11 +87,8 @@ void ESCPOS::setAbort()
 
 ESCPOS::Result ESCPOS::sendCmd(Byte * pBuf, int iSize)
 {
-    QDEBUG("sendCmd begin");
     setAbort();
-    //    int count = 0;
     int res = writeBlock(pBuf, iSize);
-    QDEBUG("sendCmd end");
     return res==iSize ? 0 : -1;
 }
 
@@ -112,12 +110,10 @@ ESCPOS::Result ESCPOS::toDeviceStr(QString str, QCString & dest)
 
 int ESCPOS::setCodepage(const QString& cp)
 {
-    QDEBUG("setCodepage begin");
     super::setCodepage(cp);
     int index = codepages.findIndex(cp);
     Byte cmd[3] = {ESC, 't', (Byte)index};
     Result res = sendCmd(cmd, 3);
-    QDEBUG("setCodepage end");
     return res;
 }
 
@@ -196,29 +192,39 @@ int ESCPOS::openCheck(int eDocumentType, int &)
 
 void ESCPOS::clear()
 {
-    for(int ind=0;ind<4;ind++) fSumm[ind] = 0;
-    fSubTotal = 0;        
+    for(int ind=0;ind<4;ind++) fSumm[ind] = 0.0;
+    fSubTotal = 0.0;
+    fItemDiscount = 0.0;
+    fItemDiscountPercent = 0.0;
 }
 
 QString justify(int len, QString left, QString right)
 {
-    return QString(left+right.rightJustify(len-left.length(), ' ', TRUE)).left(len);
+    QString uleft = QString::fromUtf8(left);
+    QString uright = QString::fromUtf8(right);
+    return QString(uleft+uright.rightJustify(len-uleft.length(), ' ', TRUE)).left(len).utf8();
 }
 
 int ESCPOS::closeCheck(double & dChange, int /*iReserved*/)
 {
     double summ = 0.0;
     for(int ind=0;ind<4;ind++) summ += fSumm[ind];
+    if(!summ)
+    {
+	summ = fSubTotal;
+	fSumm[0] = fSubTotal;
+    }
     dChange = summ-fSubTotal;
     int res = 0;
-    if((res = print(QString("").rightJustify(PRINT_WIDTH, '-', TRUE)))) return res;
-    if((res = printBoldLine(justify(PRINT_WIDTH/2, "ИТОГО", QString("=").arg(fSubTotal, 6, 'f', 2))))) return res;
+    if((res = print(QString("").rightJustify(PRINT_WIDTH, '-', TRUE)+"\n"))) return res;
+    if((res = printBoldLine(justify(PRINT_WIDTH/2, "ИТОГО", QString("=%1").arg(fSubTotal, 6, 'f', 2))+"\n"))) return res;
     if(fSumm[0]>0)
-	if((res = print(justify(PRINT_WIDTH, " Наличные", QString("=").arg(fSumm[0], 6, 'f', 2))))) return res;
+	if((res = print(justify(PRINT_WIDTH, " Наличные", QString("=%1").arg(fSumm[0], 6, 'f', 2))+"\n"))) return res;
     if(fSumm[1]>0)
-	if((res = print(justify(PRINT_WIDTH, " Платежная карта", QString("=").arg(fSumm[1], 6, 'f', 2))))) return res;
+	if((res = print(justify(PRINT_WIDTH, " Платежная карта", QString("=%1").arg(fSumm[1], 6, 'f', 2))+"\n"))) return res;
     if(dChange>0)
-	if((res = print(justify(PRINT_WIDTH, " СДАЧА", QString("=").arg(dChange, 6, 'f', 2))))) return res;
+	if((res = print(justify(PRINT_WIDTH, " СДАЧА", QString("=%1").arg(dChange, 6, 'f', 2))+"\n"))) return res;
+    if((res = print("\n\n\n"))) return res;    
     clear();
     return res;
 }
@@ -227,23 +233,23 @@ int ESCPOS::setItem(const QString & sName, double dPrice, double dQuantity)
 {
     double sum = dQuantity*dPrice;
     int res = 0;
-    if((res = print(sName.left(PRINT_WIDTH*2)))) return res;
+    if((res = print(sName.left(PRINT_WIDTH*2)+"\n"))) return res;
     if((res = print(justify(PRINT_WIDTH, QString("%1 X %2").arg(dQuantity, 7, 'f', 3).arg(dPrice, 6, 'f', 2), 
-			    QString("%1").arg(sum, 6, 'f', 2))))) return res;
+			    QString("=%1").arg(sum, 6, 'f', 2))+"\n"))) return res;
     if(fItemDiscountPercent!=0.0)
     {
 	sum = sum * ( 1 - fItemDiscountPercent/100);
 	if((res = print(justify(PRINT_WIDTH, QString(" Скидка %1 %%").arg(fItemDiscountPercent, 5, 'f', 2), 
-				QString("=%1").arg(dQuantity*dPrice-sum, 6, 'f', 2))))) return res;
+				QString("=%1").arg(dQuantity*dPrice-sum, 6, 'f', 2))+"\n"))) return res;
     }
     if(fItemDiscount!=0.0)
     {
 	sum = sum - fItemDiscount;
 	if((res = print(justify(PRINT_WIDTH, QString(" Скидка %1").arg(fItemDiscountPercent, 5, 'f', 2), 
-				QString("=%1").arg(fItemDiscount, 6, 'f', 2))))) return res;
+				QString("=%1").arg(fItemDiscount, 6, 'f', 2))+"\n"))) return res;
     }
+    fSubTotal += sum;    
     return res;
-    fSubTotal += sum;
 }
 
 int ESCPOS::setPayment(double dSum, int iType)
@@ -256,7 +262,13 @@ int ESCPOS::setPayment(double dSum, int iType)
 int ESCPOS::cancelCheck(int /*iReserved*/)
 {        
     clear();
-    return print("\nЧек аннулирован\n");
+    return TRUE;
+}
+
+bool ESCPOS::cancelPrint()
+{
+    clear();    
+    return print("\nЧек аннулирован\n");    
 }
 
 int ESCPOS::setDiscountPercent(double p)
