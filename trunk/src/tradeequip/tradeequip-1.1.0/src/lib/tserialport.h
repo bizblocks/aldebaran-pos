@@ -57,28 +57,28 @@ class LIB_EXPORT TSerialPort : public QextSerialPort
 {
     typedef QextSerialPort superclass;
 public:
-	TSerialPort(const QString &portName = QString::null, const PortSettings *settings = 0);
-	virtual ~TSerialPort();
-
-	bool	setupPort(const QString &portName = QString::null, const PortSettings *settings = 0);
-	void	getPortSettings(QString *portName = 0, PortSettings *settings = 0);
-
-//	virtual bool open(int mode=0);
-	Q_ULONG customBaudRate();
-	void setCustomBaudRate( Q_ULONG baudrate );
-	
-	virtual void setBaudRate(BaudRateType);
-	
-	virtual bool open(int mode=0);
-	
-	static const QStringList&	portList() { return m_ports; }
-	static const QStringList&	generatePortList();
-  static QString portName(int iPortNum);
-  static QValueList<int> generatePortNumberList();
-
+    TSerialPort(const QString &portName = QString::null, const PortSettings *settings = 0);
+    virtual ~TSerialPort();
+    
+    bool	setupPort(const QString &portName = QString::null, const PortSettings *settings = 0);
+    void	getPortSettings(QString *portName = 0, PortSettings *settings = 0);
+    
+    //	virtual bool open(int mode=0);
+    Q_ULONG customBaudRate();
+    void setCustomBaudRate( Q_ULONG baudrate );
+    
+    virtual void setBaudRate(BaudRateType);
+    
+    virtual bool open(int mode=0);
+    
+    static const QStringList&	portList() { return m_ports; }
+    static const QStringList&	generatePortList();
+    static QString portName(int iPortNum);
+    static QValueList<int> generatePortNumberList();
+    
 protected:
-	static QStringList m_ports;
-	Q_ULONG vBaudRate;
+    static QStringList m_ports;
+    Q_ULONG vBaudRate;
 };
 
 #endif

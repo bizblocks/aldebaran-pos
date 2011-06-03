@@ -28,9 +28,10 @@ public:
     typedef int Result;
     
     void setAbort();
-    QStringList getCodepages();
+
 public slots:
     virtual int setCodepage(const QString& cp);
+    virtual QStringList codepages();
     
     //cashregister functions    {
     virtual int print(const QString& ln);
@@ -59,10 +60,9 @@ public slots:
     virtual int beep();
     
     virtual int checkDeviceReady() { return 1; };
-    //   end cashregister functions }
-    
     virtual Result printBoldLine(QString ln);
-    virtual Result printBarcode(QString barcode);
+    virtual Result printBarcode(QString barcode);    
+    //   end cashregister functions }
     
 protected:
     Result sendCmd(Byte * pBuf, int iSize);
@@ -70,7 +70,7 @@ protected:
     void clear();
 private:
     Byte m_maxPrn;
-    QStringList codepages;
+    QStringList prnCodepages;
     QStringList qtCodepages;
     
     QString fDocTypeStr;

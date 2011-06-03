@@ -669,6 +669,14 @@
         <source>%1</source>
         <translation type="obsolete">%1</translation>
     </message>
+    <message>
+        <source>Error in query: %1</source>
+        <translation>Ошибка в запросе: %1</translation>
+    </message>
+    <message>
+        <source>Discounts</source>
+        <translation>Скидки</translation>
+    </message>
 </context>
 <context>
     <name>alEqTable</name>
@@ -1198,6 +1206,10 @@ Summ %2</source>
     <message>
         <source>Checks</source>
         <translation>Чеки</translation>
+    </message>
+    <message>
+        <source>Discounts</source>
+        <translation>Скидки</translation>
     </message>
 </context>
 <context>

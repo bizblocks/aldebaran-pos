@@ -337,7 +337,7 @@ void alOrderRecord::printBill(QString device)
 QString alOrderRecord::info()
 {
     QString sGuests = fGuests ? QString("%1").arg(fGuests) : tr("not speciefed");
-    return QString(tr("Table #%1 Guests: %2 %3\nOpened: %3 %4 Summ: %5"))
+    return QString(tr("Table #%1 Guests: %2 %3\nOpened: %4 %5 Summ: %6"))
 	    .arg(table())
 	    .arg(sGuests)
 	    .arg(fDiscount ?  QString(tr("Discount: %1")).arg(fDiscount->name()) : QString(""))
