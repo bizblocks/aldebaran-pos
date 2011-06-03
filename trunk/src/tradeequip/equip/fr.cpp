@@ -39,16 +39,16 @@ void eqFR::init()
 	delete device;
 	device = NULL;
     }    
+    if(fDriver.isEmpty()) 
+	return;
     if(!te_driverExists("TECashRegister"+fDriver)) 
 	return;
     device = (TECashRegisterBase *) te_createDriverObject("TECashRegister"+fDriver);
-#ifdef DEBUG
     if(device)
-	qDebug(QString("Device %1 created").arg(fDriver));
+	QDEBUG(QString("Device %1 created").arg(fDriver));
     else
-	qDebug(QString("Error of device creation %1").arg(fDriver));
+	QDEBUG(QString("Error of device creation %1").arg(fDriver));
     device->setDebugLevel(1);
-#endif
 //    device->setPassword(FelixRK::PTAccess, accessPassword);
 //    device->setPassword(FelixRK::PTOperator, operatorPassword);
 //    device->setPassword(FelixRK::PTAdmin, adminPassword);

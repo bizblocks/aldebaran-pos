@@ -35,6 +35,8 @@ importer * importer::createImporter(QString name)
 
 void importer::setCodepage(QString cp)
 {
+    if(cp.isEmpty())
+	cp = "UTF-8";
     fCodepage = cp;
     fCodec = QTextCodec::codecForName(fCodepage);
 }

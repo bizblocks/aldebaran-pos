@@ -44,6 +44,7 @@ class LIB_EXPORT TEReaderBase : public TEBase
 public:
 	// public interface
 	TEReaderBase();
+	~TEReaderBase() {};
 
 public slots:
 	virtual QString text( int iTrackNumber = 0 ) const; 	// it returns first text data from queue.
