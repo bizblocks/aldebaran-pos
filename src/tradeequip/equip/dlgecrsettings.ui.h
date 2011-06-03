@@ -24,6 +24,7 @@ void dlgECRSettings::init( eqDriver * device )
     comboParity->insertStringList(fDevice->supportedParity());
     comboStopBits->insertStringList(fDevice->supportedStopBits());
     comboFlowControl->insertStringList(fDevice->supportedFlowControl());
+    comboCP->insertStringList(fDevice->codepages());
     
     editDevice->setText(fDevice->option("device"));
     comboDriver->setCurrentText(fDevice->option("driver"));
@@ -32,10 +33,13 @@ void dlgECRSettings::init( eqDriver * device )
     comboParity->setCurrentItem(fDevice->option("parity").toInt());
     comboStopBits->setCurrentItem(fDevice->option("stopbits").toInt());
     comboFlowControl->setCurrentItem(fDevice->option("flow control").toInt());
+    comboCP->setCurrentText(fDevice->option("codepage"));
     
     editAccessPassword->setText(fDevice->option("access password"));
     editOperatorPassword->setText(fDevice->option("operator password"));
     editAdminPassword->setText(fDevice->option("administrator password"));
+    editHeader->setText(fDevice->option("header"));
+    editFooter->setText(fDevice->option("footer"));    
 }
 
 void dlgECRSettings::apply()
@@ -52,6 +56,9 @@ void dlgECRSettings::apply()
 	fDevice->setOption("access password", editAccessPassword->text());
 	fDevice->setOption("operator password", editOperatorPassword->text());
 	fDevice->setOption("administrator password", editAdminPassword->text());
+	fDevice->setOption("codepage", comboCP->currentText());
+	fDevice->setOption("header", editHeader->text());
+	fDevice->setOption("footer", editFooter->text());
 	accept();
     }
     else reject();

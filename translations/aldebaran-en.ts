@@ -1,11 +1,5 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>GoodsElement</name>
-</context>
-<context>
-    <name>GoodsGroup</name>
-</context>
-<context>
     <name>QMessageBox</name>
     <message>
         <source>not implemented</source>
@@ -238,9 +232,6 @@
     </message>
 </context>
 <context>
-    <name>alDataRecord</name>
-</context>
-<context>
     <name>alDiscountTable</name>
     <message>
         <source>name</source>
@@ -339,6 +330,14 @@
     </message>
     <message>
         <source>Cheque #%1, Table #%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error in query: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Discounts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -478,9 +477,6 @@
         <source>Advanced report</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>alOrderRecord</name>
 </context>
 <context>
     <name>alOrderTable</name>
@@ -713,12 +709,10 @@ Summ %2</source>
         <source>Checks</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>dlgDevice</name>
-</context>
-<context>
-    <name>dlgDiscount</name>
+    <message>
+        <source>Discounts</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>dlgExportSales</name>
@@ -808,9 +802,6 @@ Summ %2</source>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>dlgUser</name>
 </context>
 <context>
     <name>equipmentDialog</name>

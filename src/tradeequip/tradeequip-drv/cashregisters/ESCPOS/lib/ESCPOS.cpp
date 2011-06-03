@@ -8,11 +8,11 @@
 ESCPOS::ESCPOS() :
 	TECashRegisterBase("/dev/null", 0)
 {    
-    codepages.clear();    
+    prnCodepages.clear();    
     qtCodepages.clear();
     
-    codepages << "PC473" << "Katakana" << "PC850" << "PC860" << "PC863";
-    codepages << "PC865" << "PC852" << "PC866" << "PC857" << "WPC1252";
+    prnCodepages << "PC473" << "Katakana" << "PC850" << "PC860" << "PC863";
+    prnCodepages << "PC865" << "PC852" << "PC866" << "PC857" << "WPC1252";
     
     qtCodepages << "" << "" << "IBM 850" << "" << "";
     qtCodepages << "" << "" << "IBM 866" << "" << "CP1252";    
@@ -23,11 +23,11 @@ ESCPOS::ESCPOS() :
 ESCPOS::ESCPOS(QString pname) :
 	TECashRegisterBase( pname, 0 )
 {    
-    codepages.clear();    
+    prnCodepages.clear();    
     qtCodepages.clear();
     
-    codepages << "PC473" << "Katakana" << "PC850" << "PC860" << "PC863";
-    codepages << "PC865" << "PC852" << "PC866" << "PC857" << "WPC1252";
+    prnCodepages << "PC473" << "Katakana" << "PC850" << "PC860" << "PC863";
+    prnCodepages << "PC865" << "PC852" << "PC866" << "PC857" << "WPC1252";
     
     qtCodepages << "" << "" << "IBM 850" << "" << "";
     qtCodepages << "" << "" << "IBM 866" << "" << "CP1252";    
@@ -87,14 +87,16 @@ void ESCPOS::setAbort()
 
 ESCPOS::Result ESCPOS::sendCmd(Byte * pBuf, int iSize)
 {
+    if(!isOpen())
+	if(!open()) return -1;    
     setAbort();
     int res = writeBlock(pBuf, iSize);
     return res==iSize ? 0 : -1;
 }
 
-QStringList ESCPOS::getCodepages()
+QStringList ESCPOS::codepages()
 {
-    return codepages;
+    return prnCodepages;
 }
 
 ESCPOS::Result ESCPOS::toDeviceStr(QString str, QCString & dest)
@@ -102,7 +104,7 @@ ESCPOS::Result ESCPOS::toDeviceStr(QString str, QCString & dest)
     dest = "";
     QTextCodec * utf8=QTextCodec::codecForName("UTF-8");
     QString unicodetext = utf8->toUnicode(str);
-    QTextCodec * cp=QTextCodec::codecForName(qtCodepages[codepages.findIndex(codepage())]); 
+    QTextCodec * cp=QTextCodec::codecForName(qtCodepages[prnCodepages.findIndex(codepage())]); 
     if(cp) dest = cp->fromUnicode(unicodetext);
     else dest = QCString(str);
     return RES_OK;
@@ -111,7 +113,7 @@ ESCPOS::Result ESCPOS::toDeviceStr(QString str, QCString & dest)
 int ESCPOS::setCodepage(const QString& cp)
 {
     super::setCodepage(cp);
-    int index = codepages.findIndex(cp);
+    int index = prnCodepages.findIndex(cp);
     Byte cmd[3] = {ESC, 't', (Byte)index};
     Result res = sendCmd(cmd, 3);
     return res;
@@ -187,6 +189,7 @@ int ESCPOS::openCheck(int eDocumentType, int &)
 	break;
     }
     clear();
+    print(checkHeader());
     return true;
 }
 
@@ -224,6 +227,7 @@ int ESCPOS::closeCheck(double & dChange, int /*iReserved*/)
 	if((res = print(justify(PRINT_WIDTH, " Платежная карта", QString("=%1").arg(fSumm[1], 6, 'f', 2))+"\n"))) return res;
     if(dChange>0)
 	if((res = print(justify(PRINT_WIDTH, " СДАЧА", QString("=%1").arg(dChange, 6, 'f', 2))+"\n"))) return res;
+    print(checkFooter());    
     if((res = print("\n\n\n"))) return res;    
     clear();
     return res;

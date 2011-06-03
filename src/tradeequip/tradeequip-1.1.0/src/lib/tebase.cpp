@@ -222,14 +222,10 @@ int TEBase::tcpOpen()
     QStringList addr = QStringList::split(':', portDevice());
     QHostAddress hostaddr;
     hostaddr.setAddress(addr[0]);
-#ifdef DEBUG
-    qDebug(QString("IP address: %1 port: %2").arg(hostaddr.toString()).arg(addr[1].toUInt()));
-#endif        
+    QDEBUG(QString("IP address: %1 port: %2").arg(hostaddr.toString()).arg(addr[1].toUInt()));
     if(!Socket->connect(hostaddr, addr[1].toUInt()))
     {
-#ifdef DEBUG
-	qDebug(QString("connection error: %1").arg(Socket->error()));
-#endif	
+	QDEBUG(QString("connection error: %1").arg(Socket->error()));
 	return 0;
     }
     return 1;
@@ -255,7 +251,9 @@ int
 TEBase::close()
 {
     if (Port->isOpen())
-        Port->close();
+	Port->close();
+    if(Socket->isOpen())
+	Socket->close();
     return 1;
 }
 
@@ -266,7 +264,14 @@ Check comunication port connection.
 int
 TEBase::isOpen()
 {
-    return Port->isOpen();
+    int res = 0;
+    switch(m_eConnectionType)
+    {
+    case ECT_SERIAL:
+	return Port->isOpen();
+    case ECT_TCP:
+	return false;//Socket->state() & IO_Open;
+    }
 }
 
 

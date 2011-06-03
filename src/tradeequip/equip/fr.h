@@ -41,7 +41,8 @@ public:
     virtual void payin(double summ);
     virtual void payout(double summ);
     virtual void openCashbox();
-    virtual void beep();    
+    virtual void beep();
+    virtual QStringList codepages();
 protected:
     virtual bool checkError(int res);
     
@@ -52,6 +53,7 @@ protected:
     QString fCodepage;
     int fPortBaudRate, fPortDataBits, fPortParity, fPortStopBits, fPortFlowControl;
     int fPrintWidth;
+    QString fHeader, fFooter;
 };
 
 class eqFRJob : public eqJob

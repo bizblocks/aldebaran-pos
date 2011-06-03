@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>524</width>
-            <height>287</height>
+            <height>437</height>
         </rect>
     </property>
     <property name="caption">
@@ -479,6 +479,62 @@
                             </property>
                         </widget>
                     </hbox>
+                </widget>
+                <widget class="QLayoutWidget" row="7" column="0">
+                    <property name="name">
+                        <cstring>layout14</cstring>
+                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>textLabel1</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Check header</string>
+                            </property>
+                        </widget>
+                        <widget class="QTextEdit">
+                            <property name="name">
+                                <cstring>editHeader</cstring>
+                            </property>
+                            <property name="font">
+                                <font>
+                                    <family>DejaVu Sans Mono</family>
+                                </font>
+                            </property>
+                        </widget>
+                    </vbox>
+                </widget>
+                <widget class="QLayoutWidget" row="8" column="0">
+                    <property name="name">
+                        <cstring>layout14_2</cstring>
+                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>textLabel1_2</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Check footer</string>
+                            </property>
+                        </widget>
+                        <widget class="QTextEdit">
+                            <property name="name">
+                                <cstring>editFooter</cstring>
+                            </property>
+                            <property name="font">
+                                <font>
+                                    <family>DejaVu Sans Mono</family>
+                                </font>
+                            </property>
+                        </widget>
+                    </vbox>
                 </widget>
             </grid>
         </widget>

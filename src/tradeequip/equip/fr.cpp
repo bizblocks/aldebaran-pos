@@ -17,6 +17,9 @@ eqFR::eqFR(const QString& name) :
     fPortParity = PAR_NONE;
     fPortStopBits = STOP_1;
     fPortFlowControl = FLOW_OFF;
+    fCodepage = "";
+    fHeader = "";
+    fFooter = "";
 }
 
 eqFR::~eqFR()
@@ -31,7 +34,7 @@ eqFR::~eqFR()
 void eqFR::init()
 {
     if(device)
-    {http://vkontakte.ru/album-3517839_136108766
+    {
 	device->close();
 	delete device;
 	device = NULL;
@@ -55,9 +58,10 @@ void eqFR::init()
     device->setPortParity((ParityType)fPortParity);
     device->setPortStopBits((StopBitsType)fPortStopBits);
     device->setPortFlowControl((FlowType)fPortFlowControl);
+    device->setCheckHeader(fHeader.utf8());
+    device->setCheckFooter(fFooter.utf8());    
     if(device->open()!=1) return;
-#warning TODO use codepage from settings    
-    device->setCodepage("PC866");
+    device->setCodepage(fCodepage);
 }
 
 QStringList eqFR::options()
@@ -66,8 +70,17 @@ QStringList eqFR::options()
     res << "driver" << "device" << "access password";
     res << "operator password" << "administartor password";    
     res << "baudrate" << "data bits" << "parity";
-    res << "stopbits" << "flow control" << "codepage";
+    res << "stopbits" << "flow control" << "codepage" << "header" << "footer";
     return res;
+}
+
+QStringList eqFR::codepages()
+{
+    if(device)
+    {
+	return device->codepages();
+    }
+    return QStringList();
 }
 
 QStringList eqFR::driverList()
@@ -88,6 +101,8 @@ void eqFR::setOption(QString name, QVariant value)
     else if(name=="stopbits") fPortStopBits = value.toInt();
     else if(name=="flow control") fPortFlowControl = value.toInt();
     else if(name=="codepage") fCodepage = value.toString();
+    else if(name=="header") fHeader = value.toString();
+    else if(name=="footer") fFooter = value.toString();    
 }
 
 QString eqFR::option(QString name)
@@ -103,6 +118,8 @@ QString eqFR::option(QString name)
     else if(name=="stopbits") return QString("%1").arg(fPortStopBits);
     else if(name=="flow control") return QString("%1").arg(fPortFlowControl);
     else if(name=="codepage") return fCodepage;
+    else if(name=="header") return fHeader;
+    else if(name=="footer") return fFooter;
     return "";
 }
 
@@ -232,6 +249,7 @@ QStringList eqFR::supportedBaudRates()
     QValueList<int> lst = device->supportedBaudRates();
     for(uint i=0;i<lst.count();i++)
 	res << QString("%1").arg(lst[i]);
+    if(!res.count()) res << "NONE";
     return res;
 }
 

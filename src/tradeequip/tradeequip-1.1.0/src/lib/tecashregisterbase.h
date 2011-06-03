@@ -333,6 +333,8 @@ public:
     
     void setCheckHeader(const QString & sCheckHeader){m_sCheckHeader=sCheckHeader;}
     QString checkHeader() const {return m_sCheckHeader;}
+    void setCheckFooter(const QString & sCheckFooter){m_sCheckFooter=sCheckFooter;}
+    QString checkFooter() const {return m_sCheckFooter;}    
     
     // this function puts driver in wait for user action state and returns
     // When user enters specified command sequense, driver prints check filled with previous call to bueAdd
@@ -381,6 +383,7 @@ public:
     virtual int checkDeviceReady()=0;  
     // End
     
+    virtual QStringList codepages() { return QStringList(); }
     virtual int setCodepage(const QString& cp) { fCodepage = cp; return 0; };
     virtual QString codepage() { return fCodepage; };
     
@@ -444,7 +447,8 @@ private:
     int m_iSection; // section in which current product was buyed
     bool m_bReturnFlag; //
     bool m_bPollPaused;
-    QString m_sCheckHeader;
+    QString m_sCheckHeader, m_sCheckFooter;
+    
     QString fCodepage;
 protected:    
     QValueList<PurchaseInfo> m_vCheckBuffer;

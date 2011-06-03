@@ -89,9 +89,10 @@ void alEqRecord::load()
     for(int i=0;i<(int)slOpt.count();i++)
     {
 	QStringList pair = QStringList::split("=", slOpt[i]);
-	pair[0] = QString::fromUtf8(pair[0]);
-	if(pair.count()==1) fOptions[pair[0]] = "1"; //default
-	else fOptions[pair[0]] = pair[1];
+	qDebug(slOpt[i]);
+	pair[0] = QString::fromLocal8Bit(pair[0]);
+	if(pair.count()==1) fOptions[pair[0]] = ""; //default
+	else fOptions[pair[0]] = QString::fromLocal8Bit(pair[1]).replace('\r', '\n');
     }
 }
 
@@ -103,9 +104,9 @@ int alEqRecord::update()
     fRecord->setValue("enabled", fEnabled ? "TRUE" : "FALSE");
     QString sOpt = "";
     for(int i=0;i<(int)fOptions.keys().count();i++)
-	sOpt += fOptions.keys()[i] + "=" + fOptions.values()[i] + "\n";    
-    qDebug(sOpt);
-    QByteArray a = QByteArray(sOpt.utf8());
+	sOpt += fOptions.keys()[i] + "=" + fOptions.values()[i].replace('\n', '\r') + "\n";
+//    qDebug(sOpt.utf8());
+    QByteArray a = QByteArray(sOpt.local8Bit());
     fRecord->setValue("options", a);
     return alDataRecord::update();
 }
