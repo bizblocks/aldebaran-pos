@@ -71,12 +71,13 @@ void alDataTable::load(QString filter)
     do
     {
 	fillLine(r);
+//	setRowStretchable(r, TRUE);
+	adjustRow(r);
 	iHeight+=rowHeight(r);
 	r++;
 	if(tSize>0 && iHeight>height()) 
 	    break;	
-    } while(fData->next());
-    
+    } while(fData->next());    
     setUpdatesEnabled( TRUE );
     repaint(rect(), TRUE);    
     adjustColumns();
