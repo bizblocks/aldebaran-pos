@@ -33,7 +33,8 @@ void alGoodsTable::init()
     contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("up.png")), tr("Level up"), this, SLOT(levelUp()));
     contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("home.png")), tr("Home"), this, SLOT(home()));
     
-    connect(this, SIGNAL(doubleClicked(int, int, int, const QPoint&)), this, SLOT(defaultAction(int, int, int, const QPoint&)));
+//    connect(this, SIGNAL(doubleClicked(int, int, int, const QPoint&)), this, SLOT(defaultAction(int, int, int, const QPoint&)));
+    connect(this, SIGNAL(clicked(int, int, int, const QPoint&)), this, SLOT(defaultAction(int, int, int, const QPoint&)));
     
     fData = new alDataGoods(fEngine);
     hideVerticalHeader();

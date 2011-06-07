@@ -89,7 +89,7 @@ void alEqRecord::load()
     for(int i=0;i<(int)slOpt.count();i++)
     {
 	QStringList pair = QStringList::split("=", slOpt[i]);
-	qDebug(slOpt[i]);
+//	qDebug(slOpt[i]);
 	pair[0] = QString::fromLocal8Bit(pair[0]);
 	if(pair.count()==1) fOptions[pair[0]] = ""; //default
 	else fOptions[pair[0]] = QString::fromLocal8Bit(pair[1]).replace('\r', '\n');
