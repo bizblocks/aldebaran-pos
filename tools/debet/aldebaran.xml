@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Form>
+	<Controls>
+		<TabFolder align="fill" valign="fill">
+			<TabItem text="Параметри|Параметры">
+				<Controls>
+					<Label text="Сервер" />
+					<TextField ID="HOST" width="200" />
+					<Label text="  База даних|  База данных" align="right" />
+					<TextField ID="DBNAME" width="200" />
+					<BR />
+					<Label text="Логiн|Логин" />
+					<TextField ID="LOGIN" width="200" />
+					<Label text="Пароль" align="right" />
+					<TextField ID="PASSWORD" ispassword="true" width="200" />
+					<BR />
+					<CheckBox ID="IMPBILL" text="Iмпортувати чеки|Импортировать чеки" />
+					<BR />
+					<BR />
+					<CheckBox ID="DELMENU" text="Вилучати меню|Удалять меню" />
+					<BR />
+					<Label text="Синхронiзувати|Синхронизировать" />
+					<BR />
+					<RadioGroup ID="TYPEPER">
+						<Radio text="За перiод з|За период с" value="1" selected="true" />
+						<Radio text="Пiсля чека №|После чека №  " value="2" />
+					</RadioGroup>
+					<GroupCtrl>
+						<Date ID="BDATE" />
+						<Label text="  до  |  по  " />
+						<Date ID="EDATE" />
+						<BR />
+						<TextField ID="TCNUM" width="100" />
+						<BR />
+					</GroupCtrl>
+					<BR />'
+				</Controls>
+			</TabItem>
+			<TabItem text="Лог">
+				<Controls >
+					<TextField ID="LOG" align="fill" valign="fill" wrap="true" />
+					<BR/>
+				</Controls>
+			</TabItem>			
+		</TabFolder>
+		<BR />
+		<TextField ID="status" align="fill" flat="true"/>
+		<BR/>
+		<ProgressBar ID="progress" align="fill" />
+		<BR/>
+	</Controls>
+	<script language="javascript" src="aldebaran.js" />
+</Form>
