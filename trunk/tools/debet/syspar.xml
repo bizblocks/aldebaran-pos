@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<System type="group" text="Параметри системи|Параметры системы">
+   <RESTAURANT type="group" text="Ресторан" useproxy="true">
+      	<REST_SYNC_HOST type="param" vid="u" partype="text" text="Сервер" default="localhost"/>
+      	<REST_SYNC_DBNAME type="param" vid="u" partype="text" text="База данных" default="db_server"/>
+      	<REST_SYNC_LOGIN type="param" vid="u" partype="text" text="Логин" default="postgres"/>      	
+       	<REST_SYNC_PASS type="param" vid="u" partype="text" text="Пароль" ispassword="true" default=""/>      	
+  </RESTAURANT> 	 
+ </System>

@@ -653,35 +653,49 @@ function deleteMenu()
 
 function syncNmklGrp()
 {
-	var tmpFunc = "CREATE OR REPLACE FUNCTION upsert (sql_update TEXT, sql_insert TEXT) RETURNS VOID LANGUAGE plpgsql
-AS $$
-BEGIN
-    LOOP
-        -- first try to update
-        EXECUTE sql_update;
-        -- check if the row is found
-        IF FOUND THEN
-            RETURN;
-        END IF;
-        -- not found so insert the row
-        BEGIN
-            EXECUTE sql_insert;
-            RETURN;
-            EXCEPTION WHEN unique_violation THEN
-                -- do nothing and loop
-        END;
-    END LOOP;
-END;
-$$;";
+/*
+	var tmpFunc = "CREATE OR REPLACE FUNCTION upsert (sql_update TEXT, sql_insert TEXT) RETURNS VOID LANGUAGE plpgsql " +
+			"AS $$ " +
+			"BEGIN " +
+		    	    "LOOP " +
+			    + "EXECUTE sql_update; " +
+			    + "IF FOUND THEN " +
+			        + "RETURN; " +
+			    + "END IF; "
+			    + "BEGIN "
+				+ "EXECUTE sql_insert; " +
+				+ "RETURN; "+
+				+ "EXCEPTION WHEN unique_violation THEN " +
+			    + "END; " +
+			+ "END LOOP;" +
+			+ "END;" +
+			+ "$$;" ;
+*/
 
-	var sql = "select fwid, ftxt, fcod, fpodr, max(fdat) from ^cl_pri where fisgrp = 0 order by fcod";
-	var tblGroups = OpenTable("m", sql);	
+	var sql = "select fwid, ftxt, fcod, fpodr, fdat from ^cl_pri where fisgrp = 0 order by fdat DESC";
+	var tblGroups = OpenTable("m", sql);
+	var codes = "";
 	while(!tblGroups.isEOF())
 	{
-		var updQuery = "UPDATE";
-		var insQuery = "INSERT";
-		ExecSQL(conn, "select upsert('"+updQuery+"', '"+insQuery+"')");
-		Put_Log_Message("Добавлена группа: "+"");
+		var code = tblGroups.getValue("FCOD");
+		if(codes.search(code)>-1)
+		{
+			tblGroups.moveNext();
+			continue;
+		}
+		codes = codes + ", " + code;
+		var selQuery = "SELECT id FROM goods WHERE externalcode='"+code+"' AND isgroup=TRUE;";
+		var res = OpenExtTable(conn, selQuery);
+		var query = "";
+		if(res.isEmpty())
+			query = "INSERT INTO goods SELECT COALESCE(MAX(id), 0)+1, 0, true, '"+tblGroups.getValue("FTXT")+"', 0, 0, '','"+code+"', "
+				+ " '', 0, 0, 0, 0, 0, true, false from goods;";
+		else
+			query = "UPDATE goods SET name='"+tblGroups.getValue("FTXT")+"' WHERE externalcode='"+code+"'";
+		res.close();
+		ExecSQL(conn, query);
+		Put_Log_Message("Добавлена или обновлена группа "+tblGroups.getValue("FTXT"));
+		tblGroups.moveNext();
 	}
 
 }
