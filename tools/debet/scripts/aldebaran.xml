@@ -17,8 +17,6 @@
 					<CheckBox ID="IMPBILL" text="Iмпортувати чеки|Импортировать чеки" />
 					<BR />
 					<BR />
-					<CheckBox ID="DELMENU" text="Вилучати меню|Удалять меню" />
-					<BR />
 					<Label text="Синхронiзувати|Синхронизировать" />
 					<BR />
 					<RadioGroup ID="TYPEPER">
@@ -34,6 +32,8 @@
 						<BR />
 					</GroupCtrl>
 					<BR />'
+					<Label text="Магазин:" />
+					<TextField ID="FPODR" width="250" />
 				</Controls>
 			</TabItem>
 			<TabItem text="Лог">
@@ -41,7 +41,7 @@
 					<TextField ID="LOG" align="fill" valign="fill" wrap="true" />
 					<BR/>
 				</Controls>
-			</TabItem>			
+			</TabItem>
 		</TabFolder>
 		<BR />
 		<TextField ID="status" align="fill" flat="true"/>
