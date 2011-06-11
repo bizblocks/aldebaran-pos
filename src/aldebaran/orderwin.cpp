@@ -290,6 +290,7 @@ void alOrderWindow::check()
 	}
     }	
     
+    fOrder->setSummType(fSummType);
     fOrder->setStatus(alDataOrder::Closed);        
     fOrder->update();
     emit orderUpdated(fOrder);        

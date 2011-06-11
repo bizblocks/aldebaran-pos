@@ -62,6 +62,8 @@ public slots:
     void setStatus(alStatus  p);    
     int table() { return fTableNum; };
     void setTable(int t) { fTableNum = t; };
+    int summType() { return fSummType; };
+    void setSummType(int st) { fSummType = st; };
     QDate date() { return fDate; };
     void setDate(QDate d) { fDate = d; };
     QTime timeOpen() { return fTimeOpen; };
@@ -85,7 +87,7 @@ public slots:
     QString info();
 private:
     alDataOrderTable * fDataTable;
-    int fNum, fCheckNum, fTableNum, fGuests;
+    int fNum, fCheckNum, fTableNum, fGuests, fSummType;
     alDataOrder::Status fStatus;
     QDate fDate;
     QTime fTimeOpen, fTimeClose;

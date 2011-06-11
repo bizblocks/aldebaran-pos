@@ -23,7 +23,7 @@ void alDataOrderTable::checkTable()
 #endif    
     QString query = Queries::tr("CREATE TABLE order_table ("
 		    "id_order int8 NOT NULL, ln int8 NOT NULL,"
-		    "id_goods int8, amount numeric(8,3),"
+		    "id_goods int8, externalcode varchar(15), amount numeric(8,3),"
 		    "price numeric(12,2), summ numeric(15,2), id_user int8,"
 		    "printed bool,"		    
 		    "CONSTRAINT id_ordertable PRIMARY KEY (id_order,ln))"
@@ -74,10 +74,11 @@ QString alDataOrderTable::updateQuery()
     for(int r=0;r<(int)lines.count();r++)
     {
 	alOrderLine * line = getLine(r);
-	query+=Queries::tr("INSERT INTO order_table VALUES (%1, %2, %3, %4, %5, %6, %7, %8);\n")
+	query+=Queries::tr("INSERT INTO order_table VALUES (%1, %2, %3, %4, %5, %6, %7, %8, %9);\n")
 	       .arg(fOrder->id())
 	       .arg(r+1)
 	       .arg(line->item() ? line->item()->id() : 0)
+	       .arg(line->externalCode())
 	       .arg(line->amount())
 	       .arg(line->price())
 	       .arg(line->summ())
@@ -119,6 +120,7 @@ alOrderLine::alOrderLine(alDataOrderTable * data)
     fLineNum = data->count()+1;
     setUser((new alDataUsers(data->engine()))->select(data->value("id_user").toULongLong()));    
     setItem((new alDataGoods(data->engine()))->select(data->value("id_goods").toULongLong()));
+    setExternalCode(data->value("externalcode").toString());
     setAmount(data->value("amount").toDouble());
     setPrice(data->value("price").toDouble());
     setSumm(data->value("summ").toDouble());
@@ -131,6 +133,7 @@ alOrderLine * alOrderLine::newLine(alDataOrderTable * data)
     line->fOrderID = data->orderId();
     line->fLineNum = data->count()+1;
     line->setUser(NULL);
+    line->setExternalCode("");
     line->setItem(0);
     line->setAmount(0);
     line->setPrice(0);
@@ -145,10 +148,12 @@ void alOrderLine::setItem(alGoodsRecord * item)
     if(fItem)
     {
 	fItemText = fItem->name();
+	fExternalCode = fItem->externalCode();
 	if(fPrice==0.) fPrice = fItem->price();
     }
     else
     {
+	fExternalCode = "";
 	fItemText = "<...>";
 	fPrice = 0;
     }

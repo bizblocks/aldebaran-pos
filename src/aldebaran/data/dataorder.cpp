@@ -23,7 +23,7 @@ void alDataOrder::checkTable()
     qDebug(QObject::tr("creating table orders").utf8());
 #endif    
     QString query = Queries::tr("CREATE TABLE orders ("
-		    "id int8 NOT NULL, num int8, "
+		    "id int8 NOT NULL, num int8, summtype int2 DEFAULT 1, "
 		    "orderdate timestamp, timeopen time, timeclose time, "
 		    "status int4,  id_user int8,  checknum int4, "
 		    "tablenum int4, guests int2, id_discount int8, "
@@ -177,6 +177,7 @@ int alOrderRecord::update()
     int res = 0;
     primeUpdateInsert();
     fRecord->setValue("num", fNum);
+    fRecord->setValue("summtype", fSummType);
     fRecord->setValue("status", fStatus);
     fRecord->setValue("orderdate", fDate);
     fRecord->setValue("timeopen", fTimeOpen);    
@@ -199,6 +200,7 @@ int alOrderRecord::update()
 void alOrderRecord::load()
 {
     fNum = fRecord->value("num").toULongLong();
+    fSummType = fRecord->value("summtype").toInt();
     fStatus = (alDataOrder::Status)fRecord->value("status").toInt();
     fDate = fRecord->value("orderdate").toDate();
     fTimeOpen = fRecord->value("timeopen").toTime();
