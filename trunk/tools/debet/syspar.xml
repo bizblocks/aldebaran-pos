@@ -3,7 +3,8 @@
    <RESTAURANT type="group" text="Ресторан" useproxy="true">
       	<REST_SYNC_HOST type="param" vid="u" partype="text" text="Сервер" default="localhost"/>
       	<REST_SYNC_DBNAME type="param" vid="u" partype="text" text="База данных" default="db_server"/>
-      	<REST_SYNC_LOGIN type="param" vid="u" partype="text" text="Логин" default="postgres"/>      	
-       	<REST_SYNC_PASS type="param" vid="u" partype="text" text="Пароль" ispassword="true" default=""/>      	
-  </RESTAURANT> 	 
+      	<REST_SYNC_LOGIN type="param" vid="u" partype="text" text="Логин" default="postgres"/>
+      	<REST_SYNC_PASS type="param" vid="u" partype="text" text="Пароль" ispassword="true" default=""/>
+<!--      	<REST_SYNC_PASS type="param" vid="os" partype="DpClcl" text="Магазин" default="" width="250"/> -->
+  </RESTAURANT>
  </System>

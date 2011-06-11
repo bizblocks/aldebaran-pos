@@ -4,18 +4,20 @@ include("doc/DpDoc.js");
 var arrNmklID = new Array();
 var arrKassID = new Array();
 var arrNmklFWID = new Array();
+var arrKitchenID = new Array();
 var arrEdi = new Array();
 var arrEdiExt = new Array();
 var conn;
 var syncPeriod = null;
 var importCheck = false;
 var isDeleteMenu = false;
+var oPodr, fpodr;
 
 include("sys/DpBaseDlg.js");
 function Load()
 {
 	TCNUM.mask = "########";
-	Caption("Синхронизация с Front Office");
+	Caption("Синхронизация с Альдебаран POS");
 	
 	var hostName = getPar("REST_SYNC_HOST");
 	if (!hostName)
@@ -28,7 +30,7 @@ function Load()
 	if (!dbName)
 		dbName = "db_server";	
 	DBNAME.value = dbName;
-	DBNAME.readOnly = true;;
+	DBNAME.readOnly = true;
 	
 	var login = getPar("REST_SYNC_LOGIN");
 	if (!login)
@@ -41,6 +43,12 @@ function Load()
 		login = "";
 	PASSWORD.value = login;
 	PASSWORD.readOnly = true;
+	
+	oPodr = new DpCl();
+	oPodr.setClcl(getPar("CODPODR"));
+	oPodr.linkSmartCtrl(FPODR);
+	var podr = ReadParEx("REST_SYNC_PODR");
+	oPodr.setCod(!podr ? 1 : podr);
 	
 	var sSQL = "select max(" + Convert("foutid", "INT") + ") from ^htcs where foutid is not null and foutid != ''";
 	var oSnap = getSnap(sSQL, false);
@@ -67,12 +75,10 @@ function Load()
 	
 	status.setEnabled(false);
 	btnOK.setText("Запуск");
-	btnCancel.setText(UR("Зачинити|Закрыть"));
+	btnCancel.setText("Закрыть");
 	//alert(typeOf(retValue = new java.text.SimpleDateFormat().parse(retValue);("REST_SYNC_BDATE")));
 	//Writec
 	//WriteParEx("REST_SYNC_EDATE", EDATE.value);		
-	
-	
 }
 
 function onSave()
@@ -89,13 +95,10 @@ function onSave()
 		alert(sMSG);
 		return false;
 	}
-	
-	//ExecSQL(conn, "delete  from t_article ", true);
-	//ExecSQL(conn, "delete  from t_article_group ", true);
-	
+		
+	fpodr = oPodr.getCod();
 	syncPeriod = getSyncPeriod();
 	importCheck = IMPBILL.checked;
-	isDeleteMenu = DELMENU.checked;
 	var thr = new java.lang.Thread(
 			function run()
 			{
@@ -107,9 +110,8 @@ function onSave()
 						btnCancel.setEnabled(false);	
 					}
 				)
-				
+								
 				runSyncro();
-				
 				
 				display.syncExec
 				(
@@ -124,7 +126,7 @@ function onSave()
 		);
 	thr.start();
 	
-	
+	WriteParEx("REST_SYNC_PODR", fpodr);
 	WriteParEx("REST_SYNC_TYPEPER", TYPEPER.value);
 	if (TYPEPER.value == "1")
 	{
@@ -146,37 +148,17 @@ function runSyncro()
 //	syncRec();	
 //	synchPodr();
 	
-//	if (isDeleteMenu)
-//		deleteMenu();
-	synchMenu();
+	exportGoods();
 
-//	if (importCheck)
-//	{
-//		importBill(6, false);
-//		importBill(6, true);
-//		importBill(8);
-//	}
+	if (importCheck)
+	{
+		importBill(6, false);
+		importBill(6, true);
+		importBill(8);
+	}
 	
 	progressReset();
 		
-}
-
-function synchroEdi()
-{
-	arrEdi = new Array();
-	arrEdiExt = new Array();
-	var tbl = OpenTable("select fcod, ftxts, ftxtf from ^cl_edi order by fcod");
-	while(!tbl.isEOF())
-	{
-		var innerCod = Number(tbl.getValue("fcod"));
-		var extCod = getExtEdiCod(tbl.getValue("ftxts"), tbl.getValue("ftxtf"), innerCod);		
-		arrEdi[innerCod] =  extCod;
-		arrEdiExt[extCod] =  innerCod;
-		tbl.moveNext();
-	}
-	
-	tbl.close();
-	
 }
 
 function getSyncPeriod()
@@ -203,173 +185,6 @@ function getSyncPeriod()
 			
 	}
 	return p;
-}
-
-function getExtEdiCod(txt, txtf, cod)
-{
-	var extTbl = OpenExtTable(conn, 
-			"select id_measure, name, sname from t_measure where sname = " 
-				+ sqlToEx(POSTGRE, txt));
-	if (extTbl.isEmpty())
-	{
-		var sSQL = "insert into t_measure (name, sname, digits, amount) values ("
-			+ sqlToEx(POSTGRE, txtf) +", " + sqlToEx(POSTGRE, txt) + ", 3, 1)"
-		var bRet = ExecSQL(conn, sSQL, true);
-		
-		extTbl.close();
-		if(bRet)
-			return getExtEdiCod(txt);
-		else
-			return null;
-	}
-	else
-	{
-		var ret = Number(extTbl.getValue("id_measure"));
-		if (cod)
-		{
-			var sql = "select count(*) as cnt from ^cl_nmk where fcedib = " + cod + " and fvid = 'S'";
-			var oSnap = getSnap(sql)
-			if (oSnap && oSnap[0] && oSnap[0] > 0)
-			{
-				var sSQL = "update t_measure set amount = 0 where id_measure = " + ret;			
-				var bRet = ExecSQL(conn, sSQL, true)
-			}
-		}
-		extTbl.close();
-		return ret;
-	}
-}
-
-function importMol()
-{
-	var codmol = getPar("CODMOL", "MTR");
-	var extTbl = OpenExtTable(conn,	"select id_kassir, name from t_kassir order by id_kassir");
-	initProgressBar(0, extTbl.recordCount);
-	var nRow = 0;
-	while(!extTbl.isEOF())
-	{
-		nRow++;
-		var name = String(extTbl.getValue("name"));
-		var outid = String(Number(extTbl.getValue("id_kassir")));		
-		var oSnap = getSnap("select fwid, foutid from ^listcl where fcl = " + codmol + " and ftxt = " + sqlTo(name));
-		if(oSnap)
-		{
-			if(oSnap[1] != outid)
-			{
-				ExecuteSQL("update ^cl set foutid = " + sqlTo(outid) + " where fwid = " + oSnap[0]);
-			}
-		}
-		else
-		{
-			var oCL = new DpClEx("CL1", codmol);
-			oCL.setVar("HTXT", name);
-			oCL.setVar("HCL", codmol);
-			
-			var nCod = 1;
-			var sSQL = "select max(fcod) as cod from ^listcl where fcl = " + codmol;
-			oSnapCod = getSnap(sSQL);
-			if(oSnapCod && oSnapCod[0])
-				nCod = oSnapCod[0] + 1;			
-			oCL.setVar("HCOD", nCod);
-			oCL.setVar("HOUTID", outid);
-			Put_Log_Message("Добавлен МОЛ: " + name)
-			
-			oCL.save();
-		}
-		
-		progressWorked(1, "Импорт МОЛ");
-			
-		extTbl.moveNext();
-	}
-	
-	extTbl.close();
-}
-
-function synchPodr()
-{
-	include("Objects/DpExtentionBuilder.js");
-	var sprPodr = getPar("CODPODR", "MTR");
-	var extBuilder = new DpExtentionBuilder("CL", String(sprPodr));
-	if (!extBuilder.exist())
-		return
-	var tblExt = extBuilder.getValueTableName(); 
-	
-	if (!hasField(tblExt, "FPLACE") && !hasField("FKITCHEN"))
-		return;
-	
-	
-	//Кухни
-	var sSQL = "select cl.fcod as fcod, cl.ftxt as ftxt from ^listcl cl inner join " + tblExt + " e on cl.fwid = e.fmainwid "
-		+ " where e.fmainwid != 0 and cl.fcl = " + sprPodr + " and fkitchen =  " +sqlTrue;
-	
-	var tbl = OpenTable(sSQL);
-	initProgressBar(0, tbl.recordCount);
-	while (!tbl.isEOF())
-	{
-		var m = new Object();
-		m.name = String(tbl.getValue("ftxt"));
-		m.id_kitchen = Number(tbl.getValue("fcod"));
-		
-		var extTbl = OpenExtTable(conn,	
-				"select id_kitchen from t_kitchen where id_kitchen = " 
-					+ m.id_kitchen);
-		
-		var sSQL = "";
-		if (extTbl.isEmpty())
-		{
-			sSQL = createPGInsertQuery("t_kitchen" , m);
-			Put_Log_Message("Добавленна Кухня: " + m.name)
-			
-		}
-		else
-		{
-			sSQL = createPGUpdateQuery("t_kitchen" , m, " id_kitchen = " + m.id_kitchen );
-		}
-		
-		ExecSQL(conn, sSQL, true);
-		progressWorked(1, "Экспорт Кухон");
-		tbl.moveNext();
-		extTbl.close();
-	}
-	tbl.close();
-	
-	//Залы
-	sSQL = "select cl.fcod as fcod, cl.ftxt as ftxt from ^listcl cl inner join " + tblExt + " e on cl.fwid = e.fmainwid "
-		+ " where e.fmainwid != 0 and cl.fcl = " + sprPodr + " and fplace =  " +sqlTrue;
-	
-	tbl = OpenTable(sSQL);
-	initProgressBar(0, tbl.recordCount);
-	while (!tbl.isEOF())
-	{
-		var m = new Object();
-		m.name = String(tbl.getValue("ftxt"));
-		m.id_place = Number(tbl.getValue("fcod"));
-		
-		var extTbl = OpenExtTable(conn,	
-				"select id_place from t_place where id_place = " 
-					+ m.id_place);
-		
-		var sSQL = "";
-		if (extTbl.isEmpty())
-		{
-			sSQL = createPGInsertQuery("t_place" , m);			
-			Put_Log_Message("Добавлен Зал: " + m.name);
-			
-		}
-		else
-		{
-			sSQL = createPGUpdateQuery("t_place" , m, " id_place = " + m.id_place );
-		}
-		
-		ExecSQL(conn, sSQL, true);
-		
-		tbl.moveNext();
-		progressWorked(1, "Экспорт Залов");
-		extTbl.close();
-	}
-	tbl.close();
-	
-
 }
 
 /*
@@ -629,176 +444,110 @@ function syncRec()
 	tblRec.close();
 }
 
-function deleteMenu()
-{
-	var extTbl = OpenExtTable(conn,	"select * from t_menu ");
-	while (!extTbl.isEOF())
-	{
-		var id_menu = Number(extTbl.getValue("id_menu"));
-		var menuName = String(extTbl.getValue("name"))
-		var oSnap = getSnap("select fwid from ^cl_pri where fwid = " + id_menu);
-		if (oSnap == null)
-		{
-			ExecSQL(conn, "delete from t_menu_article_group where id_menu = " + id_menu, true);
-			ExecSQL(conn, "delete from t_article_menu where id_menu = " + id_menu, true);
-			ExecSQL(conn, "delete from t_menu where id_menu = " + id_menu, true);
-			Put_Log_Message("Удалено меню " + menuName);			
-		}
-		
-		extTbl.moveNext();
-	}
-	
-	extTbl.close();
-}
-
-function syncNmklGrp()
-{
 /*
 	var tmpFunc = "CREATE OR REPLACE FUNCTION upsert (sql_update TEXT, sql_insert TEXT) RETURNS VOID LANGUAGE plpgsql " +
 			"AS $$ " +
 			"BEGIN " +
-		    	    "LOOP " +
-			    + "EXECUTE sql_update; " +
-			    + "IF FOUND THEN " +
-			        + "RETURN; " +
-			    + "END IF; "
-			    + "BEGIN "
-				+ "EXECUTE sql_insert; " +
-				+ "RETURN; "+
-				+ "EXCEPTION WHEN unique_violation THEN " +
-			    + "END; " +
-			+ "END LOOP;" +
-			+ "END;" +
-			+ "$$;" ;
+		      "LOOP " +
+			    "EXECUTE sql_update; " +
+			    "IF FOUND THEN " +
+			      "RETURN; " +
+			    "END IF; "
+			    "BEGIN "
+				  "EXECUTE sql_insert; " +
+				  "RETURN; "+
+				  "EXCEPTION WHEN unique_violation THEN " +
+			      "END; " +
+			"END LOOP;" +
+			"END;" +
+			"$$;" ;
 */
 
-	var sql = "select fwid, ftxt, fcod, fpodr, fdat from ^cl_pri where fisgrp = 0 order by fdat DESC";
+function delGoodsGrp(codes)
+{
+	Put_Log_Message("Удаление неиспользуемых групп");	
+	var sql = "UPDATE goods SET parent=-1 WHERE (parent<>0) " 
+		+ "AND ((parent IN (SELECT id FROM goods WHERE externalcode NOT IN ('"+codes.join("','")+"'))) "
+		+ "OR (parent NOT IN (SELECT id FROM goods WHERE isgroup=true)))";	
+	ExecSQL(conn, sql);
+	sql = "DELETE FROM goods WHERE (isgroup=true) AND (parent IN (SELECT id FROM goods WHERE externalcode NOT IN ('"+codes.join("','")+"')))";
+	ExecSQL(conn, sql);
+	Put_Log_Message("Неиспользуемые группы удалены");
+}
+
+function exportGoodsGrp()
+{
+	Put_Log_Message("Экспорт групп товаров");	
+	var sql = "select ftxt, fcod, max(fdat) from ^cl_pri where fisgrp = 0 group by ftxt, fcod";
 	var tblGroups = OpenTable("m", sql);
-	var codes = "";
+	
+	initProgressBar(0, tblGroups.recordCount);
+	
+	var codes = new Array();
 	while(!tblGroups.isEOF())
 	{
 		var code = tblGroups.getValue("FCOD");
-		if(codes.search(code)>-1)
-		{
-			tblGroups.moveNext();
-			continue;
-		}
-		codes = codes + ", " + code;
-		var selQuery = "SELECT id FROM goods WHERE externalcode='"+code+"' AND isgroup=TRUE;";
-		var res = OpenExtTable(conn, selQuery);
-		var query = "";
+		codes[codes.length] = code;
+		var query = "SELECT id FROM goods WHERE externalcode='"+code+"' AND isgroup=TRUE;";
+		var res = OpenExtTable(conn, query);
 		if(res.isEmpty())
 			query = "INSERT INTO goods SELECT COALESCE(MAX(id), 0)+1, 0, true, '"+tblGroups.getValue("FTXT")+"', 0, 0, '','"+code+"', "
-				+ " '', 0, 0, 0, 0, 0, true, false from goods;";
+				+ " '', 0, 0, 0, 0, 0, FALSE, FALSE from goods;";
 		else
 			query = "UPDATE goods SET name='"+tblGroups.getValue("FTXT")+"' WHERE externalcode='"+code+"'";
 		res.close();
 		ExecSQL(conn, query);
-		Put_Log_Message("Добавлена или обновлена группа "+tblGroups.getValue("FTXT"));
+		progressWorked(1, "Выгружена группа " +tblGroups.getValue("FTXT"));		
 		tblGroups.moveNext();
 	}
-
+	tblGroups.close();
+	delGoodsGrp(codes);
+	Put_Log_Message("Экспорт групп завершён");
 }
 
-function synchMenu()
+function exportGoods()
 {
-	syncNmklGrp();
-//	var sql = "select fwid, ftxt, fcod, fpodr, fdat from ^cl_pri where fisgrp = 0";
-//	if (syncPeriod.bdate)
-//		sql += " and fdat >= " + sqlTo(syncPeriod.bdate);
-//	if (syncPeriod.edate)
-//		sql += " and fdat <= " + sqlTo(syncPeriod.edate);
-//	sql += " order by fcod";
-	
+	Put_Log_Message("Экспорт товаров");
+	exportGoodsGrp();	
+	var sql = "select ftxt, fcod, max(fdat) from ^cl_pri where fisgrp = 0 group by ftxt, fcod";	
 	var tblMenu = OpenTable("m", sql);
 	
 	while (!tblMenu.isEOF())
-	{
-		var m = new Object();
-		m.id_menu = Number(tblMenu.getValue("FWID"));
-		m.id_place = Number(tblMenu.getValue("FPODR"));
-		m.name = String(tblMenu.getValue("FTXT"));
-		
-		ExecSQL(conn, "delete from t_menu_article_group where id_menu = " + m.id_menu, true);
-		ExecSQL(conn, "delete from t_article_menu where id_menu = " + m.id_menu, true);
-		
-		var extTbl = OpenExtTable(conn,	
-				"select id_menu from t_menu where id_menu = " + m.id_menu);
-		var sSQL = "";
-		if (extTbl.isEmpty())
-		{
-			m.dtime_created = new Date().getTime();
-			m.dtime_created = Math.round(m.dtime_created/1000);
-			sSQL = createPGInsertQuery("t_menu" , m);
-			Put_Log_Message("Добавлено меню: " + m.name)
-			
-		}
-		else
-		{
-			sSQL = createPGUpdateQuery("t_menu" , m, " id_menu = " + m.id_menu);
-			Put_Log_Message("Изменено меню: " + m.name)
-			
-		}
-		
-		var bRet = ExecSQL(conn, sSQL, true);
-		
-	
-		
-		var  priceTblName = String(pName(String(tblMenu.getValue("FCOD")), today, tblMenu.getValue("FWID")));
-
+	{								
+		var menucode = tblMenu.getValue("FCOD");
+		var priceTblName = String(pName(String(menucode), today, tblMenu.getValue("FWID")));
 		
 		DropTable("TMP_PRICE")
-		ExecuteSQL("select p.fcena as fcena, p.fpodr as fpodr, n.fcod as fnmklcod, n.fleftkey as flkey, n.fpodr as fnmklpodr " 
+		ExecuteSQL("select p.fcena as fcena, n.fcod as fnmklcod, n.ftxt0 as fnmkltxt " 
 				+ " into TMP_PRICE from " + priceTblName + " p inner join ^cl_nmk n on p.fnmkl = n.fwid")
 		var priceTbl = OpenTable("TMP_PRICE");		
-		initProgressBar(0, priceTbl.recordCount);
+		initProgressBar(0, priceTbl.recordCount);		
 		while (!priceTbl.isEOF())
 		{
-			var nmk = new Object();
-			nmk.id_menu = m.id_menu;
-			nmk.id_kitchen = Number(priceTbl.getValue("fpodr"))?Number(priceTbl.getValue("fpodr")):Number(priceTbl.getValue("fnmklpodr"));			
-			nmk.id_article = getFONmklID(String(priceTbl.getValue("fnmklcod")));
-			nmk.price = Number(priceTbl.getValue("fcena"));
-			
-			if (nmk.id_article != null)
-			{
-				sSQL = createPGInsertQuery("t_article_menu" , nmk);
-				ExecSQL(conn, sSQL, true);
-			}
-			
-			progressWorked(1, "Экспорт меню " + m.name );
+			var code = priceTbl.getValue("fnmklcod");
+			var query = "SELECT id FROM goods WHERE externalcode='"+code+"'";
+			var res = OpenExtTable(conn, query);
+			if(res.isEmpty())
+				query = "INSERT INTO goods SELECT COALESCE(MAX(id), 0)+1, " +
+					"(SELECT id FROM goods WHERE externalcode='"+menucode+"' LIMIT 1), " +
+					"false, '"+priceTbl.getValue("FNMKLTXT")+"', "+priceTbl.getValue("FCENA")+", 0, '','"+code+"', " +
+					"'', 0, 0, 0, 0, 0, FALSE, FALSE FROM goods;";
+			else
+				query = "UPDATE goods SET " +
+					"name='"+priceTbl.getValue("FNMKLTXT") + "', " +
+					"parent=(SELECT id FROM goods WHERE externalcode='"+menucode+"' LIMIT 1), " +
+					"price="+priceTbl.getValue("FCENA")+ " " +
+					"WHERE externalcode='"+code+"'";
+			ExecSQL(conn, query);
+			res.close();
+			progressWorked(1, "Выгружен товар " +priceTbl.getValue("FNMKLTXT"));
 			priceTbl.moveNext();
-		}
-				
-		priceTbl.close();
-		
-		var sqlGroup = "select fwid, fcod, ftxt0 from ^cl_nmk where fwid != 0 and fisgrp = " + sqlTrue
-				+ " and exists (select flkey from tmp_price where flkey between fleftkey and frightkey)";
-		
-		//browse(sqlGroup);
-		
-		var groupTbl = OpenTable(sqlGroup);		
-		while (!groupTbl.isEOF())
-		{
-			var group = new Object();
-			group.id_menu = m.id_menu;
-			group.id_article_group = Number(groupTbl.getValue("fwid"));			
-			
-			var sqlInsGrp = createPGInsertQuery("t_menu_article_group" , group);
-			ExecSQL(conn, sqlInsGrp, true);
-			
-			groupTbl.moveNext();
-		}
-		
-		groupTbl.close();
-		tblMenu.moveNext();
-		
-		extTbl.close();
-		
-	}
-	
+		}				
+		priceTbl.close();				
+		tblMenu.moveNext();		
+	}	
 	tblMenu.close();
-		
+	Put_Log_Message("Экспорт товаров завершён");
 }
 
 function getFONmklID(article)
@@ -822,6 +571,266 @@ function getFONmklID(article)
 	arrNmklID[article] = ret;
 	extTbl.close();
 	return ret;
+}
+
+function temp_importNmkl()
+{
+	
+	include ("Objects/DpClEx.js")
+	var dbname = "l_db_test";
+	var strConn = "jdbc:postgresql://localhost/"  + dbname;
+	
+	conn = getDBConnection(strConn, "postgres", "");
+	
+	var extTbl = OpenExtTable(conn, "select * from t_article");
+	while (!extTbl.isEOF())
+	{
+		var oNmkl = new DpClEx("nmkl", 0);
+		oNmkl.setVar("HCOD", extTbl.getValue("article") );
+		oNmkl.setVar("HTXT0", extTbl.getValue("name") );
+		oNmkl.setVar("HTXTS", extTbl.getValue("name") );
+		oNmkl.setVar("HNDS", 20);
+		oNmkl.save("ADD", true);
+		
+		extTbl.moveNext();
+	}
+	
+}
+
+function importBill(type, isOtkaz)
+{
+	if(isOtkaz)
+		return;
+	Put_Log_Message("Импорт " + (type == 6 ? "чеков":"возвратов"));
+	var nCodOrg = CURRENT_ORG;//getOrgVar("ORGROZN");
+	if (!nCodOrg)
+		nCodOrg = 0;
+	else
+		nCodOrg = Number(nCodOrg); 
+	var sql = "SELECT * FROM orders WHERE status=2";	
+	var extTbl = OpenExtTable(conn, sql);	
+	progressReset();
+	initProgressBar(0, extTbl.recordCount);
+	var nCount = 0;
+	while (!extTbl.isEOF())
+	{
+		var id_order = Number(extTbl.getValue("id")); 
+		var nID = Number(extTbl.getValue("num")); 
+		var sSQL = "select fwid from ^htcs where foutid = " + sqlTo(String(nID));
+		if (type == 6)
+			sSQL += " and FISRET = " + (isOtkaz? sqlTrue : sqlFalse);  		
+		var oSnap = getSnap(sSQL);	
+		if (oSnap && oSnap[0])
+		{
+			extTbl.moveNext();
+			progressWorked(1, "Импорт " + (type == 6 ? (isOtkaz?"отказов":"чеков"):"возвратов"));
+			continue;
+		}
+		var nNop = 1; //TODO:
+//		if (type == 8)
+//			nNop = 2;
+//		if (isOtkaz)
+//			nNop = 3;
+		var oDoc = new DpDoc("TCS", nNop);
+		oDoc.setVar("HNOM", String(nID));
+		oDoc.setVar("HOUTID", String(nID));		
+		var date = String(String(extTbl.getValue("orderdate")).left(10)+" "+extTbl.getValue("timeopen")).replace(/-/g, "/");
+		date = new Date(date).getVarDate();
+		oDoc.setVar("HDAT", date);
+		var nMol = getKassirID(extTbl.getValue("id_user"));
+		oDoc.setVar("HMOL", nMol);
+		oDoc.setVar("HPLCH", nCodOrg);		
+		oDoc.setVar("HPODR", fpodr);
+		
+		var sum = 0;
+		sql = "SELECT * FROM order_table WHERE id_order = " + id_order;
+		var extTblCont = OpenExtTable(conn, sql);		
+		var n = 0;
+		while(!extTblCont.isEOF())
+		{
+			var oRow = oDoc.createRow("ROW");
+			n++;
+			oRow.setVar("RNOM", n);
+			var nmkl_id = getNmklFWID(extTblCont.getValue("externalcode"));
+			oRow.setVar("RTNMK", nmkl_id);
+			var price = Number(extTblCont.getValue("price"));
+			oRow.setVar("ROCENA", price);
+			var amount = Number(extTblCont.getValue("amount"));
+			oRow.setVar("RKOL", amount);
+			oRow.setVar("RISWHITE", true);
+			var discount = price*amount - Number(extTblCont.getValue("summ"));
+			oRow.setVar("RDISCOUNT", discount);
+			sum+=Number(extTblCont.getValue("summ"));
+			
+//			var edi = arrEdiExt[Number(extTblCont.getValue("id_measure"))];
+//			if (edi)
+//				oRow.setVar("REDI", edi);
+//			oRow.setVar("RPNDS", null);
+			oRow.setVar("RPODR", getNmklKitchenID(nmkl_id));
+			oRow.setVar("RMOL", getKassirID(Number(extTblCont.getValue("id_user"))));
+			oDoc.appendRow("ROW", oRow);
+			extTblCont.moveNext();
+		}
+		
+		var summtype = Number(extTbl.getValue("summtype"));
+		summtype = summtype==1 ? 0 : (summtype==4 ? 2 : 1);		
+		oDoc.setVar("HTYPE_OPL", summtype);
+		oDoc.setVar("HSUM", sum);
+		oDoc.setVar("HSUM1", sum);	
+		oDoc.setVar("HNR" , n);		
+		extTblCont.close();		
+		
+		if (n != 0)
+		{
+/*		
+			if (type == 8)
+			{
+				var nIDRet = Number(extTbl.getValue("id_bill_return")); 
+				oDoc.setVar("HISRET" , true);
+				oSnap = getSnap("select fwid from ^htcs where foutid = " + sqlTo(String(nIDRet)));
+				if (oSnap && oSnap[0])
+				{
+					oDoc.setVar("HIDRET" , oSnap[0]);				
+				}
+				var extTblPay = OpenExtTable(conn, "select summa, cardnumber, \"type\" from t_bill_pay where id_bill = " + nIDRet
+						+ " ORDER BY \"type\" ");
+				if (!extTblPay.isEOF())
+				{
+					oDoc.setVar("HTYPE_OPL", Number(extTblPay.recordCount) == 2 ? 3 : Number(extTblPay.getValue("type")));
+				}
+				extTblPay.close();
+			}
+			else if (isOtkaz)
+			{
+				oDoc.setVar("HISRET" , true);
+			}
+*/			
+			oDoc.save(true, "ADD", true, true);	
+			nCount++;
+		}
+
+		progressWorked(1, "Импорт " + (type == 6 ? "чеков":"возвратов"));
+		extTbl.moveNext();
+	}
+	sql = "UPDATE orders SET status=4 WHERE status=2";
+	ExecSQL(conn, sql);
+	Put_Log_Message("Импортировано " + nCount + " " + (type == 6 ? (isOtkaz?"отказов":"чеков"):"возвратов"));
+	//browse(extTbl);
+}
+
+function getKassirID(extID)
+{
+	extID = String(extID);
+	var ret = arrKassID[extID];
+	if (ret)
+		return ret;
+	
+	var codMol = getPar("CODMOL");
+	var oSnap = getSnap("select fcod from ^listcl where fcl = " 
+			+ codMol + " and foutid = " + sqlTo(extID));
+	
+	if (oSnap && oSnap[0])
+	{
+		arrKassID[extID] = oSnap[0]; 
+		return oSnap[0];
+	}
+	
+	return null;
+}
+
+function getNmklFWID(articul)
+{
+	articul = String(articul);
+	var ret = arrNmklFWID[articul];
+	if (ret)
+		return ret;
+	
+	var oSnap = getSnap("select fwid from ^cl_nmk where fcod = " + sqlTo(articul));
+	
+	if (oSnap && oSnap[0])
+	{
+		arrNmklFWID[articul] = oSnap[0]; 
+		return oSnap[0];
+	}
+	
+	return null;
+}
+
+function getNmklKitchenID(nmkl_id)
+{
+	nmkl_id = Number(nmkl_id);
+	var ret = arrKitchenID[nmkl_id];
+	if(ret)
+		return ret;
+	
+	var oSnap = getSnap("select fpodr from ^cl_nmk where fwid = " + sqlTo(nmkl_id));
+	
+	if (oSnap && oSnap[0])
+	{
+		arrKitchenID[nmkl_id] = oSnap[0]; 
+		return oSnap[0];
+	}
+	
+	return null;	
+}
+
+function Put_Log_Message(msg)
+{
+	msg = String(msg);
+	display.syncExec
+	(
+		function logFnk()
+		{
+/*		
+			LOG.getCtrl().setText(LOG.getCtrl().getText() + "\r\n" + msg);
+			var lc = LOG.getCtrl().getLineCount();
+			if (lc > 10)
+				LOG.getCtrl().setTopIndex(lc - 10);
+*/
+			LOG.appendText("\r\n" + msg);
+		}
+	);
+}
+
+
+function initProgressBar(nMin,nMax)
+{
+	display.syncExec
+	(
+		function init()
+		{
+			progress.setMinimum(nMin);
+			progress.setMaximum(nMax);
+		}
+	);
+}
+
+function progressWorked(nWorked,sText)
+{
+	display.syncExec
+	(
+		function worked()
+		{
+			progress.setSelection(progress.getSelection() + nWorked);
+			progress.setToolTipText(String(nWorked));
+			if (sText)
+				status.setValue(sText);
+		}
+	);
+	java.lang.Thread.sleep(1);
+}
+
+function progressReset()
+{
+	display.syncExec
+	(
+		function worked()
+		{
+			progress.setSelection(0);
+			
+		}
+	);
+	java.lang.Thread.sleep(1);
 }
 
 function createPGUpdateQuery(tblName, m, where)
@@ -892,270 +901,3 @@ function createPGInsertQuery(tblName, m)
 	
 	return sSQL;
 }
-
-function temp_importNmkl()
-{
-	
-	include ("Objects/DpClEx.js")
-	var dbname = "l_db_test";
-	var strConn = "jdbc:postgresql://localhost/"  + dbname;
-	
-	conn = getDBConnection(strConn, "postgres", "");
-	
-	var extTbl = OpenExtTable(conn, "select * from t_article");
-	while (!extTbl.isEOF())
-	{
-		var oNmkl = new DpClEx("nmkl", 0);
-		oNmkl.setVar("HCOD", extTbl.getValue("article") );
-		oNmkl.setVar("HTXT0", extTbl.getValue("name") );
-		oNmkl.setVar("HTXTS", extTbl.getValue("name") );
-		oNmkl.setVar("HNDS", 20);
-		oNmkl.save("ADD", true);
-		
-		extTbl.moveNext();
-	}
-	
-}
-
-function importBill(type, isOtkaz)
-{
-	var nCodOrg = getOrgVar("ORGROZN");
-	if (!nCodOrg)
-		nCodOrg = 0;
-	else
-		nCodOrg = Number(nCodOrg); 
-	
-	var sql = "select * from t_bill where state = " + type;
-		
-	
-	if(syncPeriod.tcnum)
-	{
-		sql += " and id_bill > " + syncPeriod.tcnum; 
-	}
-	else
-	{
-		if (syncPeriod.bdate)
-			sql += " and dtime_open >= " + Math.round(syncPeriod.bdate.getTime()/1000);
-		
-		if (syncPeriod.edate)
-			sql += " and dtime_open <= " + Math.round(goDay(syncPeriod.edate, 1).getTime()/1000);
-	}
-	//alert(sql);
-	var extTbl = OpenExtTable(conn, sql);
-	progressReset();
-	initProgressBar(0, extTbl.recordCount);
-	var nCount = 0;
-	while (!extTbl.isEOF())
-	{
-		var nID = Number(extTbl.getValue("id_bill")); 
-		
-		var sSQL = "select fwid from ^htcs where foutid = " + sqlTo(String(nID));
-		if (type == 6)
-			sSQL += " and FISRET = " + (isOtkaz? sqlTrue : sqlFalse);  
-		
-		var oSnap = getSnap(sSQL);
-		if (oSnap && oSnap[0])
-		{
-			extTbl.moveNext();
-			progressWorked(1, "Импорт " + (type == 6 ? (isOtkaz?"отказов":"чеков"):"возвратов"));
-			continue;
-		}
-		
-		var nNop = 1; //TODO:
-		if (type == 8)
-			nNop = 2;
-		if (isOtkaz)
-			nNop = 3;
-		var oDoc = new DpDoc("TCS", nNop);
-		oDoc.setVar("HNOM", String(nID));
-		oDoc.setVar("HOUTID", String(nID));
-		var date = Number(extTbl.getValue("dtime_open")) * 1000;
-		date = new Date(date).getVarDate();
-		oDoc.setVar("HDAT", date);
-		var nMol = getKassirID(extTbl.getValue("id_kassir"));
-		oDoc.setVar("HMOL", nMol);		
-		oDoc.setVar("HPLCH", nCodOrg);		
-		
-		
-		var extTblPay = OpenExtTable(conn, "select summa, cardnumber, \"type\" from t_bill_pay where id_bill = " + nID
-				+ " ORDER BY \"type\" ");
-		var sum = 0;
-		var n = 1;
-		while(!extTblPay.isEOF() && n <=2)
-		{
-			var nSum = Number(extTblPay.getValue("summa"));
-			sum += nSum;
-			
-			oDoc.setVar("HSUM" + n, nSum);
-			oDoc.setVar("HTYPE_OPL", n == 2 ? 3 : Number(extTblPay.getValue("type")));
-			extTblPay.moveNext();
-			n++;			
-		}
-		extTblPay.close();
-		oDoc.setVar("HSUM", sum);		
-		
-		var extTblCont = OpenExtTable(conn, "select * from t_bill_cont where id_bill = " + nID
-				+ " and " + (isOtkaz?"state = 2":"state <> 2") + " order by article_pos");
-		
-		
-		n = 0;
-		while(!extTblCont.isEOF())
-		{
-			var oRow = oDoc.createRow("ROW");
-			n++;
-			oRow.setVar("RNOM", n);
-			oRow.setVar("RTNMK", getNmklFWID(extTblCont.getValue("article")));
-			oRow.setVar("ROCENA", Number(extTblCont.getValue("price")));
-			oRow.setVar("RKOL", Number(extTblCont.getValue("amount")));
-			oRow.setVar("RDISCOUNT", (-1) * Number(extTblCont.getValue("discount")));
-			var edi = arrEdiExt[Number(extTblCont.getValue("id_measure"))];
-			if (edi)
-				oRow.setVar("REDI", edi);
-			//oRow.setVar("RPNDS", null);
-			oRow.setVar("RISWHITE", Number(extTblCont.getValue("white")) == 1);
-			oRow.setVar("RPODR", Number(extTblCont.getValue("id_kitchen")));
-			//oRow.setVar("RPODR", Number(extTblCont.getValue("id_kitchen")));
-			oRow.setVar("RMOL", getKassirID(Number(extTblCont.getValue("id_kassir"))));			
-			oDoc.appendRow("ROW", oRow);
-			extTblCont.moveNext();
-			
-						
-		}
-		oDoc.setVar("HNR" , n);
-		extTblCont.close();
-		
-		if (n != 0)
-		{
-		
-			if (type == 8)
-			{
-				var nIDRet = Number(extTbl.getValue("id_bill_return")); 
-				oDoc.setVar("HISRET" , true);
-				oSnap = getSnap("select fwid from ^htcs where foutid = " + sqlTo(String(nIDRet)));
-				if (oSnap && oSnap[0])
-				{
-					oDoc.setVar("HIDRET" , oSnap[0]);				
-				}
-				var extTblPay = OpenExtTable(conn, "select summa, cardnumber, \"type\" from t_bill_pay where id_bill = " + nIDRet
-						+ " ORDER BY \"type\" ");
-				if (!extTblPay.isEOF())
-				{
-					oDoc.setVar("HTYPE_OPL", Number(extTblPay.recordCount) == 2 ? 3 : Number(extTblPay.getValue("type")));
-				}
-				extTblPay.close();
-			}
-			else if (isOtkaz)
-			{
-				oDoc.setVar("HISRET" , true);
-			}
-			
-			oDoc.save(true, "ADD", true, true);	
-			nCount++;
-		}
-		progressWorked(1, "Импорт " + (type == 6 ? "чеков":"возвратов"));
-		
-		extTbl.moveNext();
-	}
-	Put_Log_Message("Импортировано " + nCount + " " + (type == 6 ? (isOtkaz?"отказов":"чеков"):"возвратов"));
-	//browse(extTbl);
-	
-	
-}
-
-function getKassirID(extID)
-{
-	extID = String(extID);
-	var ret = arrKassID[extID];
-	if (ret)
-		return ret;
-	
-	var codMol = getPar("CODMOL");
-	var oSnap = getSnap("select fcod from ^listcl where fcl = " 
-			+ codMol + " and foutid = " + sqlTo(extID));
-	
-	if (oSnap && oSnap[0])
-	{
-		arrKassID[extID] = oSnap[0]; 
-		return oSnap[0];
-	}
-	
-	return null;
-}
-
-function getNmklFWID(articul)
-{
-	articul = String(articul);
-	var ret = arrNmklFWID[articul];
-	if (ret)
-		return ret;
-	
-	var oSnap = getSnap("select fwid from ^cl_nmk where fcod = " + sqlTo(articul));
-	
-	if (oSnap && oSnap[0])
-	{
-		arrNmklFWID[articul] = oSnap[0]; 
-		return oSnap[0];
-	}
-	
-	return null;
-}
-
-function Put_Log_Message(msg)
-{
-	msg = String(msg);
-	display.syncExec
-	(
-		function logFnk()
-		{
-/*		
-			LOG.getCtrl().setText(LOG.getCtrl().getText() + "\r\n" + msg);
-			var lc = LOG.getCtrl().getLineCount();
-			if (lc > 10)
-				LOG.getCtrl().setTopIndex(lc - 10);
-*/
-			LOG.appendText("\r\n" + msg);
-		}
-	);
-}
-
-
-function initProgressBar(nMin,nMax)
-{
-	display.syncExec
-	(
-		function init()
-		{
-			progress.setMinimum(nMin);
-			progress.setMaximum(nMax);
-		}
-	);
-}
-
-function progressWorked(nWorked,sText)
-{
-	display.syncExec
-	(
-		function worked()
-		{
-			progress.setSelection(progress.getSelection() + nWorked);
-			progress.setToolTipText(String(nWorked));
-			if (sText)
-				status.setValue(sText);
-		}
-	);
-	java.lang.Thread.sleep(1);
-}
-
-function progressReset()
-{
-	display.syncExec
-	(
-		function worked()
-		{
-			progress.setSelection(0);
-			
-		}
-	);
-	java.lang.Thread.sleep(1);
-}
-

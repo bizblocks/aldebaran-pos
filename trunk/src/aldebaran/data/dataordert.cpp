@@ -74,7 +74,7 @@ QString alDataOrderTable::updateQuery()
     for(int r=0;r<(int)lines.count();r++)
     {
 	alOrderLine * line = getLine(r);
-	query+=Queries::tr("INSERT INTO order_table VALUES (%1, %2, %3, %4, %5, %6, %7, %8, %9);\n")
+	query+=Queries::tr("INSERT INTO order_table VALUES (%1, %2, %3, '%4', %5, %6, %7, %8, %9);\n")
 	       .arg(fOrder->id())
 	       .arg(r+1)
 	       .arg(line->item() ? line->item()->id() : 0)
