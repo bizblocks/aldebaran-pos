@@ -33,13 +33,15 @@ private:
 };
 
 typedef alUserRecord * pUserRecord;
+typedef alGoodsRecord * pGoodsRecord;
 
 class alOrderLine : QObject
 {
     Q_OBJECT
     Q_PROPERTY(Q_ULLONG id READ order)
     Q_PROPERTY(int lineNum READ lineNum)
-    Q_PROPERTY(Q_ULLONG item READ item WRITE setItem)
+    Q_PROPERTY(pGoodsRecord item READ item WRITE setItem)
+    Q_PROPERTY(QString externalCode READ externalCode WRITE setExternalCode)
     Q_PROPERTY(double amount READ amount WRITE setAmount)
     Q_PROPERTY(double price READ price WRITE setPrice)
     Q_PROPERTY(double summ READ summ WRITE setSumm)
@@ -51,9 +53,11 @@ public slots:
     void recalc();
     Q_ULLONG order() const { return fOrderID; };
     int lineNum() const { return fLineNum; };
-    alGoodsRecord * item() const {return fItem; };
+    pGoodsRecord item() const {return fItem; };
     QString itemText() { return fItemText; };
-    void setItem(alGoodsRecord * item);
+    void setItem(pGoodsRecord item);
+    QString externalCode() const { return fExternalCode; };
+    void setExternalCode(const QString& ex) { fExternalCode = ex; };
     double price() const { return fPrice; };
     void setPrice(double p) { fPrice = p; };
     double amount() const { return fAmount; };
@@ -69,8 +73,8 @@ private:
     alDataOrderTable * fData;
     Q_ULLONG fOrderID;
     int fLineNum;
-//TODO replace with alGoodsRecord (no data)
     alGoodsRecord * fItem;
+    QString fExternalCode;
     QString fItemText;
     double fAmount, fPrice, fSumm;
     pUserRecord fUser;
