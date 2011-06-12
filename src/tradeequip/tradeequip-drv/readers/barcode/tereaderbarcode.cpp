@@ -9,7 +9,7 @@ TEReaderBarcode::TEReaderBarcode() : superclass()
 
 int TEReaderBarcode::openPort() // opens port
 {
-	return open();
+    return open();
 }
 
 int TEReaderBarcode::closePort() // closes port

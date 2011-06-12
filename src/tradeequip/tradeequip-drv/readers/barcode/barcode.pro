@@ -1,21 +1,29 @@
-include ( ../../config.pri )
-TEMPLATE    = lib
-LANGUAGE    = C++
-TARGET      = tereader-barcode
+TEMPLATE	= lib
+LANGUAGE	= C++
 
-CONFIG      += qt warn_on
+CONFIG	+= qt warn_on
+
 win32:CONFIG	+= dll
 
-HEADERS     = tereaderbarcode.h
+LIBS	+= -L$${TREQPATH}/lib -ltradeequip
 
-SOURCES     = tereaderbarcode.cpp
+DEFINES	+= TRBARCODE_BUILD
+
+INCLUDEPATH	+= ../../../tradeequip-1.1.0/src/lib
+
+HEADERS	+= tereaderbarcode.h
+
+SOURCES	+= tereaderbarcode.cpp
+
+include ( ../../config.pri )
+TARGET      = tereader-barcode
+
+
+
 
 TREQPATH = ../../../tradeequip-1.1.0
 
-INCLUDEPATH += $${TREQPATH}/src/lib
-LIBS += -L$${TREQPATH}/lib -ltradeequip
 
-DEFINES += TRBARCODE_BUILD
 
 DESTDIR     = ../../lib
 

@@ -158,7 +158,8 @@ TEBase::portNumber() const
 
 int TEBase::setPortDevice(QString device)
 {
-    if(device.left(2).upper()="IP")
+    QDEBUG(QString("setPortDevice: %1").arg(device));
+    if(device.left(2).upper()=="IP")
     {
 	setConnectionType(ECT_TCP);
 	device = device.mid(2);
@@ -177,12 +178,13 @@ QString TEBase::portDevice() const
 
 int TEBase::serialOpen()
 {
-    QString pname;
+    QString pname;   
 #ifdef Q_OS_WIN32
     pname=QString("COM%1:").arg( portNumber() );
 #else
     pname=QString("%1").arg( portDevice() );
 #endif    
+    QDEBUG(QString("Opening port: %1").arg(pname));    
     Port->setName( pname );
     if (!Port->open())
     {
