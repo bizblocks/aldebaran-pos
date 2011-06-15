@@ -6,6 +6,8 @@
 #define ESC	0x1B
 #define GS	0x1D
 #define RS	0x1E
+#define DLE	0x10
+#define DC4	0x14
 
 #define RES_OK			0
 #define RES_TIMEOUT		1
@@ -50,7 +52,7 @@ public slots:
     virtual int setItem(const QString & sName, double dPrice, double dQuantity);
     virtual int setPayment(double dSum, int iType=1);    
     
-    virtual int openCashbox(int); // open cash box number n   
+    virtual int openCashbox(int n=0); // open cash box number n   
     virtual int ZReport() { return -1; };
     virtual int XReport() { return -1; };
     

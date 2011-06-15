@@ -295,11 +295,12 @@ int ESCPOS::beep()
     return res;
 }
 
-int ESCPOS::openCashbox(int)
+int ESCPOS::openCashbox(int m)
 {
     int res;
-    Byte cmd[3] = {ESC, 'p', 48};
-    res = sendCmd(cmd, 3);
+//    Byte cmd[5] = {DLE, DC4,  1, m, 0xab};
+    Byte cmd[5] = {ESC, 'p',  m, 0x19, 0xff};    
+    res = sendCmd(cmd, 5);
     return res;    
 }
 
