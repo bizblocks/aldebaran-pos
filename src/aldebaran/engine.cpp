@@ -1304,7 +1304,7 @@ void alEngine::advancedReport(int period, int type, QDateTime begin, QDateTime e
     else if(type==1) str = advReportHourly(period, begin, end);
     else if(type==2) str = advReportCheques(period, begin, end);
     else if(type==3) str = advReportDiscounts(period, begin, end);
-    job->setData(str);
+    job->setData(str.join("\n").utf8());
     processJob(job);
     job = createPrinterJob("", "cut");
     processJob(job);
