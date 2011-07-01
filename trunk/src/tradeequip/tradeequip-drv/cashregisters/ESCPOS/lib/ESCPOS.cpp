@@ -228,8 +228,9 @@ int ESCPOS::closeCheck(double & dChange, int /*iReserved*/)
     if(dChange>0)
 	if((res = print(justify(PRINT_WIDTH, " СДАЧА", QString("=%1").arg(dChange, 6, 'f', 2))+"\n"))) return res;
     print(checkFooter());    
-    if((res = print("\n\n\n"))) return res;    
+    if((res = print("\n\n\n"))) return res;
     clear();
+    res = openCashbox();
     return res;
 }
 
@@ -299,7 +300,8 @@ int ESCPOS::openCashbox(int m)
 {
     int res;
 //    Byte cmd[5] = {DLE, DC4,  1, m, 0xab};
-    Byte cmd[5] = {ESC, 'p',  m, 0x19, 0xff};    
+    m = 1; //HACK
+    Byte cmd[5] = {ESC, 'p',  m, 0xfa, 0xff};    
     res = sendCmd(cmd, 5);
     return res;    
 }
