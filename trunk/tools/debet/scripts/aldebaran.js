@@ -149,6 +149,7 @@ function runSyncro()
 //	synchPodr();
 	
 	exportGoods();
+	exportClients();
 
 	if (importCheck)
 	{
@@ -550,6 +551,35 @@ function exportGoods()
 	Put_Log_Message("Экспорт товаров завершён");
 }
 
+
+function exportClients()
+{
+	Put_Log_Message("Экспорт клиентов");
+	var sql="select c.fwid, c.ftxt, fcod, fskidka  from dpbase.com_cl as c left join dpbase.com_clrelclcl as r on " +
+		"c.fwid=r.fwid_cl right join dpbase.cl_12 on c.fwid=cl_12.fmainwid where fcl=12;";
+	var tblClients = OpenTable("m", sql);
+	while(!tblClients.isEOF())
+	{
+		var code = tblClients.getValue("FCOD");
+		var query = "SELECT id FROM discount WHERE code='"+code+"'";
+		var res = OpenExtTable(conn, query);
+		if(res.isEmpty())
+			query = "INSERT INTO discount SELECT COALESCE(MAX(id), 0)+1, " +
+				"'"+tblClients.getValue("FTXT")+"', 0, "+tblClients.getValue("FSKIDKA")+", FALSE,'"+code+"' FROM discount;";
+		else
+			query = "UPDATE discount SET " +
+				"name='"+tblClients.getValue("FTXT") + "', " +
+				"value="+tblClients.getValue("FSKIDKA")+ " " +
+				"WHERE code='"+code+"'";
+		ExecSQL(conn, query);
+		res.close();
+		progressWorked(1, "Выгружен клиент " +tblClients.getValue("FTXT"));
+		tblClients.moveNext();	
+	}
+	tblClients.close();
+	Put_Log_Message("Экспорт клиентов завершён");
+}
+
 function getFONmklID(article)
 {
 	article = String(article);
@@ -607,7 +637,7 @@ function importBill(type, isOtkaz)
 		nCodOrg = 0;
 	else
 		nCodOrg = Number(nCodOrg); 
-	var sql = "SELECT * FROM orders WHERE status=2";	
+	var sql = "SELECT * FROM orders LEFT JOIN discount ON orders.id_discount=discount.id WHERE status=2";	
 	var extTbl = OpenExtTable(conn, sql);	
 	progressReset();
 	initProgressBar(0, extTbl.recordCount);
@@ -639,7 +669,7 @@ function importBill(type, isOtkaz)
 		oDoc.setVar("HDAT", date);
 		var nMol = getKassirID(extTbl.getValue("id_user"));
 		oDoc.setVar("HMOL", nMol);
-		oDoc.setVar("HPLCH", nCodOrg);		
+		oDoc.setVar("HPLCH", extTbl.getValue("code"));		
 		oDoc.setVar("HPODR", fpodr);
 		
 		var sum = 0;
