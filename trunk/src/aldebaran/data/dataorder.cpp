@@ -269,6 +269,8 @@ void alOrderRecord::printOrder(QString device)
 //	qDebug(fEngine->alignStrings(lst, tabs, pw) + QString("\n"));
 	lst.clear();
 	tabs.clear();
+	line->setPrinted(TRUE);
+	update();
     }
     str += QString("").rightJustify(pw, '-') + QString("\n");    
     str += "\n\n\n";
