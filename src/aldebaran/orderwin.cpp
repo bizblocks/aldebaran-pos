@@ -217,9 +217,9 @@ void alOrderWindow::printOrder()
 //    tpl->addSection("ROW");    
 //    tpl->addSection("DOCFOOTER");
     fOrder->setStatus(alDataOrder::Saved);    
-    fOrder->update();    
-    emit orderUpdated(fOrder);    
+//    fOrder->update();    
     fOrder->printOrder();
+    emit orderUpdated(fOrder);
 }
 
 void alOrderWindow::printBill()
