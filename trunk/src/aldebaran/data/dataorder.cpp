@@ -280,6 +280,8 @@ void alOrderRecord::printOrder(QString device)
     fEngine->processJob(job);
     job = fEngine->createPrinterJob(device, "cut");
     fEngine->processJob(job);    
+    job = fEngine->createPrinterJob(device, "beep");
+    fEngine->processJob(job);    
 }
 
 void alOrderRecord::printBill(QString device)
