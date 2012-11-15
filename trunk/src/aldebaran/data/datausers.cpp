@@ -195,5 +195,5 @@ void alUserRecord::setRight(alRights rule, bool enabled)
 	fRights[rule]->setRule(rule);
     }
     fRights[rule]->setEnabled(enabled);
-    fRights[rule]->update();    
+    fRights[rule]->update();
 }

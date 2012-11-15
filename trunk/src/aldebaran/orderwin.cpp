@@ -24,6 +24,7 @@ alOrderWindow::alOrderWindow(alEngine * e, QWidget * parent, QString name, Q_ULL
 
 void alOrderWindow::init()
 {
+    alUserRecord * user = fEngine->currentUser();
     if(!fEngine) return;
     
     fOrders = new alDataOrder(fEngine);
@@ -94,6 +95,7 @@ void alOrderWindow::init()
     btn->setFixedSize(50,50);
     connect(btn, SIGNAL(clicked()), this, SLOT(printBill()));
     btnGrid->addWidget(btn, 0, 10);
+    btn->setEnabled(user->right(rPreCheck));
     
     btn = new QPushButton(btnGroup, "btnCheck");
     btn->setPixmap(QPixmap::fromMimeSource("geld.png"));
@@ -232,7 +234,11 @@ void alOrderWindow::printBill()
 
 void alOrderWindow::check()
 {
+    alUserRecord * user = fEngine->currentUser();
     if(fOrder->status()==alDataOrder::Closed) return;
+    if(user->right(rPreCheck))
+	printOrder();
+    
     double clientSumm = orderTab->total("summ");
     if(fSummType==1) clientSumm = fEngine->calculator(clientSumm);
     if(clientSumm<0) return;
