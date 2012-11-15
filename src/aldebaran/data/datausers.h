@@ -60,7 +60,7 @@ private:
     int fRole;
     QString fPass;
     alDataRights * rights;
-    alRightsRecord * fRights[rEnd];    
+    alRightsRecord * fRights[rEnd];
 };
 
 #endif

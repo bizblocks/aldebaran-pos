@@ -49,8 +49,9 @@ void dlgUser::check(QListBoxItem * item)
 void dlgUser::init()
 {
     listRights->clear();
-    for(int r=1;r<rEnd;r++)
+    for(int r=rStart+1;r<rEnd;r++)
     {
+	qDebug(QObject::tr(alRightsStrings[r]));
 	alListBoxItem * item = new alListBoxItem(QPixmap::fromMimeSource("unchecked.png"), QObject::tr(alRightsStrings[r]));
 	listRights->insertItem(item, r-1);
     }

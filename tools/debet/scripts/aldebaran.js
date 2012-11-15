@@ -555,7 +555,7 @@ function exportGoods()
 function exportClients()
 {
 	Put_Log_Message("Экспорт клиентов");
-	var sql="select c.fwid, c.ftxt, fcod, fskidka  from dpbase.com_cl as c left join dpbase.com_clrelclcl as r on " +
+	var sql="select c.fwid, c.ftxt, fcod, fskidka  from ^com_cl as c left join ^com_clrelclcl as r on " +
 		"c.fwid=r.fwid_cl right join dpbase.cl_12 on c.fwid=cl_12.fmainwid where fcl=12;";
 	var tblClients = OpenTable("m", sql);
 	while(!tblClients.isEOF())

@@ -21,14 +21,15 @@ enum alRights
     rDiscountProtected,
     rAdvancedReport,
     rCard,
+    rPreCheck,
     rEnd
 };
 
 const bool rDefaultSets[3][rEnd] =
 {
-    {TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE,  TRUE, TRUE, TRUE, TRUE, TRUE},
-    {TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE},
-    {TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,FALSE}
+    {TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE,  TRUE, TRUE, TRUE, TRUE, TRUE, FALSE},
+    {TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE},
+    {TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE}
 };
 
 const QString alRightsStrings[] = {"", 
@@ -38,15 +39,16 @@ const QString alRightsStrings[] = {"",
 			     QObject::tr("System: Paying"),
 			     QObject::tr("System: Payout"),
 			     QObject::tr("System: Equipment"),
-			     QObject::tr("System: Import goods"),				
+			     QObject::tr("System: Import goods"),
 			     QObject::tr("System: Export sales"),
 			     QObject::tr("System: Settings"),
 			     QObject::tr("Order: edit strange lines"),
 			     QObject::tr("Order: Archive"),
 			     QObject::tr("Discount: Manual"),
-			     QObject::tr("Discount: Protected"),			     
+			     QObject::tr("Discount: Protected"),
 			     QObject::tr("System: Advanced report"),
 			     QObject::tr("Order: Card pay"),
+			     QObject::tr("Order: Postpay work"),
 			     ""}; 
 
 #endif
