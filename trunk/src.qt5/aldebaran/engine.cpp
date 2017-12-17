@@ -3,6 +3,7 @@
 #include <qpixmap.h>
 #include <qbuffer.h>
 #include <qfile.h>
+#include <QTranslator>
 //TODO reimplement
 //#include <qftp.h>
 #include "engine.h"
@@ -94,71 +95,77 @@ void alEngine::initUsers()
 void alEngine::initEquipment()
 {
     fWorker = eqWorker::worker();
-    alDataEq * eq = new alDataEq(this);
-    connect(fWorker, SIGNAL(deviceError(int)), this, SLOT(onError(int)));    
-    fWorker->initEquipment(eq);
+    //TODO reimplement with refactoring
+//    alDataEq * eq = new alDataEq(this);
+//    connect(fWorker, SIGNAL(deviceError(int)), this, SLOT(onError(int)));
+//    fWorker->initEquipment(eq);
     
-    int err;
-    eqJob * job = createPrinterJob("", "print");
-    if(job) 
-    {
-	job->setData(QString("%1 ready\n\n\n\n\n").arg(job->device()->name()));	
-	job->process();
-	if((err=job->error())) error(tr("default printer error: %1").arg(err));
-	delete job;	
-	job = createPrinterJob("", "cut");
-	job->process();
-	delete job;
-    }
+//    int err;
+//    eqJob * job = createPrinterJob("", "print");
+//    if(job)
+//    {
+//        job->setData(QString("%1 ready\n\n\n\n\n").arg(job->device()->name()));
+//        job->process();
+//        if((err=job->error()))
+//            error(tr("default printer error: %1").arg(err));
+//        delete job;
+//        job = createPrinterJob("", "cut");
+//        job->process();
+//        delete job;
+//    }
 
-    job = createECRJob("", "beep");
-    if(!job) error(tr("ERROR: default ECR not connected"));
-    else
-    {
-	job->process();
-	if((err=job->error())) error(tr("default ECR error: %1").arg(err));	
-	delete job;
-    }
+//    job = createECRJob("", "beep");
+//    if(!job) error(tr("ERROR: default ECR not connected"));
+//    else
+//    {
+//        job->process();
+//        if((err=job->error()))
+//            error(tr("default ECR error: %1").arg(err));
+//        delete job;
+//    }
     
-    eq->select("type='MSC Reader'");
-    if(eq->first()) do
-    {
-	alEqRecord * device = (alEqRecord*)eq->current();
-	if(!device->enabled()) continue;
-	eqMSCReader * reader = (eqMSCReader*)fWorker->getDevice(device->name());
-	connect(reader, SIGNAL(data(int, QString)), this, SLOT(readerData(int, QString)));
-    }while (eq->next());
+//    eq->select("type='MSC Reader'");
+//    if(eq->first()) do
+//    {
+//        alEqRecord * device = (alEqRecord*)eq->current();
+//        if(!device->enabled())
+//            continue;
+//        eqMSCReader * reader = (eqMSCReader*)fWorker->getDevice(device->name());
+//        connect(reader, SIGNAL(data(int, QString)), this, SLOT(readerData(int, QString)));
+//    }while (eq->next());
 
-    eq->select("type='Barcode Reader'");
-    if(eq->first()) do
-    {
-	alEqRecord * device = (alEqRecord*)eq->current();
-	if(!device->enabled()) continue;	
-	eqBarcodeReader * reader = (eqBarcodeReader*)fWorker->getDevice(device->name());
-	connect(reader, SIGNAL(data(QString)), this, SLOT(barcodeReaderData(QString)));
-    }while (eq->next());    
+//    eq->select("type='Barcode Reader'");
+//    if(eq->first()) do
+//    {
+//        alEqRecord * device = (alEqRecord*)eq->current();
+//        if(!device->enabled())
+//            continue;
+//        eqBarcodeReader * reader = (eqBarcodeReader*)fWorker->getDevice(device->name());
+//        connect(reader, SIGNAL(data(QString)), this, SLOT(barcodeReaderData(QString)));
+//    }while (eq->next());
 
-    eq->select("type='Sirius'");
-    if(eq->first()) do
-    {
-	alEqRecord * device = (alEqRecord*)eq->current();
-	if(!device->enabled()) continue;	
-	eqSirius * sirius = (eqSirius*)fWorker->getDevice(device->name());
-	connect(sirius, SIGNAL(data(importer*)), this, SLOT(importData(importer*)));
-    }while (eq->next());
+//    eq->select("type='Sirius'");
+//    if(eq->first()) do
+//    {
+//        alEqRecord * device = (alEqRecord*)eq->current();
+//        if(!device->enabled())
+//            continue;
+//        eqSirius * sirius = (eqSirius*)fWorker->getDevice(device->name());
+//        connect(sirius, SIGNAL(data(importer*)), this, SLOT(importData(importer*)));
+//    }while (eq->next());
 
-    eq->select("type='Virtual Mart'");
-    if(eq->first()) do
-    {
-	alEqRecord * device = (alEqRecord*)eq->current();
-	if(!device->enabled()) continue;	
-	eqVirtualMart * vMart = (eqVirtualMart*)fWorker->getDevice(device->name());
-	connect(vMart, SIGNAL(data(importer*)), this, SLOT(importData(importer*)));
-    }while (eq->next());
+//    eq->select("type='Virtual Mart'");
+//    if(eq->first()) do
+//    {
+//        alEqRecord * device = (alEqRecord*)eq->current();
+//        if(!device->enabled()) continue;
+//        eqVirtualMart * vMart = (eqVirtualMart*)fWorker->getDevice(device->name());
+//        connect(vMart, SIGNAL(data(importer*)), this, SLOT(importData(importer*)));
+//    }while (eq->next());
 
-    server = new sServer(this);
-    connect(server, SIGNAL(hasData(importer*)), this, SLOT(importData(importer*)));
-    server->start();        
+//    server = new sServer(this);
+//    connect(server, SIGNAL(hasData(importer*)), this, SLOT(importData(importer*)));
+//    server->start();
 }
 
 void alEngine::importData(importer * imp)
@@ -191,17 +198,20 @@ void alEngine::importData(importer * imp)
 
 bool alEngine::loginLock()
 {
-    if(mainWindow) mainWindow->hide();
-    dlgLogin * dlg = new dlgLogin();
-    dlg->init(this);
-    int res = dlg->exec();
-    delete dlg;    
+    if(mainWindow)
+        mainWindow->hide();
+    QDialog dlg;
+    Ui::dlgLogin uidlg;
+    uidlg.setupUi(&dlg);
+//    dlg.init(this);
+    int res = dlg.exec();
     if(res==QDialog::Accepted)
     {
-	if(mainWindow) mainWindow->showFullScreen();
-	return TRUE;
+        if(mainWindow) mainWindow->showFullScreen();
+        return TRUE;
     }
-    if(mainWindow) return loginLock(); //WARNING recursion
+    if(mainWindow)
+        return loginLock(); //WARNING recursion
     return FALSE;
 }
 
@@ -217,16 +227,16 @@ int alEngine::start()
     QStringList dbParams;
     do
     {
-	dbParams = settings->dbSettings();
-	fDB = QSqlDatabase::addDatabase(dbParams[0], dbParams[1]);
-	fDB->setDatabaseName(dbParams[1]);
-	fDB->setHostName(dbParams[2]);
-	fDB->setPort(dbParams[3].toInt());
-	if(!fDB->open(dbParams[4], dbParams[5]))
-	{
-	    if(!settings->dbDialog()) exitApp();
-	}
-	else break;
+        dbParams = settings->dbSettings();
+        fDB = new QSqlDatabase(QSqlDatabase::addDatabase(dbParams[0], dbParams[1]));
+        fDB->setDatabaseName(dbParams[1]);
+        fDB->setHostName(dbParams[2]);
+        fDB->setPort(dbParams[3].toInt());
+        if(!fDB->open(dbParams[4], dbParams[5]))
+        {
+            if(!settings->dbDialog()) exitApp();
+        }
+        else break;
     }while(true);
     Queries::setDialect(dbParams[0]);
     dbInited = TRUE;
@@ -239,7 +249,7 @@ int alEngine::start()
 
     mainWindow = new alMainWindow(this);
     connect(mainWindow, SIGNAL(closed()), this, SLOT(exitApp()));
-    qApp->setMainWidget(mainWindow);
+    qApp->setActiveWindow(mainWindow);
 
 //    alDataGoods * goods = new alDataGoods(this);
 //    goods->exportpictures();
@@ -264,10 +274,11 @@ void alEngine::settingsDialog()
 
 void alEngine::eqDialog()
 {
-    equipmentDialog * dlg = new equipmentDialog();
-    dlg->init(this);
-    dlg->exec();
-    delete dlg;
+//TODO reimplement
+//    equipmentDialog * dlg = new equipmentDialog();
+//    dlg->init(this);
+//    dlg->exec();
+//    delete dlg;
 }
 
 bool alEngine::startTransaction()
@@ -333,7 +344,7 @@ void alEngine::exportOrder(alOrderRecord * order)
     if(eq->first()) do
     {
 	alEqRecord * dev = (alEqRecord*)eq->current();
-	qDebug(QString("device name is %1, table %2").arg(dev->name()).arg(dev->option("table").toInt()));
+    qDebug() << QString("device name is %1, table %2").arg(dev->name()).arg(dev->option("table").toInt());
 	if(dev->option("table").toInt()==order->table()) 
 	{
 	    device = dev->name();
@@ -389,27 +400,28 @@ bool alEngine::prepareGoods(QString deviceType)
     goods->select("eqexport=true");
     if(goods->first()) do
     {
-	map m;
-	alGoodsRecord * rec = (alGoodsRecord *)goods->current();
-	m["01"] = (uint)rec->id();
-	if((uint)rec->parent()) m["02"] =  (uint)rec->parent()->id();
-	else m["02"] = 0;
-	m["03"] = rec->isGroup();
-	m["04"] = rec->name();
-	m["05"] = rec->description();
-	m["06"] = pixmap2bytearray(rec->picture());
-	m["07"] = QString("%1").arg(rec->price(), 5, 'F', 2);
-	m["08"] = QString("%1").arg(rec->hydroCarbonat(), 6, 'F', 3);
-	m["09"] = QString("%1").arg(rec->fat(), 6, 'F', 3);
-	m["10"] = QString("%1").arg(rec->protein(), 6, 'F', 3);
-	m["11"] = QString("%1").arg(rec->calories(), 7, 'F', 3);
-	m["12"] = rec->outOfStore();
-	
-	job = drv->createJob("line");
-	job->setData(QVariant(m));
-	job->process();
-	delete job;
-	if(app->hasPendingEvents()) app->processEvents(1000);
+        map m;
+        alGoodsRecord * rec = (alGoodsRecord *)goods->current();
+        m["01"] = (uint)rec->id();
+        if((uint)rec->parent()) m["02"] =  (uint)rec->parent()->id();
+        else m["02"] = 0;
+        m["03"] = rec->isGroup();
+        m["04"] = rec->name();
+        m["05"] = rec->description();
+        m["06"] = pixmap2bytearray(rec->picture());
+        m["07"] = QString("%1").arg(rec->price(), 5, 'F', 2);
+        m["08"] = QString("%1").arg(rec->hydroCarbonat(), 6, 'F', 3);
+        m["09"] = QString("%1").arg(rec->fat(), 6, 'F', 3);
+        m["10"] = QString("%1").arg(rec->protein(), 6, 'F', 3);
+        m["11"] = QString("%1").arg(rec->calories(), 7, 'F', 3);
+        m["12"] = rec->outOfStore();
+
+        job = drv->createJob("line");
+        job->setData(QVariant(m));
+        job->process();
+        delete job;
+        if(app->hasPendingEvents())
+            app->processEvents(QEventLoop::AllEvents, 1000);
     }while(goods->next());
     job = drv->createJob("goodsEnd");
     job->process();
@@ -438,7 +450,7 @@ void alEngine::sendElement(alGoodsRecord * rec)
     if(eq->first()) do
     {
 	alEqRecord * dev = (alEqRecord*)eq->current();
-	qDebug(QString("device name is %1, table %2").arg(dev->name()).arg(dev->option(tr("table")).toInt()));
+    qDebug() << QString("device name is %1, table %2").arg(dev->name()).arg(dev->option(tr("table")).toInt());
 	QString device = dev->name();
 	if(!connectDevice(device)) return;
 	eqJob * job = fWorker->createJob(device, "elementStart");
@@ -514,29 +526,33 @@ int alEngine::printWidth()
 
 QString alEngine::centerString(QString str, int iWidth)
 {
-    if(!iWidth) return str;
-    str = str.rightJustify((iWidth-str.length())/2-1+str.length());
+    if(!iWidth)
+        return str;
+    str = str.rightJustified((iWidth-str.length())/2-1+str.length());
     return str;
 }
 
-QString alEngine::alignStrings(QStringList lst, QValueList<int> tabs, int iWidth)
+QString alEngine::alignStrings(QStringList lst, QList<int> tabs, int iWidth)
 {
     QString sRes, sRes2, tmp;
     if(!lst.count()) return QString("");
     int tabWidth = iWidth / lst.count();
     for(int i=lst.count()-1;i>0;i--)
     {
-	tmp = lst[i];
-	if((int)tmp.length()>tabWidth)
-	{
-	    sRes = " " + tmp.left(tabWidth-1) + sRes;
-	    sRes2 = " " + tmp.mid(tabWidth-1, tabWidth).rightJustify(tabWidth-1) + sRes2;
-	} 
-	else sRes = " " + tmp.rightJustify(tabs[i] ? tabs[i] : tmp.length()+2) + sRes;
+        tmp = lst[i];
+        if((int)tmp.length()>tabWidth)
+        {
+            sRes = " " + tmp.left(tabWidth-1) + sRes;
+            sRes2 = " " + tmp.mid(tabWidth-1, tabWidth).rightJustified(tabWidth-1) + sRes2;
+        }
+        else
+        {
+            sRes = " " + tmp.rightJustified(tabs[i] ? tabs[i] : tmp.length()+2) + sRes;
+        }
     }
     tmp = lst[0];
     tabWidth = iWidth - sRes.length();
-    sRes = tmp.leftJustify(tabWidth-1, ' ', TRUE) + sRes;
+    sRes = tmp.leftJustified(tabWidth-1, ' ', TRUE) + sRes;
     if((int)tmp.length()>tabWidth) sRes2 = tmp.mid(tabWidth-1, tabWidth) + sRes2;
     if(!sRes2.isEmpty()) sRes = sRes + "\n" + sRes2;
     return sRes;
@@ -544,24 +560,25 @@ QString alEngine::alignStrings(QStringList lst, QValueList<int> tabs, int iWidth
 
 void alEngine::startImport()
 {
-    QString path = QString(settings->parameter(GENERAL, IMPEXPPATH).toString());
-    if(path.right(1)!="/") path += "/";
-    QString fileName =  path + QString(settings->parameter(GENERAL, IMPEXPIMPORT).toString());
-    if(settings->parameter(GENERAL, IMPEXPFTP).toInt())
-    {
-	QFile * file = new QFile(fileName);
-	file->open(IO_WriteOnly);
-	QString remotePath = settings->parameter(GENERAL, IMPEXPFTPRDIR).toString();
-	if(remotePath.right(1)!="/") remotePath += "/";
-	QFtp * ftp = ftpget(settings->parameter(GENERAL, IMPEXPFTPHOST).toString(),
-			settings->parameter(GENERAL, IMPEXPFTPPORT).toInt(),
-			settings->parameter(GENERAL, IMPEXPFTPLOGIN).toString(),
-			settings->parameter(GENERAL, IMPEXPFTPPASSWORD).toString(),			
-			remotePath + QString(settings->parameter(GENERAL, IMPEXPIMPORT).toString()),
-			*file);
-	connect(ftp, SIGNAL(done(bool)), SLOT(import(bool)));
-    }
-    else import();
+//TDOD fixit
+    //    QString path = QString(settings->parameter(GENERAL, IMPEXPPATH).toString());
+//    if(path.right(1)!="/") path += "/";
+//    QString fileName =  path + QString(settings->parameter(GENERAL, IMPEXPIMPORT).toString());
+//    if(settings->parameter(GENERAL, IMPEXPFTP).toInt())
+//    {
+//	QFile * file = new QFile(fileName);
+//    file->open(QIODevice::WriteOnly);
+//	QString remotePath = settings->parameter(GENERAL, IMPEXPFTPRDIR).toString();
+//	if(remotePath.right(1)!="/") remotePath += "/";
+//	QFtp * ftp = ftpget(settings->parameter(GENERAL, IMPEXPFTPHOST).toString(),
+//			settings->parameter(GENERAL, IMPEXPFTPPORT).toInt(),
+//			settings->parameter(GENERAL, IMPEXPFTPLOGIN).toString(),
+//			settings->parameter(GENERAL, IMPEXPFTPPASSWORD).toString(),
+//			remotePath + QString(settings->parameter(GENERAL, IMPEXPIMPORT).toString()),
+//			*file);
+////	connect(ftp, SIGNAL(done(bool)), SLOT(import(bool)));
+//    }
+//    else import();
 }
 
 void alEngine::import(bool stop)
@@ -570,7 +587,7 @@ void alEngine::import(bool stop)
     QString path = QString(settings->parameter(GENERAL, IMPEXPPATH).toString());
     if(path.right(1)!="/") path += "/";
     QString fileName =  path + QString(settings->parameter(GENERAL, IMPEXPIMPORT).toString());    
-    QString fmt = QString::fromUtf8(settings->parameter(GENERAL, IMPEXPFMT).toString());
+    QString fmt = QString::fromUtf8(settings->parameter(GENERAL, IMPEXPFMT).toByteArray());
     importer * imp = importer::createImporter(fmt);
     imp->setCodepage(settings->parameter(GENERAL, IMPEXPCP).toString());
 //    if(!imp->open(fileName)) qDebug("NOFILE");
@@ -587,7 +604,7 @@ void alEngine::exportSales(int type, QDateTime begin, QDateTime end)
 {
     QString fileName = QString(settings->parameter(GENERAL, IMPEXPPATH).toString()) +
 		       QString(settings->parameter(GENERAL, IMPEXPEXPORT).toString());
-    QString fmt = QString::fromUtf8(settings->parameter(GENERAL, IMPEXPFMT).toString());    
+    QString fmt = QString::fromUtf8(settings->parameter(GENERAL, IMPEXPFMT).toByteArray());
     exporter * exp = exporter::createExporter(fmt);
     if(!exp) return;
     exp->open(fileName);
@@ -610,7 +627,7 @@ void alEngine::exportSales(int type, QDateTime begin, QDateTime end)
     if(orders->first()) do
     {
 	alOrderRecord * order = (alOrderRecord *)orders->current();
-	qDebug(QString("export order #%1").arg(order->num()));
+    qDebug() << QString("export order #%1").arg(order->num());
 	alDataOrderTable * orderTab = order->getDocumentTable();
 	orderTab->select();
 	for(int r=0;r<orderTab->count();r++)
@@ -676,7 +693,7 @@ void alEngine::exportSales(int type, QDateTime begin, QDateTime end)
     if(settings->parameter(GENERAL, IMPEXPFTP).toInt())
     {
 	QFile * file = new QFile(fileName);
-	file->open(IO_ReadOnly);
+    file->open(QIODevice::ReadOnly);
 	QString remotePath = settings->parameter(GENERAL, IMPEXPFTPRDIR).toString();
 	if(remotePath.right(1)!="/") remotePath += "/";
 	ftpput(settings->parameter(GENERAL, IMPEXPFTPHOST).toString(),
@@ -707,23 +724,25 @@ void alEngine::exitApp()
     delete settings;
     if(dbInited)
     {
-	fDB->close();
-	QSqlDatabase::removeDatabase(fDB);
+        fDB->close();
+        //TODO fixit
+        //QSqlDatabase::removeDatabase(fDB);
     }
 #ifdef DEBUG	
-    qDebug(tr("Program successfully terminated").utf8());
+    qDebug() << tr("Program successfully terminated").utf8();
 #endif
     qApp->quit();
 }
 
 double alEngine::calculator(double initVal)
 {
-    alCalculator * calc = new alCalculator();
-    calc->setValue(initVal);
-    int answer = calc->exec();
-    if(answer) return calc->value();
-    else return -1.0;
-    return initVal;
+//TODO reimplement
+//    alCalculator * calc = new alCalculator();
+//    calc->setValue(initVal);
+//    int answer = calc->exec();
+//    if(answer) return calc->value();
+//    else return -1.0;
+//    return initVal;
 }
 
 void alEngine::zReport()
@@ -815,58 +834,63 @@ void alEngine::barcodeReaderData(QString line)
 
 void alEngine::onError(int errorCode)
 {
-    QString senderName = sender()->className();
+    QString senderName = sender()->metaObject()->className();
     if(senderName=="QFtp")
     {
-	QFtp * ftp = (QFtp*)sender();
-	if(ftp->error()!=QFtp::NoError)
-	{
-	    qDebug(ftp->errorString().utf8());
-	}
-	else
-	{
-	    if(ftp->currentDevice()) delete ftp->currentDevice();
-	}
+//TODO reimplement
+//        QFtp * ftp = (QFtp*)sender();
+//        if(ftp->error()!=QFtp::NoError)
+//        {
+//            qDebug() << ftp->errorString().utf8();
+//        }
+//        else
+//        {
+//            if(ftp->currentDevice()) delete ftp->currentDevice();
+//        }
     }
     if(sender()->inherits("eqDriver"))
     {
-	eqDriver * device = (eqDriver*)sender();
+        eqDriver * device = (eqDriver*)sender();
 //TODO error messages	
 //	error(device->errorMsg());
-	qDebug(QString("%1:%2").arg(errorCode).arg(device->errorMsg().utf8()));
+//TODO reimplement
+        //qDebug() << QString("%1:%2").arg(errorCode).arg(device->errorMsg().toUtf8());
     }
 }
 
+//TODO reimplement
 void alEngine::endFTPExport(int, bool error)
 {
-    if(error) return;
-    QFtp * ftp = (QFtp*)sender();    
-    if(ftp->currentDevice())
-    {
-	QFile * file = (QFile*)ftp->currentDevice();
-	file->remove();
-    }
+//    if(error) return;
+//    QFtp * ftp = (QFtp*)sender();
+//    if(ftp->currentDevice())
+//    {
+//	QFile * file = (QFile*)ftp->currentDevice();
+//	file->remove();
+//    }
 }
 
+//TODO reimplement
 QFtp * alEngine::ftpput(QString host, int port, QString login, QString password, const QFile& local, QString remotefile)
 {
-    QFtp * ftp = new QFtp();
-    connect(ftp, SIGNAL(commandFinished(int, bool)), SLOT(endFTPExport(int, bool)));    
-    connect(ftp, SIGNAL(commandFinished(int, bool)), SLOT(onError(int)));
-    ftp->connectToHost(host, port);
-    ftp->login(login, password);
-    ftp->put((QIODevice*)&local, remotefile);    
-    return ftp;
+//    QFtp * ftp = new QFtp();
+//    connect(ftp, SIGNAL(commandFinished(int, bool)), SLOT(endFTPExport(int, bool)));
+//    connect(ftp, SIGNAL(commandFinished(int, bool)), SLOT(onError(int)));
+//    ftp->connectToHost(host, port);
+//    ftp->login(login, password);
+//    ftp->put((QIODevice*)&local, remotefile);
+//    return ftp;
 }
 
+//TODO reimplement
 QFtp * alEngine::ftpget(QString host, int port, QString login, QString password, QString remotefile, const QFile& local)
 {
-    QFtp * ftp = new QFtp();
-    connect(ftp, SIGNAL(commandFinished(int, bool)), SLOT(onError(int)));
-    ftp->connectToHost(host, port);    
-    ftp->login(login, password);    
-    ftp->get(remotefile, (QIODevice*)&local);    
-    return ftp;
+//    QFtp * ftp = new QFtp();
+//    connect(ftp, SIGNAL(commandFinished(int, bool)), SLOT(onError(int)));
+//    ftp->connectToHost(host, port);
+//    ftp->login(login, password);
+//    ftp->get(remotefile, (QIODevice*)&local);
+//    return ftp;
 }
 
 alValueList alEngine::processJob(eqJob *job)
@@ -886,8 +910,8 @@ alValueList alEngine::processJob(eqJob *job)
     {
 	res["error"] = err;
 	res["msg"] = job->errorMsg();
-	qDebug(res["msg"].toString().utf8());
-	cancelCheque(job->device()->name());
+        qDebug() << res["msg"].toString();
+        cancelCheque(job->device()->objectName());
     }
     return res;
 }
@@ -927,365 +951,369 @@ alValueList alEngine::cheque(QString devName, alValueTable tab, alValueTable tot
 }
 
 //TODO move to reports module
+//TODO reimplement
 QStringList alEngine::advReportGoods(int period, QDateTime begin, QDateTime end)
 {
-    QString queryStr  = "";    
-    if(period==0)
-    {
-	queryStr = "select name, sum(amount) as amount, sum(summ) as sum, order_table.price from order_table "
-		   "left join orders on orders.id=id_order "
-		   "left join goods on id_goods=goods.id "
-		   "where orders.status=2 group by id_goods, name, order_table.price";
-	begin = QDateTime();
-	end = QDateTime();
-    }
-    else
-    {
-	queryStr = QString("select name, sum(amount) as amount, sum(summ), order_table.price as sum from order_table "
-		   "left join orders on orders.id=id_order "
-		   "left join goods on id_goods=goods.id "
-		   "where orderdate>='%1' AND orderdate<='%2' AND timeopen>'%3' AND "
-		   "timeopen<'%4' AND (status=2 OR status=4) group by id_goods, name, order_table.price")
-			 .arg(begin.date().toString("yyyy-MM-dd"))
-			 .arg(end.date().toString("yyyy-MM-dd"))
-			 .arg(begin.time().toString())
-			 .arg(end.time().toString()) ;
-    }
+//    QString queryStr  = "";
+//    if(period==0)
+//    {
+//	queryStr = "select name, sum(amount) as amount, sum(summ) as sum, order_table.price from order_table "
+//		   "left join orders on orders.id=id_order "
+//		   "left join goods on id_goods=goods.id "
+//		   "where orders.status=2 group by id_goods, name, order_table.price";
+//	begin = QDateTime();
+//	end = QDateTime();
+//    }
+//    else
+//    {
+//	queryStr = QString("select name, sum(amount) as amount, sum(summ), order_table.price as sum from order_table "
+//		   "left join orders on orders.id=id_order "
+//		   "left join goods on id_goods=goods.id "
+//		   "where orderdate>='%1' AND orderdate<='%2' AND timeopen>'%3' AND "
+//		   "timeopen<'%4' AND (status=2 OR status=4) group by id_goods, name, order_table.price")
+//			 .arg(begin.date().toString("yyyy-MM-dd"))
+//			 .arg(end.date().toString("yyyy-MM-dd"))
+//			 .arg(begin.time().toString())
+//			 .arg(end.time().toString()) ;
+//    }
     
-    QSqlQuery query(fDB);
-    if(!query.exec(queryStr)) 
-    {
-	error(tr("Error in query: %1").arg(queryStr));
-	return QString::null;
-    }    
+//    QSqlQuery query(fDB);
+//    if(!query.exec(queryStr))
+//    {
+//	error(tr("Error in query: %1").arg(queryStr));
+//	return QString::null;
+//    }
     
-    QStringList str;
-    if(query.first()) 
-    {
-	int pw = printWidth();
-	str << centerString(tr("Advanced report: "), pw)+QString(tr("Goods"));
-	if(!(begin.isNull() || end.isNull())) str << QString(tr("from %1 to %2")).arg(begin.toString()).arg(end.toString());
-	else str << QString(QDateTime::currentDateTime().toString());
-	str << QString("").rightJustify(pw, '-');
-  	QStringList lst;
-	QValueList<int> tabs;
-	double sum = 0.0, sumDiscount = 0.0;
-	do
-	{
-	    lst << query.value(0).toString();
-	    lst << query.value(1).toString();
-	    lst << query.value(2).toString();	    
-	    tabs << 0 << 5 << 5;
-	    str << alignStrings(lst, tabs, pw);
-	    sum += query.value(2).toDouble();
-	    sumDiscount += query.value(1).toDouble()*query.value(3).toDouble() - query.value(2).toDouble();
-	    lst.clear();
-	    tabs.clear();	    
-	}while(query.next());
-	str << QString("").rightJustify(pw, '-');
-	lst << tr("Total:");
-	lst << QString("%2").arg(sum, 5, 'f', 2);
-	tabs << 0 << 5;
-	str <<  alignStrings(lst, tabs, pw);
-	lst.clear();
-	lst << tr("Discounts:");
-	lst << QString("%2").arg(sumDiscount, 5, 'f', 2);
-	str <<  alignStrings(lst, tabs, pw);
-	lst.clear();
-	lst << tr("Total without discounts:");
-	lst << QString("%2").arg(sum+sumDiscount, 5, 'f', 2);
-	str <<  alignStrings(lst, tabs, pw);
-	str << "" << "" << "";
-    }
-    return str;
+//    QStringList str;
+//    if(query.first())
+//    {
+//	int pw = printWidth();
+//	str << centerString(tr("Advanced report: "), pw)+QString(tr("Goods"));
+//	if(!(begin.isNull() || end.isNull())) str << QString(tr("from %1 to %2")).arg(begin.toString()).arg(end.toString());
+//	else str << QString(QDateTime::currentDateTime().toString());
+//	str << QString("").rightJustify(pw, '-');
+//  	QStringList lst;
+//	QValueList<int> tabs;
+//	double sum = 0.0, sumDiscount = 0.0;
+//	do
+//	{
+//	    lst << query.value(0).toString();
+//	    lst << query.value(1).toString();
+//	    lst << query.value(2).toString();
+//	    tabs << 0 << 5 << 5;
+//	    str << alignStrings(lst, tabs, pw);
+//	    sum += query.value(2).toDouble();
+//	    sumDiscount += query.value(1).toDouble()*query.value(3).toDouble() - query.value(2).toDouble();
+//	    lst.clear();
+//	    tabs.clear();
+//	}while(query.next());
+//	str << QString("").rightJustify(pw, '-');
+//	lst << tr("Total:");
+//	lst << QString("%2").arg(sum, 5, 'f', 2);
+//	tabs << 0 << 5;
+//	str <<  alignStrings(lst, tabs, pw);
+//	lst.clear();
+//	lst << tr("Discounts:");
+//	lst << QString("%2").arg(sumDiscount, 5, 'f', 2);
+//	str <<  alignStrings(lst, tabs, pw);
+//	lst.clear();
+//	lst << tr("Total without discounts:");
+//	lst << QString("%2").arg(sum+sumDiscount, 5, 'f', 2);
+//	str <<  alignStrings(lst, tabs, pw);
+//	str << "" << "" << "";
+//    }
+//    return str;
 }
 
+//TODO reimplement
 QStringList alEngine::advReportHourly(int period, QDateTime begin, QDateTime end)
 {
-    QString queryStr  = "";    
-    if(period==0)
-    {
-	queryStr = "select sum(amount) as amount, sum(summ) as sum, orderdate, timeclose, order_table.price from order_table "
-		   "left join orders on orders.id=id_order "
-		   "left join goods on id_goods=goods.id "
-		   "where orders.status=2 group by orderdate, timeclose, order_table.price "
-		   "order by timeclose";
-	begin = QDateTime();
-	end = QDateTime();
-    }
-    else
-    {
-	queryStr = QString("select sum(amount) as amount, sum(summ) as sum, orderdate, timeclose, order_table.price from order_table "
-		   "left join orders on orders.id=id_order "
-		   "left join goods on id_goods=goods.id "
-		   "where orderdate>='%1' AND orderdate<='%2' AND timeopen>'%3' AND "
-		   "timeopen<'%4' AND (status=2 OR status=4) group by orderdate, timeclose, order_table.price "
-		   "order by timeclose")
-			 .arg(begin.date().toString("yyyy-MM-dd"))
-			 .arg(end.date().toString("yyyy-MM-dd"))
-			 .arg(begin.time().toString())
-			 .arg(end.time().toString()) ;
-    }
+//    QString queryStr  = "";
+//    if(period==0)
+//    {
+//	queryStr = "select sum(amount) as amount, sum(summ) as sum, orderdate, timeclose, order_table.price from order_table "
+//		   "left join orders on orders.id=id_order "
+//		   "left join goods on id_goods=goods.id "
+//		   "where orders.status=2 group by orderdate, timeclose, order_table.price "
+//		   "order by timeclose";
+//	begin = QDateTime();
+//	end = QDateTime();
+//    }
+//    else
+//    {
+//	queryStr = QString("select sum(amount) as amount, sum(summ) as sum, orderdate, timeclose, order_table.price from order_table "
+//		   "left join orders on orders.id=id_order "
+//		   "left join goods on id_goods=goods.id "
+//		   "where orderdate>='%1' AND orderdate<='%2' AND timeopen>'%3' AND "
+//		   "timeopen<'%4' AND (status=2 OR status=4) group by orderdate, timeclose, order_table.price "
+//		   "order by timeclose")
+//			 .arg(begin.date().toString("yyyy-MM-dd"))
+//			 .arg(end.date().toString("yyyy-MM-dd"))
+//			 .arg(begin.time().toString())
+//			 .arg(end.time().toString()) ;
+//    }
     
-    QSqlQuery query(fDB);
-    if(!query.exec(queryStr)) 
-    {
-	error(tr("Error in query:"));
-	qDebug(queryStr);
-	return QString::null;
-    }    
+//    QSqlQuery query(fDB);
+//    if(!query.exec(queryStr))
+//    {
+//	error(tr("Error in query:"));
+//	qDebug()<< queryStr;
+//	return QString::null;
+//    }
   
-    QStringList str;
-    if(query.first()) 
-    {
-	int pw = printWidth();
-	str << centerString(tr("Advanced report: "), pw)+QString(tr("Hourly"));
-	if(!(begin.isNull() || end.isNull())) str  <<  QString(tr("from %1 to %2")).arg(begin.toString()).arg(end.toString());
-	else str << QString(QDateTime::currentDateTime().toString());
-	str << QString("").rightJustify(pw, '-');
-  	QStringList lst;
-	QValueList<int> tabs;	
-	int lastHour = -1;
-	double sum = 0.0, amount=0.0, total=0.0, totalDiscount=0.0;
-	do
-	{
-	    QDateTime date = query.value(2).toDateTime();
-	    int hour = query.value(3).toTime().hour();
-	    amount += query.value(0).toDouble();
-	    sum += query.value(1).toDouble();
-	    totalDiscount += query.value(0).toDouble()*query.value(4).toDouble();
-	    if(hour!=lastHour)
-	    {
-		lst << QString("%1:00-%2:00").arg(hour-1).arg(hour);
-		lst << QString("%1").arg(amount, 5, 'f', 3);
-		lst << QString("%2").arg(sum, 5, 'f', 2);
-		tabs << 0 << 5 << 5;
-		str <<  alignStrings(lst, tabs, pw);
-		lst.clear();
-		tabs.clear();
-		total += sum;
-		amount = 0.0;
-		sum = 0.0;
-		lastHour = hour;
-	    }
-	}while(query.next());	
-	str << QString("").rightJustify(pw, '-');
-	total+=sum;
-	totalDiscount -= total;
-	lst << tr("Total:");
-	lst << QString("%2").arg(total, 5, 'f', 2);
-	tabs << 0 << 5;
-	str <<  alignStrings(lst, tabs, pw);
-	lst.clear();
-	lst << tr("Discounts:");
-	lst << QString("%2").arg(totalDiscount, 5, 'f', 2);
-	str <<  alignStrings(lst, tabs, pw);
-	lst.clear();
-	lst << tr("Total without discounts:");
-	lst << QString("%2").arg(total+totalDiscount, 5, 'f', 2);
-	str <<  alignStrings(lst, tabs, pw);
+//    QStringList str;
+//    if(query.first())
+//    {
+//	int pw = printWidth();
+//	str << centerString(tr("Advanced report: "), pw)+QString(tr("Hourly"));
+//	if(!(begin.isNull() || end.isNull())) str  <<  QString(tr("from %1 to %2")).arg(begin.toString()).arg(end.toString());
+//	else str << QString(QDateTime::currentDateTime().toString());
+//	str << QString("").rightJustify(pw, '-');
+//  	QStringList lst;
+//	QValueList<int> tabs;
+//	int lastHour = -1;
+//	double sum = 0.0, amount=0.0, total=0.0, totalDiscount=0.0;
+//	do
+//	{
+//	    QDateTime date = query.value(2).toDateTime();
+//	    int hour = query.value(3).toTime().hour();
+//	    amount += query.value(0).toDouble();
+//	    sum += query.value(1).toDouble();
+//	    totalDiscount += query.value(0).toDouble()*query.value(4).toDouble();
+//	    if(hour!=lastHour)
+//	    {
+//		lst << QString("%1:00-%2:00").arg(hour-1).arg(hour);
+//		lst << QString("%1").arg(amount, 5, 'f', 3);
+//		lst << QString("%2").arg(sum, 5, 'f', 2);
+//		tabs << 0 << 5 << 5;
+//		str <<  alignStrings(lst, tabs, pw);
+//		lst.clear();
+//		tabs.clear();
+//		total += sum;
+//		amount = 0.0;
+//		sum = 0.0;
+//		lastHour = hour;
+//	    }
+//	}while(query.next());
+//	str << QString("").rightJustify(pw, '-');
+//	total+=sum;
+//	totalDiscount -= total;
+//	lst << tr("Total:");
+//	lst << QString("%2").arg(total, 5, 'f', 2);
+//	tabs << 0 << 5;
+//	str <<  alignStrings(lst, tabs, pw);
+//	lst.clear();
+//	lst << tr("Discounts:");
+//	lst << QString("%2").arg(totalDiscount, 5, 'f', 2);
+//	str <<  alignStrings(lst, tabs, pw);
+//	lst.clear();
+//	lst << tr("Total without discounts:");
+//	lst << QString("%2").arg(total+totalDiscount, 5, 'f', 2);
+//	str <<  alignStrings(lst, tabs, pw);
 	
-	str << "" << "" << "";
-    }
-    return str;
+//	str << "" << "" << "";
+//    }
+//    return str;
 }
 
+//TODO reimplement
 QStringList alEngine::advReportCheques(int period, QDateTime begin, QDateTime end)
 {
-    QString queryStr  = "";    
-    if(period==0)
-    {
-	queryStr = "select sum(amount) as amount, sum(summ) as sum, orders.id, id_goods, goods.name, id_discount, discount.name, tablenum, timeclose, order_table.price from order_table "
-		   "left join orders on orders.id=id_order "
-		   "left join goods on id_goods=goods.id "
-		   "left join discount on id_discount=discount.id "
-		   "where orders.status=2 group by orders.id, id_discount, id_goods, goods.name, discount.name, tablenum, timeclose, order_table.price "
-		   "order by orders.id";
-	begin = QDateTime();
-	end = QDateTime();
-    }
-    else
-    {
-	queryStr = QString("select sum(amount) as amount, sum(summ) as sum, orders.id, id_goods, goods.name, id_discount, discount.name, tablenum, timeclose, order_table.price from order_table "
-		   "left join orders on orders.id=id_order "
-		   "left join goods on id_goods=goods.id "
-		   "left join discount on id_discount=discount.id "		   
-		   "where (orderdate>='%1') AND (orderdate<='%2') AND (timeopen>'%3') AND "
-		   "(timeopen<'%4') AND (status=2 OR status=4) group by orders.id, id_discount, id_goods, goods.name, discount.name, tablenum, timeclose, order_table.price "
-		   "order by orders.id")
-			 .arg(begin.date().toString("yyyy-MM-dd"))
-			 .arg(end.date().toString("yyyy-MM-dd"))
-			 .arg(begin.time().toString())
-			 .arg(end.time().toString()) ;
-    }
+//    QString queryStr  = "";
+//    if(period==0)
+//    {
+//	queryStr = "select sum(amount) as amount, sum(summ) as sum, orders.id, id_goods, goods.name, id_discount, discount.name, tablenum, timeclose, order_table.price from order_table "
+//		   "left join orders on orders.id=id_order "
+//		   "left join goods on id_goods=goods.id "
+//		   "left join discount on id_discount=discount.id "
+//		   "where orders.status=2 group by orders.id, id_discount, id_goods, goods.name, discount.name, tablenum, timeclose, order_table.price "
+//		   "order by orders.id";
+//	begin = QDateTime();
+//	end = QDateTime();
+//    }
+//    else
+//    {
+//	queryStr = QString("select sum(amount) as amount, sum(summ) as sum, orders.id, id_goods, goods.name, id_discount, discount.name, tablenum, timeclose, order_table.price from order_table "
+//		   "left join orders on orders.id=id_order "
+//		   "left join goods on id_goods=goods.id "
+//		   "left join discount on id_discount=discount.id "
+//		   "where (orderdate>='%1') AND (orderdate<='%2') AND (timeopen>'%3') AND "
+//		   "(timeopen<'%4') AND (status=2 OR status=4) group by orders.id, id_discount, id_goods, goods.name, discount.name, tablenum, timeclose, order_table.price "
+//		   "order by orders.id")
+//			 .arg(begin.date().toString("yyyy-MM-dd"))
+//			 .arg(end.date().toString("yyyy-MM-dd"))
+//			 .arg(begin.time().toString())
+//			 .arg(end.time().toString()) ;
+//    }
     
-    QSqlQuery query(fDB);
-    if(!query.exec(queryStr)) 
-    {
-	error(tr("Error in query:"));
-	qDebug(queryStr);
-	return QString::null;
-    }    
+//    QSqlQuery query(fDB);
+//    if(!query.exec(queryStr))
+//    {
+//	error(tr("Error in query:"));
+//	qDebug(queryStr);
+//	return QString::null;
+//    }
     
-    QStringList str;
-    if(query.first()) 
-    {
-	int pw = printWidth();
-	str << centerString(tr("Advanced report: "), pw)+QString(tr("Cheques"));
-	if(!(begin.isNull() || end.isNull())) str <<  QString(tr("from %1 to %2")).arg(begin.toString("dd.MM.yy hh:mm:ss")).arg(end.toString("dd.MM.yy hh:mm:ss"));
-	else str << QString(QDateTime::currentDateTime().toString());
-	str << QString("").rightJustify(pw, '-');
-  	QStringList lst;
-	QValueList<int> tabs;	
-	int lastCheck = -1;
-	double sum = 0.0, amount=0.0, total=0.0, totalDiscount=0.0;
-	QString discount;
-	do
-	{
-	    int check = query.value(2).toInt();
-	    if(check!=lastCheck)
-	    {
-		if(lastCheck!=-1)
-		{
-		    lst << tr("Total:");
-		    lst << QString("%2").arg(sum, 5, 'f', 2);
-		    tabs << 0 << 5;
-		    str << alignStrings(lst, tabs, pw);
-		    str << QString("").rightJustify(pw, '-');
-		    lst.clear();
-		    tabs.clear();
-		}
-		str << QString(tr("Cheque #%1, Table #%2")).arg(check).arg(query.value(7).toString())
-		+ QString(" ")+QString("%1").arg(query.value(8).toString());
-		discount = query.value(6).toString();	    		
-		if(!discount.isEmpty()) str << QString(tr("Discount"))+QString(": ")+discount;
-		str << QString("").rightJustify(pw, '-');	
-		total+=sum;
-		amount = 0.0;
-		sum = 0.0;
-		lastCheck = check;
-	    }
-	    totalDiscount+=query.value(0).toDouble()*query.value(9).toDouble();
-	    sum += query.value(1).toDouble();	    
-	    lst << query.value(4).toString();
-	    lst << query.value(0).toString();
-	    lst << query.value(1).toString();
-	    tabs << 0 << 5 << 5;
-	    str <<  alignStrings(lst, tabs, pw);
-	    lst.clear();
-	    tabs.clear();	    
-	}while(query.next());
-	lst << tr("Total:");
-	lst << QString("%2").arg(sum, 5, 'f', 2);
-	tabs << 0 << 5;
-	str <<  alignStrings(lst, tabs, pw);
-	str << QString("").rightJustify(pw, '-');
-	total+=sum;
-	totalDiscount -= total;
-	lst << tr("Total:");
-	lst << QString("%2").arg(total, 5, 'f', 2);
-	tabs << 0 << 5;
-	str <<  alignStrings(lst, tabs, pw);
-	lst.clear();
-	lst << tr("Discounts:");
-	lst << QString("%2").arg(totalDiscount, 5, 'f', 2);
-	str <<  alignStrings(lst, tabs, pw);
-	lst.clear();
-	lst << tr("Total without discounts:");
-	lst << QString("%2").arg(total+totalDiscount, 5, 'f', 2);
-	str <<  alignStrings(lst, tabs, pw);
+//    QStringList str;
+//    if(query.first())
+//    {
+//	int pw = printWidth();
+//	str << centerString(tr("Advanced report: "), pw)+QString(tr("Cheques"));
+//	if(!(begin.isNull() || end.isNull())) str <<  QString(tr("from %1 to %2")).arg(begin.toString("dd.MM.yy hh:mm:ss")).arg(end.toString("dd.MM.yy hh:mm:ss"));
+//	else str << QString(QDateTime::currentDateTime().toString());
+//	str << QString("").rightJustify(pw, '-');
+//  	QStringList lst;
+//	QValueList<int> tabs;
+//	int lastCheck = -1;
+//	double sum = 0.0, amount=0.0, total=0.0, totalDiscount=0.0;
+//	QString discount;
+//	do
+//	{
+//	    int check = query.value(2).toInt();
+//	    if(check!=lastCheck)
+//	    {
+//		if(lastCheck!=-1)
+//		{
+//		    lst << tr("Total:");
+//		    lst << QString("%2").arg(sum, 5, 'f', 2);
+//		    tabs << 0 << 5;
+//		    str << alignStrings(lst, tabs, pw);
+//		    str << QString("").rightJustify(pw, '-');
+//		    lst.clear();
+//		    tabs.clear();
+//		}
+//		str << QString(tr("Cheque #%1, Table #%2")).arg(check).arg(query.value(7).toString())
+//		+ QString(" ")+QString("%1").arg(query.value(8).toString());
+//		discount = query.value(6).toString();
+//		if(!discount.isEmpty()) str << QString(tr("Discount"))+QString(": ")+discount;
+//		str << QString("").rightJustify(pw, '-');
+//		total+=sum;
+//		amount = 0.0;
+//		sum = 0.0;
+//		lastCheck = check;
+//	    }
+//	    totalDiscount+=query.value(0).toDouble()*query.value(9).toDouble();
+//	    sum += query.value(1).toDouble();
+//	    lst << query.value(4).toString();
+//	    lst << query.value(0).toString();
+//	    lst << query.value(1).toString();
+//	    tabs << 0 << 5 << 5;
+//	    str <<  alignStrings(lst, tabs, pw);
+//	    lst.clear();
+//	    tabs.clear();
+//	}while(query.next());
+//	lst << tr("Total:");
+//	lst << QString("%2").arg(sum, 5, 'f', 2);
+//	tabs << 0 << 5;
+//	str <<  alignStrings(lst, tabs, pw);
+//	str << QString("").rightJustify(pw, '-');
+//	total+=sum;
+//	totalDiscount -= total;
+//	lst << tr("Total:");
+//	lst << QString("%2").arg(total, 5, 'f', 2);
+//	tabs << 0 << 5;
+//	str <<  alignStrings(lst, tabs, pw);
+//	lst.clear();
+//	lst << tr("Discounts:");
+//	lst << QString("%2").arg(totalDiscount, 5, 'f', 2);
+//	str <<  alignStrings(lst, tabs, pw);
+//	lst.clear();
+//	lst << tr("Total without discounts:");
+//	lst << QString("%2").arg(total+totalDiscount, 5, 'f', 2);
+//	str <<  alignStrings(lst, tabs, pw);
 		
-	str << "" << "" << "";
-    }
-    return str;    
+//	str << "" << "" << "";
+//    }
+//    return str;
 }
 
+//TODO reimplement
 QStringList alEngine::advReportDiscounts(int period, QDateTime begin, QDateTime end)
 {
-    QString queryStr  = "";    
-    if(period==0)
-    {
-	queryStr = "select  timeclose, discount.name,  sum(price*amount) as fullsumm, sum(summ) as summ, sum(price*amount)-sum(summ) AS discountsumm "
-		   "from order_table "
-		   "left join orders on orders.id=id_order "
-		   "left join discount on id_discount=discount.id "
-		   "where orders.status=2 AND id_discount<>0 "
-		   "group by discount.name, discount.type, discount.value, timeclose "
-		   " order by timeclose";
-	begin = QDateTime();
-	end = QDateTime();
-    }
-    else
-    {
-	queryStr = QString("select  timeclose, discount.name,  sum(price*amount) as fullsumm, sum(summ) as summ, sum(price*amount)-sum(summ) AS discountsumm "
-		   "from order_table "
-		   "left join orders on orders.id=id_order "
-		   "left join discount on id_discount=discount.id "
-		   "where orderdate>='%1' AND orderdate<='%2' AND timeopen>'%3' AND "
-		   "timeopen<'%4' AND (orders.status=2 OR status=4) AND id_discount<>0 "
-		   "group by discount.name, discount.type, discount.value, timeclose "
-		   "order by timeclose")
-			 .arg(begin.date().toString("yyyy-MM-dd"))
-			 .arg(end.date().toString("yyyy-MM-dd"))
-			 .arg(begin.time().toString())
-			 .arg(end.time().toString()) ;
-    }
+//    QString queryStr  = "";
+//    if(period==0)
+//    {
+//	queryStr = "select  timeclose, discount.name,  sum(price*amount) as fullsumm, sum(summ) as summ, sum(price*amount)-sum(summ) AS discountsumm "
+//		   "from order_table "
+//		   "left join orders on orders.id=id_order "
+//		   "left join discount on id_discount=discount.id "
+//		   "where orders.status=2 AND id_discount<>0 "
+//		   "group by discount.name, discount.type, discount.value, timeclose "
+//		   " order by timeclose";
+//	begin = QDateTime();
+//	end = QDateTime();
+//    }
+//    else
+//    {
+//	queryStr = QString("select  timeclose, discount.name,  sum(price*amount) as fullsumm, sum(summ) as summ, sum(price*amount)-sum(summ) AS discountsumm "
+//		   "from order_table "
+//		   "left join orders on orders.id=id_order "
+//		   "left join discount on id_discount=discount.id "
+//		   "where orderdate>='%1' AND orderdate<='%2' AND timeopen>'%3' AND "
+//		   "timeopen<'%4' AND (orders.status=2 OR status=4) AND id_discount<>0 "
+//		   "group by discount.name, discount.type, discount.value, timeclose "
+//		   "order by timeclose")
+//			 .arg(begin.date().toString("yyyy-MM-dd"))
+//			 .arg(end.date().toString("yyyy-MM-dd"))
+//			 .arg(begin.time().toString())
+//			 .arg(end.time().toString()) ;
+//    }
     
-    QSqlQuery query(fDB);
-    if(!query.exec(queryStr)) 
-    {
-	error(tr("Error in query:"));
-	qDebug(queryStr);
-	return QString::null;
-    }    
+//    QSqlQuery query(fDB);
+//    if(!query.exec(queryStr))
+//    {
+//	error(tr("Error in query:"));
+//	qDebug(queryStr);
+//	return QString::null;
+//    }
     
-    if(query.first()) 
-    {
-	int pw = printWidth();
-	QString str = centerString(tr("Advanced report: "), pw)+QString(tr("Discounts"))+QString("\n");		
-	if(!(begin.isNull() || end.isNull())) str +=  QString(tr("from %1 to %2")).arg(begin.toString()).arg(end.toString())+ QString("\n");
-	else str += QString(QDateTime::currentDateTime().toString())+QString("\n");
-	str += QString("").rightJustify(pw, '-') + QString("\n");
-  	QStringList lst;
-	QValueList<int> tabs;
-	double sum = 0.0, fullSumm = 0.0;
-	do
-	{
-	    lst << query.value(0).toString()+":";
-	    lst << query.value(1).toString();
-	    tabs << 0 << 5;
-	    str +=  alignStrings(lst, tabs, pw)+QString("\n");
-	    lst.clear();
-	    tabs.clear();
-	    lst << "";
-	    lst << QString("%1").arg(query.value(2).toDouble(), 5, 'f', 2);
-	    lst << QString("%1").arg(query.value(2).toDouble(), 5, 'f', 2);
-	    lst << QString("%1").arg(query.value(2).toDouble(), 5, 'f', 2);	    
-	    tabs << 0 << 5 << 5 << 5;
-	    str += alignStrings(lst, tabs, pw)+QString("\n");
-	    sum += query.value(3).toDouble();
-	    fullSumm += query.value(2).toDouble();
-	    lst.clear();
-	    tabs.clear();	    
-	}while(query.next());
-	str += QString("").rightJustify(pw, '-') + QString("\n");
-	lst << tr("Total:");
-	lst << QString("%2").arg(sum, 5, 'f', 2);
-	tabs << 0 << 5;
-	str +=  alignStrings(lst, tabs, pw)+QString("\n");
-	lst.clear();
-	lst << tr("Discounts:");
-	lst << QString("%2").arg(fullSumm-sum, 5, 'f', 2);
-	str +=  alignStrings(lst, tabs, pw)+QString("\n");	
-	lst.clear();
-	lst << tr("Total without discounts:");
-	lst << QString("%2").arg(fullSumm, 5, 'f', 2);
-	str +=  alignStrings(lst, tabs, pw)+QString("\n");		
-	str += "\n\n\n";
-	str = str.utf8();
-	return str;
-    }
-    return QString::null;    
+//    if(query.first())
+//    {
+//	int pw = printWidth();
+//	QString str = centerString(tr("Advanced report: "), pw)+QString(tr("Discounts"))+QString("\n");
+//	if(!(begin.isNull() || end.isNull())) str +=  QString(tr("from %1 to %2")).arg(begin.toString()).arg(end.toString())+ QString("\n");
+//	else str += QString(QDateTime::currentDateTime().toString())+QString("\n");
+//	str += QString("").rightJustify(pw, '-') + QString("\n");
+//  	QStringList lst;
+//	QValueList<int> tabs;
+//	double sum = 0.0, fullSumm = 0.0;
+//	do
+//	{
+//	    lst << query.value(0).toString()+":";
+//	    lst << query.value(1).toString();
+//	    tabs << 0 << 5;
+//	    str +=  alignStrings(lst, tabs, pw)+QString("\n");
+//	    lst.clear();
+//	    tabs.clear();
+//	    lst << "";
+//	    lst << QString("%1").arg(query.value(2).toDouble(), 5, 'f', 2);
+//	    lst << QString("%1").arg(query.value(2).toDouble(), 5, 'f', 2);
+//	    lst << QString("%1").arg(query.value(2).toDouble(), 5, 'f', 2);
+//	    tabs << 0 << 5 << 5 << 5;
+//	    str += alignStrings(lst, tabs, pw)+QString("\n");
+//	    sum += query.value(3).toDouble();
+//	    fullSumm += query.value(2).toDouble();
+//	    lst.clear();
+//	    tabs.clear();
+//	}while(query.next());
+//	str += QString("").rightJustify(pw, '-') + QString("\n");
+//	lst << tr("Total:");
+//	lst << QString("%2").arg(sum, 5, 'f', 2);
+//	tabs << 0 << 5;
+//	str +=  alignStrings(lst, tabs, pw)+QString("\n");
+//	lst.clear();
+//	lst << tr("Discounts:");
+//	lst << QString("%2").arg(fullSumm-sum, 5, 'f', 2);
+//	str +=  alignStrings(lst, tabs, pw)+QString("\n");
+//	lst.clear();
+//	lst << tr("Total without discounts:");
+//	lst << QString("%2").arg(fullSumm, 5, 'f', 2);
+//	str +=  alignStrings(lst, tabs, pw)+QString("\n");
+//	str += "\n\n\n";
+//	str = str.utf8();
+//	return str;
+//    }
+//    return QString::null;
 }
 
 void alEngine::advancedReport(int period, int type, QDateTime begin, QDateTime end)
@@ -1304,7 +1332,7 @@ void alEngine::advancedReport(int period, int type, QDateTime begin, QDateTime e
     else if(type==1) str = advReportHourly(period, begin, end);
     else if(type==2) str = advReportCheques(period, begin, end);
     else if(type==3) str = advReportDiscounts(period, begin, end);
-    job->setData(str.join("\n").utf8());
+    job->setData(str.join("\n").toUtf8());
     processJob(job);
     job = createPrinterJob("", "cut");
     processJob(job);
@@ -1314,8 +1342,8 @@ void alEngine::advancedReport(int period, int type, QDateTime begin, QDateTime e
 QByteArray pixmap2bytearray(QPixmap pix)
 {
     QByteArray bytea;
-    QBuffer buffer( bytea );
-    buffer.open( IO_WriteOnly );
+    QBuffer buffer( &bytea );
+    buffer.open( QIODevice::WriteOnly );
     pix.save( &buffer, "PNG" );
     return bytea;
 }
@@ -1323,7 +1351,7 @@ QByteArray pixmap2bytearray(QPixmap pix)
 QPixmap bytearray2pixmap(QByteArray bytea)
 {
     QPixmap pix;
-    QBuffer buffer(bytea);    
+    QBuffer buffer(&bytea);
     pix.loadFromData(bytea);
     return pix;
 }

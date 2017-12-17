@@ -1,7 +1,7 @@
 #include <qdir.h>
 #include "settings.h"
-#include "ddbsettings.h"
-#include "settingsdialog.h"
+#include "ui_ddbsettings.h"
+#include "ui_settingsdialog.h"
 #include "data/datasettings.h"
 
 alSettings::alSettings(alEngine * e) : 
@@ -27,7 +27,7 @@ void alSettings::init()
 	bool ok;
 	QString value;	
 	dbParams.clear();
-	QSettings qtSettings;	
+	QSettings qtSettings;	    
 	qtSettings.insertSearchPath(QSettings::Unix, QString(QDir::homeDirPath())+QString("/.aldebaran"));
 	qtSettings.beginGroup("/connection");
 

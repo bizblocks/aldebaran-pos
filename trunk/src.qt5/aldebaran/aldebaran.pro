@@ -13,15 +13,24 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    engine.cpp
+    engine.cpp \
+    settings.cpp
 
 INCLUDEPATH += ../impexp \
     ../tradeequip/equip
 
 HEADERS += \
-    aldebaran.h
+    aldebaran.h \
+    settings.h
 
 FORMS += \
     calculator.ui \
     dlglogin.ui \
-    equipmentdialog.ui
+    equipmentdialog.ui \
+    ddbsettings.ui \
+    settingsdialog.ui
+
+DISTFILES +=
+
+RESOURCES += \
+    aldebaran.qrc
