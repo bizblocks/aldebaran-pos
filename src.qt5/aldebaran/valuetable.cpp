@@ -23,13 +23,14 @@ alValueTable::~alValueTable()
 alValueTableRow* alValueTable::addRow()
 {
     alValueTableRow newRow(this);
-    return &*fData.append(newRow);
+    fData.append(newRow);
+    return &fData.back();
 }
 
-alValueTableRow* alValueTable::operator[](uint i)
+const alValueTableRow* alValueTable::operator[](uint i)
 {
     if(i>fData.count()-1) return &*fData.end();
-    return &*fData.at(i);
+    return &fData.at(i);
 }
 
 int alValueTable::rowCount()

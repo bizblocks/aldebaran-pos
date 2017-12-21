@@ -15,7 +15,7 @@ public:
     virtual bool selectByOwner(alUserRecord * user);
     void createSetForUser(alUserRecord * r);
 protected:
-    virtual void checkTable();    
+    virtual bool checkTable();
 };
 
 class alRightsRecord : public alDataRecord

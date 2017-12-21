@@ -305,17 +305,19 @@ bool alEngine::rollbackTransaction()
     return false;
 }
 
+//TODO uncomment
 void alEngine::openOrder(int num)
 {    
-    alOrderRecord * order = tableOrder(num);
-    if(!order) mainWindow->openOrder(-1, num);
-    else mainWindow->openOrder(order->id(), num);
+//    alOrderRecord * order = tableOrder(num);
+//    if(!order) mainWindow->openOrder(-1, num);
+//    else mainWindow->openOrder(order->id(), num);
 }
 
+//TODO uncomment
 alOrderRecord * alEngine::tableOrder(int num)
 {
-    fOrders->select(QString("tablenum=%1 AND status<2").arg(num));
-    if(fOrders->first()) return (alOrderRecord*)fOrders->current();
+//    fOrders->select(QString("tablenum=%1 AND status<2").arg(num));
+//    if(fOrders->first()) return (alOrderRecord*)fOrders->current();
     return NULL;
 }
 

@@ -18,7 +18,7 @@ public slots:
     virtual bool select(const QString filter = "");
     bool delElement();    
 protected:
-    virtual void checkTable();
+    virtual bool checkTable();
 };
 
 class alPictureRecord : public alDataRecord

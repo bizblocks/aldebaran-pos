@@ -1,6 +1,7 @@
 #ifndef DATAEQ_H
 #define DATAEQ_H
 
+#include <QMap>
 #include "data.h"
 
 class alEqRecord;

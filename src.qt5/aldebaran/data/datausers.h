@@ -20,7 +20,7 @@ public slots:
     alUserRecord * newElement();
     bool delElement();
 protected:
-    virtual void checkTable();    
+    virtual bool checkTable();
     virtual QSqlIndex defaultSort();
 private:
     alUserRecord * addUser(QString name, int role);

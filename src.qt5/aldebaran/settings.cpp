@@ -145,15 +145,16 @@ alValueList alSettings::subSystemSettings(QString subSystem)
     
     if(subSystem.isEmpty())	subSystem = "%%";
     
-    alDataSettings * t = new alDataSettings(fEngine);
-    t->select(QString("subsystem LIKE '%1'").arg(subSystem));
-    if(t->first()) do
-    {
-	params[t->value("subsystem").toString()][t->value("valkey").toString()] = t->value("value");
-	res[t->value("valkey").toString()] = t->value("value");
-    } while(t->next());
+    //TODO uncomment
+//    alDataSettings * t = new alDataSettings(fEngine);
+//    t->select(QString("subsystem LIKE '%1'").arg(subSystem));
+//    if(t->first()) do
+//    {
+//        params[t->value("subsystem").toString()][t->value("valkey").toString()] = t->value("value");
+//        res[t->value("valkey").toString()] = t->value("value");
+//    } while(t->next());
   
-    delete t;
+//    delete t;
     return res;
 }
 

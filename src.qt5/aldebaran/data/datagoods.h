@@ -25,7 +25,7 @@ public:
     void import(importer * imp);
     void exportpictures();
 protected:
-    virtual void checkTable();    
+    virtual bool checkTable();
     virtual QSqlIndex defaultSort();
 private:
     alGoodsRecord * internalNew(alGoodsRecord * parent = NULL, bool group = FALSE);
