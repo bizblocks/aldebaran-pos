@@ -26,7 +26,7 @@ public:
     double total(QString attr);
     alOrderRecord * order() { return fOrder; };
 protected:
-    virtual void checkTable();
+    virtual bool checkTable();
     virtual QSqlIndex defaultSort();    
 private:
     alOrderRecord * fOrder;

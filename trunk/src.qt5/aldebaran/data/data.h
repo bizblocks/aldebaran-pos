@@ -25,7 +25,7 @@ public:
     QString lastErrorMsg() { return lastError().text(); };
 protected:
     alEngine * fEngine;    
-    virtual void checkTable() = 0;
+    virtual bool checkTable(const QString& tname="");
     virtual QSqlIndex defaultSort();
 private:
     QString fTableName;

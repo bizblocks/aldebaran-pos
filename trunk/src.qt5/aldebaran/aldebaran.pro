@@ -14,14 +14,17 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     engine.cpp \
-    settings.cpp
+    settings.cpp \
+    valuetable.cpp
 
 INCLUDEPATH += ../impexp \
     ../tradeequip/equip
 
 HEADERS += \
     aldebaran.h \
-    settings.h
+    settings.h \
+    engine.h \
+    valuetable.h
 
 FORMS += \
     calculator.ui \

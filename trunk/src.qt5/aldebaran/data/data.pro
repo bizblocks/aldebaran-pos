@@ -2,6 +2,7 @@ TEMPLATE	= lib
 LANGUAGE	= C++
 
 CONFIG	+= qt warn_on release
+QT += widgets
 
 DEFINES	+= DEBUG
 
@@ -61,3 +62,8 @@ unix {
 }
 
 INSTALLS += aldebarandata
+
+RESOURCES += \
+    data.qrc
+
+DISTFILES +=

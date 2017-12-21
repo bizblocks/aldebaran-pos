@@ -89,7 +89,7 @@ typedef QMap<QString, QVariant> alValueList;
 
 class alEngine : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 public:
     alEngine(int argc, char ** argv);
     ~alEngine();
@@ -111,7 +111,7 @@ public:
 protected:
     virtual void init();
 public slots: 
-    virtual QSqlDatabase * db();
+    virtual QSqlDatabase db();
     alValueList settingsFor(QString subSystem);
     QVariant parameter(QString sub, QString key);
     void settingsDialog();
@@ -163,7 +163,7 @@ private:
     QApplication * app;
     alMainWindow * mainWindow;
     alSettings * settings;
-    QSqlDatabase * fDB;
+    QSqlDatabase fDB;
     bool dbInited;
     alUserRecord * fCurrentUser;
     alDataOrder * fOrders;

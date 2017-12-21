@@ -1,5 +1,6 @@
 #include <qobject.h>
-#include <qsqldatabase.h>
+#include <QtSql/QSqlDatabase>
+#include <QDebug>
 #include "dataorder.h"
 #include "dataordert.h"
 #include "engine.h"
@@ -11,16 +12,15 @@ alDataOrder::alDataOrder(alEngine * e) :
 	alData(e, TNAME)
 {
     checkTable();
-    alData::setName(TNAME, TRUE);    
+    //alData::setName(TNAME, TRUE);
 }
 
-void alDataOrder::checkTable()
+bool alDataOrder::checkTable()
 {
-    if(!fEngine->db()) return;
-    QStringList check = fEngine->db()->tables();
-    if(check.grep(TNAME).size()>0) return;
+    if(alData::checkTable(TNAME))
+        return true;
 #ifdef DEBUG    
-    qDebug(QObject::tr("creating table orders").utf8());
+    qDebug() << QObject::tr("creating table orders").toUtf8();
 #endif    
     QString query = Queries::tr("CREATE TABLE orders ("
 		    "id int8 NOT NULL, num int8, summtype int2 DEFAULT 1, "
@@ -30,26 +30,28 @@ void alDataOrder::checkTable()
 		    "comment varchar(255), externalcode varchar(50), "
 		    "CONSTRAINT id_orders PRIMARY KEY (id)) "
 		    "WITHOUT OIDS;");
-    fEngine->db()->exec(query);
+    fEngine->db().exec(query);
 #ifdef DEBUG
-    qDebug(query);
-    qDebug(QObject::tr("lastError was %1").arg(fEngine->db()->lastError().text()).utf8());
+    qDebug() << query;
+    qDebug() << QObject::tr("lastError was %1").arg(fEngine->db().lastError().text()).toUtf8();
 #endif        
     query = Queries::tr("CREATE INDEX idx_num ON orders (num);"); 
-    fEngine->db()->exec(query);
+    fEngine->db().exec(query);
 }
 
+//TODO reimplement
 QSqlIndex alDataOrder::defaultSort()
 {
-    return QSqlIndex::fromStringList(QStringList::split(",", "orderdate, num"), this);    
+ //   return QSqlIndex::fromStringList(QStringList::split(",", "orderdate, num"), this);
 }
 
-Q_ULLONG alDataOrder::unum()
+ULLID alDataOrder::unum()
 {
-    Q_ULLONG unum = 1;
+    ULLID unum = 1;
     QString query = Queries::tr("SELECT MAX(num) AS max_num FROM orders");
-    QSqlQuery res = fEngine->db()->exec(query);
-    if(res.first()) return res.value(0).toULongLong()+1;
+    QSqlQuery res = fEngine->db().exec(query);
+    if(res.first())
+        return res.value(0).toULongLong()+1;
     return unum;
 }
 
@@ -74,9 +76,9 @@ alOrderRecord * alDataOrder::selectByNumber(int num)
 
 bool alDataOrder::delDocument()
 {
-    Q_ULLONG id = value("id").toULongLong();
+    ULLID id = value("id").toULongLong();
     QString query = Queries::tr("DELETE FROM orders WHERE id=%1").arg(id);
-    fEngine->db()->exec(query);    
+    fEngine->db().exec(query);
     return true;        
 }
 
@@ -118,7 +120,7 @@ alOrderRecord * alDataOrder::import(importer * imp)
 	alOrderLine * line = table->newLine();
 	alDataGoods * goods = new alDataGoods(engine());
 	alGoodsRecord * item = goods->select(imp->value("id_goods").toULongLong());
-	if(!item && goods->select(Queries::tr("externalcode='%1'").arg(imp->value("sku_goods").toString().utf8())) && goods->first())
+    if(!item && goods->select(Queries::tr("externalcode='%1'").arg(imp->value("sku_goods").toString())) && goods->first())
 	{
 	    item = (alGoodsRecord*)goods->current();
 	}
@@ -133,14 +135,17 @@ alOrderRecord * alDataOrder::import(importer * imp)
     return order;
 }
 
+//TODO reimplement
 alOrderRecord::alOrderRecord(alData * data) :
 	alDataRecord(data)
 {
     fDiscount = NULL;
     fData = new alDataOrder(data->engine());
     fData->select(Queries::tr("id=%1").arg(fId));
-    if(!fData->first()) fRecord = fData->primeInsert();   
-    else fRecord = fData->primeUpdate();
+//    if(!fData->first())
+//        fRecord = fData->primeInsert();
+//    else
+//        fRecord = fData->primeUpdate();
     fDataTable = new alDataOrderTable(fData->engine(), this);
     load();    
 }
@@ -159,17 +164,19 @@ alDataOrderTable * alOrderRecord::getDocumentTable()
     return fDataTable;
 }
 
+//TODO reimplement
 alOrderRecord * alOrderRecord::newDocument(alDataOrder * data)
 {
-    QSqlRecord * rec = data->primeInsert();
-    rec->setValue("id", data->uid());
-    alOrderRecord * res = new alOrderRecord(data, rec);
-    res->setNum(data->unum());
-    res->setDate(QDate::currentDate());
-    res->setTimeOpen(QTime::currentTime());
-    res->fIsNew = TRUE;
-    res->	fUser = data->engine()->currentUser();    
-    return res;    
+//    QSqlRecord * rec = data->primeInsert();
+//    rec->setValue("id", data->uid());
+//    alOrderRecord * res = new alOrderRecord(data, rec);
+//    res->setNum(data->unum());
+//    res->setDate(QDate::currentDate());
+//    res->setTimeOpen(QTime::currentTime());
+//    res->fIsNew = TRUE;
+//    res->	fUser = data->engine()->currentUser();
+//    return res;
+    return NULL;
 }
 
 int alOrderRecord::update()
@@ -241,7 +248,7 @@ alOrderRecord * alOrderRecord::current(alData * data)
 void alOrderRecord::printOrder(QString device)
 {
     QStringList lst;
-    QValueList<int> tabs;    
+    QList<int> tabs;
     alEngine * fEngine = fData->engine();
     alDataOrderTable * orderTab = getDocumentTable();
     
@@ -256,7 +263,7 @@ void alOrderRecord::printOrder(QString device)
     QString tmp = QString(tr("Order #%1")).arg(num());
     QString str = fEngine->centerString(tmp, pw)+QString("\n");
     str += info() + QString("\n");
-    str += QString("").rightJustify(pw, '-') + QString("\n");
+    str += QString("").rightJustified(pw, '-') + QString("\n");
     for(int r=0;r<orderTab->count();r++)
     {
 	alOrderLine * line = orderTab->getLine(r);
@@ -272,9 +279,9 @@ void alOrderRecord::printOrder(QString device)
 	line->setPrinted(TRUE);
 	update();
     }
-    str += QString("").rightJustify(pw, '-') + QString("\n");    
+    str += QString("").rightJustified(pw, '-') + QString("\n");
     str += "\n\n\n";
-    str = str.utf8();    
+    str = str.toUtf8();
     job->setData(str);
 //    qDebug(str);
     fEngine->processJob(job);
@@ -286,7 +293,7 @@ void alOrderRecord::printOrder(QString device)
 
 void alOrderRecord::printBill(QString device)
 {
-    QValueList<int> tabs;
+    QList<int> tabs;
     QStringList lst;
     alEngine * fEngine = fData->engine();
     alDataOrderTable * orderTab = getDocumentTable();
@@ -301,7 +308,7 @@ void alOrderRecord::printBill(QString device)
     QString str = fEngine->centerString(QString(tr("Bill #%1")).arg(num()), pw)+QString("\n");
     str += info() + QString("\n");
     str += comment() + QString("\n");
-    str += QString("").rightJustify(pw, '-') + QString("\n");
+    str += QString("").rightJustified(pw, '-') + QString("\n");
     double cal = 0., protein = 0., fat = 0., hc = 0.;
     for(int r=0;r<orderTab->count();r++)
     {
@@ -323,7 +330,7 @@ void alOrderRecord::printBill(QString device)
 	    cal += line->item()->calories();
 	}
     }
-    str += QString("").rightJustify(pw, '-') + QString("\n");
+    str += QString("").rightJustified(pw, '-') + QString("\n");
     double t = orderTab->total("summ");    
     lst << tr("Total:") << QString("%1").arg(t, 0, 'f', 2);    
     tabs << 0 << 5;
@@ -333,7 +340,7 @@ void alOrderRecord::printBill(QString device)
     str += QString(tr("Fat: %1\n").arg(fat, 0, 'f', 2));        
     str += QString(tr("Protein: %1\n").arg(protein, 0, 'f', 2));            
     str += "\n\n\n";
-    str = str.utf8();    
+    str = str.toUtf8();
     job->setData(str);
     fEngine->processJob(job);
     job = fEngine->createPrinterJob(device, "cut");

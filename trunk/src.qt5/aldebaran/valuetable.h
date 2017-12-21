@@ -18,7 +18,7 @@ public:
     
     int addColumn(const QString & header);
     alValueTableRow* addRow();
-    alValueTableRow* operator[] (uint i);
+    const alValueTableRow* operator[] (uint i);
     int rowCount();
     int colCount();
         

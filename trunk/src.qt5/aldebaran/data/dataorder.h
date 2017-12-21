@@ -35,7 +35,7 @@ public:
     virtual alDataRecord * current();
     alOrderRecord * import(importer * imp);
 protected:
-    virtual void checkTable();
+    virtual bool checkTable();
     virtual QSqlIndex defaultSort();    
 };
 

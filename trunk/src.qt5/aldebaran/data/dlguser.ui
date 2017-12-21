@@ -1,248 +1,208 @@
-<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>dlgUser</class>
-<widget class="QDialog">
-    <property name="name">
-        <cstring>dlgUser</cstring>
-    </property>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0" stdsetdef="1">
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>dlgUser</class>
+  <widget class="QDialog" name="dlgUser">
     <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>600</width>
-            <height>480</height>
-        </rect>
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>600</width>
+        <height>480</height>
+      </rect>
     </property>
-    <property name="caption">
-        <string>User</string>
+    <property name="windowTitle">
+      <string>User</string>
     </property>
-    <grid>
-        <property name="name">
-            <cstring>unnamed</cstring>
-        </property>
-        <property name="margin">
+    <layout class="QGridLayout">
+      <property name="margin">
+        <number>0</number>
+      </property>
+      <property name="spacing">
+        <number>0</number>
+      </property>
+      <item row="2" column="0" rowspan="1" colspan="2">
+        <layout class="QHBoxLayout">
+          <property name="margin">
             <number>0</number>
-        </property>
-        <property name="spacing">
-            <number>0</number>
-        </property>
-        <widget class="QLayoutWidget" row="2" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>Layout1</cstring>
+          </property>
+          <property name="spacing">
+            <number>6</number>
+          </property>
+          <item>
+            <spacer name="Horizontal Spacing2">
+              <property name="sizeHint">
+                <size>
+                  <width>20</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType">
+                <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <widget class="QPushButton" name="buttonOk">
+              <property name="text">
+                <string>&amp;OK</string>
+              </property>
+              <property name="shortcut">
+                <string/>
+              </property>
+              <property name="autoDefault">
+                <bool>true</bool>
+              </property>
+              <property name="default">
+                <bool>true</bool>
+              </property>
+              <property name="icon">
+                <iconset>ok.png</iconset>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="buttonCancel">
+              <property name="text">
+                <string>&amp;Cancel</string>
+              </property>
+              <property name="shortcut">
+                <string/>
+              </property>
+              <property name="autoDefault">
+                <bool>true</bool>
+              </property>
+              <property name="icon">
+                <iconset>stop_cancel.png</iconset>
+              </property>
+            </widget>
+          </item>
+        </layout>
+      </item>
+      <item row="1" column="0" rowspan="1" colspan="2">
+        <widget class="Q3Frame" name="frameRights">
+          <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout">
+            <property name="margin">
+              <number>1</number>
             </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
+            <property name="spacing">
+              <number>1</number>
+            </property>
+            <item row="0" column="0">
+              <widget class="Q3ListBox" name="listRights">
+                <property name="currentItem">
+                  <number>-1</number>
                 </property>
-                <property name="margin">
-                    <number>0</number>
+                <property name="columnMode">
+                  <enum>Q3ListBox::FixedNumber</enum>
                 </property>
-                <property name="spacing">
-                    <number>6</number>
+                <property name="rowMode">
+                  <enum>Q3ListBox::Variable</enum>
                 </property>
-                <spacer>
-                    <property name="name">
-                        <cstring>Horizontal Spacing2</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>20</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>buttonOk</cstring>
-                    </property>
-                    <property name="text">
-                        <string>&amp;OK</string>
-                    </property>
-                    <property name="accel">
-                        <string></string>
-                    </property>
-                    <property name="autoDefault">
-                        <bool>true</bool>
-                    </property>
-                    <property name="default">
-                        <bool>true</bool>
-                    </property>
-                    <property name="iconSet">
-                        <iconset>ok.png</iconset>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>buttonCancel</cstring>
-                    </property>
-                    <property name="text">
-                        <string>&amp;Cancel</string>
-                    </property>
-                    <property name="accel">
-                        <string></string>
-                    </property>
-                    <property name="autoDefault">
-                        <bool>true</bool>
-                    </property>
-                    <property name="iconSet">
-                        <iconset>stop_cancel.png</iconset>
-                    </property>
-                </widget>
-            </hbox>
+              </widget>
+            </item>
+          </layout>
         </widget>
-        <widget class="QFrame" row="1" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>frameRights</cstring>
-            </property>
-            <property name="frameShape">
-                <enum>StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-                <enum>Raised</enum>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <property name="margin">
-                    <number>1</number>
-                </property>
-                <property name="spacing">
-                    <number>1</number>
-                </property>
-                <widget class="QListBox" row="0" column="0">
-                    <property name="name">
-                        <cstring>listRights</cstring>
-                    </property>
-                    <property name="currentItem">
-                        <number>-1</number>
-                    </property>
-                    <property name="columnMode">
-                        <enum>FixedNumber</enum>
-                    </property>
-                    <property name="rowMode">
-                        <enum>Variable</enum>
-                    </property>
-                </widget>
-            </grid>
-        </widget>
-        <widget class="QLayoutWidget" row="0" column="0">
-            <property name="name">
-                <cstring>layout6</cstring>
-            </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>lblName</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Name:</string>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>editName</cstring>
-                    </property>
-                    <property name="minimumSize">
-                        <size>
-                            <width>200</width>
-                            <height>0</height>
-                        </size>
-                    </property>
-                    <property name="maxLength">
-                        <number>200</number>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
-        <widget class="QLayoutWidget" row="0" column="1">
-            <property name="name">
-                <cstring>layout6_2</cstring>
-            </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>lblPass</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Password:</string>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>editPass</cstring>
-                    </property>
-                    <property name="minimumSize">
-                        <size>
-                            <width>200</width>
-                            <height>0</height>
-                        </size>
-                    </property>
-                    <property name="maxLength">
-                        <number>200</number>
-                    </property>
-                    <property name="echoMode">
-                        <enum>Password</enum>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
-    </grid>
-</widget>
-<connections>
+      </item>
+      <item row="0" column="0">
+        <layout class="QHBoxLayout">
+          <item>
+            <widget class="QLabel" name="lblName">
+              <property name="text">
+                <string>Name:</string>
+              </property>
+              <property name="wordWrap">
+                <bool>false</bool>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QLineEdit" name="editName">
+              <property name="minimumSize">
+                <size>
+                  <width>200</width>
+                  <height>0</height>
+                </size>
+              </property>
+              <property name="maxLength">
+                <number>200</number>
+              </property>
+            </widget>
+          </item>
+        </layout>
+      </item>
+      <item row="0" column="1">
+        <layout class="QHBoxLayout">
+          <item>
+            <widget class="QLabel" name="lblPass">
+              <property name="text">
+                <string>Password:</string>
+              </property>
+              <property name="wordWrap">
+                <bool>false</bool>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QLineEdit" name="editPass">
+              <property name="minimumSize">
+                <size>
+                  <width>200</width>
+                  <height>0</height>
+                </size>
+              </property>
+              <property name="maxLength">
+                <number>200</number>
+              </property>
+              <property name="echoMode">
+                <enum>QLineEdit::Password</enum>
+              </property>
+            </widget>
+          </item>
+        </layout>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11"/>
+  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+  <includes>
+    <include location="local">engine.h</include>
+  </includes>
+  <connections>
     <connection>
-        <sender>buttonCancel</sender>
-        <signal>clicked()</signal>
-        <receiver>dlgUser</receiver>
-        <slot>reject()</slot>
+      <sender>buttonCancel</sender>
+      <signal>clicked()</signal>
+      <receiver>dlgUser</receiver>
+      <slot>reject()</slot>
     </connection>
     <connection>
-        <sender>listRights</sender>
-        <signal>doubleClicked(QListBoxItem*)</signal>
-        <receiver>dlgUser</receiver>
-        <slot>check(QListBoxItem*)</slot>
+      <sender>listRights</sender>
+      <signal>doubleClicked(Q3ListBoxItem*)</signal>
+      <receiver>dlgUser</receiver>
+      <slot>check(Q3ListBoxItem*)</slot>
     </connection>
     <connection>
-        <sender>buttonOk</sender>
-        <signal>clicked()</signal>
-        <receiver>dlgUser</receiver>
-        <slot>ok()</slot>
+      <sender>buttonOk</sender>
+      <signal>clicked()</signal>
+      <receiver>dlgUser</receiver>
+      <slot>ok()</slot>
     </connection>
     <connection>
-        <sender>editPass</sender>
-        <signal>textChanged(const QString&amp;)</signal>
-        <receiver>dlgUser</receiver>
-        <slot>passwordChanged(const QString&amp;)</slot>
+      <sender>editPass</sender>
+      <signal>textChanged(QString)</signal>
+      <receiver>dlgUser</receiver>
+      <slot>passwordChanged(QString)</slot>
     </connection>
-</connections>
-<includes>
-    <include location="local" impldecl="in declaration">engine.h</include>
-    <include location="local" impldecl="in implementation">dlguser.ui.h</include>
-</includes>
-<variables>
-    <variable access="private">alUserRecord * fData;</variable>
-    <variable access="private">QString fPassword;</variable>
-</variables>
-<slots>
-    <slot>setData( alUserRecord * data )</slot>
-    <slot>setItem( QListBoxItem * item, bool checked )</slot>
-    <slot>refresh()</slot>
-    <slot>check( QListBoxItem * item )</slot>
-    <slot>init()</slot>
-    <slot>passwordChanged( const QString &amp; text )</slot>
-    <slot>ok()</slot>
-</slots>
-<pixmapinproject/>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+  </connections>
+</ui>
