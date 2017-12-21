@@ -28,29 +28,26 @@ void alSettings::init()
 	QString value;	
 	dbParams.clear();
 	QSettings qtSettings;	    
-	qtSettings.insertSearchPath(QSettings::Unix, QString(QDir::homeDirPath())+QString("/.aldebaran"));
+    //qtSettings.insertSearchPath(QSettings::Unix, QString(QDir::homeDirPath())+QString("/.aldebaran"));
 	qtSettings.beginGroup("/connection");
 
-	value = qtSettings.readEntry("/TYPE", "", &ok);
-	if(!ok) nodb = TRUE;
+    value = qtSettings.value("/TYPE", "nodb").toString();
+    if(value=="nodb") nodb = TRUE;
 	dbParams.append(value);
 	
-	value = qtSettings.readEntry("/DB", "", &ok);
-	if(!ok) nodb = TRUE;
+    value = qtSettings.value("/DB", "aldebaran").toString();
 	dbParams.append(value);
 
-	value = qtSettings.readEntry("/ADRESS", "127.0.0.1", &ok);
-	if(!ok) nodb = TRUE;
+    value = qtSettings.value("/ADRESS", "127.0.0.1").toString();
 	dbParams.append(value);
 
-	value = qtSettings.readEntry("/PORT", "", &ok);
-	if(!ok) nodb = TRUE;
+    value = qtSettings.value("/PORT", "5432").toString();
 	dbParams.append(value);
 	
-	value = qtSettings.readEntry("/USER", "", &ok);
+    value = qtSettings.value("/USER", "aldebaran").toString();
 	dbParams.append(value);
 	
-	value = qtSettings.readEntry("/PASSWORD", "", &ok);
+    value = qtSettings.value("/PASSWORD", "aldebran").toString();
 	dbParams.append(value);
 	
 	qtSettings.endGroup();
@@ -70,35 +67,28 @@ void alSettings::init()
 	addSubSystem(EQUIPMENT, k);
 }
 
+//TODO reimplement
 bool alSettings::dbDialog()
 {
-    QStringList data;    
-    ddbsettings * dlg = new ddbsettings(0, "dbsettingsdlg", true);
-    dlg->setData(dbParams);
-    int res = dlg->exec();
-#ifdef DEBUG
-    qDebug(QString(tr("ddbsettings dialog returns %1")).arg(res).utf8());
-#endif
-    if(res)
-    {
-	dbParams = dlg->getData();
-	flushqt();
-    }
-    return res;
+//    QStringList data;
+//    QDialog dlg;
+//    Ui::ddbsettings dlgui;//(0, "dbsettingsdlg", true);
+//    dlgui.setupUi(&dlg);
+//    dlgui.setData(dbParams);
+//    int res = dlg.exec();
+//#ifdef DEBUG
+//    qDebug(QString(tr("ddbsettings dialog returns %1")).arg(res).utf8());
+//#endif
+//    if(res)
+//    {
+//        dbParams = dlg->getData();
+//        flushqt();
+//    }
+//    return res;
 }
 
 bool alSettings::dialog()
 {
-    settingsDialog * dlg = new settingsDialog();
-    dlg->init(fEngine);
-    dlg->setData(params);
-    int res = dlg->exec();
-#ifdef DEBUG
-    qDebug(QString(tr("settings dialog returns %1")).arg(res).utf8());
-#endif
-    if(res)
-	params = dlg->getData();    
-    return res;
 }
 
 QStringList alSettings::dbSettings()
@@ -106,35 +96,37 @@ QStringList alSettings::dbSettings()
     return dbParams;
 }
 
+//TODO reimplement
 void alSettings::flushqt()
 {
-    QSettings qtSettings;    
-    qtSettings.insertSearchPath(QSettings::Unix, QString(QDir::homeDirPath())+QString("/.aldebaran"));
-    qtSettings.beginGroup("/connection");
+//    QSettings qtSettings;
+//    qtSettings.insertSearchPath(QSettings::Unix, QString(QDir::homeDirPath())+QString("/.aldebaran"));
+//    qtSettings.beginGroup("/connection");
     
-    qtSettings.writeEntry("/TYPE", dbParams[0]);
-    qtSettings.writeEntry("/DB", dbParams[1]);
-    qtSettings.writeEntry("/ADRESS", dbParams[2]);
-    qtSettings.writeEntry("/PORT", dbParams[3]);
-    qtSettings.writeEntry("/USER", dbParams[4]);
-    qtSettings.writeEntry("/PASSWORD", dbParams[5]);    
+//    qtSettings.writeEntry("/TYPE", dbParams[0]);
+//    qtSettings.writeEntry("/DB", dbParams[1]);
+//    qtSettings.writeEntry("/ADRESS", dbParams[2]);
+//    qtSettings.writeEntry("/PORT", dbParams[3]);
+//    qtSettings.writeEntry("/USER", dbParams[4]);
+//    qtSettings.writeEntry("/PASSWORD", dbParams[5]);
     
-    qtSettings.endGroup();    
+//    qtSettings.endGroup();
 }
 
 /*
 */
+//TODO uncomment
 void alSettings::flushsql()
 {
     if(!fEngine->db())
-	return;
-    fEngine->startTransaction();
-    alDataSettings * t = new alDataSettings(fEngine);
-    for(int s=0;s<(int)subSystems.count();s++)
-	for(int v=0;v<(int)keys[subSystems[s]].count();v++)
-	    t->save(subSystems[s], keys[subSystems[s]][v], params[subSystems[s]][keys[subSystems[s]][v]]);
-    fEngine->commitTransaction();
-    delete t;
+        return;
+//    fEngine->startTransaction();
+//    alDataSettings * t = new alDataSettings(fEngine);
+//    for(int s=0;s<(int)subSystems.count();s++)
+//	for(int v=0;v<(int)keys[subSystems[s]].count();v++)
+//	    t->save(subSystems[s], keys[subSystems[s]][v], params[subSystems[s]][keys[subSystems[s]][v]]);
+//    fEngine->commitTransaction();
+//    delete t;
 }
 
 /*

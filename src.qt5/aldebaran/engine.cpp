@@ -73,28 +73,30 @@ QSqlDatabase * alEngine::db()
     return NULL;
 }
 
+//TODO uncomment
 void alEngine::setCurrentUser(alUserRecord * u)
 {
-    if(!u)
-    {
-	exitApp();
-	return;
-    }
-    alDataUsers * users = new alDataUsers(this);
-    fCurrentUser = users->select(u->id());
-    delete users;
+//    if(!u)
+//    {
+//        exitApp();
+//        return;
+//    }
+//    alDataUsers * users = new alDataUsers(this);
+//    fCurrentUser = users->select(u->id());
+//    delete users;
 }
 
+//TODO uncomment
 void alEngine::initUsers()
 {
-    alDataUsers * users = new alDataUsers(this);
-    users->checkUsers();
-    delete users;
+//    alDataUsers * users = new alDataUsers(this);
+//    users->checkUsers();
+//    delete users;
 }
 
 void alEngine::initEquipment()
 {
-    fWorker = eqWorker::worker();
+    //fWorker = eqWorker::worker();
     //TODO reimplement with refactoring
 //    alDataEq * eq = new alDataEq(this);
 //    connect(fWorker, SIGNAL(deviceError(int)), this, SLOT(onError(int)));
@@ -168,32 +170,33 @@ void alEngine::initEquipment()
 //    server->start();
 }
 
+//TODO uncomment
 void alEngine::importData(importer * imp)
 {    
-//    if(QString(imp->name())==QString("Sirius"))
-    {
-	alDataOrder * orders;
-	alOrderRecord * order;
-	switch(((impSirius*)imp)->cmd())
-	{
-		case 'O':
-		    orders = new alDataOrder(this);
-		    order = orders->import(imp);
-		    exportOrder(order);
-//TODO how many time print order?? in settings		    
-		    order->printOrder();
-		    order->printOrder();		    
-		    if(!mainWindow->currentOrder()) mainWindow->rebuild();
-		    delete orders;
-		    break;
-		case 'W':
-		    imp->seek(0);
-		    QMessageBox::information(0, "aldebaran", QString(tr("Call from table #%1")).arg(imp->value("table").toInt()));
-		    break;
-		default:
-		    break;
-	}
-    }
+////    if(QString(imp->name())==QString("Sirius"))
+//    {
+//	alDataOrder * orders;
+//	alOrderRecord * order;
+//	switch(((impSirius*)imp)->cmd())
+//	{
+//		case 'O':
+//		    orders = new alDataOrder(this);
+//		    order = orders->import(imp);
+//		    exportOrder(order);
+////TODO how many time print order?? in settings
+//		    order->printOrder();
+//		    order->printOrder();
+//		    if(!mainWindow->currentOrder()) mainWindow->rebuild();
+//		    delete orders;
+//		    break;
+//		case 'W':
+//		    imp->seek(0);
+//		    QMessageBox::information(0, "aldebaran", QString(tr("Call from table #%1")).arg(imp->value("table").toInt()));
+//		    break;
+//		default:
+//		    break;
+//	}
+//    }
 }
 
 bool alEngine::loginLock()
@@ -222,37 +225,38 @@ bool alEngine::loginLock()
 	- Инициализация оборудования, очередь задач
 	- Основное окно
 */
+//TODO uncomment
 int alEngine::start()
 {	
-    QStringList dbParams;
-    do
-    {
-        dbParams = settings->dbSettings();
-        fDB = new QSqlDatabase(QSqlDatabase::addDatabase(dbParams[0], dbParams[1]));
-        fDB->setDatabaseName(dbParams[1]);
-        fDB->setHostName(dbParams[2]);
-        fDB->setPort(dbParams[3].toInt());
-        if(!fDB->open(dbParams[4], dbParams[5]))
-        {
-            if(!settings->dbDialog()) exitApp();
-        }
-        else break;
-    }while(true);
-    Queries::setDialect(dbParams[0]);
-    dbInited = TRUE;
-    emit(initialized());
-    initUsers();
-    initEquipment();
-    if(!loginLock()) return -1;
+//    QStringList dbParams;
+//    do
+//    {
+//        dbParams = settings->dbSettings();
+//        fDB = new QSqlDatabase(QSqlDatabase::addDatabase(dbParams[0], dbParams[1]));
+//        fDB->setDatabaseName(dbParams[1]);
+//        fDB->setHostName(dbParams[2]);
+//        fDB->setPort(dbParams[3].toInt());
+//        if(!fDB->open(dbParams[4], dbParams[5]))
+//        {
+//            if(!settings->dbDialog()) exitApp();
+//        }
+//        else break;
+//    }while(true);
+//    Queries::setDialect(dbParams[0]);
+//    dbInited = TRUE;
+//    emit(initialized());
+//    initUsers();
+//    initEquipment();
+//    if(!loginLock()) return -1;
 
-    initTables();
+//    initTables();
 
-    mainWindow = new alMainWindow(this);
-    connect(mainWindow, SIGNAL(closed()), this, SLOT(exitApp()));
-    qApp->setActiveWindow(mainWindow);
+//    mainWindow = new alMainWindow(this);
+//    connect(mainWindow, SIGNAL(closed()), this, SLOT(exitApp()));
+//    qApp->setActiveWindow(mainWindow);
 
-//    alDataGoods * goods = new alDataGoods(this);
-//    goods->exportpictures();
+////    alDataGoods * goods = new alDataGoods(this);
+////    goods->exportpictures();
 
     return qApp->exec();
 }
@@ -267,9 +271,11 @@ QVariant alEngine::parameter(QString sub, QString key)
     return settings->parameter(sub, key);
 }
 
+//TODO uncomment
 void alEngine::settingsDialog()
 {
-    if(settings->dialog()) emit(settingsChanged());
+//    if(settings->dialog())
+//        emit(settingsChanged());
 }
 
 void alEngine::eqDialog()
@@ -315,207 +321,222 @@ alOrderRecord * alEngine::tableOrder(int num)
 
 void alEngine::initTables()
 {
-    fOrders = new alDataOrder(this);    
+//    fOrders = new alDataOrder(this);
 }
 
+//TODO uncomment
 QStringList alEngine::driverList()
 {
-    if(!fWorker) return QStringList();
-    return fWorker->driverList();
+//    if(!fWorker)
+//        return QStringList();
+//    return fWorker->driverList();
 }
+
+//TODO uncomment
 
 eqJob * alEngine::createPrinterJob(QString device, QString action)
 {
-    if(device=="") device = parameter(EQUIPMENT, PRINTER).toString();
-    return fWorker->createJob(device, action);
+//    if(device=="")
+//        device = parameter(EQUIPMENT, PRINTER).toString();
+//    return fWorker->createJob(device, action);
 }
 
+//TODO uncomment
 eqJob * alEngine::createECRJob(QString device, QString action)
 {
-    if(device=="") device = parameter(EQUIPMENT, ECR).toString();    
-    return fWorker->createJob(device, action);
+//    if(device=="")
+//        device = parameter(EQUIPMENT, ECR).toString();
+//    return fWorker->createJob(device, action);
 }
 
+//TODO uncomment
 void alEngine::exportOrder(alOrderRecord * order)
 {
-    QString device = "_NO_DEVICE_";
-    alDataEq * eq = new alDataEq(this);
-    eq->select("type='Sirius' OR type='Virtual Mart'");
-    if(eq->first()) do
-    {
-	alEqRecord * dev = (alEqRecord*)eq->current();
-    qDebug() << QString("device name is %1, table %2").arg(dev->name()).arg(dev->option("table").toInt());
-	if(dev->option("table").toInt()==order->table()) 
-	{
-	    device = dev->name();
-	    break;
-	}
-    } while (eq->next());
-    delete eq;
-    if(device=="_NO_DEVICE_") return;
+//    QString device = "_NO_DEVICE_";
+//    alDataEq * eq = new alDataEq(this);
+//    eq->select("type='Sirius' OR type='Virtual Mart'");
+//    if(eq->first()) do
+//    {
+//	alEqRecord * dev = (alEqRecord*)eq->current();
+//    qDebug() << QString("device name is %1, table %2").arg(dev->name()).arg(dev->option("table").toInt());
+//	if(dev->option("table").toInt()==order->table())
+//	{
+//	    device = dev->name();
+//	    break;
+//	}
+//    } while (eq->next());
+//    delete eq;
+//    if(device=="_NO_DEVICE_") return;
     
-    if(!connectDevice(device)) return;    
-    map m;
-    m["1"] = (uint)order->id();
-    m["2"] = order->externalCode().toUInt();
-    m["3"] = (uint)order->status();
-    m["4"] = date2int(order->date());
-    m["5"] = time2int(order->timeOpen());
-//TODO export client
-//    m["6"] = order->client();
-    m["6"] = 0; 
-    eqJob * job = fWorker->createJob(device, "orderStart");
-    job->setData(QVariant(m));
-    job->process();
-    alDataOrderTable * table = order->getDocumentTable();
-    table->select();
-    for(int row=0;row<table->count();row++)
-    {
-	alOrderLine * line = table->getLine(row);	
-	if(!line->item()) continue;
-	m["1"] = line->lineNum();
-	m["2"] = (uint)line->item()->id();
-	m["3"] = QString("%1").arg(line->amount(), 5, 'F', 2);
-	m["4"] = QString("%1").arg(line->price(), 5, 'F', 2);
-	m["5"] = QString("%1").arg(line->summ(), 6, 'F', 2);
-	job = fWorker->createJob(device, "line");
-	job->setData(QVariant(m));
-	job->process();
-    }
-    job = fWorker->createJob(device, "orderEnd");
-    job->process();    
+//    if(!connectDevice(device)) return;
+//    map m;
+//    m["1"] = (uint)order->id();
+//    m["2"] = order->externalCode().toUInt();
+//    m["3"] = (uint)order->status();
+//    m["4"] = date2int(order->date());
+//    m["5"] = time2int(order->timeOpen());
+////TODO export client
+////    m["6"] = order->client();
+//    m["6"] = 0;
+//    eqJob * job = fWorker->createJob(device, "orderStart");
+//    job->setData(QVariant(m));
+//    job->process();
+//    alDataOrderTable * table = order->getDocumentTable();
+//    table->select();
+//    for(int row=0;row<table->count();row++)
+//    {
+//	alOrderLine * line = table->getLine(row);
+//	if(!line->item()) continue;
+//	m["1"] = line->lineNum();
+//	m["2"] = (uint)line->item()->id();
+//	m["3"] = QString("%1").arg(line->amount(), 5, 'F', 2);
+//	m["4"] = QString("%1").arg(line->price(), 5, 'F', 2);
+//	m["5"] = QString("%1").arg(line->summ(), 6, 'F', 2);
+//	job = fWorker->createJob(device, "line");
+//	job->setData(QVariant(m));
+//	job->process();
+//    }
+//    job = fWorker->createJob(device, "orderEnd");
+//    job->process();
 }
 
+//TODO uncomment
 bool alEngine::prepareGoods(QString deviceType)
 {
-    eqDriver * drv = fWorker->createDevice(deviceType, "prepareGoods", false);
-    if(!drv) return FALSE;
-    drv->setOption("path", parameter(GENERAL, IMPEXPPATH).toString());
-    drv->init();
-    eqJob * job = drv->createJob("goodsStart");
-    if(!job) return FALSE;
-    job->process();
-    delete job;
-    alDataGoods * goods = new alDataGoods(this);
-    goods->select("eqexport=true");
-    if(goods->first()) do
-    {
-        map m;
-        alGoodsRecord * rec = (alGoodsRecord *)goods->current();
-        m["01"] = (uint)rec->id();
-        if((uint)rec->parent()) m["02"] =  (uint)rec->parent()->id();
-        else m["02"] = 0;
-        m["03"] = rec->isGroup();
-        m["04"] = rec->name();
-        m["05"] = rec->description();
-        m["06"] = pixmap2bytearray(rec->picture());
-        m["07"] = QString("%1").arg(rec->price(), 5, 'F', 2);
-        m["08"] = QString("%1").arg(rec->hydroCarbonat(), 6, 'F', 3);
-        m["09"] = QString("%1").arg(rec->fat(), 6, 'F', 3);
-        m["10"] = QString("%1").arg(rec->protein(), 6, 'F', 3);
-        m["11"] = QString("%1").arg(rec->calories(), 7, 'F', 3);
-        m["12"] = rec->outOfStore();
+//    eqDriver * drv = fWorker->createDevice(deviceType, "prepareGoods", false);
+//    if(!drv) return FALSE;
+//    drv->setOption("path", parameter(GENERAL, IMPEXPPATH).toString());
+//    drv->init();
+//    eqJob * job = drv->createJob("goodsStart");
+//    if(!job) return FALSE;
+//    job->process();
+//    delete job;
+//    alDataGoods * goods = new alDataGoods(this);
+//    goods->select("eqexport=true");
+//    if(goods->first()) do
+//    {
+//        map m;
+//        alGoodsRecord * rec = (alGoodsRecord *)goods->current();
+//        m["01"] = (uint)rec->id();
+//        if((uint)rec->parent()) m["02"] =  (uint)rec->parent()->id();
+//        else m["02"] = 0;
+//        m["03"] = rec->isGroup();
+//        m["04"] = rec->name();
+//        m["05"] = rec->description();
+//        m["06"] = pixmap2bytearray(rec->picture());
+//        m["07"] = QString("%1").arg(rec->price(), 5, 'F', 2);
+//        m["08"] = QString("%1").arg(rec->hydroCarbonat(), 6, 'F', 3);
+//        m["09"] = QString("%1").arg(rec->fat(), 6, 'F', 3);
+//        m["10"] = QString("%1").arg(rec->protein(), 6, 'F', 3);
+//        m["11"] = QString("%1").arg(rec->calories(), 7, 'F', 3);
+//        m["12"] = rec->outOfStore();
 
-        job = drv->createJob("line");
-        job->setData(QVariant(m));
-        job->process();
-        delete job;
-        if(app->hasPendingEvents())
-            app->processEvents(QEventLoop::AllEvents, 1000);
-    }while(goods->next());
-    job = drv->createJob("goodsEnd");
-    job->process();
-    delete job;
-    delete drv;
+//        job = drv->createJob("line");
+//        job->setData(QVariant(m));
+//        job->process();
+//        delete job;
+//        if(app->hasPendingEvents())
+//            app->processEvents(QEventLoop::AllEvents, 1000);
+//    }while(goods->next());
+//    job = drv->createJob("goodsEnd");
+//    job->process();
+//    delete job;
+//    delete drv;
     return TRUE;    
 }
 
+//TODO uncomment
 bool alEngine::exportGoods(QString device)
 {
-    eqJob * job = fWorker->createJob(device, "goodsStart");
-    if(!job) return FALSE;
-    job->process();
-    delete job;    
-    job = fWorker->createJob(device, "goodsEnd");
-    job->process();
-    delete job;
+//    eqJob * job = fWorker->createJob(device, "goodsStart");
+//    if(!job) return FALSE;
+//    job->process();
+//    delete job;
+//    job = fWorker->createJob(device, "goodsEnd");
+//    job->process();
+//    delete job;
     return TRUE;        
 }
 
+//TODO uncomment
 void alEngine::sendElement(alGoodsRecord * rec)
 {
-    qDebug("sending element");
-    alDataEq * eq = new alDataEq(this);
-    eq->select("type='Sirius'");
-    if(eq->first()) do
-    {
-	alEqRecord * dev = (alEqRecord*)eq->current();
-    qDebug() << QString("device name is %1, table %2").arg(dev->name()).arg(dev->option(tr("table")).toInt());
-	QString device = dev->name();
-	if(!connectDevice(device)) return;
-	eqJob * job = fWorker->createJob(device, "elementStart");
-	if(!job) return;
-	job->process();
-	delete job;
-	map m;    	
-	m["01"] = (uint)rec->id();
-	if((uint)rec->parent()) m["02"] =  (uint)rec->parent()->id();
-	else m["02"] = 0;
-	m["03"] = rec->isGroup();
-	m["04"] = rec->name();
-	m["05"] = rec->description();
-	m["06"] = pixmap2bytearray(rec->picture());
-	m["07"] = QString("%1").arg(rec->price(), 5, 'F', 2);
-	m["08"] = QString("%1").arg(rec->hydroCarbonat(), 6, 'F', 3);
-	m["09"] = QString("%1").arg(rec->fat(), 6, 'F', 3);
-	m["10"] = QString("%1").arg(rec->protein(), 6, 'F', 3);
-	m["11"] = QString("%1").arg(rec->calories(), 7, 'F', 3);
-	m["12"] = rec->outOfStore();
+//    qDebug("sending element");
+//    alDataEq * eq = new alDataEq(this);
+//    eq->select("type='Sirius'");
+//    if(eq->first()) do
+//    {
+//	alEqRecord * dev = (alEqRecord*)eq->current();
+//    qDebug() << QString("device name is %1, table %2").arg(dev->name()).arg(dev->option(tr("table")).toInt());
+//	QString device = dev->name();
+//	if(!connectDevice(device)) return;
+//	eqJob * job = fWorker->createJob(device, "elementStart");
+//	if(!job) return;
+//	job->process();
+//	delete job;
+//	map m;
+//	m["01"] = (uint)rec->id();
+//	if((uint)rec->parent()) m["02"] =  (uint)rec->parent()->id();
+//	else m["02"] = 0;
+//	m["03"] = rec->isGroup();
+//	m["04"] = rec->name();
+//	m["05"] = rec->description();
+//	m["06"] = pixmap2bytearray(rec->picture());
+//	m["07"] = QString("%1").arg(rec->price(), 5, 'F', 2);
+//	m["08"] = QString("%1").arg(rec->hydroCarbonat(), 6, 'F', 3);
+//	m["09"] = QString("%1").arg(rec->fat(), 6, 'F', 3);
+//	m["10"] = QString("%1").arg(rec->protein(), 6, 'F', 3);
+//	m["11"] = QString("%1").arg(rec->calories(), 7, 'F', 3);
+//	m["12"] = rec->outOfStore();
 	
-	job = fWorker->createJob(device, "line");
-	job->setData(QVariant(m));
-	job->process();
-	delete job;
-	job = fWorker->createJob(device, "elementEnd");
-	job->process();
-	delete job;
-    } while (eq->next());
-    delete eq;
+//	job = fWorker->createJob(device, "line");
+//	job->setData(QVariant(m));
+//	job->process();
+//	delete job;
+//	job = fWorker->createJob(device, "elementEnd");
+//	job->process();
+//	delete job;
+//    } while (eq->next());
+//    delete eq;
 }
 
+//TODO uncomment
 bool alEngine::resetDevice(QString device)
 {
-    if(!connectDevice(device)) return FALSE;    
-    eqJob * job = fWorker->createJob(device, "resetDevice");
-    job->process();
-    delete job;
+//    if(!connectDevice(device)) return FALSE;
+//    eqJob * job = fWorker->createJob(device, "resetDevice");
+//    job->process();
+//    delete job;
     return TRUE;
 }
 
+//TODO uncomment
 bool alEngine::shutdownDevice(QString device)
 {
-    if(!connectDevice(device)) return FALSE;
-    eqJob * job = fWorker->createJob(device, "haltDevice");
-    job->process();
-    delete job;
+//    if(!connectDevice(device)) return FALSE;
+//    eqJob * job = fWorker->createJob(device, "haltDevice");
+//    job->process();
+//    delete job;
     return TRUE;    
 }
 
+//TODO uncomment
 bool alEngine::updateDevice(QString device)
 {
-    if(!connectDevice(device)) return FALSE;    
-    eqJob * job = fWorker->createJob(device, "updateDevice");
-    job->process();
-    delete job;
+//    if(!connectDevice(device)) return FALSE;
+//    eqJob * job = fWorker->createJob(device, "updateDevice");
+//    job->process();
+//    delete job;
     return TRUE;
 }
 
+//TODO uncomment
 bool alEngine::connectDevice(QString device)
 {
-    eqJob * job = fWorker->createJob(device, "connect");
-    if(!job) return FALSE;
-    job->process();
-    delete job;
+//    eqJob * job = fWorker->createJob(device, "connect");
+//    if(!job) return FALSE;
+//    job->process();
+//    delete job;
     return TRUE;    
 }
 
@@ -581,128 +602,130 @@ void alEngine::startImport()
 //    else import();
 }
 
+//TODO uncomment
 void alEngine::import(bool stop)
 {
-    if(stop) return;
-    QString path = QString(settings->parameter(GENERAL, IMPEXPPATH).toString());
-    if(path.right(1)!="/") path += "/";
-    QString fileName =  path + QString(settings->parameter(GENERAL, IMPEXPIMPORT).toString());    
-    QString fmt = QString::fromUtf8(settings->parameter(GENERAL, IMPEXPFMT).toByteArray());
-    importer * imp = importer::createImporter(fmt);
-    imp->setCodepage(settings->parameter(GENERAL, IMPEXPCP).toString());
-//    if(!imp->open(fileName)) qDebug("NOFILE");
-    imp->open(fileName);
-//    qDebug(QString("start time %1").arg(QTime::currentTime().toString()));    
-    alDataGoods * goods = new alDataGoods(this);
-    goods->import(imp);
-    alDataDiscount * disc = new alDataDiscount(this);
-    disc->import(imp);
-//    qDebug(QString("end time %1").arg(QTime::currentTime().toString()));    
+//    if(stop) return;
+//    QString path = QString(settings->parameter(GENERAL, IMPEXPPATH).toString());
+//    if(path.right(1)!="/") path += "/";
+//    QString fileName =  path + QString(settings->parameter(GENERAL, IMPEXPIMPORT).toString());
+//    QString fmt = QString::fromUtf8(settings->parameter(GENERAL, IMPEXPFMT).toByteArray());
+//    importer * imp = importer::createImporter(fmt);
+//    imp->setCodepage(settings->parameter(GENERAL, IMPEXPCP).toString());
+////    if(!imp->open(fileName)) qDebug("NOFILE");
+//    imp->open(fileName);
+////    qDebug(QString("start time %1").arg(QTime::currentTime().toString()));
+//    alDataGoods * goods = new alDataGoods(this);
+//    goods->import(imp);
+//    alDataDiscount * disc = new alDataDiscount(this);
+//    disc->import(imp);
+////    qDebug(QString("end time %1").arg(QTime::currentTime().toString()));
 }
 
+    //TODO uncomment
 void alEngine::exportSales(int type, QDateTime begin, QDateTime end)
 {
-    QString fileName = QString(settings->parameter(GENERAL, IMPEXPPATH).toString()) +
-		       QString(settings->parameter(GENERAL, IMPEXPEXPORT).toString());
-    QString fmt = QString::fromUtf8(settings->parameter(GENERAL, IMPEXPFMT).toByteArray());
-    exporter * exp = exporter::createExporter(fmt);
-    if(!exp) return;
-    exp->open(fileName);
-    alDataOrder * orders = new alDataOrder(this);
-    if(type==0)
-    {
-	orders->select("status=2");
-    }
-    else
-    {
-	QString filter = QString("orderdate>='%1' AND orderdate<='%2' AND timeopen>'%3' AND timeopen<'%4' AND (status=2 OR status=4)")
-			 .arg(begin.date().toString("yyyy-MM-dd"))
-			 .arg(end.date().toString("yyyy-MM-dd"))
-			 .arg(begin.time().toString())
-			 .arg(end.time().toString()) ;
-	orders->select(filter);
-    }
-    startTransaction();
-    int tranz = 1;
-    if(orders->first()) do
-    {
-	alOrderRecord * order = (alOrderRecord *)orders->current();
-    qDebug() << QString("export order #%1").arg(order->num());
-	alDataOrderTable * orderTab = order->getDocumentTable();
-	orderTab->select();
-	for(int r=0;r<orderTab->count();r++)
-	{
-	    alOrderLine * line = orderTab->getLine(r);
-	    alGoodsRecord * item = line->item(); 
-	    map m;
-	    m["01"] = tranz++;
-	    m["02"] = order->date().toString("dd.MM.yyyy");
-	    m["03"] = order->timeOpen().toString();
-	    m["04"] = "11";
-	    m["05"] = "1";
-	    m["06"] = order->num();
-	    m["07"] = "1";
-	    m["08"] = item ? item->externalCode() : "0";
-	    m["09"] = "1";
-	    m["10"] = line->price();
-	    m["11"] = line->amount();
-	    m["12"] = line->summ();
-	    exp->fromMap(m);
-	    alDiscountRecord * discount;
-	    if((discount = order->discount()))
-	    {	
-		if(discount->type()==0)
-		{
-		    if(discount->code().isEmpty())  m["04"] = "17";
-		    else m["04"]="70";
-		}
-		else 
-		{
-		    if(discount->code().isEmpty()) m["04"] = "15";
-		    else m["04"]="70";
-		}
-		m["08"] = discount->code();
-		m["09"] = "1";		
-		m["10"] = "";
-		m["11"] = discount->value();
-		m["12"] = line->amount()*line->price()-line->summ();
-		exp->fromMap(m);
-	    }	    
-	}
-	map m;
-	m["01"] = tranz++;
-	m["02"] = order->date().toString("dd.MM.yyyy");
-	m["03"] = order->timeOpen().toString();
-	m["04"] = "55";
-	m["05"] = "1";
-	m["06"] = order->num();
-	m["07"] = "1";
-	m["08"] = "0";
-	m["09"] = "1";
-	m["10"] = "";
-	m["11"] = "";
-	m["12"] = "";
-	exp->fromMap(m);	
-	order->setStatus(alDataOrder::Exported);
-	order->update();
-	app->processEvents();
-    }while(orders->next());
-    delete exp;
-    commitTransaction();
+//    QString fileName = QString(settings->parameter(GENERAL, IMPEXPPATH).toString()) +
+//		       QString(settings->parameter(GENERAL, IMPEXPEXPORT).toString());
+//    QString fmt = QString::fromUtf8(settings->parameter(GENERAL, IMPEXPFMT).toByteArray());
+//    exporter * exp = exporter::createExporter(fmt);
+//    if(!exp) return;
+//    exp->open(fileName);
+//    alDataOrder * orders = new alDataOrder(this);
+//    if(type==0)
+//    {
+//	orders->select("status=2");
+//    }
+//    else
+//    {
+//	QString filter = QString("orderdate>='%1' AND orderdate<='%2' AND timeopen>'%3' AND timeopen<'%4' AND (status=2 OR status=4)")
+//			 .arg(begin.date().toString("yyyy-MM-dd"))
+//			 .arg(end.date().toString("yyyy-MM-dd"))
+//			 .arg(begin.time().toString())
+//			 .arg(end.time().toString()) ;
+//	orders->select(filter);
+//    }
+//    startTransaction();
+//    int tranz = 1;
+//    if(orders->first()) do
+//    {
+//	alOrderRecord * order = (alOrderRecord *)orders->current();
+//    qDebug() << QString("export order #%1").arg(order->num());
+//	alDataOrderTable * orderTab = order->getDocumentTable();
+//	orderTab->select();
+//	for(int r=0;r<orderTab->count();r++)
+//	{
+//	    alOrderLine * line = orderTab->getLine(r);
+//	    alGoodsRecord * item = line->item();
+//	    map m;
+//	    m["01"] = tranz++;
+//	    m["02"] = order->date().toString("dd.MM.yyyy");
+//	    m["03"] = order->timeOpen().toString();
+//	    m["04"] = "11";
+//	    m["05"] = "1";
+//	    m["06"] = order->num();
+//	    m["07"] = "1";
+//	    m["08"] = item ? item->externalCode() : "0";
+//	    m["09"] = "1";
+//	    m["10"] = line->price();
+//	    m["11"] = line->amount();
+//	    m["12"] = line->summ();
+//	    exp->fromMap(m);
+//	    alDiscountRecord * discount;
+//	    if((discount = order->discount()))
+//	    {
+//		if(discount->type()==0)
+//		{
+//		    if(discount->code().isEmpty())  m["04"] = "17";
+//		    else m["04"]="70";
+//		}
+//		else
+//		{
+//		    if(discount->code().isEmpty()) m["04"] = "15";
+//		    else m["04"]="70";
+//		}
+//		m["08"] = discount->code();
+//		m["09"] = "1";
+//		m["10"] = "";
+//		m["11"] = discount->value();
+//		m["12"] = line->amount()*line->price()-line->summ();
+//		exp->fromMap(m);
+//	    }
+//	}
+//	map m;
+//	m["01"] = tranz++;
+//	m["02"] = order->date().toString("dd.MM.yyyy");
+//	m["03"] = order->timeOpen().toString();
+//	m["04"] = "55";
+//	m["05"] = "1";
+//	m["06"] = order->num();
+//	m["07"] = "1";
+//	m["08"] = "0";
+//	m["09"] = "1";
+//	m["10"] = "";
+//	m["11"] = "";
+//	m["12"] = "";
+//	exp->fromMap(m);
+//	order->setStatus(alDataOrder::Exported);
+//	order->update();
+//	app->processEvents();
+//    }while(orders->next());
+//    delete exp;
+//    commitTransaction();
     
-    if(settings->parameter(GENERAL, IMPEXPFTP).toInt())
-    {
-	QFile * file = new QFile(fileName);
-    file->open(QIODevice::ReadOnly);
-	QString remotePath = settings->parameter(GENERAL, IMPEXPFTPRDIR).toString();
-	if(remotePath.right(1)!="/") remotePath += "/";
-	ftpput(settings->parameter(GENERAL, IMPEXPFTPHOST).toString(),
-			settings->parameter(GENERAL, IMPEXPFTPPORT).toInt(),
-			settings->parameter(GENERAL, IMPEXPFTPLOGIN).toString(),
-			settings->parameter(GENERAL, IMPEXPFTPPASSWORD).toString(),			
-			*file,
-			remotePath + QString(settings->parameter(GENERAL, IMPEXPEXPORT).toString()));
-    }    
+//    if(settings->parameter(GENERAL, IMPEXPFTP).toInt())
+//    {
+//	QFile * file = new QFile(fileName);
+//    file->open(QIODevice::ReadOnly);
+//	QString remotePath = settings->parameter(GENERAL, IMPEXPFTPRDIR).toString();
+//	if(remotePath.right(1)!="/") remotePath += "/";
+//	ftpput(settings->parameter(GENERAL, IMPEXPFTPHOST).toString(),
+//			settings->parameter(GENERAL, IMPEXPFTPPORT).toInt(),
+//			settings->parameter(GENERAL, IMPEXPFTPLOGIN).toString(),
+//			settings->parameter(GENERAL, IMPEXPFTPPASSWORD).toString(),
+//			*file,
+//			remotePath + QString(settings->parameter(GENERAL, IMPEXPEXPORT).toString()));
+//    }
 }
 
 void alEngine::error(QString err)
@@ -719,7 +742,9 @@ void alEngine::error(QString err)
 void alEngine::exitApp()
 {
     if(server) delete server;
-    eqWorker::kill();    
+    //TODO uncomment
+
+    //eqWorker::kill();
     settings->flush();
     delete settings;
     if(dbInited)
@@ -817,19 +842,21 @@ void alEngine::payout()
     }    
 }
 
+//TODO uncomment
 void alEngine::readerData(int track, QString line)
 {
-    QMap<QString, QVariant> data;
-    data["track"] = track;
-    data["line"] = line;
-    emit(event(EVENT_MSCREADER, data));
+//    QMap<QString, QVariant> data;
+//    data["track"] = track;
+//    data["line"] = line;
+//    emit(event(EVENT_MSCREADER, data));
 }
 
+//TODO uncomment
 void alEngine::barcodeReaderData(QString line)
 {
-    QMap<QString, QVariant> data;
-    data["line"] = line;
-    emit(event(EVENT_BARCODEREADER, data));
+//    QMap<QString, QVariant> data;
+//    data["line"] = line;
+//    emit(event(EVENT_BARCODEREADER, data));
 }
 
 void alEngine::onError(int errorCode)
@@ -923,31 +950,33 @@ void alEngine::cancelCheque(QString devName)
     job->process();    
 }
 
+//TODO uncomment
 alValueList alEngine::cheque(QString devName, alValueTable tab, alValueTable totals)
 {
-    alValueList res;
-    eqJob * job = createECRJob(devName, "openSale");    
-    res = processJob(job);
-    if(res["error"].toInt()) return res;
+//    alValueList res;
+//    eqJob * job = createECRJob(devName, "openSale");
+//    res = processJob(job);
+//    if(res["error"].toInt()) return res;
     
-    for(int r=0;r<tab.rowCount();r++)
-    {
-	job = createECRJob("", "addItem");
-	job->setData(tab[r]->asValueList());
-	res = processJob(job);
-	if(res["error"].toInt()) return res;
-    }
-    job = createECRJob("", "closeCheck");        
-    job->setData(totals[0]->asValueList());
-    res = processJob(job);
-    if(res["error"].toInt()) return res;    
-    job = createECRJob("", "cut");        
-    res = processJob(job);    
-    if(res["error"].toInt()) return res;
-    res["error"] = 0;
-    res["msg"] = "";
-    res["change"] = job->result().toDouble();
-    return res;
+//    for(int r=0;r<tab.rowCount();r++)
+//    {
+//        job = createECRJob("", "addItem");
+//        job->setData(tab[r]->asValueList());
+//        res = processJob(job);
+//    	if(res["error"].toInt())
+//            return res;
+//    }
+//    job = createECRJob("", "closeCheck");
+//    job->setData(totals[0]->asValueList());
+//    res = processJob(job);
+//    if(res["error"].toInt()) return res;
+//    job = createECRJob("", "cut");
+//    res = processJob(job);
+//    if(res["error"].toInt()) return res;
+//    res["error"] = 0;
+//    res["msg"] = "";
+//    res["change"] = job->result().toDouble();
+//    return res;
 }
 
 //TODO move to reports module
