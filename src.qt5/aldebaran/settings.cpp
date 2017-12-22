@@ -70,21 +70,21 @@ void alSettings::init()
 //TODO reimplement
 bool alSettings::dbDialog()
 {
-//    QStringList data;
-//    QDialog dlg;
-//    Ui::ddbsettings dlgui;//(0, "dbsettingsdlg", true);
-//    dlgui.setupUi(&dlg);
-//    dlgui.setData(dbParams);
-//    int res = dlg.exec();
-//#ifdef DEBUG
-//    qDebug(QString(tr("ddbsettings dialog returns %1")).arg(res).utf8());
-//#endif
-//    if(res)
-//    {
+    QStringList data;
+    QDialog dlg;
+    Ui::ddbsettings dlgui;//(0, "dbsettingsdlg", true);
+    dlgui.setupUi(&dlg);
+    //dlgui.setData(dbParams);
+    int res = dlg.exec();
+#ifdef DEBUG
+    qDebug(QString(tr("ddbsettings dialog returns %1")).arg(res).utf8());
+#endif
+    if(res)
+    {
 //        dbParams = dlg->getData();
-//        flushqt();
-//    }
-//    return res;
+        flushqt();
+    }
+    return res;
 }
 
 bool alSettings::dialog()
@@ -118,7 +118,7 @@ void alSettings::flushqt()
 //TODO uncomment
 void alSettings::flushsql()
 {
-    if(!fEngine->db())
+    if(!fEngine->db().isOpen())
         return;
 //    fEngine->startTransaction();
 //    alDataSettings * t = new alDataSettings(fEngine);

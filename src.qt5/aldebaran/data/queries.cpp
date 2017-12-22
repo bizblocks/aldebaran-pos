@@ -15,7 +15,7 @@ void Queries::init()
     if(trans)
 	delete trans;
     trans = new QTranslator(0);
-    trans->load("queries-"+fDialect.lower(), "/usr/share/aldebaran");
+    trans->load("queries-"+fDialect.toLower(), "/usr/share/aldebaran");
 }
 
 Queries * Queries::getQueries()

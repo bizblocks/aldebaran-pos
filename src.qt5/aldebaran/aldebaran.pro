@@ -37,3 +37,8 @@ DISTFILES +=
 
 RESOURCES += \
     aldebaran.qrc
+
+unix:!macx: LIBS += -L$$PWD/../../lib/ -laldebarandata
+
+INCLUDEPATH += $$PWD/data
+DEPENDPATH += $$PWD/data

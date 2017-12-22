@@ -1,5 +1,6 @@
 #include <math.h>
-#include <qsqldatabase.h>
+#include <QtSql/QSqlDatabase>
+#include <QDebug>
 #include "engine.h"
 
 #define TNAME "order_table"
@@ -9,17 +10,16 @@ alDataOrderTable::alDataOrderTable(alEngine  * engine, alOrderRecord * order) :
 {
     fOrder = order;
     checkTable();
-    alData::setName(TNAME, TRUE);    
+    //alData::setName(TNAME, TRUE);
     lines.clear();
 }
 
-void alDataOrderTable::checkTable()
+bool alDataOrderTable::checkTable()
 {
-    if(!fEngine->db()) return;
-    QStringList check = fEngine->db()->tables();
-    if(check.grep(TNAME).size()>0) return;
+    if(alData::checkTable(TNAME))
+        return true;
 #ifdef DEBUG    
-    qDebug(QObject::tr("creating table orders").utf8());
+    qDebug() << QObject::tr("creating table orders").toUtf8();
 #endif    
     QString query = Queries::tr("CREATE TABLE order_table ("
 		    "id_order int8 NOT NULL, ln int8 NOT NULL,"
@@ -28,13 +28,14 @@ void alDataOrderTable::checkTable()
 		    "printed bool,"		    
 		    "CONSTRAINT id_ordertable PRIMARY KEY (id_order,ln))"
 		    "WITHOUT OIDS;");
-    fEngine->db()->exec(query);
+    fEngine->db().exec(query);
 #ifdef DEBUG
-    qDebug(query);
-    qDebug(QObject::tr("lastError was %1").arg(fEngine->db()->lastError().text()).utf8());
+    qDebug() << query;
+    qDebug() << QObject::tr("lastError was %1").arg(fEngine->db().lastError().text()).toUtf8();
 #endif        
 //    query = "CREATE INDEX idx_num ON orders (num);"; 
 //    fEngine->db()->exec(query);    
+    return true;
 }
 
 bool alDataOrderTable::select()
@@ -50,9 +51,10 @@ bool alDataOrderTable::select()
     return TRUE;
 }
 
+//TODO reimplement
 QSqlIndex alDataOrderTable::defaultSort()
 {
-    return QSqlIndex::fromStringList(QStringList::split(",", "ln"), this);
+    //return QSqlIndex::fromStringList(QStringList::split(",", "ln"), this);
 }
 
 alOrderLine * alDataOrderTable::getLine(int row)
@@ -91,8 +93,8 @@ QString alDataOrderTable::updateQuery()
 bool alDataOrderTable::delLine(int r)
 {
     if(r>(int)lines.count()-1 ||  r<0)
-	return FALSE;
-    lines.remove(lines.at(r));
+        return FALSE;
+    lines.removeAt(r);
     return TRUE;
 }
 
@@ -170,12 +172,13 @@ void alOrderLine::recalc()
 	if(discount->type()==0)
 	{
 	    double value =discount->value();
-	    if(fItem) value = fItem->maxDiscount()<value ? fItem->maxDiscount() : value;
+        if(fItem)
+            value = fItem->maxDiscount()<value ? fItem->maxDiscount() : value;
 	    fSumm *= 1. - value/100.;
-	    qDebug(QString("before floor %1").arg(fSumm, 7, 'f', 2));
+        qDebug() << QString("before floor %1").arg(fSumm, 7, 'f', 2);
 	    if(floor(fSumm)<fSumm)
 	    {
-		fSumm = floor(fSumm)+1;
+            fSumm = floor(fSumm)+1;
 	    }
 	}
 	else

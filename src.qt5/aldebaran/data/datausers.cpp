@@ -1,6 +1,7 @@
-#include <qsqldatabase.h>
+#include <QtSql/QSqlDatabase>
+#include <QtDebug>
 #include "engine.h"
-#include "dlguser.h"
+#include "ui_dlguser.h"
 
 #define TNAME "users"
 
@@ -8,37 +9,37 @@ alDataUsers::alDataUsers(alEngine * e) :
 	alData(e, TNAME)
 {
     checkTable();
-    alData::setName(TNAME, TRUE);    
+    //alData::setName(TNAME, TRUE);
 }
 
 alDataUsers::~alDataUsers()
 {
 }
 
-void alDataUsers::checkTable()
+bool alDataUsers::checkTable()
 {
-    if(!fEngine->db()) return;
-    QStringList check = fEngine->db()->tables();
-    if(check.grep(TNAME).size()>0) return;
+    if(alData::checkTable(TNAME))
+        return true;
 #ifdef DEBUG    
-    qDebug(QObject::tr("creating table users").utf8());
+    qDebug() << QObject::tr("creating table users").toUtf8();
 #endif    
     QString query = Queries::tr("CREATE TABLE USERS ("
 		    "id int8 NOT NULL, name varchar(30),"
 		    "role int4, password varchar(15),"
 		    "CONSTRAINT id_user PRIMARY KEY (id))"
 		    "WITHOUT OIDS;");
-    fEngine->db()->exec(query);
+    fEngine->db().exec(query);
 #ifdef DEBUG    
-    qDebug(QObject::tr("lastError was %1").arg(fEngine->db()->lastError().text()).utf8());
+    qDebug() << QObject::tr("lastError was %1").arg(fEngine->db().lastError().text()).toUtf8();
 #endif        
     query = Queries::tr("CREATE INDEX idx_name ON users (name);"); 
-    fEngine->db()->exec(query);
+    fEngine->db().exec(query);
 }
 
+//TODO reimplement
 QSqlIndex alDataUsers::defaultSort()
 {
-    return QSqlIndex::fromStringList(QStringList::split(",", "name"), this);
+    //return QSqlIndex::fromStringList(QStringList::split(",", "name"), this);
 }
 
 alDataRecord * alDataUsers::current()
@@ -46,10 +47,11 @@ alDataRecord * alDataUsers::current()
     return alUserRecord::current(this);    
 }
     
-alUserRecord * alDataUsers::select(Q_ULLONG uid)
+alUserRecord * alDataUsers::select(ULLID uid)
 {
     alData::select(Queries::tr("id=%1").arg(uid));
-    if(first()) return (alUserRecord*)current();
+    if(first())
+        return (alUserRecord*)current();
     return NULL;
 }
 
@@ -82,11 +84,11 @@ void alDataUsers::checkUsers()
 
 bool alDataUsers::delElement()
 {
-    Q_ULLONG id = value("id").toULongLong();
+    ULLID id = value("id").toULongLong();
     QString query = Queries::tr("DELETE FROM users WHERE id=%1").arg(id);
-    fEngine->db()->exec(query);
+    fEngine->db().exec(query);
     query = Queries::tr("DELETE FROM rights WHERE id_owner=%1").arg(id);
-    fEngine->db()->exec(query);    
+    fEngine->db().exec(query);
     return true;    
 }
 
@@ -101,7 +103,7 @@ alUserRecord::alUserRecord(alData * data) :
     rights = NULL;
     fData = new alDataGoods(data->engine());
     fData->select(Queries::tr("id=%1").arg(fId));
-    fRecord = fData->primeUpdate();    
+    //fRecord = fData->primeUpdate();
     load();
 }
 
@@ -109,25 +111,32 @@ alUserRecord::alUserRecord(alData * data, QSqlRecord * rec) :
 	alDataRecord(data, rec)
 {
     rights = NULL;    
-    if(!fRecord) return;
+    if(!fRecord)
+        return;
     load();
 }
 
+//TODO reimplement
 alUserRecord * alUserRecord::newElement(alDataUsers * data)
 {
-    if(!data) return NULL;
-    QSqlRecord * rec = data->primeInsert();
-    rec->setValue("id", data->uid());
-    alUserRecord * res = new alUserRecord(data, rec);
-    res->fIsNew = TRUE;
-    res->setRole(2);    
-    return res;    
+    if(!data)
+        return NULL;
+//    QSqlRecord * rec = data->primeInsert();
+//    rec->setValue("id", data->uid());
+//    alUserRecord * res = new alUserRecord(data, rec);
+//    res->fIsNew = TRUE;
+//    res->setRole(2);
+//    return res;
+    return NULL;
 }
 
+//TODO reimplement
 alUserRecord * alUserRecord::current(alDataUsers * data)
 {
-    if(!data) return NULL;    
-    return new alUserRecord(data, data->primeUpdate());    
+    if(!data)
+        return NULL;
+    //return new alUserRecord(data, data->primeUpdate());
+    return NULL;
 }
 
 void alUserRecord::load()
@@ -172,17 +181,18 @@ bool alUserRecord::checkPassword(QString pass)
     return false;
 }
 
+//TODO reimplement
 bool alUserRecord::dialog(QWidget * parent)
 {
-    dlgUser * dlg = new dlgUser(parent);
-    dlg->setData(this);
-    if(dlg->exec())
-    {
-	update();
-	delete dlg;
-	return TRUE;
-    }
-    delete dlg;
+//    dlgUser * dlg = new dlgUser(parent);
+//    dlg->setData(this);
+//    if(dlg->exec())
+//    {
+//        update();
+//        delete dlg;
+//        return TRUE;
+//    }
+//    delete dlg;
     return FALSE;
 }
 

@@ -9,7 +9,7 @@ class alDataSettings : public alData
 	alDataSettings(alEngine * e);
 	void save(QString subsystem, QString key, QVariant val);
     protected slots:
-	virtual void checkTable();
+    virtual bool checkTable();
 };
 
 #endif

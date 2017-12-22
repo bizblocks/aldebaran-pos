@@ -1,6 +1,7 @@
 #ifndef DATA_H
 #define DATA_H
 
+#include <QObject>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include "../aldebaran.h"
@@ -39,11 +40,11 @@ protected:
     alDataRecord(alData * data, QSqlRecord * rec);    
     virtual void primeUpdateInsert();
 public slots:
-    bool isNew() { return fIsNew; };
+    bool isNew() { return fIsNew; }
     static alDataRecord * current(alData * data);
     virtual int update();    
     virtual void load();
-    ULLID id() { return fId; };
+    ULLID id() { return fId; }
     virtual bool dialog(QWidget * parent);
 protected:
     alData * fData;

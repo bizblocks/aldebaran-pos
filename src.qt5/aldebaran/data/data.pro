@@ -46,11 +46,11 @@ IMAGES	= images/ok.png \
 	images/delete.png
 
 TRANSLATIONS = \
-    ../../../translations/aldebaran-data-en.ts \
-    ../../../translations/aldebaran-data-ru.ts 
+    ../../translations/aldebaran-data-en.ts \
+    ../../translations/aldebaran-data-ru.ts
 
 TARGET      = aldebarandata
-DESTDIR     = ../../../lib
+DESTDIR     = ../../lib
 
 unix {
   UI_DIR = .ui
