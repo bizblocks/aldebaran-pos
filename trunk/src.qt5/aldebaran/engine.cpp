@@ -27,11 +27,12 @@
 alEngine::alEngine(int argc, char ** argv) :
 	QObject()
 {
-    app = new QApplication( argc, argv );    
+    app = new QApplication( argc, argv );        
     mainWindow = NULL;
     fCurrentUser = NULL;
     fWorker = NULL;
     dbInited = FALSE;
+    server = NULL;
     init();
 }
 
@@ -67,10 +68,9 @@ void alEngine::init()
     settings = new alSettings(this);
 }
 
-QSqlDatabase * alEngine::db()
+QSqlDatabase alEngine::db()
 {
-    if(dbInited) return fDB;
-    return NULL;
+    return fDB;
 }
 
 //TODO uncomment
@@ -171,8 +171,8 @@ void alEngine::initEquipment()
 }
 
 //TODO uncomment
-void alEngine::importData(importer * imp)
-{    
+//void alEngine::importData(importer * imp)
+//{
 ////    if(QString(imp->name())==QString("Sirius"))
 //    {
 //	alDataOrder * orders;
@@ -197,7 +197,7 @@ void alEngine::importData(importer * imp)
 //		    break;
 //	}
 //    }
-}
+//}
 
 bool alEngine::loginLock()
 {
@@ -228,20 +228,24 @@ bool alEngine::loginLock()
 //TODO uncomment
 int alEngine::start()
 {	
-//    QStringList dbParams;
-//    do
-//    {
-//        dbParams = settings->dbSettings();
-//        fDB = new QSqlDatabase(QSqlDatabase::addDatabase(dbParams[0], dbParams[1]));
-//        fDB->setDatabaseName(dbParams[1]);
-//        fDB->setHostName(dbParams[2]);
-//        fDB->setPort(dbParams[3].toInt());
-//        if(!fDB->open(dbParams[4], dbParams[5]))
-//        {
-//            if(!settings->dbDialog()) exitApp();
-//        }
-//        else break;
-//    }while(true);
+    QStringList dbParams;
+    do
+    {
+        dbParams = settings->dbSettings();
+        fDB.addDatabase(dbParams[0], dbParams[1]);
+        fDB.setDatabaseName(dbParams[1]);
+        fDB.setHostName(dbParams[2]);
+        fDB.setPort(dbParams[3].toInt());
+        if(!fDB.open(dbParams[4], dbParams[5]))
+        {
+            if(!settings->dbDialog())
+                exitApp();
+        }
+        else
+        {
+            break;
+        }
+    }while(true);
 //    Queries::setDialect(dbParams[0]);
 //    dbInited = TRUE;
 //    emit(initialized());
@@ -289,19 +293,22 @@ void alEngine::eqDialog()
 
 bool alEngine::startTransaction()
 {
-    if(fDB) return fDB->transaction();
+    if(fDB.isOpen())
+        return fDB.transaction();
     return false;
 }
 
 bool alEngine::commitTransaction()
 {
-    if(fDB) return fDB->commit();
+    if(fDB.isOpen())
+        return fDB.commit();
     return false;
 }
 
 bool alEngine::rollbackTransaction()
 {
-    if(fDB) return fDB->rollback();
+    if(fDB.isOpen())
+        return fDB.rollback();
     return false;
 }
 
@@ -751,7 +758,7 @@ void alEngine::exitApp()
     delete settings;
     if(dbInited)
     {
-        fDB->close();
+        fDB.close();
         //TODO fixit
         //QSqlDatabase::removeDatabase(fDB);
     }

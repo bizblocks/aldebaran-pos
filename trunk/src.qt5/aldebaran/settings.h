@@ -38,7 +38,7 @@ public slots:
     virtual bool dialog();	
     virtual QStringList dbSettings();
     virtual alValueList subSystemSettings(QString subSystem = QString::null);
-    void addSubSystem(QString subs, QStringList k) { subSystems.append(subs); keys[subs] = k;};
+    void addSubSystem(QString subs, QStringList k) { subSystems.append(subs); keys[subs] = k;}
     virtual void flush();
     QVariant parameter(QString sub, QString key);	
 protected slots:

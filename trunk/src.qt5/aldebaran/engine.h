@@ -132,7 +132,8 @@ public slots:
     bool updateDevice(QString device);
     bool shutdownDevice(QString device);
     bool connectDevice(QString device);
-    void importData(importer * imp);
+//TODO uncomment
+    //    void importData(importer * imp);
     void zReport();
     void xReport();
     void payin();

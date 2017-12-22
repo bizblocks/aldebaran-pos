@@ -1,5 +1,6 @@
-#include <qsqldatabase.h>
+#include <QtSql/QSqlDatabase>
 #include <qbuffer.h>
+#include <QtDebug>
 #include "datapictures.h"
 #include "engine.h"
 
@@ -9,24 +10,23 @@ alDataPictures::alDataPictures(alEngine * e) :
 	alData(e, TNAME)
 {
     checkTable();
-    alData::setName(TNAME, TRUE);    
+    //alData::setName(TNAME, TRUE);
 }
 
-void alDataPictures::checkTable()
+bool alDataPictures::checkTable()
 {
-    if(!fEngine->db()) return;
-    QStringList check = fEngine->db()->tables();
-    if(check.grep(TNAME).size()>0 || !check.count()) return;
+    if(alData::checkTable(TNAME))
+        return true;
 #ifdef DEBUG    
-    qDebug(QObject::tr("creating table pictures").utf8());
+    qDebug() << QObject::tr("creating table pictures").toUtf8();
 #endif    
     QString query = Queries::tr("CREATE TABLE pictures ("
 		    "id int8 NOT NULL, picture bytea,"
 		    "CONSTRAINT id_pictures PRIMARY KEY (id))"
 		    "WITHOUT OIDS;");
-    fEngine->db()->exec(query);
+    fEngine->db().exec(query);
 #ifdef DEBUG    
-    qDebug(QObject::tr("lastError was %1").arg(fEngine->db()->lastError().text()).utf8());
+    qDebug() << QObject::tr("lastError was %1").arg(fEngine->db().lastError().text()).toUtf8();
 #endif        
 }
 
@@ -40,10 +40,11 @@ alPictureRecord * alDataPictures::newElement()
     return alPictureRecord::newElement(this);
 }
 
-alPictureRecord * alDataPictures::select(Q_ULLONG uid)
+alPictureRecord * alDataPictures::select(ULLID uid)
 {
     alData::select(Queries::tr("id=%1").arg(uid));
-    if(first()) return (alPictureRecord*)current();
+    if(first())
+        return (alPictureRecord*)current();
     return NULL;    
 }
 
@@ -54,9 +55,9 @@ bool alDataPictures::select(const QString filter)
 
 bool alDataPictures::delElement()
 {
-    Q_ULLONG id = value("id").toULongLong();
+    ULLID id = value("id").toULongLong();
     QString query = Queries::tr("DELETE FROM pictures WHERE id=%1").arg(id);
-    fEngine->db()->exec(query);
+    fEngine->db().exec(query);
     return true;
 }
 
@@ -67,20 +68,26 @@ alPictureRecord::alPictureRecord(alData * data, QSqlRecord * rec) :
     load();
 }
 
+//TODO reimplement
 alPictureRecord * alPictureRecord::current(alDataPictures * data)
 {
-    if(!data) return NULL;    
-    return new alPictureRecord(data, data->primeUpdate());    
+    if(!data)
+        return NULL;
+    //return new alPictureRecord(data, data->primeUpdate());
+    return NULL;
 }
 
+//TODO reimplement
 alPictureRecord * alPictureRecord::newElement(alDataPictures * data)
 {
-    if(!data) return NULL;
-    QSqlRecord * rec = data->primeInsert();
-    rec->setValue("id", data->uid());
-    alPictureRecord * res = new alPictureRecord(data, rec);
-    res->fIsNew = TRUE;
-    return res;        
+    if(!data)
+        return NULL;
+//    QSqlRecord * rec = data->primeInsert();
+//    rec->setValue("id", data->uid());
+//    alPictureRecord * res = new alPictureRecord(data, rec);
+//    res->fIsNew = TRUE;
+//    return res;
+    return NULL;
 }
 
 void alPictureRecord::load()
