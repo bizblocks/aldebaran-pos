@@ -30,13 +30,13 @@ bool alDataOrder::checkTable()
 		    "comment varchar(255), externalcode varchar(50), "
 		    "CONSTRAINT id_orders PRIMARY KEY (id)) "
 		    "WITHOUT OIDS;");
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 #ifdef DEBUG
     qDebug() << query;
-    qDebug() << QObject::tr("lastError was %1").arg(fEngine->db().lastError().text()).toUtf8();
+    qDebug() << QObject::tr("lastError was %1").arg(engine()->db().lastError().text()).toUtf8();
 #endif        
     query = Queries::tr("CREATE INDEX idx_num ON orders (num);"); 
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 }
 
 //TODO reimplement
@@ -49,7 +49,7 @@ ULLID alDataOrder::unum()
 {
     ULLID unum = 1;
     QString query = Queries::tr("SELECT MAX(num) AS max_num FROM orders");
-    QSqlQuery res = fEngine->db().exec(query);
+    QSqlQuery res = engine()->db().exec(query);
     if(res.first())
         return res.value(0).toULongLong()+1;
     return unum;
@@ -78,7 +78,7 @@ bool alDataOrder::delDocument()
 {
     ULLID id = value("id").toULongLong();
     QString query = Queries::tr("DELETE FROM orders WHERE id=%1").arg(id);
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
     return true;        
 }
 
@@ -89,7 +89,7 @@ alDataRecord* alDataOrder::current()
 
 alOrderRecord * alDataOrder::import(importer * imp)
 {
-    alDataUsers * users = new alDataUsers(fEngine);
+    alDataUsers * users = new alDataUsers(engine());
     ((alData*)users)->select(Queries::tr("role=%1").arg(3));
     users->first();
     alUserRecord * userService = (alUserRecord*) users->current();    
@@ -249,19 +249,19 @@ void alOrderRecord::printOrder(QString device)
 {
     QStringList lst;
     QList<int> tabs;
-    alEngine * fEngine = fData->engine();
+    alEngine * engine = fData->engine();
     alDataOrderTable * orderTab = getDocumentTable();
     
-    eqJob * job = fEngine->createPrinterJob(device, "print");
+    eqJob * job = engine->createPrinterJob(device, "print");
     if(!job)
     {
-	fEngine->error(tr("Can't print order"));
-	return;
+        engine->error(tr("Can't print order"));
+        return;
     }
     
-    int pw = fEngine->printWidth();
+    int pw = engine->printWidth();
     QString tmp = QString(tr("Order #%1")).arg(num());
-    QString str = fEngine->centerString(tmp, pw)+QString("\n");
+    QString str = engine->centerString(tmp, pw)+QString("\n");
     str += info() + QString("\n");
     str += QString("").rightJustified(pw, '-') + QString("\n");
     for(int r=0;r<orderTab->count();r++)
@@ -272,8 +272,8 @@ void alOrderRecord::printOrder(QString device)
 	lst << line->itemText();
 	lst << QString("%1").arg(line->amount(), 0, 'f', 3);
 	tabs << 0 << 5;
-	str +=  fEngine->alignStrings(lst, tabs, pw) + QString("\n");
-//	qDebug(fEngine->alignStrings(lst, tabs, pw) + QString("\n"));
+    str +=  engine->alignStrings(lst, tabs, pw) + QString("\n");
+//	qDebug(engine()->alignStrings(lst, tabs, pw) + QString("\n"));
 	lst.clear();
 	tabs.clear();
 	line->setPrinted(TRUE);
@@ -284,28 +284,28 @@ void alOrderRecord::printOrder(QString device)
     str = str.toUtf8();
     job->setData(str);
 //    qDebug(str);
-    fEngine->processJob(job);
-    job = fEngine->createPrinterJob(device, "cut");
-    fEngine->processJob(job);    
-    job = fEngine->createPrinterJob(device, "beep");
-    fEngine->processJob(job);    
+    engine->processJob(job);
+    job = engine->createPrinterJob(device, "cut");
+    engine->processJob(job);
+    job = engine->createPrinterJob(device, "beep");
+    engine->processJob(job);
 }
 
 void alOrderRecord::printBill(QString device)
 {
     QList<int> tabs;
     QStringList lst;
-    alEngine * fEngine = fData->engine();
+    alEngine * engine = fData->engine();
     alDataOrderTable * orderTab = getDocumentTable();
     
-    eqJob * job = fEngine->createPrinterJob(device, "print");
+    eqJob * job = engine->createPrinterJob(device, "print");
     if(!job)
     {
-	fEngine->error(tr("Can't print bill"));
-	return;
+        engine->error(tr("Can't print bill"));
+        return;
     }
-    int pw = fEngine->printWidth();
-    QString str = fEngine->centerString(QString(tr("Bill #%1")).arg(num()), pw)+QString("\n");
+    int pw = engine->printWidth();
+    QString str = engine->centerString(QString(tr("Bill #%1")).arg(num()), pw)+QString("\n");
     str += info() + QString("\n");
     str += comment() + QString("\n");
     str += QString("").rightJustified(pw, '-') + QString("\n");
@@ -319,7 +319,7 @@ void alOrderRecord::printBill(QString device)
 	lst << QString("%1").arg(line->price(), 0, 'f', 2);
 	lst << QString("%1").arg(line->summ(), 0, 'f', 2);
 	tabs << 0 << 5 << 6 << 7;
-	str +=  fEngine->alignStrings(lst, tabs, pw) + QString("\n");
+    str +=  engine->alignStrings(lst, tabs, pw) + QString("\n");
 	lst.clear();
 	tabs.clear();
 	if(line->item())
@@ -334,7 +334,7 @@ void alOrderRecord::printBill(QString device)
     double t = orderTab->total("summ");    
     lst << tr("Total:") << QString("%1").arg(t, 0, 'f', 2);    
     tabs << 0 << 5;
-    str += fEngine->alignStrings(lst, tabs, pw) + QString("\n");
+    str += engine->alignStrings(lst, tabs, pw) + QString("\n");
     str += QString(tr("Calories: %1\n").arg(cal, 0, 'f', 2));
     str += QString(tr("Hydrocarbonates: %1\n").arg(hc, 0, 'f', 2));    
     str += QString(tr("Fat: %1\n").arg(fat, 0, 'f', 2));        
@@ -342,9 +342,9 @@ void alOrderRecord::printBill(QString device)
     str += "\n\n\n";
     str = str.toUtf8();
     job->setData(str);
-    fEngine->processJob(job);
-    job = fEngine->createPrinterJob(device, "cut");
-    fEngine->processJob(job);    
+    engine->processJob(job);
+    job = engine->createPrinterJob(device, "cut");
+    engine->processJob(job);
 }
 
 QString alOrderRecord::info()

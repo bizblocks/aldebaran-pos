@@ -15,7 +15,9 @@ TEMPLATE = app
 SOURCES += main.cpp \
     engine.cpp \
     settings.cpp \
-    valuetable.cpp
+    valuetable.cpp \
+    userstable.cpp \
+    datatable.cpp
 
 INCLUDEPATH += ../impexp \
     ../tradeequip/equip
@@ -24,7 +26,11 @@ HEADERS += \
     aldebaran.h \
     settings.h \
     engine.h \
-    valuetable.h
+    valuetable.h \
+    ddbsettings.ui.h \
+    dlglogin.ui.h \
+    userstable.h \
+    datatable.h
 
 FORMS += \
     calculator.ui \
@@ -39,6 +45,13 @@ RESOURCES += \
     aldebaran.qrc
 
 unix:!macx: LIBS += -L$$PWD/../../lib/ -laldebarandata
+
+INCLUDEPATH += $$PWD/data
+DEPENDPATH += $$PWD/data
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../lib/release/ -laldebarandata
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../lib/debug/ -laldebarandata
+else:unix: LIBS += -L$$PWD/../../lib/ -laldebarandata
 
 INCLUDEPATH += $$PWD/data
 DEPENDPATH += $$PWD/data

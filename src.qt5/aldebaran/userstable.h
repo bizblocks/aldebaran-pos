@@ -11,7 +11,7 @@ class alUsersTable : public alDataTable
 {
     Q_OBJECT
 public:
-    alUsersTable(QWidget * parent, alEngine * engine);
+    alUsersTable(QWidget * parent, alEngine * engine = NULL);
     virtual void init();    
     alUserRecord * current();
 public slots:

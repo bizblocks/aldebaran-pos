@@ -28,13 +28,13 @@ bool alDataOrderTable::checkTable()
 		    "printed bool,"		    
 		    "CONSTRAINT id_ordertable PRIMARY KEY (id_order,ln))"
 		    "WITHOUT OIDS;");
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 #ifdef DEBUG
     qDebug() << query;
-    qDebug() << QObject::tr("lastError was %1").arg(fEngine->db().lastError().text()).toUtf8();
+    qDebug() << QObject::tr("lastError was %1").arg(engine()->db().lastError().text()).toUtf8();
 #endif        
 //    query = "CREATE INDEX idx_num ON orders (num);"; 
-//    fEngine->db()->exec(query);    
+//    engine()->db()->exec(query);
     return true;
 }
 

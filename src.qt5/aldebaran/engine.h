@@ -24,6 +24,8 @@
 #include <qvariant.h>
 #include <qmap.h>
 
+#include "aldebaran.h"
+
 #include "errors.h"
 #include "data/dataordert.h"
 #include "data/dataorder.h"
@@ -86,6 +88,11 @@ typedef QMap<QString, QVariant> alValueList;
 
 #define EVENT_MSCREADER		1
 #define EVENT_BARCODEREADER		2
+
+namespace Ui
+{
+    class dlgLogin;
+}
 
 class alEngine : public QObject
 {
@@ -160,6 +167,13 @@ signals:
     void initialized();
     void settingsChanged();
     void event(int type, QVariant data);
+private slots:
+//dlg login slots
+    void dlgLoginInit();
+    void dlgLoginUp();
+    void dlgLoginDown();
+    void dlgLoginEqData(int, QVariant data);
+    void dlgLoginLogin();
 private:
     QApplication * app;
     alMainWindow * mainWindow;
@@ -170,6 +184,7 @@ private:
     alDataOrder * fOrders;
     eqWorker * fWorker;
     sServer * server;
+    Ui::dlgLogin * dlgLogin;
 };    
 
 QByteArray pixmap2bytearray(QPixmap);

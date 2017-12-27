@@ -30,7 +30,7 @@ void alUsersTable::init()
 QPixmap alUsersTable::pixmap(int r)
 {
     Q_UNUSED(r);
-    return QPixmap::fromMimeSource("people.png");
+    return QPixmap(":/images/people.png");
 }
 
 alUserRecord * alUsersTable::current()

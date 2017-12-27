@@ -3,5 +3,8 @@
         <file>images/ok.png</file>
         <file>images/checkall.png</file>
         <file>images/stop_cancel.png</file>
+        <file>images/up.png</file>
+        <file>images/down.png</file>
+        <file>images/people.png</file>
     </qresource>
 </RCC>

@@ -20,9 +20,9 @@ alDataEq::~alDataEq()
 
 void alDataEq::checkTable()
 {
-    if(!fEngine->db().isOpen())
+    if(!engine()->db().isOpen())
         return;
-    QStringList check = fEngine->db().tables();
+    QStringList check = engine()->db().tables();
     if(check.contains(TNAME))
         return;
 #ifdef DEBUG
@@ -33,9 +33,9 @@ void alDataEq::checkTable()
 		    "type varchar(20), enabled bool, options bytea,"
 		    "CONSTRAINT id_eq PRIMARY KEY (id))"
 		    "WITHOUT OIDS;");
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 #ifdef DEBUG    
-    qDebug() << QObject::tr("lastError was %1").arg(fEngine->db().lastError().text()).toUtf8();
+    qDebug() << QObject::tr("lastError was %1").arg(engine()->db().lastError().text()).toUtf8();
 #endif        
 }
 
@@ -53,7 +53,7 @@ bool alDataEq::delElement()
 {
     ULLID id = value("id").toULongLong();
     QString query = QString(Queries::tr("DELETE FROM equipment WHERE id=%1")).arg(id);
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
     return true;
 }
 

@@ -28,12 +28,12 @@ bool alDataUsers::checkTable()
 		    "role int4, password varchar(15),"
 		    "CONSTRAINT id_user PRIMARY KEY (id))"
 		    "WITHOUT OIDS;");
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 #ifdef DEBUG    
-    qDebug() << QObject::tr("lastError was %1").arg(fEngine->db().lastError().text()).toUtf8();
+    qDebug() << QObject::tr("lastError was %1").arg(engine()->db().lastError().text()).toUtf8();
 #endif        
     query = Queries::tr("CREATE INDEX idx_name ON users (name);"); 
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 }
 
 //TODO reimplement
@@ -67,7 +67,7 @@ alUserRecord * alDataUsers::addUser(QString name, int role)
 
 void alDataUsers::checkUsers()
 {
-    alDataRights * rights = new alDataRights(fEngine);
+    alDataRights * rights = new alDataRights(engine());
     alData::select(Queries::tr("role=1"));
     if(!first())
     {
@@ -86,9 +86,9 @@ bool alDataUsers::delElement()
 {
     ULLID id = value("id").toULongLong();
     QString query = Queries::tr("DELETE FROM users WHERE id=%1").arg(id);
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
     query = Queries::tr("DELETE FROM rights WHERE id_owner=%1").arg(id);
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
     return true;    
 }
 
