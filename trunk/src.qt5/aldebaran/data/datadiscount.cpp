@@ -30,12 +30,12 @@ bool alDataDiscount::checkTable()
 		    "CONSTRAINT id_discount PRIMARY KEY (id), "
 		    "CONSTRAINT code UNIQUE(code))"
 		    "WITHOUT OIDS;");
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 #ifdef DEBUG    
-    qDebug() << QObject::tr("lastError was %1").arg(fEngine->db().lastError().text()).toUtf8();
+    qDebug() << QObject::tr("lastError was %1").arg(engine()->db().lastError().text()).toUtf8();
 #endif        
     query = Queries::tr("CREATE INDEX idx_discount_code ON discount (code);"); 
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 }
 
 alDataRecord* alDataDiscount::current()
@@ -51,7 +51,8 @@ alDiscountRecord * alDataDiscount::newElement()
 alDiscountRecord *alDataDiscount:: select(ULLID uid)
 {
     alData::select(QString("id=%1").arg(uid));
-    if(first()) return (alDiscountRecord*)current();
+    if(first())
+        return (alDiscountRecord*)current();
     return NULL;    
 }
 
@@ -64,7 +65,7 @@ bool alDataDiscount::delElement()
 {
     ULLID id = value("id").toULongLong();
     QString query = QString(Queries::tr("DELETE FROM discount WHERE id=%1")).arg(id);
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
     return true;
 }
 
@@ -88,7 +89,7 @@ void alDataDiscount::update(impValues * values)
 //    map map;
     
 //    select("");
-//    fEngine->startTransaction();
+//    engine()->startTransaction();
 //    if(first()) do
 //    {
 //        if(value("code").toString().isEmpty()) continue;
@@ -96,7 +97,7 @@ void alDataDiscount::update(impValues * values)
 //        if(it==values->end()) continue;
 //        rec = (alDiscountRecord*)current();
 //        map = *it;
-//        rec->setCode(map["cardcode"].toString().mid(1));
+//        rec->engine()(map["cardcode"].toString().mid(1));
 //        rec->setName(map["cardname"].toString());
 //        rec->setValue((int)map["cardpercent"].toDouble());
 //        rec->update();
@@ -110,7 +111,7 @@ void alDataDiscount::update(impValues * values)
 //	map = *it;
 //	if(map["cardcode"].toString()[0]!='%') continue;
 //	rec = newElement();
-//	rec->setCode(map["cardcode"].toString().mid(1));
+//	rec->engine()(map["cardcode"].toString().mid(1));
 //	rec->setName(map["cardname"].toString());
 //	rec->setValue((int)map["cardpercent"].toDouble());
 //	rec->setType(0);

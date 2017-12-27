@@ -4,6 +4,7 @@
 #include <qbuffer.h>
 #include <qfile.h>
 #include <QTranslator>
+#include <QMessageBox>
 //TODO reimplement
 //#include <qftp.h>
 #include "engine.h"
@@ -24,15 +25,20 @@
 #include "ui_dlglogin.h"
 #include "ui_equipmentdialog.h"
 
+//ui
+#include "dlglogin.ui.h"
+
 alEngine::alEngine(int argc, char ** argv) :
-	QObject()
+    QObject(),
+    mainWindow(NULL),
+    settings(NULL),
+    dbInited(FALSE),
+    fCurrentUser(NULL),
+    fWorker(NULL),
+    server(NULL),
+    dlgLogin(new Ui::dlgLogin)
 {
     app = new QApplication( argc, argv );        
-    mainWindow = NULL;
-    fCurrentUser = NULL;
-    fWorker = NULL;
-    dbInited = FALSE;
-    server = NULL;
     init();
 }
 
@@ -73,25 +79,23 @@ QSqlDatabase alEngine::db()
     return fDB;
 }
 
-//TODO uncomment
 void alEngine::setCurrentUser(alUserRecord * u)
 {
-//    if(!u)
-//    {
-//        exitApp();
-//        return;
-//    }
-//    alDataUsers * users = new alDataUsers(this);
-//    fCurrentUser = users->select(u->id());
-//    delete users;
+    if(!u)
+    {
+       exitApp();
+        return;
+    }
+    alDataUsers * users = new alDataUsers(this);
+    fCurrentUser = users->select(u->id());
+    delete users;
 }
 
-//TODO uncomment
 void alEngine::initUsers()
 {
-//    alDataUsers * users = new alDataUsers(this);
-//    users->checkUsers();
-//    delete users;
+    alDataUsers * users = new alDataUsers(this);
+    users->checkUsers();
+    delete users;
 }
 
 void alEngine::initEquipment()
@@ -232,26 +236,30 @@ int alEngine::start()
     do
     {
         dbParams = settings->dbSettings();
-        fDB.addDatabase(dbParams[0], dbParams[1]);
+        fDB = QSqlDatabase::addDatabase(dbParams[0], dbParams[1]);
         fDB.setDatabaseName(dbParams[1]);
         fDB.setHostName(dbParams[2]);
         fDB.setPort(dbParams[3].toInt());
         if(!fDB.open(dbParams[4], dbParams[5]))
         {
             if(!settings->dbDialog())
+            {
                 exitApp();
+                return 0;
+            }
         }
         else
         {
             break;
         }
     }while(true);
-//    Queries::setDialect(dbParams[0]);
-//    dbInited = TRUE;
-//    emit(initialized());
-//    initUsers();
+    Queries::setDialect(dbParams[0]);
+    dbInited = TRUE;
+    emit(initialized());
+    initUsers();
 //    initEquipment();
-//    if(!loginLock()) return -1;
+    if(!loginLock())
+      return -1;
 
 //    initTables();
 
@@ -750,12 +758,14 @@ void alEngine::error(QString err)
 */
 void alEngine::exitApp()
 {
-    if(server) delete server;
+    if(server)
+        delete server;
     //TODO uncomment
 
     //eqWorker::kill();
     settings->flush();
     delete settings;
+    settings = NULL;
     if(dbInited)
     {
         fDB.close();
@@ -765,7 +775,7 @@ void alEngine::exitApp()
 #ifdef DEBUG	
     qDebug() << tr("Program successfully terminated").utf8();
 #endif
-    qApp->quit();
+    qApp->exit(0);
 }
 
 double alEngine::calculator(double initVal)

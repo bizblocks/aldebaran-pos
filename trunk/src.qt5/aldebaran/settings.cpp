@@ -1,11 +1,14 @@
 #include <qdir.h>
+#include <QMessageBox>
+#include <QDebug>
 #include "settings.h"
 #include "ui_ddbsettings.h"
 #include "ui_settingsdialog.h"
 #include "data/datasettings.h"
 
 alSettings::alSettings(alEngine * e) : 
-	QObject()
+    QObject(),
+    dbdlg(NULL)
 {
 	fEngine = e;
 	if(fEngine) connect(fEngine, SIGNAL(initialized()), this, SLOT(subSystemSettings()));
@@ -14,6 +17,8 @@ alSettings::alSettings(alEngine * e) :
 
 alSettings::~alSettings()
 {
+    if(dbdlg)
+        delete dbdlg;
 }
 
 /*
@@ -23,16 +28,12 @@ TODO	- Поиск таблицы в базе данных, создание пр
 */
 void alSettings::init()
 {
-	bool nodb = FALSE;
-	bool ok;
 	QString value;	
 	dbParams.clear();
-	QSettings qtSettings;	    
-    //qtSettings.insertSearchPath(QSettings::Unix, QString(QDir::homeDirPath())+QString("/.aldebaran"));
+    QSettings qtSettings("Lobo, Koba & Satan", "aldebaran");
 	qtSettings.beginGroup("/connection");
 
     value = qtSettings.value("/TYPE", "nodb").toString();
-    if(value=="nodb") nodb = TRUE;
 	dbParams.append(value);
 	
     value = qtSettings.value("/DB", "aldebaran").toString();
@@ -51,8 +52,6 @@ void alSettings::init()
 	dbParams.append(value);
 	
 	qtSettings.endGroup();
-
-	if(nodb) dbDialog();
 	
 	QStringList k;
 	k<<TABLENUM<<SHEMA<<USESHEMA<<IMPEXPCP<<IMPEXPFMT;
@@ -69,26 +68,26 @@ void alSettings::init()
 
 //TODO reimplement
 bool alSettings::dbDialog()
-{
-    QStringList data;
+{    
     QDialog dlg;
-    Ui::ddbsettings dlgui;//(0, "dbsettingsdlg", true);
-    dlgui.setupUi(&dlg);
-    //dlgui.setData(dbParams);
+    dbdlg = new Ui::ddbsettings();//(0, "dbsettingsdlg", true);
+    dbdlg->setupUi(&dlg);
+    connect(dbdlg->btnTest, SIGNAL(clicked(bool)), this, SLOT(on_btnTest_clicked()));
+    this->setData(dbParams);
     int res = dlg.exec();
 #ifdef DEBUG
     qDebug(QString(tr("ddbsettings dialog returns %1")).arg(res).utf8());
 #endif
     if(res)
     {
-//        dbParams = dlg->getData();
+        dbParams = this->getData();
         flushqt();
     }
     return res;
 }
 
 bool alSettings::dialog()
-{
+{    
 }
 
 QStringList alSettings::dbSettings()
@@ -99,18 +98,18 @@ QStringList alSettings::dbSettings()
 //TODO reimplement
 void alSettings::flushqt()
 {
-//    QSettings qtSettings;
+    QSettings qtSettings("Lobo, Koba & Satan", "aldebaran");
 //    qtSettings.insertSearchPath(QSettings::Unix, QString(QDir::homeDirPath())+QString("/.aldebaran"));
-//    qtSettings.beginGroup("/connection");
+    qtSettings.beginGroup("/connection");
     
-//    qtSettings.writeEntry("/TYPE", dbParams[0]);
-//    qtSettings.writeEntry("/DB", dbParams[1]);
-//    qtSettings.writeEntry("/ADRESS", dbParams[2]);
-//    qtSettings.writeEntry("/PORT", dbParams[3]);
-//    qtSettings.writeEntry("/USER", dbParams[4]);
-//    qtSettings.writeEntry("/PASSWORD", dbParams[5]);
+    qtSettings.setValue("/TYPE", dbParams[0]);
+    qtSettings.setValue("/DB", dbParams[1]);
+    qtSettings.setValue("/ADRESS", dbParams[2]);
+    qtSettings.setValue("/PORT", dbParams[3]);
+    qtSettings.setValue("/USER", dbParams[4]);
+    qtSettings.setValue("/PASSWORD", dbParams[5]);
     
-//    qtSettings.endGroup();
+    qtSettings.endGroup();
 }
 
 /*
@@ -120,13 +119,13 @@ void alSettings::flushsql()
 {
     if(!fEngine->db().isOpen())
         return;
-//    fEngine->startTransaction();
-//    alDataSettings * t = new alDataSettings(fEngine);
-//    for(int s=0;s<(int)subSystems.count();s++)
-//	for(int v=0;v<(int)keys[subSystems[s]].count();v++)
-//	    t->save(subSystems[s], keys[subSystems[s]][v], params[subSystems[s]][keys[subSystems[s]][v]]);
-//    fEngine->commitTransaction();
-//    delete t;
+    fEngine->startTransaction();
+    alDataSettings * t = new alDataSettings(fEngine);
+    for(int s=0;s<(int)subSystems.count();s++)
+        for(int v=0;v<(int)keys[subSystems[s]].count();v++)
+            t->save(subSystems[s], keys[subSystems[s]][v], params[subSystems[s]][keys[subSystems[s]][v]]);
+    fEngine->commitTransaction();
+    delete t;
 }
 
 /*
@@ -162,4 +161,52 @@ alValueList alSettings::subSystemSettings(QString subSystem)
 QVariant alSettings::parameter(QString sub, QString key)
 {
     return params[sub][key];
+}
+
+void alSettings::setData( QStringList data )
+{
+    dbdlg->cmbDBType->clear();
+    QStringList drivers = QSqlDatabase::drivers();
+    dbdlg->cmbDBType->insertItems(0, drivers);
+#ifdef DEBUG
+    qDebug(tr("available drivers: %s").utf8(), drivers.join(" ").ascii());
+#endif
+    if(!data[0].isEmpty())
+    dbdlg->cmbDBType->setCurrentText(data[0]);
+    dbdlg->editDBName->setText(data[1]);
+    dbdlg->editAdress->setText(data[2]);
+    dbdlg->editPort->setText(data[3]);
+    dbdlg->editUser->setText(data[4]);
+    dbdlg->editPassword->setText(data[5]);
+}
+
+QStringList alSettings::getData()
+{
+    QStringList res;
+    res.append(dbdlg->cmbDBType->currentText());
+    res.append(dbdlg->editDBName->text());
+    res.append(dbdlg->editAdress->text());
+    res.append(dbdlg->editPort->text());
+    res.append(dbdlg->editUser->text());
+    res.append(dbdlg->editPassword->text());
+    return res;
+}
+
+void alSettings::on_btnTest_clicked()
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase(dbdlg->cmbDBType->currentText(), "testconnectiondb");
+    db.setDatabaseName(dbdlg->editDBName->text());
+    db.setHostName(dbdlg->editAdress->text());
+    db.setPort(dbdlg->editPort->text().toInt());
+    bool res = db.open(dbdlg->editUser->text(), dbdlg->editPassword->text());
+    if(res)
+        QMessageBox::information(NULL, "aldebaran", QObject::tr("Successfully connected"));
+    else
+        QMessageBox::critical(NULL, "aldebaran", QObject::tr("Can't connect database:")+"\n"+db.lastError().text());
+    QSqlDatabase::removeDatabase("testconnectiondb");
+}
+
+void alSettings::on_pushButton_clicked()
+{
+    QMessageBox::information(NULL, "aldebaran", QObject::tr("Successfully connected"));
 }

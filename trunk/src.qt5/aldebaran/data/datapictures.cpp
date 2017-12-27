@@ -24,9 +24,9 @@ bool alDataPictures::checkTable()
 		    "id int8 NOT NULL, picture bytea,"
 		    "CONSTRAINT id_pictures PRIMARY KEY (id))"
 		    "WITHOUT OIDS;");
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 #ifdef DEBUG    
-    qDebug() << QObject::tr("lastError was %1").arg(fEngine->db().lastError().text()).toUtf8();
+    qDebug() << QObject::tr("lastError was %1").arg(engine()->db().lastError().text()).toUtf8();
 #endif        
 }
 
@@ -57,7 +57,7 @@ bool alDataPictures::delElement()
 {
     ULLID id = value("id").toULongLong();
     QString query = Queries::tr("DELETE FROM pictures WHERE id=%1").arg(id);
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
     return true;
 }
 

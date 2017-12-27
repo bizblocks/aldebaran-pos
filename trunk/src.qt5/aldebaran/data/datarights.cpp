@@ -27,12 +27,12 @@ bool alDataRights::checkTable()
 		    "rule int4, enabled bool,"
 		    "CONSTRAINT id_rights PRIMARY KEY (id))"
 		    "WITHOUT OIDS;");
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 #ifdef DEBUG    
-    qDebug() << QObject::tr("lastError was %1").arg(fEngine->db().lastError().text()).toUtf8();
+    qDebug() << QObject::tr("lastError was %1").arg(engine()->db().lastError().text()).toUtf8();
 #endif        
     query = Queries::tr("CREATE INDEX idx_owner ON RIGHTS (id_onwer);"); 
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 }
 
 alDataRecord * alDataRights::current()
@@ -54,7 +54,7 @@ bool alDataRights::selectByOwner(alUserRecord * user)
 
 void alDataRights::createSetForUser(alUserRecord * u)
 {
-    fEngine->startTransaction();
+    engine()->startTransaction();
     for(int r=1;r<rEnd;r++)
     {
 	alRightsRecord * rec = alRightsRecord::newElement(this);
@@ -63,7 +63,7 @@ void alDataRights::createSetForUser(alUserRecord * u)
 	rec->setEnabled(rDefaultSets[u->role()-1][r]);
 	rec->update();
     }
-    fEngine->commitTransaction();    
+    engine()->commitTransaction();
 }
 
 alRightsRecord::alRightsRecord(alData * data) :

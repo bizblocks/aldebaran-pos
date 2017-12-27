@@ -24,6 +24,10 @@
 #include <qsettings.h>
 #include "engine.h"
 
+namespace Ui {
+class ddbsettings;
+}
+
 class alEngine;
 
 class alSettings : public QObject
@@ -44,12 +48,19 @@ public slots:
 protected slots:
     virtual void flushqt();
     virtual void flushsql();	
+private slots:
+    void on_btnTest_clicked();
+    void setData(QStringList data);
+    QStringList getData();
+    void on_pushButton_clicked();
+
 private:
     alEngine * fEngine;
     QStringList dbParams;
     QMap<QString, alValueList> params;
     QStringList subSystems;
     QMap<QString, QStringList> keys;
+    Ui::ddbsettings * dbdlg;
 };
 
 #endif

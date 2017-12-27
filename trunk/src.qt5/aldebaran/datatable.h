@@ -1,15 +1,17 @@
 #ifndef DATATABLE_H
 #define DATATABLE_H
 
-#include <QTableWidget>
+#include <QTableView>
+#include "aldebaran.h"
 
 class QWidget;
-class QPopupMenu;
+class QMenu;
+class QSqlTableModel;
 class alEngine;
 class alData;
 class alDataRecord;
 
-class alDataTable : public QTableWidget
+class alDataTable : public QTableView
 {
 Q_OBJECT
 public:
@@ -35,7 +37,8 @@ public slots:
     virtual void setValue(QString attr, QVariant val);
     virtual QVariant displayValue(QString attr, QVariant val);
     virtual QPixmap pixmap(int r);
-    virtual void setCurrentRow(int row) { setCurrentCell(row, 0); }
+    virtual void setCurrentRow(int row) { selectRow(row); }
+    virtual int currentRow();
     int popupMenu(int row, int col, const QPoint & pos);
     void setSelectable(bool s) { fSelect = s; }
     bool selectable() { return fSelect; }
@@ -53,7 +56,7 @@ protected:
     QMap<QString, QString> fields;    
     alEngine * fEngine;
     alData * fData;
-    QPopupMenu * contextMenu;
+    QMenu * contextMenu;
     bool fSelect;
     QString maxWidthColumn;
 private:
@@ -62,6 +65,7 @@ private:
     QList<int> ids;
     QWidget * rowEditor;
     int savedMargin;
+    QSqlTableModel * fModel;
 };	
 
 #endif

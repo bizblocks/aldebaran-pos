@@ -29,32 +29,32 @@ bool alDataGoods::checkTable()
 		    "eqexport bool DEFAULT true,"
 		    "CONSTRAINT id_goods PRIMARY KEY (id))"
 		    "WITHOUT OIDS;");
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 #ifdef DEBUG    
     qDebug() << QObject::tr("lastError was %1").arg(lastError().text()).toUtf8();
 #endif        
     query = Queries::tr("CREATE INDEX idx_parent ON goods (parent);"); 
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
     query = Queries::tr("CREATE INDEX idx_name ON goods (name);");
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
     query = Queries::tr("CREATE INDEX idx_extcode ON goods (extrnalcode);");
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 // do not use UNIQUE due '' barcode    
     query = Queries::tr("CREATE INDEX idx_barcode ON goods USING btree (barcode);");
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
 }
 
 void alDataGoods::exportpictures()
 {
     select(Queries::tr("isgroup='f'"), defaultSort());
-    fEngine->startTransaction();
+    engine()->startTransaction();
     if(first()) do
     {
         alGoodsRecord * rec = (alGoodsRecord *)current();
         qDebug()<< QString("converting %1").arg(rec->id());
         rec->update();
     } while(next());
-    fEngine->commitTransaction();    
+    engine()->commitTransaction();
 }
 
 alGoodsRecord * alDataGoods::select(int uid)
@@ -110,7 +110,7 @@ bool alDataGoods::delGroup()
     ULLID id = value("id").toULongLong();
     delElement();
     QString query = Queries::tr("DELETE FROM goods WHERE parent=%1").arg(id);
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
     return true;
 }
 
@@ -118,7 +118,7 @@ bool alDataGoods::delElement()
 {
     ULLID id = value("id").toULongLong();
     QString query = Queries::tr("DELETE FROM goods WHERE id=%1").arg(id);
-    fEngine->db().exec(query);
+    engine()->db().exec(query);
     return true;    
 }
 
@@ -138,7 +138,7 @@ void alDataGoods::update(impValues * values)
 //    } while(next());
 //    select("");
 ////first variant high-level
-//    fEngine->startTransaction();
+//    engine()->startTransaction();
     
 //    if(first()) do
 //    {
@@ -151,8 +151,8 @@ void alDataGoods::update(impValues * values)
 //        values->remove(it);
 //    }while(next());
 
-//    fEngine->commitTransaction();
-//    fEngine->startTransaction();
+//    engine()->commitTransaction();
+//    engine()->startTransaction();
     
 //    for(it=values->begin();it!=values->end();it++)
 //    {
@@ -165,8 +165,8 @@ void alDataGoods::update(impValues * values)
 //	if(rec->isGroup()) groups[rec->externalCode()] = rec;
 //    }
     
-//    fEngine->commitTransaction();
-//    fEngine->startTransaction();
+//    engine()->commitTransaction();
+//    engine()->startTransaction();
     
 //    for(it=values->begin();it!=values->end();it++)
 //    {
@@ -178,7 +178,7 @@ void alDataGoods::update(impValues * values)
 //	update(map, rec);
 //    }
     
-//    fEngine->commitTransaction();
+//    engine()->commitTransaction();
 ////second variant low-level
 }
 
@@ -207,7 +207,7 @@ void alDataGoods::update(map map, alGoodsRecord * rec)
 	QString fileName = map["picturename"].toString();
 	if(!fileName.isEmpty())
 	{
-	    QString path = QString(fEngine->parameter(GENERAL, IMPEXPPATH).toString());
+        QString path = QString(engine()->parameter(GENERAL, IMPEXPPATH).toString());
 	    if(path.right(1)!="/") path += "/";	    
 	    fileName = path + fileName;
 	    QPixmap pix(fileName);

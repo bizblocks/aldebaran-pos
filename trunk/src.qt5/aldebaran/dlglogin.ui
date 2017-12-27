@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>388</width>
-    <height>232</height>
+    <height>258</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -123,8 +123,8 @@
         <string>&amp;Cancel</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>stop_cancel.png</normaloff>stop_cancel.png</iconset>
+        <iconset resource="aldebaran.qrc">
+         <normaloff>:/images/stop_cancel.png</normaloff>:/images/stop_cancel.png</iconset>
        </property>
        <property name="shortcut">
         <string>Esc</string>
@@ -158,6 +158,23 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <property name="leftMargin">
+         <number>3</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>3</number>
+        </property>
+        <property name="bottomMargin">
+         <number>3</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="alUsersTable" name="userTab"/>
+        </item>
+       </layout>
       </widget>
      </item>
      <item>
@@ -186,6 +203,10 @@
          <property name="text">
           <string/>
          </property>
+         <property name="icon">
+          <iconset resource="aldebaran.qrc">
+           <normaloff>:/images/up.png</normaloff>:/images/up.png</iconset>
+         </property>
          <property name="shortcut">
           <string>Up</string>
          </property>
@@ -204,6 +225,10 @@
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="aldebaran.qrc">
+           <normaloff>:/images/down.png</normaloff>:/images/down.png</iconset>
          </property>
          <property name="shortcut">
           <string>Down</string>
@@ -237,12 +262,21 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>alUsersTable</class>
+   <extends>QTableView</extends>
+   <header>userstable.h</header>
+  </customwidget>
+ </customwidgets>
  <includes>
   <include location="local">engine.h</include>
   <include location="global">qmessagebox.h</include>
   <include location="local">userstable.h</include>
  </includes>
- <resources/>
+ <resources>
+  <include location="aldebaran.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonOk</sender>
@@ -309,4 +343,8 @@
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>dlgLoginInit()</slot>
+  <slot>login()</slot>
+ </slots>
 </ui>
