@@ -773,7 +773,7 @@ void alEngine::exitApp()
         //QSqlDatabase::removeDatabase(fDB);
     }
 #ifdef DEBUG	
-    qDebug() << tr("Program successfully terminated").utf8();
+    qDebug() << tr("Program successfully terminated").toUtf8();
 #endif
     qApp->exit(0);
 }

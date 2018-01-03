@@ -9,7 +9,7 @@ alDataUsers::alDataUsers(alEngine * e) :
 	alData(e, TNAME)
 {
     checkTable();
-    //alData::setName(TNAME, TRUE);
+    setObjectName(TNAME);
 }
 
 alDataUsers::~alDataUsers()
@@ -30,10 +30,13 @@ bool alDataUsers::checkTable()
 		    "WITHOUT OIDS;");
     engine()->db().exec(query);
 #ifdef DEBUG    
-    qDebug() << QObject::tr("lastError was %1").arg(engine()->db().lastError().text()).toUtf8();
+    qDebug() << QObject::tr("lastError was: %1").arg(engine()->db().lastError().text()).toUtf8();
 #endif        
     query = Queries::tr("CREATE INDEX idx_name ON users (name);"); 
     engine()->db().exec(query);
+#ifdef DEBUG
+    qDebug() << QObject::tr("lastError was: %1").arg(engine()->db().lastError().text()).toUtf8();
+#endif
 }
 
 //TODO reimplement
@@ -71,14 +74,14 @@ void alDataUsers::checkUsers()
     alData::select(Queries::tr("role=1"));
     if(!first())
     {
-	alUserRecord * user = addUser(QObject::tr("Administrator"), 1);
-	rights->createSetForUser(user);
+        alUserRecord * user = addUser(QObject::tr("Administrator"), 1);
+        rights->createSetForUser(user);
     }
     alData::select(Queries::tr("role=3"));
     if(!first())
     {
-	alUserRecord * user = addUser(QObject::tr("Service"), 3);
-	rights->createSetForUser(user);	
+        alUserRecord * user = addUser(QObject::tr("Service"), 3);
+        rights->createSetForUser(user);
     }
 }
 
@@ -116,18 +119,16 @@ alUserRecord::alUserRecord(alData * data, QSqlRecord * rec) :
     load();
 }
 
-//TODO reimplement
 alUserRecord * alUserRecord::newElement(alDataUsers * data)
 {
     if(!data)
         return NULL;
-//    QSqlRecord * rec = data->primeInsert();
-//    rec->setValue("id", data->uid());
-//    alUserRecord * res = new alUserRecord(data, rec);
-//    res->fIsNew = TRUE;
-//    res->setRole(2);
-//    return res;
-    return NULL;
+    QSqlRecord * rec = data->primeInsert();
+    rec->setValue("id", data->uid());
+    alUserRecord * res = new alUserRecord(data, rec);
+    res->fIsNew = TRUE;
+    res->setRole(2);
+    return res;
 }
 
 //TODO reimplement
@@ -150,8 +151,8 @@ void alUserRecord::load()
 	fRights[r] = NULL;
     if(rights->first()) do
     {
-	alRightsRecord * r = (alRightsRecord *)rights->current();
-	fRights[r->rule()] = r;
+        alRightsRecord * r = (alRightsRecord *)rights->current();
+        fRights[r->rule()] = r;
     } while(rights->next());
 }
 

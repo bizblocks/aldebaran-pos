@@ -44,14 +44,13 @@ DISTFILES +=
 RESOURCES += \
     aldebaran.qrc
 
-unix:!macx: LIBS += -L$$PWD/../../lib/ -laldebarandata
 
 INCLUDEPATH += $$PWD/data
 DEPENDPATH += $$PWD/data
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../lib/release/ -laldebarandata
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../lib/debug/ -laldebarandata
-else:unix: LIBS += -L$$PWD/../../lib/ -laldebarandata
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/data/release/ -laldebarandata
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/data/debug/ -laldebarandata
+else:unix: LIBS += -L$$OUT_PWD/data/ -laldebarandata
 
 INCLUDEPATH += $$PWD/data
 DEPENDPATH += $$PWD/data

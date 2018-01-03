@@ -22,8 +22,8 @@ class alRightsRecord : public alDataRecord
 {
 public:
 	Q_PROPERTY(alDataRecord * onwer READ owner WRITE setOwner)
-	Q_PROPERTY(int  rule READ rule WRITE setRule)
-	Q_PROPERTY(bool  enabled READ bool WRITE setEnabled)	
+    Q_PROPERTY(int rule READ rule WRITE setRule)
+    Q_PROPERTY(bool enabled READ enabled WRITE setEnabled)
 protected:
     alRightsRecord(alData * data);	
     alRightsRecord(alData * data, QSqlRecord * rec);    
@@ -34,10 +34,10 @@ public slots:
     virtual int update ();    
     alDataRecord * owner();
     void setOwner(alDataRecord * o);
-    int rule() { return fRule; };
-    void setRule(int r) { fRule = r; };
-    bool enabled() { return fEnabled; };
-    void setEnabled(bool e) { fEnabled = e; };
+    int rule() { return fRule; }
+    void setRule(int r) { fRule = r; }
+    bool enabled() { return fEnabled; }
+    void setEnabled(bool e) { fEnabled = e; }
 private:
     alDataRecord * fOwner;
     ULLID fOwnerId;
