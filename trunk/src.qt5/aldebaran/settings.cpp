@@ -76,7 +76,7 @@ bool alSettings::dbDialog()
     this->setData(dbParams);
     int res = dlg.exec();
 #ifdef DEBUG
-    qDebug(QString(tr("ddbsettings dialog returns %1")).arg(res).utf8());
+    qDebug(QString(tr("ddbsettings dialog returns %1")).arg(res).toUtf8());
 #endif
     if(res)
     {
@@ -169,7 +169,7 @@ void alSettings::setData( QStringList data )
     QStringList drivers = QSqlDatabase::drivers();
     dbdlg->cmbDBType->insertItems(0, drivers);
 #ifdef DEBUG
-    qDebug(tr("available drivers: %s").utf8(), drivers.join(" ").ascii());
+    qDebug() << tr("available drivers: %s").arg(drivers.join(", ")).toUtf8();
 #endif
     if(!data[0].isEmpty())
     dbdlg->cmbDBType->setCurrentText(data[0]);

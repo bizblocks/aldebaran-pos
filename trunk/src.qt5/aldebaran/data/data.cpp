@@ -29,7 +29,7 @@ bool alData::checkTable(const QString& tname)
     if(!engine()->db().isOpen())
         throw new QException();
     QStringList check = engine()->db().tables();
-    if(check.contains(tname))
+    if(check.contains(tname, Qt::CaseInsensitive	))
         return true;
     return false;
 }
@@ -191,12 +191,11 @@ bool alDataRecord::dialog(QWidget * parent)
     return QMessageBox::information(parent, "aldebaran", tr("Abstract data record dialog"));
 }
 
-//TODO implement
 void alDataRecord::primeUpdateInsert()
 {
-//    if(isNew())
-//        fRecord = fData->primeInsert();
-//    else
-//        fRecord = fData->primeUpdate();
-//    fRecord->setValue("id", fId);
+    if(isNew())
+        fRecord = fData->primeInsert();
+    else
+        fRecord = fData->primeUpdate();
+    fRecord->setValue("id", fId);
 }

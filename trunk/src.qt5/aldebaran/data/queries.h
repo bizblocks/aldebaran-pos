@@ -17,6 +17,7 @@ protected:
     static Queries* instance;
     QString fDialect;
     QTranslator * trans;
+    bool loaded;
 };
 
 #endif

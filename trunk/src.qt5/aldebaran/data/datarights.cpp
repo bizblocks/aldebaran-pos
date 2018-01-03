@@ -31,8 +31,11 @@ bool alDataRights::checkTable()
 #ifdef DEBUG    
     qDebug() << QObject::tr("lastError was %1").arg(engine()->db().lastError().text()).toUtf8();
 #endif        
-    query = Queries::tr("CREATE INDEX idx_owner ON RIGHTS (id_onwer);"); 
+    query = Queries::tr("CREATE INDEX idx_owner ON RIGHTS (id_owner);");
     engine()->db().exec(query);
+#ifdef DEBUG
+    qDebug() << QObject::tr("lastError was %1").arg(engine()->db().lastError().text()).toUtf8();
+#endif
 }
 
 alDataRecord * alDataRights::current()
@@ -57,11 +60,11 @@ void alDataRights::createSetForUser(alUserRecord * u)
     engine()->startTransaction();
     for(int r=1;r<rEnd;r++)
     {
-	alRightsRecord * rec = alRightsRecord::newElement(this);
-	rec->setOwner(u);
-	rec->setRule(r);
-	rec->setEnabled(rDefaultSets[u->role()-1][r]);
-	rec->update();
+        alRightsRecord * rec = alRightsRecord::newElement(this);
+        rec->setOwner(u);
+        rec->setRule(r);
+        rec->setEnabled(rDefaultSets[u->role()-1][r]);
+        rec->update();
     }
     engine()->commitTransaction();
 }
@@ -82,25 +85,22 @@ alRightsRecord::alRightsRecord(alData * data, QSqlRecord * rec) :
     load();
 }
 
-//TODO reimplement
 alRightsRecord * alRightsRecord::newElement(alDataRights * data)
 {
     if(!data)
         return NULL;
-//    QSqlRecord * rec = data->primeInsert();
-//    rec->setValue("id", data->uid());
-//    alRightsRecord * res = new alRightsRecord(data, rec);
-//    res->fIsNew = TRUE;
-//    return res;
-    return NULL;
+    QSqlRecord * rec = data->primeInsert();
+    rec->setValue("id", data->uid());
+    alRightsRecord * res = new alRightsRecord(data, rec);
+    res->fIsNew = TRUE;
+    return res;
 }
 
 alRightsRecord * alRightsRecord::current(alDataRights * data)
 {
     if(!data)
         return NULL;
-    //return new alRightsRecord(data, data->primeUpdate());
-    return NULL;
+    return new alRightsRecord(data, data->primeUpdate());
 }
 
 void alRightsRecord::load()
