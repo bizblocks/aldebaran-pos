@@ -7,7 +7,7 @@
 #define TNAME "discount"
 
 alDataDiscount::alDataDiscount(alEngine * e) :
-	alData(e, TNAME)
+    alData(e, TNAME)
 {
     checkTable();
     //alData::setName(TNAME, TRUE);
@@ -21,20 +21,20 @@ bool alDataDiscount::checkTable()
 {
     if(alData::checkTable(TNAME))
         return true;
-#ifdef DEBUG    
+#ifdef DEBUG
     qDebug() << QObject::tr("creating table discount").toUtf8();
-#endif    
+#endif
     QString query = Queries::tr("CREATE TABLE discount ("
-		    "id int8 NOT NULL, name varchar(50),"
-		    "type int2, value int2, protect bool, code varchar(255),"
-		    "CONSTRAINT id_discount PRIMARY KEY (id), "
-		    "CONSTRAINT code UNIQUE(code))"
-		    "WITHOUT OIDS;");
+            "id int8 NOT NULL, name varchar(50),"
+            "type int2, value int2, protect bool, code varchar(255),"
+            "CONSTRAINT id_discount PRIMARY KEY (id), "
+            "CONSTRAINT code UNIQUE(code))"
+            "WITHOUT OIDS;");
     engine()->db().exec(query);
-#ifdef DEBUG    
+#ifdef DEBUG
     qDebug() << QObject::tr("lastError was %1").arg(engine()->db().lastError().text()).toUtf8();
-#endif        
-    query = Queries::tr("CREATE INDEX idx_discount_code ON discount (code);"); 
+#endif
+    query = Queries::tr("CREATE INDEX idx_discount_code ON discount (code);");
     engine()->db().exec(query);
 }
 
@@ -53,7 +53,7 @@ alDiscountRecord *alDataDiscount:: select(ULLID uid)
     alData::select(QString("id=%1").arg(uid));
     if(first())
         return (alDiscountRecord*)current();
-    return NULL;    
+    return NULL;
 }
 
 bool alDataDiscount::select(const QString filter)
@@ -70,13 +70,13 @@ bool alDataDiscount::delElement()
 }
 
 void alDataDiscount::import(importer * imp)
-{	
+{
     impValues values;
     for(int lineNum=0;lineNum<imp->count();lineNum++)
     {
-	imp->seek(lineNum);
-	if(imp->value("cardcode").toString()[0]!='%') continue;	
-	values[imp->value("cardcode").toString().mid(1)] = imp->toMap();
+    imp->seek(lineNum);
+    if(imp->value("cardcode").toString()[0]!='%') continue;
+    values[imp->value("cardcode").toString().mid(1)] = imp->toMap();
     }
     update(&values);
 }
@@ -87,7 +87,7 @@ void alDataDiscount::update(impValues * values)
 //    alDiscountRecord * rec;
 //    impValues::iterator it;
 //    map map;
-    
+
 //    select("");
 //    engine()->startTransaction();
 //    if(first()) do
@@ -104,7 +104,7 @@ void alDataDiscount::update(impValues * values)
 //        values->remove(it);
 //    }while(next());
 //    fEngine->commitTransaction();
-    
+
 //    fEngine->startTransaction();
 //    for(it=values->begin();it!=values->end();++it)
 //    {
@@ -123,7 +123,7 @@ void alDataDiscount::update(impValues * values)
 }
 
 alDiscountRecord::alDiscountRecord(alData * data, QSqlRecord * rec) :
-	alDataRecord(data, rec)
+    alDataRecord(data, rec)
 {
     if(!fRecord) return;
     load();
@@ -161,22 +161,22 @@ void alDiscountRecord::load()
     fCode = fRecord->value("code").toString();
 }
 
-int alDiscountRecord::update() 
+int alDiscountRecord::update()
 {
     primeUpdateInsert();
     fRecord->setValue("name", fName);
     fRecord->setValue("type", fType);
     fRecord->setValue("value", fValue);
     fRecord->setValue("protect", fProtect ? "TRUE" : "FALSE");
-    fRecord->setValue("code", fCode);    
-    alDataRecord::update();    
+    fRecord->setValue("code", fCode);
+    alDataRecord::update();
     qDebug() << fData->lastError().text();
     return TRUE;
 }
 
 //TODO uncomment
 bool alDiscountRecord::dialog(QWidget * parent)
-{   
+{
 //    dlgDiscount * dlg = new dlgDiscount(parent);
 //    dlg->init(fData->engine());
 //    dlg->setData(this);

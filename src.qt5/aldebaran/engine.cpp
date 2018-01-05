@@ -38,39 +38,39 @@ alEngine::alEngine(int argc, char ** argv) :
     server(NULL),
     dlgLogin(new Ui::dlgLogin)
 {
-    app = new QApplication( argc, argv );        
+    app = new QApplication( argc, argv );
     init();
 }
 
 alEngine::~alEngine()
 {
     delete app;
-} 
+}
 
-/* 
+/*
 Инициализация объекта
 *	- Загрузка переводов
 *	- Чтение настроек
 *	- Открытие БД
 */
 void alEngine::init()
-{    
+{
     QTranslator * translator = new QTranslator(0);
-   
+
     translator->load("aldebaran-ru", "/usr/share/aldebaran");
     qApp->installTranslator(translator);
-    translator = new QTranslator(0);    
+    translator = new QTranslator(0);
     translator->load("aldebaran-data-ru", "/usr/share/aldebaran");
-    qApp->installTranslator(translator);        
-    translator = new QTranslator(0);    
+    qApp->installTranslator(translator);
+    translator = new QTranslator(0);
     translator->load("impexp-ru", "/usr/share/aldebaran");
-    qApp->installTranslator(translator);    
-    translator = new QTranslator(0);    
+    qApp->installTranslator(translator);
+    translator = new QTranslator(0);
     translator->load("equip-ru", "/usr/share/aldebaran");
     qApp->installTranslator(translator);
-    translator = new QTranslator(0);    
+    translator = new QTranslator(0);
     translator->load("qt_ru", "/usr/share/aldebaran");
-    qApp->installTranslator(translator);            
+    qApp->installTranslator(translator);
     settings = new alSettings(this);
 }
 
@@ -105,7 +105,7 @@ void alEngine::initEquipment()
 //    alDataEq * eq = new alDataEq(this);
 //    connect(fWorker, SIGNAL(deviceError(int)), this, SLOT(onError(int)));
 //    fWorker->initEquipment(eq);
-    
+
 //    int err;
 //    eqJob * job = createPrinterJob("", "print");
 //    if(job)
@@ -129,7 +129,7 @@ void alEngine::initEquipment()
 //            error(tr("default ECR error: %1").arg(err));
 //        delete job;
 //    }
-    
+
 //    eq->select("type='MSC Reader'");
 //    if(eq->first()) do
 //    {
@@ -224,14 +224,14 @@ bool alEngine::loginLock()
 
 /*
 Запуск приложения
-	- Открытие базы данных
-	- Логин
-	- Инициализация оборудования, очередь задач
-	- Основное окно
+    - Открытие базы данных
+    - Логин
+    - Инициализация оборудования, очередь задач
+    - Основное окно
 */
 //TODO uncomment
 int alEngine::start()
-{	
+{
     QStringList dbParams;
     do
     {
@@ -322,7 +322,7 @@ bool alEngine::rollbackTransaction()
 
 //TODO uncomment
 void alEngine::openOrder(int num)
-{    
+{
 //    alOrderRecord * order = tableOrder(num);
 //    if(!order) mainWindow->openOrder(-1, num);
 //    else mainWindow->openOrder(order->id(), num);
@@ -384,7 +384,7 @@ void alEngine::exportOrder(alOrderRecord * order)
 //    } while (eq->next());
 //    delete eq;
 //    if(device=="_NO_DEVICE_") return;
-    
+
 //    if(!connectDevice(device)) return;
 //    map m;
 //    m["1"] = (uint)order->id();
@@ -459,7 +459,7 @@ bool alEngine::prepareGoods(QString deviceType)
 //    job->process();
 //    delete job;
 //    delete drv;
-    return TRUE;    
+    return TRUE;
 }
 
 //TODO uncomment
@@ -472,7 +472,7 @@ bool alEngine::exportGoods(QString device)
 //    job = fWorker->createJob(device, "goodsEnd");
 //    job->process();
 //    delete job;
-    return TRUE;        
+    return TRUE;
 }
 
 //TODO uncomment
@@ -505,7 +505,7 @@ void alEngine::sendElement(alGoodsRecord * rec)
 //	m["10"] = QString("%1").arg(rec->protein(), 6, 'F', 3);
 //	m["11"] = QString("%1").arg(rec->calories(), 7, 'F', 3);
 //	m["12"] = rec->outOfStore();
-	
+
 //	job = fWorker->createJob(device, "line");
 //	job->setData(QVariant(m));
 //	job->process();
@@ -534,7 +534,7 @@ bool alEngine::shutdownDevice(QString device)
 //    eqJob * job = fWorker->createJob(device, "haltDevice");
 //    job->process();
 //    delete job;
-    return TRUE;    
+    return TRUE;
 }
 
 //TODO uncomment
@@ -554,12 +554,12 @@ bool alEngine::connectDevice(QString device)
 //    if(!job) return FALSE;
 //    job->process();
 //    delete job;
-    return TRUE;    
+    return TRUE;
 }
 
 int alEngine::printWidth()
 {
-    return fWorker->option(parameter(EQUIPMENT, PRINTER).toString(), "print width").toInt(); 
+    return fWorker->option(parameter(EQUIPMENT, PRINTER).toString(), "print width").toInt();
 }
 
 QString alEngine::centerString(QString str, int iWidth)
@@ -729,7 +729,7 @@ void alEngine::exportSales(int type, QDateTime begin, QDateTime end)
 //    }while(orders->next());
 //    delete exp;
 //    commitTransaction();
-    
+
 //    if(settings->parameter(GENERAL, IMPEXPFTP).toInt())
 //    {
 //	QFile * file = new QFile(fileName);
@@ -753,7 +753,7 @@ void alEngine::error(QString err)
 /*
 Обработка закрытия программы
 *	- Сохранение настроек
-*	- Закрытие базы данных	
+*	- Закрытие базы данных
 *	- Завершение работы приложения
 */
 void alEngine::exitApp()
@@ -772,7 +772,7 @@ void alEngine::exitApp()
         //TODO fixit
         //QSqlDatabase::removeDatabase(fDB);
     }
-#ifdef DEBUG	
+#ifdef DEBUG
     qDebug() << tr("Program successfully terminated").toUtf8();
 #endif
     qApp->exit(0);
@@ -795,14 +795,14 @@ void alEngine::zReport()
     if(!job) error(tr("ERROR: default ECR not connected"));
     else
     {
-	int res = job->process();
-	if(res)
-	{
-	    res = QMessageBox::critical(NULL, "aldebaran", QString(tr("%1:%2")).arg(res).arg(job->errorMsg()));
-	    return;
-	}     	
-	delete job;
-    }    
+    int res = job->process();
+    if(res)
+    {
+        res = QMessageBox::critical(NULL, "aldebaran", QString(tr("%1:%2")).arg(res).arg(job->errorMsg()));
+        return;
+    }
+    delete job;
+    }
 }
 
 void alEngine::xReport()
@@ -811,14 +811,14 @@ void alEngine::xReport()
     if(!job) error(tr("ERROR: default ECR not connected"));
     else
     {
-	int res = job->process();
-	if(res)
-	{
-	    res = QMessageBox::critical(NULL, "aldebaran", QString(tr("%1:%2")).arg(res).arg(job->errorMsg()));
-	    return;
-	}     	
-	delete job;
-    }    
+    int res = job->process();
+    if(res)
+    {
+        res = QMessageBox::critical(NULL, "aldebaran", QString(tr("%1:%2")).arg(res).arg(job->errorMsg()));
+        return;
+    }
+    delete job;
+    }
 }
 
 void alEngine::payin()
@@ -830,15 +830,15 @@ void alEngine::payin()
     else
     {
 
-	job->setData(val);
-	int res = job->process();
-	if(res)
-	{
-	    res = QMessageBox::critical(NULL, "aldebaran", QString(tr("%1:%2")).arg(res).arg(job->errorMsg()));
-	    return;
-	}     	
-	delete job;
-    }    
+    job->setData(val);
+    int res = job->process();
+    if(res)
+    {
+        res = QMessageBox::critical(NULL, "aldebaran", QString(tr("%1:%2")).arg(res).arg(job->errorMsg()));
+        return;
+    }
+    delete job;
+    }
 }
 
 void alEngine::payout()
@@ -850,15 +850,15 @@ void alEngine::payout()
     else
     {
 
-	job->setData(val);
-	int res = job->process();
-	if(res)
-	{
-	    res = QMessageBox::critical(NULL, "aldebaran", QString(tr("%1:%2")).arg(res).arg(job->errorMsg()));
-	    return;
-	}     	
-	delete job;
-    }    
+    job->setData(val);
+    int res = job->process();
+    if(res)
+    {
+        res = QMessageBox::critical(NULL, "aldebaran", QString(tr("%1:%2")).arg(res).arg(job->errorMsg()));
+        return;
+    }
+    delete job;
+    }
 }
 
 //TODO uncomment
@@ -897,7 +897,7 @@ void alEngine::onError(int errorCode)
     if(sender()->inherits("eqDriver"))
     {
         eqDriver * device = (eqDriver*)sender();
-//TODO error messages	
+//TODO error messages
 //	error(device->errorMsg());
 //TODO reimplement
         //qDebug() << QString("%1:%2").arg(errorCode).arg(device->errorMsg().toUtf8());
@@ -946,16 +946,16 @@ alValueList alEngine::processJob(eqJob *job)
     res["msg"] = "";
     if(!job)
     {
-	res["error"] = ERR_NODEVICE;
-	res["msg"] = "";
-	return res;
+    res["error"] = ERR_NODEVICE;
+    res["msg"] = "";
+    return res;
     }
     job->process();
     int err = job->error();
     if(err)
     {
-	res["error"] = err;
-	res["msg"] = job->errorMsg();
+    res["error"] = err;
+    res["msg"] = job->errorMsg();
         qDebug() << res["msg"].toString();
         cancelCheque(job->device()->objectName());
     }
@@ -966,7 +966,7 @@ void alEngine::cancelCheque(QString devName)
 {
     eqJob * job = createECRJob(devName, "cancelCheck");
     if(!job) return;
-    job->process();    
+    job->process();
 }
 
 //TODO uncomment
@@ -976,7 +976,7 @@ alValueList alEngine::cheque(QString devName, alValueTable tab, alValueTable tot
 //    eqJob * job = createECRJob(devName, "openSale");
 //    res = processJob(job);
 //    if(res["error"].toInt()) return res;
-    
+
 //    for(int r=0;r<tab.rowCount();r++)
 //    {
 //        job = createECRJob("", "addItem");
@@ -1024,14 +1024,14 @@ QStringList alEngine::advReportGoods(int period, QDateTime begin, QDateTime end)
 //			 .arg(begin.time().toString())
 //			 .arg(end.time().toString()) ;
 //    }
-    
+
 //    QSqlQuery query(fDB);
 //    if(!query.exec(queryStr))
 //    {
 //	error(tr("Error in query: %1").arg(queryStr));
 //	return QString::null;
 //    }
-    
+
 //    QStringList str;
 //    if(query.first())
 //    {
@@ -1100,7 +1100,7 @@ QStringList alEngine::advReportHourly(int period, QDateTime begin, QDateTime end
 //			 .arg(begin.time().toString())
 //			 .arg(end.time().toString()) ;
 //    }
-    
+
 //    QSqlQuery query(fDB);
 //    if(!query.exec(queryStr))
 //    {
@@ -1108,7 +1108,7 @@ QStringList alEngine::advReportHourly(int period, QDateTime begin, QDateTime end
 //	qDebug()<< queryStr;
 //	return QString::null;
 //    }
-  
+
 //    QStringList str;
 //    if(query.first())
 //    {
@@ -1158,7 +1158,7 @@ QStringList alEngine::advReportHourly(int period, QDateTime begin, QDateTime end
 //	lst << tr("Total without discounts:");
 //	lst << QString("%2").arg(total+totalDiscount, 5, 'f', 2);
 //	str <<  alignStrings(lst, tabs, pw);
-	
+
 //	str << "" << "" << "";
 //    }
 //    return str;
@@ -1193,7 +1193,7 @@ QStringList alEngine::advReportCheques(int period, QDateTime begin, QDateTime en
 //			 .arg(begin.time().toString())
 //			 .arg(end.time().toString()) ;
 //    }
-    
+
 //    QSqlQuery query(fDB);
 //    if(!query.exec(queryStr))
 //    {
@@ -1201,7 +1201,7 @@ QStringList alEngine::advReportCheques(int period, QDateTime begin, QDateTime en
 //	qDebug(queryStr);
 //	return QString::null;
 //    }
-    
+
 //    QStringList str;
 //    if(query.first())
 //    {
@@ -1269,7 +1269,7 @@ QStringList alEngine::advReportCheques(int period, QDateTime begin, QDateTime en
 //	lst << tr("Total without discounts:");
 //	lst << QString("%2").arg(total+totalDiscount, 5, 'f', 2);
 //	str <<  alignStrings(lst, tabs, pw);
-		
+
 //	str << "" << "" << "";
 //    }
 //    return str;
@@ -1306,7 +1306,7 @@ QStringList alEngine::advReportDiscounts(int period, QDateTime begin, QDateTime 
 //			 .arg(begin.time().toString())
 //			 .arg(end.time().toString()) ;
 //    }
-    
+
 //    QSqlQuery query(fDB);
 //    if(!query.exec(queryStr))
 //    {
@@ -1314,7 +1314,7 @@ QStringList alEngine::advReportDiscounts(int period, QDateTime begin, QDateTime 
 //	qDebug(queryStr);
 //	return QString::null;
 //    }
-    
+
 //    if(query.first())
 //    {
 //	int pw = printWidth();
@@ -1366,15 +1366,15 @@ QStringList alEngine::advReportDiscounts(int period, QDateTime begin, QDateTime 
 
 void alEngine::advancedReport(int period, int type, QDateTime begin, QDateTime end)
 {
-    if(period<0 || period>1 || type<0 || type>3) return;    
-    
+    if(period<0 || period>1 || type<0 || type>3) return;
+
     eqJob * job = createPrinterJob("", "print");
     if(!job)
     {
-	error(tr("Can't print Advanced report"));
-	return;
+    error(tr("Can't print Advanced report"));
+    return;
     }
-            
+
     QStringList str;
     if(type==0) str = advReportGoods(period, begin, end);
     else if(type==1) str = advReportHourly(period, begin, end);
@@ -1420,12 +1420,12 @@ QTime int2time(int secs)
 
 int date2int(QDate d)
 {
-	QDate zero(1942, 1, 1); // no computers before 1942
-	return zero.daysTo(d);
+    QDate zero(1942, 1, 1); // no computers before 1942
+    return zero.daysTo(d);
 }
 
 int time2int(QTime time)
 {
-	QTime zero(0, 0, 0);
-	return zero.secsTo(time);
+    QTime zero(0, 0, 0);
+    return zero.secsTo(time);
 }

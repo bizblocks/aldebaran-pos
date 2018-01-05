@@ -6,7 +6,7 @@
 #define TNAME "users"
 
 alDataUsers::alDataUsers(alEngine * e) :
-	alData(e, TNAME)
+    alData(e, TNAME)
 {
     checkTable();
     setObjectName(TNAME);
@@ -20,19 +20,19 @@ bool alDataUsers::checkTable()
 {
     if(alData::checkTable(TNAME))
         return true;
-#ifdef DEBUG    
+#ifdef DEBUG
     qDebug() << QObject::tr("creating table users").toUtf8();
-#endif    
+#endif
     QString query = Queries::tr("CREATE TABLE USERS ("
-		    "id int8 NOT NULL, name varchar(30),"
-		    "role int4, password varchar(15),"
-		    "CONSTRAINT id_user PRIMARY KEY (id))"
-		    "WITHOUT OIDS;");
+            "id int8 NOT NULL, name varchar(30),"
+            "role int4, password varchar(15),"
+            "CONSTRAINT id_user PRIMARY KEY (id))"
+            "WITHOUT OIDS;");
     engine()->db().exec(query);
-#ifdef DEBUG    
+#ifdef DEBUG
     qDebug() << QObject::tr("lastError was: %1").arg(engine()->db().lastError().text()).toUtf8();
-#endif        
-    query = Queries::tr("CREATE INDEX idx_name ON users (name);"); 
+#endif
+    query = Queries::tr("CREATE INDEX idx_name ON users (name);");
     engine()->db().exec(query);
 #ifdef DEBUG
     qDebug() << QObject::tr("lastError was: %1").arg(engine()->db().lastError().text()).toUtf8();
@@ -47,9 +47,9 @@ QSqlIndex alDataUsers::defaultSort()
 
 alDataRecord * alDataUsers::current()
 {
-    return alUserRecord::current(this);    
+    return alUserRecord::current(this);
 }
-    
+
 alUserRecord * alDataUsers::select(ULLID uid)
 {
     alData::select(Queries::tr("id=%1").arg(uid));
@@ -92,7 +92,7 @@ bool alDataUsers::delElement()
     engine()->db().exec(query);
     query = Queries::tr("DELETE FROM rights WHERE id_owner=%1").arg(id);
     engine()->db().exec(query);
-    return true;    
+    return true;
 }
 
 alUserRecord * alDataUsers::newElement()
@@ -101,7 +101,7 @@ alUserRecord * alDataUsers::newElement()
 }
 
 alUserRecord::alUserRecord(alData * data) :
-	alDataRecord(data)
+    alDataRecord(data)
 {
     rights = NULL;
     fData = new alDataGoods(data->engine());
@@ -111,9 +111,9 @@ alUserRecord::alUserRecord(alData * data) :
 }
 
 alUserRecord::alUserRecord(alData * data, QSqlRecord * rec) :
-	alDataRecord(data, rec)
+    alDataRecord(data, rec)
 {
-    rights = NULL;    
+    rights = NULL;
     if(!fRecord)
         return;
     load();
@@ -148,7 +148,7 @@ void alUserRecord::load()
     rights = new alDataRights(fData->engine());
     rights->selectByOwner(this);
     for(int r=1;r<rEnd;r++)
-	fRights[r] = NULL;
+    fRights[r] = NULL;
     if(rights->first()) do
     {
         alRightsRecord * r = (alRightsRecord *)rights->current();
@@ -156,7 +156,7 @@ void alUserRecord::load()
     } while(rights->next());
 }
 
-int alUserRecord::update() 
+int alUserRecord::update()
 {
     primeUpdateInsert();
     fRecord->setValue("name", UTF8(fName));
@@ -165,13 +165,13 @@ int alUserRecord::update()
     return alDataRecord::update();
 //    if(!success) return success;
 //    for(int r=0;r<rEnd;r++)
-//	if(fRights[r]) success+=fRights[r]->update();		
+//	if(fRights[r]) success+=fRights[r]->update();
 }
 
 bool alUserRecord::right(alRights rule)
 {
     if(!fRights[rule])
-	return FALSE;
+    return FALSE;
     return fRights[rule]->enabled();
 }
 
@@ -201,9 +201,9 @@ void alUserRecord::setRight(alRights rule, bool enabled)
 {
     if(!fRights[rule])
     {
-	fRights[rule] = alRightsRecord::newElement(rights);
-	fRights[rule]->setOwner(this);
-	fRights[rule]->setRule(rule);
+    fRights[rule] = alRightsRecord::newElement(rights);
+    fRights[rule]->setOwner(this);
+    fRights[rule]->setRule(rule);
     }
     fRights[rule]->setEnabled(enabled);
     fRights[rule]->update();

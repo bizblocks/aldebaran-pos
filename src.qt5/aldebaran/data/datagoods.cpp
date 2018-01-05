@@ -7,7 +7,7 @@
 #define TNAME "goods"
 
 alDataGoods::alDataGoods(alEngine * e) :
-	alData(e, TNAME)
+    alData(e, TNAME)
 {
     checkTable();
     //alData::setName(TNAME, TRUE);
@@ -17,29 +17,29 @@ bool alDataGoods::checkTable()
 {
     if(alData::checkTable(TNAME))
         return true;
-#ifdef DEBUG    
+#ifdef DEBUG
     qDebug() << QObject::tr("creating table goods").toUtf8();
-#endif    
+#endif
     QString query = Queries::tr("CREATE TABLE goods ("
-		    "id int8 NOT NULL, parent int8, isgroup bool DEFAULT false,"
-		    "name varchar(200), price numeric(12,2), maxdiscount int2 DEFAULT 100, description bytea,"
-		    "externalcode varchar(15), barcode varchar(13), id_pictures int8,"
-		    "hydrocarbonat numeric(6,3), fat numeric(6,3), protein numeric(6,3), calories numeric(7,3),"
-		    "outofstore bool DEFAULT false,"
-		    "eqexport bool DEFAULT true,"
-		    "CONSTRAINT id_goods PRIMARY KEY (id))"
-		    "WITHOUT OIDS;");
+            "id int8 NOT NULL, parent int8, isgroup bool DEFAULT false,"
+            "name varchar(200), price numeric(12,2), maxdiscount int2 DEFAULT 100, description bytea,"
+            "externalcode varchar(15), barcode varchar(13), id_pictures int8,"
+            "hydrocarbonat numeric(6,3), fat numeric(6,3), protein numeric(6,3), calories numeric(7,3),"
+            "outofstore bool DEFAULT false,"
+            "eqexport bool DEFAULT true,"
+            "CONSTRAINT id_goods PRIMARY KEY (id))"
+            "WITHOUT OIDS;");
     engine()->db().exec(query);
-#ifdef DEBUG    
+#ifdef DEBUG
     qDebug() << QObject::tr("lastError was %1").arg(lastError().text()).toUtf8();
-#endif        
-    query = Queries::tr("CREATE INDEX idx_parent ON goods (parent);"); 
+#endif
+    query = Queries::tr("CREATE INDEX idx_parent ON goods (parent);");
     engine()->db().exec(query);
     query = Queries::tr("CREATE INDEX idx_name ON goods (name);");
     engine()->db().exec(query);
     query = Queries::tr("CREATE INDEX idx_extcode ON goods (extrnalcode);");
     engine()->db().exec(query);
-// do not use UNIQUE due '' barcode    
+// do not use UNIQUE due '' barcode
     query = Queries::tr("CREATE INDEX idx_barcode ON goods USING btree (barcode);");
     engine()->db().exec(query);
 }
@@ -88,7 +88,7 @@ QSqlIndex alDataGoods::defaultSort()
 alGoodsRecord * alDataGoods::internalNew(alGoodsRecord * parent, bool group)
 {
     alGoodsRecord * rec = NULL;
-    if(group)  rec = alGoodsRecord::newGroup(this, parent);	
+    if(group)  rec = alGoodsRecord::newGroup(this, parent);
     else rec = alGoodsRecord::newElement(this, parent);
     return rec;
 }
@@ -106,7 +106,7 @@ alGoodsRecord * alDataGoods::newGroup(alGoodsRecord * parent)
 bool alDataGoods::delGroup()
 {
     if(!value("isgroup").toBool())
-	return false;
+    return false;
     ULLID id = value("id").toULongLong();
     delElement();
     QString query = Queries::tr("DELETE FROM goods WHERE parent=%1").arg(id);
@@ -119,7 +119,7 @@ bool alDataGoods::delElement()
     ULLID id = value("id").toULongLong();
     QString query = Queries::tr("DELETE FROM goods WHERE id=%1").arg(id);
     engine()->db().exec(query);
-    return true;    
+    return true;
 }
 
 
@@ -129,7 +129,7 @@ void alDataGoods::update(impValues * values)
 //    alGoodsRecord * rec;
 //    impValues::iterator it;
 //    map map;
-    
+
 //    QMap<QString, alGoodsRecord *> groups;
 //    select(Queries::tr("isgroup=true"));
 //    if(first()) do
@@ -139,7 +139,7 @@ void alDataGoods::update(impValues * values)
 //    select("");
 ////first variant high-level
 //    engine()->startTransaction();
-    
+
 //    if(first()) do
 //    {
 //        it = values->find(value("externalcode").toString());
@@ -153,7 +153,7 @@ void alDataGoods::update(impValues * values)
 
 //    engine()->commitTransaction();
 //    engine()->startTransaction();
-    
+
 //    for(it=values->begin();it!=values->end();it++)
 //    {
 //	map = *it;
@@ -164,10 +164,10 @@ void alDataGoods::update(impValues * values)
 //	update(map, rec);
 //	if(rec->isGroup()) groups[rec->externalCode()] = rec;
 //    }
-    
+
 //    engine()->commitTransaction();
 //    engine()->startTransaction();
-    
+
 //    for(it=values->begin();it!=values->end();it++)
 //    {
 //	map = *it;
@@ -177,7 +177,7 @@ void alDataGoods::update(impValues * values)
 //	rec = newElement(parent);
 //	update(map, rec);
 //    }
-    
+
 //    engine()->commitTransaction();
 ////second variant low-level
 }
@@ -187,58 +187,58 @@ void alDataGoods::update(map map, alGoodsRecord * rec)
     if(!rec) return;
     if(map["isgroup"].toInt())
     {
-	rec->setName(map["name"].toString());
-	rec->setPrice(0.0);
-	rec->setExternalCode(map["externalcode"].toString());
+    rec->setName(map["name"].toString());
+    rec->setPrice(0.0);
+    rec->setExternalCode(map["externalcode"].toString());
     }
     else
     {
-	rec->setName(map["name"].toString());
-	rec->setPrice(map["price"].toDouble());
-	rec->setExternalCode(map["externalcode"].toString());
-	rec->setHydroCarbonat(map["hydrocarbonat"].toDouble());
-	rec->setFat(map["fat"].toDouble());
-	rec->setProtein(map["protein"].toDouble());
-	rec->setCalories(map["calories"].toDouble());
+    rec->setName(map["name"].toString());
+    rec->setPrice(map["price"].toDouble());
+    rec->setExternalCode(map["externalcode"].toString());
+    rec->setHydroCarbonat(map["hydrocarbonat"].toDouble());
+    rec->setFat(map["fat"].toDouble());
+    rec->setProtein(map["protein"].toDouble());
+    rec->setCalories(map["calories"].toDouble());
     rec->setBarcode(map["barcode"].toString().trimmed());
-	rec->setMaxDiscount(map["maxdiscount"].toInt());
-	QString description = map["description"].toString();
-	if(!description.isEmpty()) rec->setDescription(description);
-	QString fileName = map["picturename"].toString();
-	if(!fileName.isEmpty())
-	{
+    rec->setMaxDiscount(map["maxdiscount"].toInt());
+    QString description = map["description"].toString();
+    if(!description.isEmpty()) rec->setDescription(description);
+    QString fileName = map["picturename"].toString();
+    if(!fileName.isEmpty())
+    {
         QString path = QString(engine()->parameter(GENERAL, IMPEXPPATH).toString());
-	    if(path.right(1)!="/") path += "/";	    
-	    fileName = path + fileName;
-	    QPixmap pix(fileName);
-	    rec->setPicture(pix);
-	}	
+        if(path.right(1)!="/") path += "/";
+        fileName = path + fileName;
+        QPixmap pix(fileName);
+        rec->setPicture(pix);
     }
-    rec->update();    
+    }
+    rec->update();
 }
 
 void alDataGoods::import(importer * imp)
-{	
+{
     impValues values;
     for(int lineNum=0;lineNum<imp->count();lineNum++)
     {
-	imp->seek(lineNum);
-	values[imp->value("externalcode").toString()] = imp->toMap();
-    }        
+    imp->seek(lineNum);
+    values[imp->value("externalcode").toString()] = imp->toMap();
+    }
     update(&values);
 }
 
 //TODO reimplement
 alGoodsRecord::alGoodsRecord(alData * data) :
-	alDataRecord(data)
+    alDataRecord(data)
 {
     fData->select(QString("id=%1").arg(fId));
     //fRecord = fData->primeUpdate();
     load();
 }
 
-alGoodsRecord::alGoodsRecord(alData * data, QSqlRecord * rec) : 
-	alDataRecord(data, rec)
+alGoodsRecord::alGoodsRecord(alData * data, QSqlRecord * rec) :
+    alDataRecord(data, rec)
 {
     fParent = NULL;
     if(!fRecord) return;
@@ -248,7 +248,7 @@ alGoodsRecord::alGoodsRecord(alData * data, QSqlRecord * rec) :
 //TODO reimplement
 alGoodsRecord * alGoodsRecord::current(alDataGoods * data)
 {
-    if(!data) return NULL;    
+    if(!data) return NULL;
     //return new alGoodsRecord(data, data->primeUpdate());
     return NULL;
 }
@@ -278,29 +278,29 @@ alGoodsRecord * alGoodsRecord::newGroup(alDataGoods * data, alGoodsRecord * pare
 
 int alGoodsRecord::update()
 {
-    QPixmap pix = picture();    
+    QPixmap pix = picture();
     alDataPictures * pics = new alDataPictures(fData->engine());
     if(!fPictureId) fPictureRec = pics->newElement();
     else fPictureRec = pics->select(fPictureId);
     fPictureRec->setPicture(pix);
     int ok = fPictureRec->update();
-    
+
     primeUpdateInsert();
     fRecord->setValue("parent", (!fParent ? 0 : fParent->id()));
     fRecord->setValue("isgroup", fIsGroup);
     fRecord->setValue("name", fName);
     fRecord->setValue("price", fPrice);
-    fRecord->setValue("externalcode", fExternalCode);    
+    fRecord->setValue("externalcode", fExternalCode);
     fRecord->setValue("description", fDescription.toUtf8());
     fRecord->setValue("hydrocarbonat", fHydroCarbonat);
-    fRecord->setValue("fat", fFat);    
+    fRecord->setValue("fat", fFat);
     fRecord->setValue("protein", fProtein);
     fRecord->setValue("calories", fCalories);
     fRecord->setValue("outofstore", fOutOfStore ? "TRUE" : "FALSE");
-    fRecord->setValue("eqexport", fEqExport ? "TRUE" : "FALSE");    
+    fRecord->setValue("eqexport", fEqExport ? "TRUE" : "FALSE");
     fRecord->setValue("barcode", fBarcode);
-    fRecord->setValue("maxdiscount", fMaxDiscount);       
-    fRecord->setValue("id_pictures", fPictureRec ? fPictureRec->id() : 0);    
+    fRecord->setValue("maxdiscount", fMaxDiscount);
+    fRecord->setValue("id_pictures", fPictureRec ? fPictureRec->id() : 0);
     ok &= alDataRecord::update();
 //    qDebug(fData->lastQuery().utf8());
 //    qDebug(fData->lastError().text().utf8());
@@ -310,10 +310,10 @@ int alGoodsRecord::update()
 void alGoodsRecord::load()
 {
     alDataRecord::load();
-    fIsNew = FALSE;    
+    fIsNew = FALSE;
     fIsGroup = fRecord->value("isgroup").toBool();
     fName = fRecord->value("name").toString();
-    fParent = NULL;    
+    fParent = NULL;
     if(fRecord->value("parent").toULongLong() && fRecord->value("parent").toULongLong()!=fId)
     {
         alDataGoods* goods = new alDataGoods(fData->engine());
@@ -327,20 +327,20 @@ void alGoodsRecord::load()
     fHydroCarbonat = fRecord->value("hydrocarbonat").toDouble();
     fFat = fRecord->value("fat").toDouble();
     fProtein = fRecord->value("protein").toDouble();
-    fCalories = fRecord->value("calories").toDouble();    
-    fOutOfStore = fRecord->value("outofstore").toBool();    
-    fEqExport = fRecord->value("eqexport").toBool();        
-    fBarcode = fRecord->value("barcode").toString();    
+    fCalories = fRecord->value("calories").toDouble();
+    fOutOfStore = fRecord->value("outofstore").toBool();
+    fEqExport = fRecord->value("eqexport").toBool();
+    fBarcode = fRecord->value("barcode").toString();
     fMaxDiscount = fRecord->value("maxdiscount").toInt();
     fPictureRec = NULL;
 }
 
-QPixmap alGoodsRecord::picture() 
-{  
+QPixmap alGoodsRecord::picture()
+{
     if(fPicture.isNull() && fPictureId)
     {
-	fPictureRec = (new alDataPictures(fData->engine()))->select(fPictureId);
-	if(fPictureRec) fPicture = fPictureRec->picture();
+    fPictureRec = (new alDataPictures(fData->engine()))->select(fPictureId);
+    if(fPictureRec) fPicture = fPictureRec->picture();
     }
-    return fPicture;    
+    return fPicture;
 }

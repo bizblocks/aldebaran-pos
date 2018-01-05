@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS  = tradeequip impexp aldebaran/data aldebaran
+SUBDIRS  = aldebaran/data aldebaran
