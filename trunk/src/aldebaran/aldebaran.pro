@@ -3,7 +3,7 @@ LANGUAGE	= C++
 
 CONFIG	+= qt warn_on release
 
-LIBS	+= -L$(QTDIR)/lib -L../../lib -lequip -limpexp -laldebarandata -L../tradeequip/tradeequip-1.1.0/lib -L../tradeequip/tradeequip-drv/lib -ltradeequip -ltereader-barcode
+LIBS	+= -L$(QTDIR)/lib -lequip -limpexp -L../tradeequip/tradeequip-1.1.0/lib -L../tradeequip/tradeequip-drv/lib -ltradeequip -ltereader-barcode
 
 DEFINES	+= DEBUG
 
@@ -133,3 +133,10 @@ unix {
 INSTALLS += aldebaran
 
 QMAKE_CLEAN = libimpexp.so*
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/data/release/ -laldebarandata
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/data/debug/ -laldebarandata
+else:unix: LIBS += -L$$OUT_PWD/data/ -laldebarandata
+
+INCLUDEPATH += $$PWD/data
+DEPENDPATH += $$PWD/data
