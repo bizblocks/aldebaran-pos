@@ -1,5 +1,7 @@
+#include <QDebug>
 #include <qmessagebox.h>
 #include "userstable.h"
+#include "datausers.h"
 #include "engine.h"
 
 
@@ -8,35 +10,27 @@
 alUsersTable::alUsersTable(QWidget * parent, alEngine * engine) :
 	alDataTable(parent, engine, TABLE)
 {
-    headers << tr("name");
     fields[tr("name")] = "name";
     maxWidthColumn = "name";    
 }
 
-void alUsersTable::init()
+void alUsersTable::init(alEngine * e)
 {
-    hideVerticalHeader();    
-    fData = new alDataUsers(fEngine);
-    setSelectionMode(NoSelection);    
-    alDataTable::init();    
+    fData = new alDataUsers(e);
+    alDataTable::init(e);
+    hideVerticalHeader();
+    fData->insertColumn(fData->columnCount());
+    fData->setHeaderData(fData->columnCount()-1, tr("name"));
+    //fData = new alDataUsers(fEngine);
+    //setSelectionMode(NoSelection); //??
     load();
     setCurrentRow(0);
-}
-
-/*
-*	возвращает иконку пользователя
-*	return pixmap of user
-*/
-QPixmap alUsersTable::pixmap(int r)
-{
-    Q_UNUSED(r);
-    return QPixmap(":/images/people.png");
 }
 
 alUserRecord * alUsersTable::current()
 {
     fData->seek(currentRow());
-    return (alUserRecord*) fData->current();    
+    return (alUserRecord*) fData->current();
 }
 
 bool alUsersTable::dialog(alUserRecord * user)	
@@ -44,9 +38,9 @@ bool alUsersTable::dialog(alUserRecord * user)
     int row = currentRow();
     if(user->dialog(this))
     {
-	load();
-	setCurrentRow(row);
-	return TRUE;
+        load();
+        setCurrentRow(row);
+        return TRUE;
     }
     return FALSE;	
 }
@@ -69,8 +63,8 @@ bool alUsersTable::deleteRowData()
     res = QMessageBox::question(this, "aldebaran", tr("Delete element??"), QMessageBox::Yes,QMessageBox::No);	
     if(res==QMessageBox::Yes)
     {
-	((alDataUsers*)fData)->delElement();
-	load();
+        ((alDataUsers*)fData)->delElement();
+        load();
     }
     setCurrentRow(row);
     return res;    

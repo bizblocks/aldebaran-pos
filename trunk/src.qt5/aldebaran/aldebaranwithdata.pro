@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     data/datarights.cpp \
     data/datasettings.cpp \
     data/datausers.cpp \
-    data/queries.cpp
+    data/queries.cpp \
+    data/alsqltablemodel.cpp
 
 INCLUDEPATH += ../impexp \
     ../tradeequip/equip
@@ -39,7 +40,6 @@ HEADERS += \
     engine.h \
     valuetable.h \
     ddbsettings.ui.h \
-    dlglogin.ui.h \
     userstable.h \
     datatable.h \
     data/data.h \
@@ -58,7 +58,8 @@ HEADERS += \
     data/dlguser.ui.h \
     data/goodselement.ui.h \
     data/goodsgroup.ui.h \
-    data/queries.h
+    data/queries.h \
+    data/alsqltablemodel.h
 
 FORMS += \
     calculator.ui \
@@ -66,7 +67,6 @@ FORMS += \
     equipmentdialog.ui \
     ddbsettings.ui \
     settingsdialog.ui \
-    dlgdiscount.ui \
     data/dlgdiscount.ui \
     data/dlgdevice.ui \
     data/dlguser.ui \

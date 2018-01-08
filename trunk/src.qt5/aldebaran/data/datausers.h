@@ -14,6 +14,7 @@ public:
     alDataUsers(alEngine * e);
     ~alDataUsers();
     void checkUsers();    
+    virtual QPixmap pixmap(int) const;
 public slots:    
     virtual alDataRecord * current();
     virtual alUserRecord * select(ULLID uid);
@@ -38,20 +39,20 @@ protected:
 public:
     inline bool operator==(alUserRecord * u1 ) 
     {
-	if(!u1) return FALSE;
-	return fId == u1->id();
-    };
+        if(!u1) return FALSE;
+        return fId == u1->id();
+    }
 public slots:
     static alUserRecord * newElement(alDataUsers * data);
     static alUserRecord * current(alDataUsers * data);    
     virtual int update ();    
-    QString name() { return fName; };
-    void setName(QString n) { fName = n; };
-    int role() { return fRole; };
-    void setRole(int r) { fRole = r; };
+    QString name() { return fName; }
+    void setName(QString n) { fName = n; }
+    int role() { return fRole; }
+    void setRole(int r) { fRole = r; }
     bool right(alRights rule);
     void setRight(alRights tule, bool enabled);
-    void setPassword(QString p) {fPass = p; };
+    void setPassword(QString p) {fPass = p; }
     bool checkPassword(QString p);
     virtual bool dialog(QWidget * parent);    
 private:
