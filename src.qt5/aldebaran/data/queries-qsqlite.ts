@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="ru_RU">
 <context>
     <name>Queries</name>
     <message>
@@ -79,7 +81,7 @@
     </message>
     <message>
         <source>num=%1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>DELETE FROM orders WHERE id=%1</source>
@@ -125,7 +127,7 @@
     </message>
     <message>
         <source>CREATE TABLE RIGHTS (id int8 NOT NULL, id_owner int8 NOT NULL,rule int4, enabled bool,CONSTRAINT id_rights PRIMARY KEY (id))WITHOUT OIDS;</source>
-        <translation>CREATE TABLE rights (id NUMERIC PRIMARY KEY, id_ownerNUMERIC, rule NUMERIC, enabled BOOL);</translation>
+        <translation>CREATE TABLE RIGHTS (id int8 NOT NULL, id_owner int8 NOT NULL,rule int4, enabled bool,CONSTRAINT id_rights PRIMARY KEY (id))WITHOUT ROWID;</translation>
     </message>
     <message>
         <source>CREATE INDEX idx_owner ON RIGHTS (id_onwer);</source>
@@ -137,7 +139,7 @@
     </message>
     <message>
         <source>CREATE TABLE USERS (id int8 NOT NULL, name varchar(30),role int4, password varchar(15),CONSTRAINT id_user PRIMARY KEY (id))WITHOUT OIDS;</source>
-        <translation>CREATE TABLE users (id NUMERIC PRIMARY KEY, name TEXT, role NUMERIC, password TEXT);</translation>
+        <translation>CREATE TABLE USERS (id int8 NOT NULL, name varchar(30),role int4, password varchar(15),CONSTRAINT id_user PRIMARY KEY (id))WITHOUT ROWID;</translation>
     </message>
     <message>
         <source>CREATE INDEX idx_name ON users (name);</source>
@@ -161,7 +163,7 @@
     </message>
     <message>
         <source>CREATE TABLE settings (id int8 NOT NULL, subsystem varchar(20), valkey varchar(20), value bytea,CONSTRAINT id_settings PRIMARY KEY (id))WITHOUT OIDS;</source>
-        <translation>CREATE TABLE settings (id NUMERIC PRIMARY KEY, subsytem TEXT, valkey TEXT, value TEXT);</translation>
+        <translation>CREATE TABLE settings (id int8 NOT NULL, subsystem varchar(20), valkey varchar(20), value bytea,CONSTRAINT id_settings PRIMARY KEY (id))WITHOUT ROWID;</translation>
     </message>
     <message>
         <source>CREATE INDEX idx_subsys ON settings (subsystem);</source>
