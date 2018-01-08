@@ -46,7 +46,8 @@ alDataRecord * alDataRights::current()
 alRightsRecord * alDataRights::select(ULLID uid)
 {
     alData::select(Queries::tr("id=%1").arg(uid));
-    if(first()) return (alRightsRecord*)current();
+    if(first())
+        return (alRightsRecord*)current();
     return NULL;
 }
 
@@ -72,16 +73,17 @@ void alDataRights::createSetForUser(alUserRecord * u)
 alRightsRecord::alRightsRecord(alData * data) :
 	alDataRecord(data)
 {
-    fData = new alDataGoods(data->engine());
-    fData->select(Queries::tr("id=%1").arg(fId));
+//    fData = new alDataGoods(data->engine());
+//    fData->select(Queries::tr("id=%1").arg(fId));
 //    fRecord = fData->primeUpdate();
-    load();
+//    load();
 }
 
 alRightsRecord::alRightsRecord(alData * data, QSqlRecord * rec) :
 	alDataRecord(data, rec)
 {
-    if(!fRecord) return;
+    if(!fRecord)
+        return;
     load();
 }
 
@@ -90,10 +92,13 @@ alRightsRecord * alRightsRecord::newElement(alDataRights * data)
     if(!data)
         return NULL;
     QSqlRecord * rec = data->primeInsert();
-    rec->setValue("id", data->uid());
-    alRightsRecord * res = new alRightsRecord(data, rec);
+    ULLID id = data->uid();
+    rec->setValue("id", id);
+    alRightsRecord * res = new alRightsRecord(data);
+    res->fId = id;
+    res->fRecord = rec;
     res->fIsNew = TRUE;
-    return res;
+    return res;        
 }
 
 alRightsRecord * alRightsRecord::current(alDataRights * data)
@@ -105,6 +110,7 @@ alRightsRecord * alRightsRecord::current(alDataRights * data)
 
 void alRightsRecord::load()
 {    
+    fId = fRecord->value("id").toULongLong();
     fOwnerId = fRecord->value("id_owner").toULongLong(); 
     fOwner = NULL;
     fRule = fRecord->value("rule").toInt();
@@ -113,8 +119,9 @@ void alRightsRecord::load()
 
 int alRightsRecord::update() 
 {
-    primeUpdateInsert();
-    if(fOwner) fRecord->setValue("id_owner", fOwner->id());
+    //primeUpdateInsert();
+    if(fOwner)
+        fRecord->setValue("id_owner", fOwner->id());
     fRecord->setValue("rule", fRule);
     fRecord->setValue("enabled", fEnabled);
     return alDataRecord::update();
