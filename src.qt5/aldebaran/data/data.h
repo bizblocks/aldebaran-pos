@@ -6,6 +6,7 @@
 #include <QtSql/QSqlTableModel>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
+#include "alsqltablemodel.h"
 #include "../aldebaran.h"
 #include "queries.h"
 
@@ -14,13 +15,14 @@ class QSqlRecord;
 class alEngine;
 class alDataRecord;
 
-class alData : public QSqlTableModel
+class alData : public alSqlTableModel
 {
 public:
     alData(alEngine * e, QString table);
     alData(const alData & other);
     ~alData();
     ULLID uid();
+    int currentRow() const { return fCurrentRow; }
     virtual alDataRecord * current();
 //    virtual int update(ULLID id, bool invalidate = TRUE);
     virtual int update();
@@ -43,21 +45,22 @@ protected:
     virtual QSqlIndex defaultSort();
 private:
     QObject * fParent;
-    QString fTableName;
-    QSqlRecord * fCurrent;
     int fCurrentRow;
+    QSqlRecord * fRecord;
 };
 
 class alDataRecord : public QObject
 {
     Q_OBJECT
+public:
+    ~alDataRecord();
 protected:
     alDataRecord(alData * data);
     alDataRecord(alData * data, QSqlRecord * rec);
     virtual void primeUpdateInsert();
 public slots:
     bool isNew() { return fIsNew; }
-    static alDataRecord * current(alData * data);
+    static alDataRecord * current(alData *);
     virtual int update();
     virtual void load();
     ULLID id() { return fId; }

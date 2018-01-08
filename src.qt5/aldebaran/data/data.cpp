@@ -1,4 +1,5 @@
 //correct one
+#include <QDebug>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QMessageBox>
@@ -7,22 +8,22 @@
 #include "engine.h"
 
 alData::alData(alEngine * e, QString table) :
-    QSqlTableModel(e, e->db()),
+    alSqlTableModel(e, e->db(), table),
     fParent(e),
-    fCurrent(NULL),
-    fCurrentRow(-1)
+    fCurrentRow(-1),
+    fRecord(NULL)
 {
-    setTable(table);
 }
 
 alData::alData(const alData & other) :
-    QSqlTableModel(fParent, other.database())
+    alSqlTableModel((alEngine*)fParent, other.database(), other.tableName())
 {
-    setTable(other.tableName());
 }
 
 alData::~alData()
 {
+    if(fRecord)
+        delete fRecord;
 }
 
 bool alData::checkTable(const QString& tname)
@@ -37,7 +38,7 @@ bool alData::checkTable(const QString& tname)
 
 ULLID alData::uid()
 {
-    if(engine()->db().isOpen())
+    if(!engine()->db().isOpen())
         return 0;
     ULLID uid = 0;
     QString query = QString(Queries::tr("SELECT MAX(id) as max_id from %1")).arg(tableName());
@@ -55,7 +56,7 @@ alDataRecord* alData::current()
 bool alData::first()
 {
     fCurrentRow = -1;
-    if(hasIndex(0, 0))
+    if(rowCount()>0)
     {
         fCurrentRow = 0;
         return true;
@@ -89,9 +90,9 @@ bool alData::seek(int row)
 //int alData::update (ULLID id, bool invalidate )
 int alData::update()
 {
-    if(!fCurrent)
+    if(!fRecord)
         return 0;
-    return setRecord(fCurrentRow, *fCurrent);
+    return setRecord(fCurrentRow, *fRecord);
 }
 
 //TODO implement
@@ -107,36 +108,43 @@ QSqlIndex alData::defaultSort()
 bool alData::select(const QString filter)
 {
     setFilter(filter);
+#ifdef DEBUG
+    qDebug() << selectStatement();
+#endif
     return QSqlTableModel::select(); /*, defaultSort()*/
 }
 
 QSqlRecord * alData::primeInsert()
 {
-    if(fCurrent)
-        delete fCurrent;
-    fCurrent = new QSqlRecord(record());
     fCurrentRow = QSql::AfterLastRow;
-    return fCurrent;
+    if(fRecord)
+        delete fRecord;
+    fRecord = new QSqlRecord(QSqlTableModel::record());
+    return fRecord;
 }
 
 QSqlRecord * alData::primeUpdate()
 {
-    return fCurrent;
+    if(fRecord)
+        delete fRecord;
+    fRecord = new QSqlRecord(record(fCurrentRow));
+    return fRecord;
 }
 
 bool alData::insert()
 {
-    if(!fCurrent)
+    if(!fRecord)
         return false;
-    fCurrentRow = rowCount();
-    if(insertRow(fCurrentRow))
-         return setRecord(fCurrentRow, *fCurrent);
+    if(insertRecord(fCurrentRow, *fRecord))
+    {
+        return submit();
+    }
     return false;
 }
 
 QVariant alData::value(const QString &fld)
 {
-    int column = record().indexOf(fld);
+    int column = QSqlTableModel::record().indexOf(fld);
     if(column<0)
         return QVariant();
     return data(index(fCurrentRow, column));
@@ -151,12 +159,18 @@ alDataRecord::alDataRecord(alData * data) :
     fId = data->value("id").toULongLong();
 }
 
-alDataRecord::alDataRecord(alData * data, QSqlRecord * rec) : QObject()
+alDataRecord::alDataRecord(alData * data, QSqlRecord * rec) :
+    QObject()
 {
     fIsNew = FALSE;    
     fData = data;
-    fRecord = rec;
-    load();
+    fRecord = new QSqlRecord(*rec);
+}
+
+alDataRecord::~alDataRecord()
+{
+    if(fRecord)
+        delete fRecord;
 }
 
 void alDataRecord::load()
@@ -166,12 +180,9 @@ void alDataRecord::load()
     fId = fRecord->value("id").toULongLong();    
 }
 
-alDataRecord * alDataRecord::current(alData * data)
+alDataRecord * alDataRecord::current(alData*)
 {
-    if(!data)
-        return NULL;
-    alDataRecord * res = new alDataRecord(data);
-    return res;
+    return NULL;
 }
 
 //TODO rewrite

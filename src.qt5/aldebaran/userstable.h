@@ -12,14 +12,13 @@ class alUsersTable : public alDataTable
     Q_OBJECT
 public:
     alUsersTable(QWidget * parent, alEngine * engine = NULL);
-    virtual void init();    
+    virtual void init(alEngine * e=NULL);
     alUserRecord * current();
 public slots:
     bool newElement();
     virtual bool editRowData();
     virtual bool deleteRowData();
 protected:
-    virtual QPixmap pixmap(int r);
     bool dialog(alUserRecord * user);
 };
 

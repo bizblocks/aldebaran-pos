@@ -37,6 +37,7 @@ bool alDataUsers::checkTable()
 #ifdef DEBUG
     qDebug() << QObject::tr("lastError was: %1").arg(engine()->db().lastError().text()).toUtf8();
 #endif
+    return true;
 }
 
 //TODO reimplement
@@ -82,7 +83,7 @@ void alDataUsers::checkUsers()
     {
         alUserRecord * user = addUser(QObject::tr("Service"), 3);
         rights->createSetForUser(user);
-    }
+    }    
 }
 
 bool alDataUsers::delElement()
@@ -101,13 +102,13 @@ alUserRecord * alDataUsers::newElement()
 }
 
 alUserRecord::alUserRecord(alData * data) :
-    alDataRecord(data)
+    alDataRecord(data),
+    rights(NULL)
 {
-    rights = NULL;
-    fData = new alDataGoods(data->engine());
-    fData->select(Queries::tr("id=%1").arg(fId));
+    //fData = data;
+    //fData->select(Queries::tr("id=%1").arg(fId));
     //fRecord = fData->primeUpdate();
-    load();
+    //load();
 }
 
 alUserRecord::alUserRecord(alData * data, QSqlRecord * rec) :
@@ -119,36 +120,16 @@ alUserRecord::alUserRecord(alData * data, QSqlRecord * rec) :
     load();
 }
 
-alUserRecord * alUserRecord::newElement(alDataUsers * data)
-{
-    if(!data)
-        return NULL;
-    QSqlRecord * rec = data->primeInsert();
-    rec->setValue("id", data->uid());
-    alUserRecord * res = new alUserRecord(data, rec);
-    res->fIsNew = TRUE;
-    res->setRole(2);
-    return res;
-}
-
-//TODO reimplement
-alUserRecord * alUserRecord::current(alDataUsers * data)
-{
-    if(!data)
-        return NULL;
-    //return new alUserRecord(data, data->primeUpdate());
-    return NULL;
-}
-
 void alUserRecord::load()
 {
+    alDataRecord::load();
     fName = fRecord->value("name").toString();
     fRole = fRecord->value("role").toInt();
     fPass = fRecord->value("password").toString();
     rights = new alDataRights(fData->engine());
     rights->selectByOwner(this);
     for(int r=1;r<rEnd;r++)
-    fRights[r] = NULL;
+        fRights[r] = NULL;
     if(rights->first()) do
     {
         alRightsRecord * r = (alRightsRecord *)rights->current();
@@ -156,9 +137,31 @@ void alUserRecord::load()
     } while(rights->next());
 }
 
+alUserRecord * alUserRecord::newElement(alDataUsers * data)
+{
+    if(!data)
+        return NULL;
+    QSqlRecord * rec = data->primeInsert();
+    ULLID id = data->uid();
+    rec->setValue("id", id);
+    alUserRecord * res = new alUserRecord(data);
+    res->fId = id;
+    res->fRecord = rec;
+    res->fIsNew = TRUE;
+    res->setRole(2);
+    return res;
+}
+
+alUserRecord * alUserRecord::current(alDataUsers * data)
+{
+    if(data)
+        return new alUserRecord(data, new QSqlRecord(data->record(data->currentRow())));
+    return NULL;
+}
+
 int alUserRecord::update()
 {
-    primeUpdateInsert();
+//    primeUpdateInsert();
     fRecord->setValue("name", UTF8(fName));
     fRecord->setValue("role", fRole);
     fRecord->setValue("password", UTF8(fPass));
@@ -171,14 +174,14 @@ int alUserRecord::update()
 bool alUserRecord::right(alRights rule)
 {
     if(!fRights[rule])
-    return FALSE;
+        return FALSE;
     return fRights[rule]->enabled();
 }
 
 bool alUserRecord::checkPassword(QString pass)
 {
-//TODO replace with more secure password-check, maybe assemble??
-    if(pass==fPass) return true;
+    if(pass==fPass)
+        return true;
     return false;
 }
 
@@ -201,10 +204,19 @@ void alUserRecord::setRight(alRights rule, bool enabled)
 {
     if(!fRights[rule])
     {
-    fRights[rule] = alRightsRecord::newElement(rights);
-    fRights[rule]->setOwner(this);
-    fRights[rule]->setRule(rule);
+        fRights[rule] = alRightsRecord::newElement(rights);
+        fRights[rule]->setOwner(this);
+        fRights[rule]->setRule(rule);
     }
     fRights[rule]->setEnabled(enabled);
     fRights[rule]->update();
+}
+
+/*
+*	возвращает иконку пользователя
+*	return pixmap of user
+*/
+QPixmap alDataUsers::pixmap(int) const
+{
+    return QPixmap(":/images/people.png");
 }

@@ -170,10 +170,11 @@ signals:
 private slots:
 //dlg login slots
     void dlgLoginInit();
+    void dlgLoginEqData(int, QVariant data);
+    void dlgLoginLogin();    
     void dlgLoginUp();
     void dlgLoginDown();
-    void dlgLoginEqData(int, QVariant data);
-    void dlgLoginLogin();
+
 private:
     QApplication * app;
     alMainWindow * mainWindow;

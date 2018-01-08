@@ -25,9 +25,6 @@
 #include "ui_dlglogin.h"
 #include "ui_equipmentdialog.h"
 
-//ui
-#include "dlglogin.ui.h"
-
 alEngine::alEngine(int argc, char ** argv) :
     QObject(),
     mainWindow(NULL),
@@ -208,9 +205,10 @@ bool alEngine::loginLock()
     if(mainWindow)
         mainWindow->hide();
     QDialog dlg;
-    Ui::dlgLogin uidlg;
-    uidlg.setupUi(&dlg);
-//    dlg.init(this);
+    dlgLogin->setupUi(&dlg);
+    dlgLoginInit();
+    dlg.metaObject()->connectSlotsByName(this);
+
     int res = dlg.exec();
     if(res==QDialog::Accepted)
     {
@@ -350,7 +348,6 @@ QStringList alEngine::driverList()
 }
 
 //TODO uncomment
-
 eqJob * alEngine::createPrinterJob(QString device, QString action)
 {
 //    if(device=="")
@@ -1428,4 +1425,59 @@ int time2int(QTime time)
 {
     QTime zero(0, 0, 0);
     return zero.secsTo(time);
+}
+
+// dlgLogin slots
+void alEngine::dlgLoginInit()
+{
+//    dlgLogin->userTab = new alUsersTable(dlgLogin->frmSelect, this);
+    dlgLogin->userTab->init(this);
+    dlgLogin->userTab->setSelectable(TRUE);
+    dlgLogin->userTab->showVerticalHeader();
+    dlgLogin->userTab->adjustColumns();
+    connect(dlgLogin->userTab, SIGNAL(activated(const QModelIndex)), dlgLogin->editPassword, SLOT(setFocus()));
+    connect(dlgLogin->btnUp, SIGNAL(clicked()), this, SLOT(dlgLoginUp()));
+    connect(dlgLogin->btnDown, SIGNAL(clicked()), this, SLOT(dlgLoginDown()));
+    connect(dlgLogin->btnOk, SIGNAL(clicked()), this, SLOT(dlgLoginLogin()));
+    dlgLogin->editPassword->setFocus();
+    connect(this, SIGNAL(event(int, QVariant)), this, SLOT(dlgLoginEqData(int, QVariant)));
+}
+
+void alEngine::dlgLoginEqData(int, QVariant data)
+{
+    QMap<QString, QVariant> dataMap = data.toMap();
+    dlgLogin->editPassword->setText(dataMap["line"].toString());
+    dlgLoginLogin();
+}
+
+void alEngine::dlgLoginLogin()
+{
+    QDialog * dlg = (QDialog*)dlgLogin->userTab->parent();
+    QString p = dlgLogin->editPassword->text();
+    dlgLogin->editPassword->setText("");
+    alUserRecord * user = dlgLogin->userTab->current();
+    if(user->checkPassword(p))
+    {
+        if(!user->right(rLogin))
+        {
+            QMessageBox::critical(dlg, "aldebaran", tr("You don't have rights to login"));
+            return;
+        }
+        setCurrentUser(user);
+        dlg->accept();
+        return;
+    }
+    QMessageBox::critical(dlg, "aldebaran", tr("Wrong password!"));
+}
+
+void alEngine::dlgLoginUp()
+{
+    dlgLogin->userTab->setCurrentRow(dlgLogin->userTab->currentRow()-1);
+    dlgLogin->editPassword->setFocus();
+}
+
+void alEngine::dlgLoginDown()
+{
+    dlgLogin->userTab->setCurrentRow(dlgLogin->userTab->currentRow()+1);
+    dlgLogin->editPassword->setFocus();
 }

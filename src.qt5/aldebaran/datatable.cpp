@@ -1,5 +1,7 @@
+#include <QDebug>
 #include <QHeaderView>
 #include <QMenu>
+#include <QScrollBar>
 #include "engine.h"
 #include "data/data.h"
 #include "datatable.h"
@@ -7,8 +9,7 @@
 alDataTable::alDataTable(QWidget * parent, alEngine * e, QString table) :
     QTableView(parent),
     fEngine(e),
-    fData(NULL),
-    fModel(NULL)
+    fData(NULL)
 {    
     setObjectName(QString("table_%1").arg(table));
     contextMenu = new QMenu(this);
@@ -16,36 +17,31 @@ alDataTable::alDataTable(QWidget * parent, alEngine * e, QString table) :
     tableName = table; 
     currentFilter = "";
     maxWidthColumn = "";
-    headers.clear();
-    headers << "id" << "*"; // id, icon - default columns
-    fields["id"] = "id";
-    connect(this, SIGNAL(contextMenuRequested(int, int, const QPoint&)), this, SLOT(popupMenu(int,int,const QPoint&)));    
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(popupMenu(const QPoint&)));
     fSelect = FALSE;
+    fields["id"] = "id";
 }
 
-//TODO reimplement
-void alDataTable::init()
+void alDataTable::init(alEngine * e)
 {
-    if(fModel)
-        delete fModel;
-    fModel = new QSqlTableModel(this, fEngine->db());
-//    setReadOnly(true);
-//    setNumCols(headers.count());
-//    for(int i=0;i<(int)headers.count();i++)
-//    {
-//    	QTable::horizontalHeader()->setLabel(i, headers[i]);
-//        adjustColumn(i);
-//    }
-//    hideColumn("id");
+    if(e)
+        fEngine = e;
+    if(!fData)
+        fData = new alData(e, tableName);
+    fData->insertColumn(0);
+    fData->setHeaderData(0, "id");
+    fData->insertColumn(1);
+    fData->setHeaderData(1, "*");
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
+    setSelectionMode(QAbstractItemView::SingleSelection);
+    setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
-//TODO reimplement
-int alDataTable::popupMenu(int, int, const QPoint & pos)
+QAction * alDataTable::popupMenu(const QPoint & pos)
 {    
     if(!contextMenu)
-        return -1;
-    return -1;
-    //return contextMenu->exec(pos);
+        return NULL;
+    return contextMenu->exec(pos);
 }
 
 void alDataTable::hideVerticalHeader()
@@ -58,50 +54,28 @@ void alDataTable::showVerticalHeader()
     verticalHeader()->show();
 }
 
-//TODO check of we nned this
+//TODO use of filter
 void alDataTable::load(QString filter)
 {
-//    setNumRows(0);
-//    if(!fData)
-//        return;
-//    if(filter.isEmpty())
-//        fData->select();
-//    else
-//        fData->select(filter);
-//#ifdef DEBUG
-//    qDebug(fData->lastQuery());
-//#endif
-//    if(!fData->first())
-//        return;
-//    setUpdatesEnabled(FALSE);
-//    int iHeight = 0, r=0;
-//    int tSize = fData->size();
-//    if(tSize>0)
-//	setNumRows(tSize);
-//    do
-//    {
-//        fillLine(r);
-////	setRowStretchable(r, TRUE);
-//        adjustRow(r);
-//        iHeight+=rowHeight(r);
-//        r++;
-//        if(tSize>0 && iHeight>height())
-//            break;
-//    } while(fData->next());
-//    setUpdatesEnabled( TRUE );
-//    repaint(rect(), TRUE);
-//    adjustColumns();
+    if(!fData)
+        return;
+    bool res = fData->select(filter);
+    if(!res)
+    {
+        qDebug() << fData->database().isOpen();
+        qDebug() << fData->query().lastError().driverText();
+    }
+    this->setModel(fData);
+
+    hideColumn("id");
+    adjustColumns();
 //    currentFilter = filter;
+    fData->select();
 }
 
-//TODO reimplement
 QVariant alDataTable::value(int row, int col)
 {
-//    QString t = text(row, col);
-//    if(!t.isEmpty()) return QVariant(t);
-//    if(fields[headers[col]]=="id") return QVariant(0);
-//    fData->seek(row);
-//    return fData->value(fields[headers[col]]);
+    return fData->data(fData->index(row, col), Qt::DisplayRole);
 }
 
 QVariant alDataTable::value(int row, QString attr)
@@ -118,19 +92,16 @@ QVariant alDataTable::value(QString attr)
     return value(currentRow(), attr);
 }
 
-//TODO reimplemnt
 void alDataTable::setValue(int row, int col, QVariant val)
 {
-//    val = displayValue(fields[headers[col]], val);
-//    if(val.type()==QVariant::Pixmap)
-//        setPixmap(row, col, val.toPixmap);
-//    else setText(row, col, val.toString());
+    fData->setData(fData->index(row, col), val);
 }
 
 void alDataTable::setValue(int row, QString attr, QVariant val)
 {
     int col = columnNum(attr);
-    if(col>-1) setValue(row, col, val);
+    if(col>-1)
+        setValue(row, col, val);
 }
 
 void alDataTable::setValue(QString attr, QVariant val)
@@ -148,17 +119,6 @@ void alDataTable::setValue(QString attr, QVariant val)
 //    }
 //    QTable::paintCell(p, row, col, cr, selected, cg);
 //}
-
-void alDataTable::fillLine(int r)
-{
-    for(int i=0;i<(int)headers.count();i++)
-    {
-	if(!fields[headers[i]].isEmpty()) 
-	    setValue(r, QString(fields[headers[i]]), fData->value(fields[headers[i]]));
-    }
-    setValue(r, "*", pixmap(r));    
-//    adjustRow(r);
-}
 
 /*
 *	реализация по-умолчанию возвращает пустую картинку
@@ -214,25 +174,14 @@ int alDataTable::columnNum(QString attr)
     int col = fields.values().indexOf(attr);
     if(col>-1)
         attr = fields.keys()[col];
-    col = headers.indexOf(attr);
-    return col;
+    return fData->columnNum(attr);
 }
 
-//TODO check if resize mode affects possibility of column resizing
 void alDataTable::adjustColumns()
 {
-    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-//    int swidth = 0;
-//    for(int i=0;i<numCols();i++)
-//    {
-//        if(i!=columnNum(maxWidthColumn))
-//        {
-//            adjustColumn(i);
-//            swidth += QTable::columnWidth(i)+2;
-//        }
-//    }
-//    int scrollWidth = verticalScrollBar()->width();
-//    setColumnWidth(maxWidthColumn, width()-swidth-scrollWidth-leftMargin()-rightMargin());
+    resizeColumnsToContents();
+    horizontalHeader()->setSectionResizeMode(columnNum("*"), QHeaderView::Fixed);
+    horizontalHeader()->setSectionResizeMode(columnNum(maxWidthColumn), QHeaderView::Stretch);
 }
 
 void alDataTable::defaultAction(int row, int col, int, const QPoint&)
@@ -253,3 +202,4 @@ int alDataTable::currentRow()
 {
     return currentIndex().row();
 }
+

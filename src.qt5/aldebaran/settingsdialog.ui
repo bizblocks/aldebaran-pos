@@ -90,7 +90,7 @@
     </layout>
    </item>
    <item row="0" column="0">
-    <widget class="QTabWidget" name="tabDiscounts">
+    <widget class="QTabWidget" name="settings">
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -102,8 +102,8 @@
        <item row="0" column="0" colspan="2">
         <layout class="QHBoxLayout">
          <item>
-          <widget class="QGroupBox" name="buttonGroup1" native="true">
-           <property name="title" stdset="0">
+          <widget class="QGroupBox" name="buttonGroup1">
+           <property name="title">
             <string>Tables</string>
            </property>
            <layout class="QGridLayout">
@@ -438,8 +438,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>406</width>
-               <height>147</height>
+               <width>332</width>
+               <height>121</height>
               </rect>
              </property>
              <attribute name="label">

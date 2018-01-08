@@ -28,7 +28,7 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout">
+  <layout class="QGridLayout" name="dialogLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -82,7 +82,7 @@
       <number>0</number>
      </property>
      <item>
-      <spacer name="Horizontal Spacing2">
+      <spacer name="space2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -98,7 +98,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonOk">
+      <widget class="QPushButton" name="btnOk">
        <property name="text">
         <string>&amp;OK</string>
        </property>
@@ -118,7 +118,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonCancel">
+      <widget class="QPushButton" name="btnCancel">
        <property name="text">
         <string>&amp;Cancel</string>
        </property>
@@ -279,23 +279,7 @@
  </resources>
  <connections>
   <connection>
-   <sender>buttonOk</sender>
-   <signal>clicked()</signal>
-   <receiver>dlgLogin</receiver>
-   <slot>login()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonCancel</sender>
+   <sender>btnCancel</sender>
    <signal>clicked()</signal>
    <receiver>dlgLogin</receiver>
    <slot>reject()</slot>
@@ -310,41 +294,5 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>btnUp</sender>
-   <signal>clicked()</signal>
-   <receiver>dlgLogin</receiver>
-   <slot>up()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btnDown</sender>
-   <signal>clicked()</signal>
-   <receiver>dlgLogin</receiver>
-   <slot>down()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
- <slots>
-  <slot>dlgLoginInit()</slot>
-  <slot>login()</slot>
- </slots>
 </ui>
