@@ -1452,7 +1452,7 @@ void alEngine::dlgLoginEqData(int, QVariant data)
 
 void alEngine::dlgLoginLogin()
 {
-    QDialog * dlg = (QDialog*)dlgLogin->userTab->parent();
+    QDialog * dlg = (QDialog*)dlgLogin->userTab->window();
     QString p = dlgLogin->editPassword->text();
     dlgLogin->editPassword->setText("");
     alUserRecord * user = dlgLogin->userTab->current();
