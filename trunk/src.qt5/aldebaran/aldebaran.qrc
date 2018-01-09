@@ -6,5 +6,9 @@
         <file>images/up.png</file>
         <file>images/down.png</file>
         <file>images/people.png</file>
+        <file>images/exit.png</file>
+        <file>images/lock.png</file>
+        <file>images/settings.png</file>
+        <file>images/peoples.png</file>
     </qresource>
 </RCC>

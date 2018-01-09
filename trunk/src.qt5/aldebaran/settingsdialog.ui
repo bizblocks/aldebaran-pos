@@ -110,9 +110,9 @@
             <item row="0" column="0">
              <layout class="QHBoxLayout">
               <item>
-               <widget class="QRadioButton" name="rbNumber">
+               <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>number of tables</string>
+                 <string>Number of tables</string>
                 </property>
                </widget>
               </item>
@@ -129,34 +129,6 @@
                 </property>
                 <property name="value">
                  <number>0</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item row="1" column="0">
-             <layout class="QHBoxLayout">
-              <item>
-               <widget class="QRadioButton" name="rbShema">
-                <property name="text">
-                 <string>use graphical shema</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btnPictureSelect">
-                <property name="maximumSize">
-                 <size>
-                  <width>32</width>
-                  <height>32</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset>
-                  <normaloff>select-file.png</normaloff>select-file.png</iconset>
                 </property>
                </widget>
               </item>
@@ -438,8 +410,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>332</width>
-               <height>121</height>
+               <width>406</width>
+               <height>147</height>
               </rect>
              </property>
              <attribute name="label">
@@ -1300,54 +1272,6 @@
    <signal>clicked()</signal>
    <receiver>settingsDialog</receiver>
    <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btnPictureSelect</sender>
-   <signal>clicked()</signal>
-   <receiver>settingsDialog</receiver>
-   <slot>selectPicture()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rbNumber</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>settingsDialog</receiver>
-   <slot>disableEnable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rbShema</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>settingsDialog</receiver>
-   <slot>disableEnable()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>

@@ -4,6 +4,7 @@
 #include <qwidget.h>
 #include <qpixmap.h>
 #include <qvariant.h>
+#include "aldebaran.h"
 
 class QGridLayout;
 class QLabel;
@@ -19,7 +20,7 @@ class alOrderWindow : public QWidget
 {
     Q_OBJECT
 public:
-    alOrderWindow(alEngine * e, QWidget * parent=0, QString name=QString::null, Q_ULLONG orderId=-1);
+    alOrderWindow(alEngine * e, QWidget * parent=0, QString name=QString::null, ULLID orderId=-1);
     void init();
 public slots:    
     void cancel();
@@ -35,7 +36,7 @@ public slots:
     void cardCheck();
     void exitOrder();
     void setTable(int tableNum);
-    alOrderRecord * order() { return fOrder; };
+    alOrderRecord * order() { return fOrder; }
     void chooseDiscount();
     void onEvent(int type, QVariant data);
 protected:
@@ -44,7 +45,7 @@ signals:
     void exit();
     void orderUpdated(alOrderRecord *);
 private:
-    Q_ULLONG fOrderID;
+    ULLID fOrderID;
     alOrderRecord * fOrder;
     alDataOrder * fOrders;
     alEngine * fEngine;

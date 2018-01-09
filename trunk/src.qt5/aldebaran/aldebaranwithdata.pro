@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql network
+CONFIG   += c++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -29,7 +30,12 @@ SOURCES += main.cpp \
     data/datasettings.cpp \
     data/datausers.cpp \
     data/queries.cpp \
-    data/alsqltablemodel.cpp
+    data/alsqltablemodel.cpp \
+    mainwin.cpp \
+    aclock.cpp \
+    dclock.cpp \
+    whall.cpp \
+    wtable.cpp
 
 INCLUDEPATH += ../impexp \
     ../tradeequip/equip
@@ -59,7 +65,12 @@ HEADERS += \
     data/goodselement.ui.h \
     data/goodsgroup.ui.h \
     data/queries.h \
-    data/alsqltablemodel.h
+    data/alsqltablemodel.h \
+    mainwin.h \
+    aclock.h \
+    dclock.h \
+    whall.h \
+    wtable.h
 
 FORMS += \
     calculator.ui \
@@ -71,7 +82,9 @@ FORMS += \
     data/dlgdevice.ui \
     data/dlguser.ui \
     data/goodselement.ui \
-    data/goodsgroup.ui
+    data/goodsgroup.ui \
+    dlgexportsales.ui \
+    dlgadvreport.ui
 
 DISTFILES +=
 

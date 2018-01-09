@@ -44,7 +44,7 @@
 class QApplication;
 class QStringList;
 class QSqlDatabase;
-class QFtp;
+class QNetworkReply;
 class alMainWindow;
 class alSettings;
 class eqWorker;
@@ -112,8 +112,8 @@ public:
     int printWidth();
     QString centerString(QString str, int iWidth);
     QString alignStrings(QStringList lst, QList<int> tabs, int iWidth);
-    QFtp * ftpput(QString host, int port, QString login, QString password, const QFile& local, QString remotefile);
-    QFtp * ftpget(QString host, int port, QString login, QString password, QString remote, const QFile& local);
+    QNetworkReply * ftpput(QString host, int port, QString login, QString password, const QFile& local, QString remotefile);
+    QNetworkReply * ftpget(QString host, int port, QString login, QString password, QString remote, const QFile& local);
     eqWorker * worker() { return fWorker; }
 protected:
     virtual void init();
