@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1">
 <context>
     <name>GoodsElement</name>
     <message>
@@ -65,162 +67,6 @@
         <source>Picture</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Open goods picture</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Open...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Save...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Undo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Undo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Redo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Redo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>C&amp;opy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Paste</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Standard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bullet List (Disc)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bullet List (Circle)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bullet List (Square)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ordered List (Decimal)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ordered List (Alpha lower)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ordered List (Alpha upper)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Bold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Italic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Italic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Underline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Underline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Center</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>C&amp;enter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Justify</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Justify</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Color...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>HTML-Files (*.htm *.html)</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>GoodsGroup</name>
@@ -246,10 +92,6 @@
     </message>
     <message>
         <source>Export to equipment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open goods group picture</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -293,6 +135,10 @@
     </message>
     <message>
         <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>lastError was: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -359,14 +205,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>isgroup=true</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CREATE TABLE orders (id int8 NOT NULL, num int8, orderdate timestamp, timeopen time, timeclose time, status int4,  id_user int8,  checknum int4, tablenum int4, guests int2, id_discount int8, comment varchar(255), externalcode varchar(50), CONSTRAINT id_orders PRIMARY KEY (id)) WITHOUT OIDS;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>CREATE INDEX idx_num ON orders (num);</source>
         <translation type="unfinished"></translation>
     </message>
@@ -395,20 +233,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CREATE TABLE order_table (id_order int8 NOT NULL, ln int8 NOT NULL,id_goods int8, amount numeric(8,3),price numeric(12,2), summ numeric(15,2), id_user int8,printed bool,CONSTRAINT id_ordertable PRIMARY KEY (id_order,ln))WITHOUT OIDS;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>id_order=%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>DELETE FROM order_table WHERE id_order=%1;
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>INSERT INTO order_table VALUES (%1, %2, %3, %4, %5, %6, %7, %8);
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -422,10 +251,6 @@
     </message>
     <message>
         <source>CREATE TABLE RIGHTS (id int8 NOT NULL, id_owner int8 NOT NULL,rule int4, enabled bool,CONSTRAINT id_rights PRIMARY KEY (id))WITHOUT OIDS;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CREATE INDEX idx_owner ON RIGHTS (id_onwer);</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -474,6 +299,23 @@
     </message>
     <message>
         <source>subsystem=&apos;%1&apos; AND valkey=&apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CREATE TABLE orders (id int8 NOT NULL, num int8, summtype int2 DEFAULT 1, orderdate timestamp, timeopen time, timeclose time, status int4,  id_user int8,  checknum int4, tablenum int4, guests int2, id_discount int8, comment varchar(255), externalcode varchar(50), CONSTRAINT id_orders PRIMARY KEY (id)) WITHOUT OIDS;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CREATE TABLE order_table (id_order int8 NOT NULL, ln int8 NOT NULL,id_goods int8, externalcode varchar(15), amount numeric(8,3),price numeric(12,2), summ numeric(15,2), id_user int8,printed bool,CONSTRAINT id_ordertable PRIMARY KEY (id_order,ln))WITHOUT OIDS;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INSERT INTO order_table VALUES (%1, %2, %3, &apos;%4&apos;, %5, %6, %7, %8, %9);
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CREATE INDEX idx_owner ON RIGHTS (id_owner);</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -570,23 +412,6 @@ Opened: %4 %5 Summ: %6</source>
         <source>Enabled</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Can&apos;t create device of type %1
-Save element first.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You must input device name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You must input device type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Driver doesn&apos;t exist</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>dlgDiscount</name>
@@ -620,18 +445,6 @@ Save element first.</source>
     </message>
     <message>
         <source>code:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>procentage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>monetary</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You must input discount name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

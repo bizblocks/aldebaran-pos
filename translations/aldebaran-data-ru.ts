@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1">
 <context>
     <name>GoodsElement</name>
     <message>
@@ -39,159 +41,159 @@
     </message>
     <message>
         <source>Open goods picture</source>
-        <translation>Открыть изображение товара</translation>
+        <translation type="vanished">Открыть изображение товара</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation>Открыть</translation>
+        <translation type="vanished">Открыть</translation>
     </message>
     <message>
         <source>&amp;Open...</source>
-        <translation>&amp;Открыть...</translation>
+        <translation type="vanished">&amp;Открыть...</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Сохранить</translation>
+        <translation type="vanished">Сохранить</translation>
     </message>
     <message>
         <source>&amp;Save...</source>
-        <translation>&amp;Сохранить...</translation>
+        <translation type="vanished">&amp;Сохранить...</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation>Отменить</translation>
+        <translation type="vanished">Отменить</translation>
     </message>
     <message>
         <source>&amp;Undo</source>
-        <translation>&amp;Отменить</translation>
+        <translation type="vanished">&amp;Отменить</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation>Вернуть</translation>
+        <translation type="vanished">Вернуть</translation>
     </message>
     <message>
         <source>&amp;Redo</source>
-        <translation>&amp;Вернуть</translation>
+        <translation type="vanished">&amp;Вернуть</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Вырезать</translation>
+        <translation type="vanished">Вырезать</translation>
     </message>
     <message>
         <source>&amp;Cut</source>
-        <translation>&amp;Вырезать</translation>
+        <translation type="vanished">&amp;Вырезать</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Копировать</translation>
+        <translation type="vanished">Копировать</translation>
     </message>
     <message>
         <source>C&amp;opy</source>
-        <translation>Ко&amp;пировать</translation>
+        <translation type="vanished">Ко&amp;пировать</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation>Вставить</translation>
+        <translation type="vanished">Вставить</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
-        <translation>&amp;Вставить</translation>
+        <translation type="vanished">&amp;Вставить</translation>
     </message>
     <message>
         <source>Standard</source>
-        <translation>Стандарт</translation>
+        <translation type="vanished">Стандарт</translation>
     </message>
     <message>
         <source>Bullet List (Disc)</source>
-        <translation>Список (диск)</translation>
+        <translation type="vanished">Список (диск)</translation>
     </message>
     <message>
         <source>Bullet List (Circle)</source>
-        <translation>Список (круг)</translation>
+        <translation type="vanished">Список (круг)</translation>
     </message>
     <message>
         <source>Bullet List (Square)</source>
-        <translation>Список (квадрат)</translation>
+        <translation type="vanished">Список (квадрат)</translation>
     </message>
     <message>
         <source>Ordered List (Decimal)</source>
-        <translation>Список (числа)</translation>
+        <translation type="vanished">Список (числа)</translation>
     </message>
     <message>
         <source>Ordered List (Alpha lower)</source>
-        <translation>Список (строчные буквы)</translation>
+        <translation type="vanished">Список (строчные буквы)</translation>
     </message>
     <message>
         <source>Ordered List (Alpha upper)</source>
-        <translation>Список (заглавные буквы)</translation>
+        <translation type="vanished">Список (заглавные буквы)</translation>
     </message>
     <message>
         <source>Bold</source>
-        <translation>Жирный</translation>
+        <translation type="vanished">Жирный</translation>
     </message>
     <message>
         <source>&amp;Bold</source>
-        <translation>&amp;Жирный</translation>
+        <translation type="vanished">&amp;Жирный</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation>Курсив</translation>
+        <translation type="vanished">Курсив</translation>
     </message>
     <message>
         <source>&amp;Italic</source>
-        <translation>&amp;Курсив</translation>
+        <translation type="vanished">&amp;Курсив</translation>
     </message>
     <message>
         <source>Underline</source>
-        <translation>Подчеркнуть</translation>
+        <translation type="vanished">Подчеркнуть</translation>
     </message>
     <message>
         <source>&amp;Underline</source>
-        <translation>&amp;Подчеркнуть</translation>
+        <translation type="vanished">&amp;Подчеркнуть</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>Левое</translation>
+        <translation type="vanished">Левое</translation>
     </message>
     <message>
         <source>&amp;Left</source>
-        <translation>&amp;Левое</translation>
+        <translation type="vanished">&amp;Левое</translation>
     </message>
     <message>
         <source>Center</source>
-        <translation>По-центру</translation>
+        <translation type="vanished">По-центру</translation>
     </message>
     <message>
         <source>C&amp;enter</source>
-        <translation>По-&amp;центру</translation>
+        <translation type="vanished">По-&amp;центру</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>Правое</translation>
+        <translation type="vanished">Правое</translation>
     </message>
     <message>
         <source>&amp;Right</source>
-        <translation>П&amp;равое</translation>
+        <translation type="vanished">П&amp;равое</translation>
     </message>
     <message>
         <source>Justify</source>
-        <translation>По-ширине</translation>
+        <translation type="vanished">По-ширине</translation>
     </message>
     <message>
         <source>&amp;Justify</source>
-        <translation>По-&amp;ширине</translation>
+        <translation type="vanished">По-&amp;ширине</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Цвет</translation>
+        <translation type="vanished">Цвет</translation>
     </message>
     <message>
         <source>&amp;Color...</source>
-        <translation>Цве&amp;т...</translation>
+        <translation type="vanished">Цве&amp;т...</translation>
     </message>
     <message>
         <source>HTML-Files (*.htm *.html)</source>
-        <translation>Файлы HTML (*.htm *.html)</translation>
+        <translation type="vanished">Файлы HTML (*.htm *.html)</translation>
     </message>
     <message>
         <source>Hydrocarbonates:</source>
@@ -254,7 +256,7 @@
     </message>
     <message>
         <source>Open goods group picture</source>
-        <translation>Открыть изображение группы товаров</translation>
+        <translation type="vanished">Открыть изображение группы товаров</translation>
     </message>
     <message>
         <source>Export to equipment</source>
@@ -301,6 +303,10 @@
     </message>
     <message>
         <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>lastError was: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -367,14 +373,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>isgroup=true</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CREATE TABLE orders (id int8 NOT NULL, num int8, orderdate timestamp, timeopen time, timeclose time, status int4,  id_user int8,  checknum int4, tablenum int4, guests int2, id_discount int8, comment varchar(255), externalcode varchar(50), CONSTRAINT id_orders PRIMARY KEY (id)) WITHOUT OIDS;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>CREATE INDEX idx_num ON orders (num);</source>
         <translation type="unfinished"></translation>
     </message>
@@ -403,20 +401,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CREATE TABLE order_table (id_order int8 NOT NULL, ln int8 NOT NULL,id_goods int8, amount numeric(8,3),price numeric(12,2), summ numeric(15,2), id_user int8,printed bool,CONSTRAINT id_ordertable PRIMARY KEY (id_order,ln))WITHOUT OIDS;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>id_order=%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>DELETE FROM order_table WHERE id_order=%1;
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>INSERT INTO order_table VALUES (%1, %2, %3, %4, %5, %6, %7, %8);
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -430,10 +419,6 @@
     </message>
     <message>
         <source>CREATE TABLE RIGHTS (id int8 NOT NULL, id_owner int8 NOT NULL,rule int4, enabled bool,CONSTRAINT id_rights PRIMARY KEY (id))WITHOUT OIDS;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CREATE INDEX idx_owner ON RIGHTS (id_onwer);</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -482,6 +467,23 @@
     </message>
     <message>
         <source>subsystem=&apos;%1&apos; AND valkey=&apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CREATE TABLE orders (id int8 NOT NULL, num int8, summtype int2 DEFAULT 1, orderdate timestamp, timeopen time, timeclose time, status int4,  id_user int8,  checknum int4, tablenum int4, guests int2, id_discount int8, comment varchar(255), externalcode varchar(50), CONSTRAINT id_orders PRIMARY KEY (id)) WITHOUT OIDS;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CREATE TABLE order_table (id_order int8 NOT NULL, ln int8 NOT NULL,id_goods int8, externalcode varchar(15), amount numeric(8,3),price numeric(12,2), summ numeric(15,2), id_user int8,printed bool,CONSTRAINT id_ordertable PRIMARY KEY (id_order,ln))WITHOUT OIDS;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INSERT INTO order_table VALUES (%1, %2, %3, &apos;%4&apos;, %5, %6, %7, %8, %9);
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CREATE INDEX idx_owner ON RIGHTS (id_owner);</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -611,16 +613,16 @@ Opened: %4 %5 Summ: %6</source>
     </message>
     <message>
         <source>You must input device name</source>
-        <translation>Вы должны ввести название устройства</translation>
+        <translation type="vanished">Вы должны ввести название устройства</translation>
     </message>
     <message>
         <source>You must input device type</source>
-        <translation>Вы должны выбрать тип устройства</translation>
+        <translation type="vanished">Вы должны выбрать тип устройства</translation>
     </message>
     <message>
         <source>Can&apos;t create device of type %1
 Save element first.</source>
-        <translation>Не могу создать устройство типа %1
+        <translation type="vanished">Не могу создать устройство типа %1
 Сначала сохраните элемент.</translation>
     </message>
     <message>
@@ -629,7 +631,7 @@ Save element first.</source>
     </message>
     <message>
         <source>Driver doesn&apos;t exist</source>
-        <translation>Драйвер не существует</translation>
+        <translation type="vanished">Драйвер не существует</translation>
     </message>
 </context>
 <context>
@@ -664,11 +666,11 @@ Save element first.</source>
     </message>
     <message>
         <source>procentage</source>
-        <translation>процентная</translation>
+        <translation type="vanished">процентная</translation>
     </message>
     <message>
         <source>monetary</source>
-        <translation>денежная</translation>
+        <translation type="vanished">денежная</translation>
     </message>
     <message>
         <source>You must input device name</source>
@@ -676,7 +678,7 @@ Save element first.</source>
     </message>
     <message>
         <source>You must input discount name</source>
-        <translation>Вы должны ввести название скидки</translation>
+        <translation type="vanished">Вы должны ввести название скидки</translation>
     </message>
     <message>
         <source>code:</source>

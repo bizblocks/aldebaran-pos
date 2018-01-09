@@ -5,8 +5,9 @@
 #include <qfile.h>
 #include <QTranslator>
 #include <QMessageBox>
-//TODO reimplement
-//#include <qftp.h>
+#include <QUrl>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkAccessManager>
 #include "engine.h"
 #include "mainwin.h"
 #include "whall.h"
@@ -212,7 +213,8 @@ bool alEngine::loginLock()
     int res = dlg.exec();
     if(res==QDialog::Accepted)
     {
-        if(mainWindow) mainWindow->showFullScreen();
+        if(mainWindow)
+            mainWindow->showFullScreen();
         return TRUE;
     }
     if(mainWindow)
@@ -259,14 +261,14 @@ int alEngine::start()
     if(!loginLock())
       return -1;
 
-//    initTables();
+    initTables();
 
-//    mainWindow = new alMainWindow(this);
-//    connect(mainWindow, SIGNAL(closed()), this, SLOT(exitApp()));
-//    qApp->setActiveWindow(mainWindow);
+    mainWindow = new alMainWindow(this);
+    connect(mainWindow, SIGNAL(closed()), this, SLOT(exitApp()));
+    qApp->setActiveWindow(mainWindow);
 
-////    alDataGoods * goods = new alDataGoods(this);
-////    goods->exportpictures();
+//    alDataGoods * goods = new alDataGoods(this);
+//    goods->exportpictures();
 
     return qApp->exec();
 }
@@ -281,11 +283,10 @@ QVariant alEngine::parameter(QString sub, QString key)
     return settings->parameter(sub, key);
 }
 
-//TODO uncomment
 void alEngine::settingsDialog()
 {
-//    if(settings->dialog())
-//        emit(settingsChanged());
+    if(settings->dialog())
+        emit(settingsChanged());
 }
 
 void alEngine::eqDialog()
@@ -336,7 +337,7 @@ alOrderRecord * alEngine::tableOrder(int num)
 
 void alEngine::initTables()
 {
-//    fOrders = new alDataOrder(this);
+    fOrders = new alDataOrder(this);
 }
 
 //TODO uncomment
@@ -914,7 +915,7 @@ void alEngine::endFTPExport(int, bool error)
 }
 
 //TODO reimplement
-QFtp * alEngine::ftpput(QString host, int port, QString login, QString password, const QFile& local, QString remotefile)
+QNetworkReply * alEngine::ftpput(QString host, int port, QString login, QString password, const QFile& local, QString remotefile)
 {
 //    QFtp * ftp = new QFtp();
 //    connect(ftp, SIGNAL(commandFinished(int, bool)), SLOT(endFTPExport(int, bool)));
@@ -925,15 +926,15 @@ QFtp * alEngine::ftpput(QString host, int port, QString login, QString password,
 //    return ftp;
 }
 
-//TODO reimplement
-QFtp * alEngine::ftpget(QString host, int port, QString login, QString password, QString remotefile, const QFile& local)
+QNetworkReply * alEngine::ftpget(QString host, int port, QString login, QString password, QString remotefile, const QFile& local)
 {
-//    QFtp * ftp = new QFtp();
-//    connect(ftp, SIGNAL(commandFinished(int, bool)), SLOT(onError(int)));
-//    ftp->connectToHost(host, port);
-//    ftp->login(login, password);
-//    ftp->get(remotefile, (QIODevice*)&local);
-//    return ftp;
+    QUrl url("ftp://"+host+"/"+remotefile);
+    url.setUserName(login);
+    url.setPassword(password);
+    url.setPort(port);
+    QNetworkRequest dwnld(url);
+    QNetworkAccessManager *dwnldman = new QNetworkAccessManager(this);
+    return dwnldman->get(dwnld);
 }
 
 alValueList alEngine::processJob(eqJob *job)

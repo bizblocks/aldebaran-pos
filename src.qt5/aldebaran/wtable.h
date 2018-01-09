@@ -2,6 +2,7 @@
 #define WTABLE_H
 
 #include <qtoolbutton.h>
+#include "aldebaran.h"
 
 class QWidget;
 

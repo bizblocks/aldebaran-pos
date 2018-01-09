@@ -66,7 +66,6 @@ void alSettings::init()
 	addSubSystem(EQUIPMENT, k);
 }
 
-//TODO reimplement
 bool alSettings::dbDialog()
 {    
     QDialog dlg;
@@ -88,6 +87,18 @@ bool alSettings::dbDialog()
 
 bool alSettings::dialog()
 {    
+    QDialog dlg;
+    settingsDialog = new Ui::settingsDialog();
+    settingsDialog->setupUi(&dlg);
+    dlg->init(fEngine);
+    dlg->setData(params);
+    int res = dlg->exec();
+#ifdef DEBUG
+    qDebug(QString(tr("settings dialog returns %1")).arg(res).utf8());
+#endif
+    if(res)
+    params = dlg->getData();
+    return res;
 }
 
 QStringList alSettings::dbSettings()

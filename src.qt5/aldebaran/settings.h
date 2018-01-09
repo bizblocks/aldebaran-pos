@@ -24,8 +24,10 @@
 #include <qsettings.h>
 #include "engine.h"
 
-namespace Ui {
-class ddbsettings;
+namespace Ui
+{
+    class ddbsettings;
+    class settingsDialog;
 }
 
 class alEngine;
@@ -61,6 +63,7 @@ private:
     QStringList subSystems;
     QMap<QString, QStringList> keys;
     Ui::ddbsettings * dbdlg;
+    Ui::settingsDialog * settingsDialog;
 };
 
 #endif

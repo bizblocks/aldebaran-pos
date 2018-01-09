@@ -7,9 +7,11 @@
 ** program may be used, distributed and modified without limitation.
 **
 *****************************************************************************/
-
-#include "dclock.h"
 #include <qdatetime.h>
+#include <QTimerEvent>
+#include <QMouseEvent>
+#include "dclock.h"
+#include "engine.h"
 
 
 //
@@ -17,15 +19,17 @@
 //
 
 DigitalClock::DigitalClock( QWidget *parent, const char *name )
-    : QLCDNumber( parent, name )
+    : QLCDNumber( parent )
 {
+    setObjectName(name);
     showingColon = FALSE;
     setFrameStyle( QFrame::Panel | QFrame::Raised );
     setSegmentStyle(Filled);
+
     setLineWidth( 2 );				// set frame line width
     showTime();					// display the current time
     normalTimer = startTimer( 500 );		// 1/2 second timer events
-    showDateTimer = -1;				// not showing date
+    showDateTimer = -1;				// not showing date    
 }
 
 
@@ -51,8 +55,8 @@ void DigitalClock::timerEvent( QTimerEvent *e )
 
 void DigitalClock::mousePressEvent( QMouseEvent *e )
 {
-    if ( e->button() == QMouseEvent::LeftButton )		// left button pressed
-	showDate();
+    if ( e->button() == Qt::LeftButton )		// left button pressed
+        showDate();
 }
 
 
@@ -64,7 +68,7 @@ void DigitalClock::mousePressEvent( QMouseEvent *e )
 void DigitalClock::showDate()
 {
     if ( showDateTimer != -1 )			// already showing date
-	return;
+        return;
     QDate date = QDate::currentDate();
     QString s;
     s.sprintf( "%2d %2d", date.month(), date.day() );
@@ -92,8 +96,8 @@ void DigitalClock::showTime()
     showingColon = !showingColon;		// toggle/blink colon
     QString s = QTime::currentTime().toString().left(5);
     if ( !showingColon )
-	s[2] = ' ';
+        s[2] = ' ';
     if ( s[0] == '0' )
-	s[0] = ' ';
+        s[0] = ' ';
     display( s );				// set LCD number/text
 }

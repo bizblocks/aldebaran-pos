@@ -20,7 +20,6 @@ class AnalogClock : public QWidget		// analog clock widget
     Q_OBJECT
 public:
     AnalogClock( QWidget *parent=0, const char *name=0 );
-    void setAutoMask(bool b);
     
 protected:
     void updateMask();

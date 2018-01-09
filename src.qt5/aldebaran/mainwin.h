@@ -21,6 +21,7 @@
 #define MAINWIN_H
 
 #include <qmainwindow.h>
+#include "engine.h"
 
 class alEngine;
 class alWHall;
@@ -36,23 +37,25 @@ class alMainWindow : public QMainWindow
 public:
     alMainWindow(alEngine * engine);
     ~alMainWindow();
-    alWHall * getHall() {return hall;} ;    
+    alWHall * getHall() {return hall;}
     enum actions
     {
-	XReport,
-	ZReport,
-	Paying,
-	Payout,
-	Archive,
-	Equipment,
-	Import,
-	Export,
-	Settings,
-	AdvancedReport
+        XReport,
+        ZReport,
+        Paying,
+        Payout,
+        Archive,
+        Equipment,
+        Import,
+        Export,
+        Settings,
+        AdvancedReport
     };
 public slots:
     virtual void init();
-    virtual void service(int action);
+
+    virtual void settings();
+
     virtual void rebuild();
     virtual void openOrder(ULLID orderId, int tableNum);
     virtual void openArchive();
