@@ -92,7 +92,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="settings">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -200,8 +200,8 @@
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>select-file.png</normaloff>select-file.png</iconset>
+               <iconset resource="aldebaran.qrc">
+                <normaloff>:/images/select-file.png</normaloff>:/images/select-file.png</iconset>
               </property>
              </widget>
             </item>
@@ -234,8 +234,8 @@
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>select-file.png</normaloff>select-file.png</iconset>
+               <iconset resource="aldebaran.qrc">
+                <normaloff>:/images/select-file.png</normaloff>:/images/select-file.png</iconset>
               </property>
              </widget>
             </item>
@@ -312,8 +312,8 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset>
-                    <normaloff>select-file.png</normaloff>select-file.png</iconset>
+                   <iconset resource="aldebaran.qrc">
+                    <normaloff>:/images/select-file.png</normaloff>:/images/select-file.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -410,8 +410,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>406</width>
-               <height>147</height>
+               <width>332</width>
+               <height>121</height>
               </rect>
              </property>
              <attribute name="label">
@@ -608,6 +608,16 @@
             <property name="text">
              <string/>
             </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/edit.png</normaloff>:/images/edit.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="0" column="3">
@@ -643,6 +653,16 @@
             <property name="text">
              <string/>
             </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/element.png</normaloff>:/images/element.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="0" column="2">
@@ -661,6 +681,16 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -681,6 +711,23 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <property name="leftMargin">
+           <number>3</number>
+          </property>
+          <property name="topMargin">
+           <number>3</number>
+          </property>
+          <property name="rightMargin">
+           <number>3</number>
+          </property>
+          <property name="bottomMargin">
+           <number>3</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="alUsersTable" name="usersTab"/>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -737,6 +784,16 @@
             <property name="text">
              <string/>
             </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/edit.png</normaloff>:/images/edit.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="0" column="3">
@@ -772,6 +829,16 @@
             <property name="text">
              <string/>
             </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/element.png</normaloff>:/images/element.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="0" column="2">
@@ -790,6 +857,16 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -916,6 +993,23 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <property name="leftMargin">
+           <number>3</number>
+          </property>
+          <property name="topMargin">
+           <number>3</number>
+          </property>
+          <property name="rightMargin">
+           <number>3</number>
+          </property>
+          <property name="bottomMargin">
+           <number>3</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="alGoodsTable" name="goodsTab"/>
+          </item>
+         </layout>
         </widget>
        </item>
        <item row="0" column="0">
@@ -975,6 +1069,16 @@
             <property name="text">
              <string/>
             </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/up.png</normaloff>:/images/up.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="0" column="6">
@@ -993,6 +1097,16 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/home.png</normaloff>:/images/home.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -1013,6 +1127,16 @@
             <property name="text">
              <string/>
             </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/group.png</normaloff>:/images/group.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="0" column="0">
@@ -1031,6 +1155,16 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/element.png</normaloff>:/images/element.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -1051,6 +1185,16 @@
             <property name="text">
              <string/>
             </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="0" column="2">
@@ -1069,6 +1213,16 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/edit.png</normaloff>:/images/edit.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -1243,6 +1397,18 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>alUsersTable</class>
+   <extends>QTableView</extends>
+   <header>userstable.h</header>
+  </customwidget>
+  <customwidget>
+   <class>alGoodsTable</class>
+   <extends>QTableView</extends>
+   <header>goodstable.h</header>
+  </customwidget>
+ </customwidgets>
  <includes>
   <include location="local">engine.h</include>
   <include location="global">qpixmap.h</include>

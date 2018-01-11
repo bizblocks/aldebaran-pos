@@ -19,9 +19,7 @@ void alUsersTable::init(alEngine * e)
     fData = new alDataUsers(e);
     alDataTable::init(e);
     hideVerticalHeader();
-    fData->insertColumn(fData->columnCount());
-    fData->setHeaderData(fData->columnCount()-1, tr("name"));
-    //fData = new alDataUsers(fEngine);
+    this->addHeaders(QStringList(tr("name")));
     //setSelectionMode(NoSelection); //??
     load();
     setCurrentRow(0);

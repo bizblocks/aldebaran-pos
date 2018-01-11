@@ -1,8 +1,8 @@
 #include <qmessagebox.h>
-#include <qpopupmenu.h>
+#include <QMenu>
 #include "data/datagoods.h"
-#include "data/.ui/goodselement.h"
-#include "data/.ui/goodsgroup.h"
+//#include "data/.ui/goodselement.h"
+//#include "data/.ui/goodsgroup.h"
 #include "goodstable.h"
 #include "engine.h"
 
@@ -11,32 +11,38 @@
 alGoodsTable::alGoodsTable(QWidget * parent, alEngine * engine) :
 	alDataTable(parent, engine, TABLE)
 {
-    currentGroup = 0;
-    headers << tr("name") << tr("price") << tr("ext.code");
+    currentGroup = 0;    
     fields[tr("name")] = "name";
     fields[tr("price")] = "price";
     fields[tr("ext.code")] = "externalcode";
     maxWidthColumn = "name";
+    if(engine)
+        init(engine);
 }
 
-void alGoodsTable::init()
+void alGoodsTable::init(alEngine * e)
 {
+    fEngine = e;
     contextMenu->clear();
     if(!fSelect)
     {
-	contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("element.png")), tr("New element"), this, SLOT(newElement()));
-	contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("group.png")), tr("New group"), this, SLOT(newGroup()));
-	contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("edit.png")), tr("Edit"), this, SLOT(editRowData()));
-	contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("delete.png")), tr("Delete"), this, SLOT(deleteRowData()));
-	contextMenu->insertSeparator();    
+//        contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("element.png")), tr("New element"), this, SLOT(newElement()));
+//        contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("group.png")), tr("New group"), this, SLOT(newGroup()));
+//        contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("edit.png")), tr("Edit"), this, SLOT(editRowData()));
+//        contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("delete.png")), tr("Delete"), this, SLOT(deleteRowData()));
+//        contextMenu->insertSeparator();
     }
-    contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("up.png")), tr("Level up"), this, SLOT(levelUp()));
-    contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("home.png")), tr("Home"), this, SLOT(home()));
+//    contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("up.png")), tr("Level up"), this, SLOT(levelUp()));
+//    contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("home.png")), tr("Home"), this, SLOT(home()));
     
 //    connect(this, SIGNAL(doubleClicked(int, int, int, const QPoint&)), this, SLOT(defaultAction(int, int, int, const QPoint&)));
     connect(this, SIGNAL(clicked(int, int, int, const QPoint&)), this, SLOT(defaultAction(int, int, int, const QPoint&)));
-    
     fData = new alDataGoods(fEngine);
+
+    QStringList headers;
+    headers << tr("name") << tr("price") << tr("ext.code");
+    addHeaders(headers);
+
     hideVerticalHeader();
     setSelectionMode(NoSelection);    
     alDataTable::init();
@@ -57,36 +63,36 @@ void alGoodsTable::load(alGoodsRecord * parent)
 QPixmap alGoodsTable::pixmap(int r)
 {
     if(value(r, "isgroup").toBool())
-	return QPixmap::fromMimeSource("group.png");
+        return QPixmap(":/images/group.png");
     else
-	return QPixmap::fromMimeSource("element.png");
+        return QPixmap("/images/element.png");
 }
 
 bool alGoodsTable::internalNew(bool isgroup)
 {
-    QDialog * dlg;
-    alGoodsRecord * rec;
-    if(isgroup)
-    {
-	dlg = new GoodsGroup();
-	rec = alGoodsRecord::newGroup((alDataGoods*)fData, currentGroup);
-	((GoodsGroup*)dlg)->setData(rec);
-    }
-    else
-    {
-	dlg = new GoodsElement();	
-	rec = alGoodsRecord::newElement((alDataGoods*)fData, currentGroup);
-	((GoodsElement*)dlg)->setData(rec);
-    }
-    int res = dlg->exec();
-    if(res)
-    {
-	rec->update();
-	fEngine->sendElement(rec);
-	load(currentGroup);
-    }
-    delete dlg;
-    return res;  
+//    QDialog * dlg;
+//    alGoodsRecord * rec;
+//    if(isgroup)
+//    {
+//        dlg = new GoodsGroup();
+//        rec = alGoodsRecord::newGroup((alDataGoods*)fData, currentGroup);
+//        ((GoodsGroup*)dlg)->setData(rec);
+//    }
+//    else
+//    {
+//        dlg = new GoodsElement();
+//        rec = alGoodsRecord::newElement((alDataGoods*)fData, currentGroup);
+//        ((GoodsElement*)dlg)->setData(rec);
+//    }
+//    int res = dlg->exec();
+//    if(res)
+//    {
+//        rec->update();
+//        fEngine->sendElement(rec);
+//        load(currentGroup);
+//    }
+//    delete dlg;
+//    return res;
 }
 
 bool alGoodsTable::newElement()
@@ -101,30 +107,30 @@ bool alGoodsTable::newGroup()
 
 bool alGoodsTable::editRowData()
 {
-    int row = currentRow();
-    QDialog * dlg;
-    fData->seek(row);
-    alGoodsRecord * rec = (alGoodsRecord*) fData->current();
-    if(rec->isGroup())
-    {
-	dlg = new GoodsGroup();
-	((GoodsGroup*)dlg)->setData(rec);
-    }
-    else
-    {
-	dlg = new GoodsElement();    
-	((GoodsElement*)dlg)->setData(rec);	
-    }    
-    int res = dlg->exec();
-    if(res)
-    {
-	rec->update();
-	load(currentGroup);
-	setCurrentRow(row);
-	fEngine->sendElement(rec);	
-    }
-    dlg->deleteLater();
-    return res;
+//    int row = currentRow();
+//    QDialog * dlg;
+//    fData->seek(row);
+//    alGoodsRecord * rec = (alGoodsRecord*) fData->current();
+//    if(rec->isGroup())
+//    {
+//        dlg = new GoodsGroup();
+//        ((GoodsGroup*)dlg)->setData(rec);
+//    }
+//    else
+//    {
+//        dlg = new GoodsElement();
+//        ((GoodsElement*)dlg)->setData(rec);
+//    }
+//    int res = dlg->exec();
+//    if(res)
+//    {
+//        rec->update();
+//        load(currentGroup);
+//        setCurrentRow(row);
+//        fEngine->sendElement(rec);
+//    }
+//    dlg->deleteLater();
+//    return res;
 }
 
 bool alGoodsTable::deleteRowData()
@@ -134,21 +140,21 @@ bool alGoodsTable::deleteRowData()
     int res;
     if(((alGoodsRecord*)(fData->current()))->isGroup())
     {
-	res = QMessageBox::question(this, "aldebaran", tr("Delete group??"), QMessageBox::Yes, QMessageBox::No);
-	if(res==QMessageBox::Yes)
-	{	    
-	    ((alDataGoods*)fData)->delGroup();
-	    load(currentGroup);	    
-	}
+        res = QMessageBox::question(this, "aldebaran", tr("Delete group??"), QMessageBox::Yes, QMessageBox::No);
+        if(res==QMessageBox::Yes)
+        {
+            ((alDataGoods*)fData)->delGroup();
+            load(currentGroup);
+        }
     }
     else
     {
-	res = QMessageBox::question(this, "aldebaran", tr("Delete element??"), QMessageBox::Yes,QMessageBox:: No);	
-	if(res==QMessageBox::Yes)
-	{
-	    ((alDataGoods*)fData)->delElement();
-	    load(currentGroup);	    
-	}
+        res = QMessageBox::question(this, "aldebaran", tr("Delete element??"), QMessageBox::Yes,QMessageBox:: No);
+        if(res==QMessageBox::Yes)
+        {
+            ((alDataGoods*)fData)->delElement();
+            load(currentGroup);
+        }
     }
     setCurrentRow(row);
     return res;
@@ -171,17 +177,17 @@ void alGoodsTable::editCell(int row, int col, bool replace)
 {
     Q_UNUSED(replace);
     fData->seek(row);
-    if(fData->value("isgroup").toBool() && (headers[col]=="*" || fSelect))
+    if(fData->value("isgroup").toBool() && (fData->headerData(col, Qt::Horizontal, Qt::DisplayRole)=="*" || fSelect))
     {
-	alGoodsRecord * group = (alGoodsRecord*) fData->current();
-	load(group);
-	return;
+        alGoodsRecord * group = (alGoodsRecord*) fData->current();
+        load(group);
+        return;
     }
     
     if(fSelect)
     {
-	emit selected((alGoodsRecord*) fData->current());
-	return;
+        emit selected((alGoodsRecord*) fData->current());
+        return;
     }
 
     setCurrentRow(row);

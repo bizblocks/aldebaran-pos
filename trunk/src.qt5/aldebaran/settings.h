@@ -52,9 +52,12 @@ protected slots:
     virtual void flushsql();	
 private slots:
     void on_btnTest_clicked();
-    void setData(QStringList data);
-    QStringList getData();
-    void on_pushButton_clicked();
+    void setDBData(QStringList data);
+    QStringList getDBData();
+
+    void initDialog(alEngine * e);
+    void setData(QMap<QString, alValueList> data);
+    QMap<QString, alValueList> getData();
 
 private:
     alEngine * fEngine;

@@ -11,10 +11,10 @@ class alGoodsTable : public alDataTable
 {
 Q_OBJECT
 public:
-    alGoodsTable(QWidget * parent, alEngine * engine);
-    virtual void init();
+    alGoodsTable(QWidget * parent, alEngine * engine=NULL);
+    virtual void init(alEngine*e);
     virtual void load(alGoodsRecord * parent);
-    virtual void load(QString filter) { currentGroup = 0; alDataTable::load(filter); };
+    virtual void load(QString filter) { currentGroup = 0; alDataTable::load(filter); }
 public slots:
     virtual void editCell(int row, int col, bool replace = FALSE);
     virtual QPixmap pixmap(int r);    
