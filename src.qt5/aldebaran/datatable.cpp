@@ -22,16 +22,19 @@ alDataTable::alDataTable(QWidget * parent, alEngine * e, QString table) :
     fields["id"] = "id";
 }
 
+void alDataTable::addHeaders(QStringList h)
+{
+    if(fData)
+        fData->addHeaders(h);
+}
+
 void alDataTable::init(alEngine * e)
 {
     if(e)
         fEngine = e;
     if(!fData)
         fData = new alData(e, tableName);
-    fData->insertColumn(0);
-    fData->setHeaderData(0, "id");
-    fData->insertColumn(1);
-    fData->setHeaderData(1, "*");
+    fData->addHeaders(QString("id,*").split(","));
     setEditTriggers(QAbstractItemView::NoEditTriggers);
     setSelectionMode(QAbstractItemView::SingleSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);

@@ -55,7 +55,8 @@ public slots:
 signals:
     void selected(alDataRecord *);
 protected:
-    QMap<QString, QString> fields;    
+    void addHeaders(QStringList h);
+    QMap<QString, QString> fields;
     alEngine * fEngine;
     alData * fData;
     QMenu * contextMenu;

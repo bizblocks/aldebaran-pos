@@ -17,6 +17,17 @@ QVariant alSqlTableModel::headerData(int section, Qt::Orientation orientation,
     return fHeaders[section];
 }
 
+
+void alSqlTableModel::addHeaders(QStringList headers)
+{
+     for(int j=0;j<headers.count();j++)
+     {
+         insertColumn(this->columnCount());
+         setHeaderData(this->columnCount()-1, headers[j]);
+     }
+}
+
+
 QVariant alSqlTableModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())

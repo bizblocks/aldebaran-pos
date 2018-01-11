@@ -35,7 +35,8 @@ SOURCES += main.cpp \
     aclock.cpp \
     dclock.cpp \
     whall.cpp \
-    wtable.cpp
+    wtable.cpp \
+    goodstable.cpp
 
 INCLUDEPATH += ../impexp \
     ../tradeequip/equip
@@ -45,7 +46,6 @@ HEADERS += \
     settings.h \
     engine.h \
     valuetable.h \
-    ddbsettings.ui.h \
     userstable.h \
     datatable.h \
     data/data.h \
@@ -70,7 +70,9 @@ HEADERS += \
     aclock.h \
     dclock.h \
     whall.h \
-    wtable.h
+    wtable.h \
+    settingsdialog.ui.h \
+    goodstable.h
 
 FORMS += \
     calculator.ui \

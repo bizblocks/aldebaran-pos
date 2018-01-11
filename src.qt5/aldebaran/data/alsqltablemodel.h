@@ -25,6 +25,9 @@ public:
     virtual int	columnCount(const QModelIndex & index = QModelIndex()) const;
 public slots:
     int columnNum(QString attr);
+protected:
+    friend class alDataTable;
+    void addHeaders(QStringList headers);
 private:
     QVariantList fHeaders;
 };
