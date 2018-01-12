@@ -31,7 +31,7 @@ bool alData::checkTable(const QString& tname)
     if(!engine()->db().isOpen())
         throw new QException();
     QStringList check = engine()->db().tables();
-    if(check.contains(tname, Qt::CaseInsensitive	))
+    if(check.contains(tname, Qt::CaseInsensitive))
         return true;
     return false;
 }
@@ -95,22 +95,15 @@ int alData::update()
     return setRecord(fCurrentRow, *fRecord);
 }
 
-//TODO implement
 QSqlIndex alData::defaultSort()
 {
-//    return QSqlIndex::fromStringList(QStringList::split(",", "id"), this);
-    QSqlIndex res;
-    //res.append();
-    return res;
+    return this->primaryKey();
 }
 
 //TODO reimplement with sort
 bool alData::select(const QString filter)
 {
     setFilter(filter);
-#ifdef DEBUG
-    qDebug() << selectStatement();
-#endif
     return QSqlTableModel::select(); /*, defaultSort()*/
 }
 
