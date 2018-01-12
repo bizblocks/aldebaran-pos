@@ -1,786 +1,905 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0" stdsetdef="1">
-  <author></author>
-  <comment></comment>
-  <exportmacro></exportmacro>
-  <class>GoodsElement</class>
-  <widget class="QDialog" name="GoodsElement">
-    <property name="geometry">
-      <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>849</width>
-        <height>425</height>
-      </rect>
-    </property>
-    <property name="windowTitle">
-      <string>Element</string>
-    </property>
-    <property name="sizeGripEnabled">
-      <bool>true</bool>
-    </property>
-    <layout class="QGridLayout">
-      <property name="margin">
-        <number>2</number>
-      </property>
-      <property name="spacing">
-        <number>2</number>
-      </property>
-      <item row="2" column="0" rowspan="1" colspan="2">
-        <layout class="QHBoxLayout">
-          <property name="margin">
-            <number>0</number>
-          </property>
-          <property name="spacing">
-            <number>6</number>
-          </property>
-          <item>
-            <spacer name="Horizontal Spacing2">
-              <property name="sizeHint">
-                <size>
-                  <width>20</width>
-                  <height>20</height>
-                </size>
-              </property>
-              <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
-              </property>
-              <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-              </property>
-            </spacer>
-          </item>
-          <item>
-            <widget class="QPushButton" name="buttonOk">
-              <property name="text">
-                <string>&amp;OK</string>
-              </property>
-              <property name="shortcut">
-                <string/>
-              </property>
-              <property name="autoDefault">
-                <bool>true</bool>
-              </property>
-              <property name="default">
-                <bool>true</bool>
-              </property>
-              <property name="icon">
-                <iconset>ok.png</iconset>
-              </property>
-            </widget>
-          </item>
-          <item>
-            <widget class="QPushButton" name="buttonCancel">
-              <property name="text">
-                <string>&amp;Cancel</string>
-              </property>
-              <property name="shortcut">
-                <string/>
-              </property>
-              <property name="autoDefault">
-                <bool>true</bool>
-              </property>
-              <property name="icon">
-                <iconset>stop_cancel.png</iconset>
-              </property>
-            </widget>
-          </item>
-        </layout>
-      </item>
-      <item row="0" column="0" rowspan="1" colspan="2">
-        <layout class="QHBoxLayout">
-          <item>
-            <layout class="QHBoxLayout">
-              <item>
-                <widget class="QLabel" name="lblName">
-                  <property name="text">
-                    <string>Name:</string>
-                  </property>
-                  <property name="wordWrap">
-                    <bool>false</bool>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <widget class="QLineEdit" name="editName">
-                  <property name="minimumSize">
-                    <size>
-                      <width>400</width>
-                      <height>0</height>
-                    </size>
-                  </property>
-                  <property name="maxLength">
-                    <number>200</number>
-                  </property>
-                </widget>
-              </item>
-            </layout>
-          </item>
-          <item>
-            <layout class="QHBoxLayout">
-              <item>
-                <widget class="QLabel" name="lblBarCode">
-                  <property name="text">
-                    <string>Barcode:</string>
-                  </property>
-                  <property name="wordWrap">
-                    <bool>false</bool>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <spacer name="spacer17_2">
-                  <property name="sizeHint">
-                    <size>
-                      <width>21</width>
-                      <height>20</height>
-                    </size>
-                  </property>
-                  <property name="sizeType">
-                    <enum>QSizePolicy::Expanding</enum>
-                  </property>
-                  <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                  </property>
-                </spacer>
-              </item>
-              <item>
-                <widget class="QLineEdit" name="editBarcode">
-                  <property name="minimumSize">
-                    <size>
-                      <width>100</width>
-                      <height>0</height>
-                    </size>
-                  </property>
-                  <property name="text">
-                    <string>1234567890123</string>
-                  </property>
-                  <property name="maxLength">
-                    <number>13</number>
-                  </property>
-                  <property name="inputMask">
-                    <string/>
-                  </property>
-                </widget>
-              </item>
-            </layout>
-          </item>
-        </layout>
-      </item>
-      <item row="1" column="0">
+<ui version="4.0">
+ <class>GoodsElement</class>
+ <widget class="QDialog" name="GoodsElement">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>849</width>
+    <height>425</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Element</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <layout class="QGridLayout">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <item row="2" column="0" colspan="2">
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <spacer name="Horizontal Spacing2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOk">
+       <property name="text">
+        <string>&amp;OK</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../aldebaran.qrc">
+         <normaloff>:/images/ok.png</normaloff>:/images/ok.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string/>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="text">
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../aldebaran.qrc">
+         <normaloff>:/images/stop_cancel.png</normaloff>:/images/stop_cancel.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string/>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <layout class="QHBoxLayout">
+     <item>
+      <layout class="QHBoxLayout">
+       <item>
+        <widget class="QLabel" name="lblName">
+         <property name="text">
+          <string>Name:</string>
+         </property>
+         <property name="wordWrap">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="editName">
+         <property name="minimumSize">
+          <size>
+           <width>400</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maxLength">
+          <number>200</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout">
+       <item>
+        <widget class="QLabel" name="lblBarCode">
+         <property name="text">
+          <string>Barcode:</string>
+         </property>
+         <property name="wordWrap">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="spacer17_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>21</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="editBarcode">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="text">
+          <string>1234567890123</string>
+         </property>
+         <property name="maxLength">
+          <number>13</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <layout class="QVBoxLayout">
+     <item>
+      <layout class="QHBoxLayout">
+       <property name="spacing">
+        <number>1</number>
+       </property>
+       <property name="leftMargin">
+        <number>1</number>
+       </property>
+       <property name="topMargin">
+        <number>1</number>
+       </property>
+       <property name="rightMargin">
+        <number>1</number>
+       </property>
+       <property name="bottomMargin">
+        <number>1</number>
+       </property>
+       <item>
         <layout class="QVBoxLayout">
-          <item>
-            <layout class="QHBoxLayout">
-              <property name="margin">
-                <number>1</number>
-              </property>
-              <property name="spacing">
-                <number>1</number>
-              </property>
-              <item>
-                <layout class="QVBoxLayout">
-                  <property name="margin">
-                    <number>1</number>
-                  </property>
-                  <property name="spacing">
-                    <number>1</number>
-                  </property>
-                  <item>
-                    <layout class="QHBoxLayout">
-                      <item>
-                        <widget class="QLabel" name="lblExtCode">
-                          <property name="text">
-                            <string>Ext.code:</string>
-                          </property>
-                          <property name="wordWrap">
-                            <bool>false</bool>
-                          </property>
-                        </widget>
-                      </item>
-                      <item>
-                        <spacer name="spacer17">
-                          <property name="sizeHint">
-                            <size>
-                              <width>21</width>
-                              <height>20</height>
-                            </size>
-                          </property>
-                          <property name="sizeType">
-                            <enum>QSizePolicy::Expanding</enum>
-                          </property>
-                          <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
-                          </property>
-                        </spacer>
-                      </item>
-                      <item>
-                        <widget class="QLineEdit" name="editExternalCode">
-                          <property name="minimumSize">
-                            <size>
-                              <width>70</width>
-                              <height>0</height>
-                            </size>
-                          </property>
-                          <property name="text">
-                            <string/>
-                          </property>
-                          <property name="maxLength">
-                            <number>15</number>
-                          </property>
-                          <property name="inputMask">
-                            <string/>
-                          </property>
-                        </widget>
-                      </item>
-                    </layout>
-                  </item>
-                  <item>
-                    <layout class="QHBoxLayout">
-                      <item>
-                        <widget class="QLabel" name="lblFat_2">
-                          <property name="text">
-                            <string>Proteins:</string>
-                          </property>
-                          <property name="alignment">
-                            <set>Qt::AlignVCenter|Qt::AlignRight</set>
-                          </property>
-                          <property name="wordWrap">
-                            <bool>false</bool>
-                          </property>
-                        </widget>
-                      </item>
-                      <item>
-                        <spacer name="spacer15">
-                          <property name="sizeHint">
-                            <size>
-                              <width>21</width>
-                              <height>21</height>
-                            </size>
-                          </property>
-                          <property name="sizeType">
-                            <enum>QSizePolicy::Expanding</enum>
-                          </property>
-                          <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
-                          </property>
-                        </spacer>
-                      </item>
-                      <item>
-                        <widget class="QLineEdit" name="editProtein">
-                          <property name="minimumSize">
-                            <size>
-                              <width>100</width>
-                              <height>0</height>
-                            </size>
-                          </property>
-                          <property name="maximumSize">
-                            <size>
-                              <width>100</width>
-                              <height>32767</height>
-                            </size>
-                          </property>
-                          <property name="text">
-                            <string/>
-                          </property>
-                          <property name="alignment">
-                            <set>Qt::AlignRight</set>
-                          </property>
-                          <property name="inputMask">
-                            <string/>
-                          </property>
-                        </widget>
-                      </item>
-                    </layout>
-                  </item>
-                  <item>
-                    <layout class="QHBoxLayout">
-                      <item>
-                        <widget class="QLabel" name="lblHydroCarbonat">
-                          <property name="text">
-                            <string>Hydrocarbonates:</string>
-                          </property>
-                          <property name="wordWrap">
-                            <bool>false</bool>
-                          </property>
-                        </widget>
-                      </item>
-                      <item>
-                        <spacer name="spacer16">
-                          <property name="sizeHint">
-                            <size>
-                              <width>31</width>
-                              <height>20</height>
-                            </size>
-                          </property>
-                          <property name="sizeType">
-                            <enum>QSizePolicy::Expanding</enum>
-                          </property>
-                          <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
-                          </property>
-                        </spacer>
-                      </item>
-                      <item>
-                        <widget class="QLineEdit" name="editHydroCarbonat">
-                          <property name="minimumSize">
-                            <size>
-                              <width>100</width>
-                              <height>0</height>
-                            </size>
-                          </property>
-                          <property name="maximumSize">
-                            <size>
-                              <width>100</width>
-                              <height>32767</height>
-                            </size>
-                          </property>
-                          <property name="text">
-                            <string/>
-                          </property>
-                          <property name="alignment">
-                            <set>Qt::AlignRight</set>
-                          </property>
-                          <property name="inputMask">
-                            <string/>
-                          </property>
-                        </widget>
-                      </item>
-                    </layout>
-                  </item>
-                </layout>
-              </item>
-              <item>
-                <layout class="QVBoxLayout">
-                  <property name="margin">
-                    <number>1</number>
-                  </property>
-                  <property name="spacing">
-                    <number>1</number>
-                  </property>
-                  <item>
-                    <layout class="QHBoxLayout">
-                      <item>
-                        <widget class="QLabel" name="lblFat_2_2">
-                          <property name="text">
-                            <string>Calories:</string>
-                          </property>
-                          <property name="wordWrap">
-                            <bool>false</bool>
-                          </property>
-                        </widget>
-                      </item>
-                      <item>
-                        <spacer name="spacer13">
-                          <property name="sizeHint">
-                            <size>
-                              <width>21</width>
-                              <height>21</height>
-                            </size>
-                          </property>
-                          <property name="sizeType">
-                            <enum>QSizePolicy::Expanding</enum>
-                          </property>
-                          <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
-                          </property>
-                        </spacer>
-                      </item>
-                      <item>
-                        <widget class="QLineEdit" name="editCalories">
-                          <property name="minimumSize">
-                            <size>
-                              <width>100</width>
-                              <height>0</height>
-                            </size>
-                          </property>
-                          <property name="maximumSize">
-                            <size>
-                              <width>100</width>
-                              <height>32767</height>
-                            </size>
-                          </property>
-                          <property name="text">
-                            <string/>
-                          </property>
-                          <property name="alignment">
-                            <set>Qt::AlignRight</set>
-                          </property>
-                          <property name="inputMask">
-                            <string/>
-                          </property>
-                        </widget>
-                      </item>
-                    </layout>
-                  </item>
-                  <item>
-                    <layout class="QHBoxLayout">
-                      <item>
-                        <widget class="QLabel" name="lblFat">
-                          <property name="text">
-                            <string>Fat:</string>
-                          </property>
-                          <property name="wordWrap">
-                            <bool>false</bool>
-                          </property>
-                        </widget>
-                      </item>
-                      <item>
-                        <spacer name="spacer14">
-                          <property name="sizeHint">
-                            <size>
-                              <width>21</width>
-                              <height>20</height>
-                            </size>
-                          </property>
-                          <property name="sizeType">
-                            <enum>QSizePolicy::Expanding</enum>
-                          </property>
-                          <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
-                          </property>
-                        </spacer>
-                      </item>
-                      <item>
-                        <widget class="QLineEdit" name="editFat">
-                          <property name="minimumSize">
-                            <size>
-                              <width>100</width>
-                              <height>0</height>
-                            </size>
-                          </property>
-                          <property name="maximumSize">
-                            <size>
-                              <width>100</width>
-                              <height>32767</height>
-                            </size>
-                          </property>
-                          <property name="text">
-                            <string/>
-                          </property>
-                          <property name="alignment">
-                            <set>Qt::AlignRight</set>
-                          </property>
-                          <property name="inputMask">
-                            <string/>
-                          </property>
-                        </widget>
-                      </item>
-                    </layout>
-                  </item>
-                  <item>
-                    <layout class="QHBoxLayout">
-                      <item>
-                        <widget class="QLabel" name="lblPrice">
-                          <property name="text">
-                            <string>Price:</string>
-                          </property>
-                          <property name="wordWrap">
-                            <bool>false</bool>
-                          </property>
-                        </widget>
-                      </item>
-                      <item>
-                        <spacer name="spacer12">
-                          <property name="sizeHint">
-                            <size>
-                              <width>41</width>
-                              <height>20</height>
-                            </size>
-                          </property>
-                          <property name="sizeType">
-                            <enum>QSizePolicy::Expanding</enum>
-                          </property>
-                          <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
-                          </property>
-                        </spacer>
-                      </item>
-                      <item>
-                        <widget class="QLineEdit" name="editPrice">
-                          <property name="minimumSize">
-                            <size>
-                              <width>100</width>
-                              <height>0</height>
-                            </size>
-                          </property>
-                          <property name="maximumSize">
-                            <size>
-                              <width>100</width>
-                              <height>32767</height>
-                            </size>
-                          </property>
-                          <property name="text">
-                            <string/>
-                          </property>
-                          <property name="alignment">
-                            <set>Qt::AlignRight</set>
-                          </property>
-                          <property name="inputMask">
-                            <string/>
-                          </property>
-                        </widget>
-                      </item>
-                    </layout>
-                  </item>
-                </layout>
-              </item>
-            </layout>
-          </item>
-          <item>
-            <layout class="QHBoxLayout">
-              <item>
-                <widget class="QCheckBox" name="chkOutOfStore">
-                  <property name="text">
-                    <string>Out of store</string>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <widget class="QCheckBox" name="chkEqExport">
-                  <property name="text">
-                    <string>Export to equipment</string>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <spacer name="spacer10">
-                  <property name="sizeHint">
-                    <size>
-                      <width>31</width>
-                      <height>21</height>
-                    </size>
-                  </property>
-                  <property name="sizeType">
-                    <enum>QSizePolicy::Expanding</enum>
-                  </property>
-                  <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                  </property>
-                </spacer>
-              </item>
-              <item>
-                <widget class="QLabel" name="lblMaxDiscount">
-                  <property name="text">
-                    <string>Max discount:</string>
-                  </property>
-                  <property name="wordWrap">
-                    <bool>false</bool>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <widget class="QLineEdit" name="editMaxDiscount">
-                  <property name="minimumSize">
-                    <size>
-                      <width>100</width>
-                      <height>0</height>
-                    </size>
-                  </property>
-                  <property name="maximumSize">
-                    <size>
-                      <width>100</width>
-                      <height>32767</height>
-                    </size>
-                  </property>
-                  <property name="text">
-                    <string/>
-                  </property>
-                  <property name="alignment">
-                    <set>Qt::AlignRight</set>
-                  </property>
-                  <property name="inputMask">
-                    <string/>
-                  </property>
-                </widget>
-              </item>
-            </layout>
-          </item>
-          <item>
-            <widget class="Q3Frame" name="editor">
-              <property name="minimumSize">
-                <size>
-                  <width>0</width>
-                  <height>100</height>
-                </size>
-              </property>
-              <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-              </property>
-              <property name="margin">
-                <number>1</number>
-              </property>
-              <layout class="QGridLayout">
-                <property name="margin">
-                  <number>0</number>
-                </property>
-                <property name="spacing">
-                  <number>0</number>
-                </property>
-                <item row="1" column="0">
-                  <widget class="Q3TextEdit" name="editDescription"/>
-                </item>
-                <item row="0" column="0">
-                  <widget class="Q3Frame" name="toolbarParent">
-                    <property name="minimumSize">
-                      <size>
-                        <width>0</width>
-                        <height>1</height>
-                      </size>
-                    </property>
-                    <property name="frameShape">
-                      <enum>QFrame::StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                      <enum>QFrame::Raised</enum>
-                    </property>
-                  </widget>
-                </item>
-              </layout>
+         <property name="spacing">
+          <number>1</number>
+         </property>
+         <property name="leftMargin">
+          <number>1</number>
+         </property>
+         <property name="topMargin">
+          <number>1</number>
+         </property>
+         <property name="rightMargin">
+          <number>1</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QLabel" name="lblExtCode">
+             <property name="text">
+              <string>Ext.code:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
             </widget>
-          </item>
+           </item>
+           <item>
+            <spacer name="spacer17">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>21</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editExternalCode">
+             <property name="minimumSize">
+              <size>
+               <width>70</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="inputMask">
+              <string/>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>15</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QLabel" name="lblFat_2">
+             <property name="text">
+              <string>Proteins:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacer15">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>21</width>
+               <height>21</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editProtein">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <property name="inputMask">
+              <string/>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QLabel" name="lblHydroCarbonat">
+             <property name="text">
+              <string>Hydrocarbonates:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacer16">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>31</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editHydroCarbonat">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <property name="inputMask">
+              <string/>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
         </layout>
-      </item>
-      <item row="1" column="1">
-        <widget class="Q3Frame" name="frame17">
+       </item>
+       <item>
+        <layout class="QVBoxLayout">
+         <property name="spacing">
+          <number>1</number>
+         </property>
+         <property name="leftMargin">
+          <number>1</number>
+         </property>
+         <property name="topMargin">
+          <number>1</number>
+         </property>
+         <property name="rightMargin">
+          <number>1</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QLabel" name="lblFat_2_2">
+             <property name="text">
+              <string>Calories:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacer13">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>21</width>
+               <height>21</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editCalories">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <property name="inputMask">
+              <string/>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QLabel" name="lblFat">
+             <property name="text">
+              <string>Fat:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacer14">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>21</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editFat">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <property name="inputMask">
+              <string/>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QLabel" name="lblPrice">
+             <property name="text">
+              <string>Price:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacer12">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>41</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editPrice">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <property name="inputMask">
+              <string/>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout">
+       <item>
+        <widget class="QCheckBox" name="chkOutOfStore">
+         <property name="text">
+          <string>Out of store</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkEqExport">
+         <property name="text">
+          <string>Export to equipment</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="spacer10">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>31</width>
+           <height>21</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblMaxDiscount">
+         <property name="text">
+          <string>Max discount:</string>
+         </property>
+         <property name="wordWrap">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="editMaxDiscount">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>32767</height>
+          </size>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QFrame" name="editor">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <property name="margin" stdset="0">
+        <number>1</number>
+       </property>
+       <layout class="QGridLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="1" column="0">
+         <widget class="QTextEdit" name="editDescription"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QFrame" name="toolbarParent">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>1</height>
+           </size>
+          </property>
           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
+           <enum>QFrame::StyledPanel</enum>
           </property>
           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
+           <enum>QFrame::Raised</enum>
           </property>
-          <layout class="QGridLayout">
-            <property name="margin">
-              <number>0</number>
-            </property>
-            <property name="spacing">
-              <number>1</number>
-            </property>
-            <item row="0" column="0">
-              <layout class="QVBoxLayout">
-                <item>
-                  <layout class="QHBoxLayout">
-                    <item>
-                      <widget class="QLabel" name="lblPicture">
-                        <property name="text">
-                          <string>Picture</string>
-                        </property>
-                        <property name="wordWrap">
-                          <bool>false</bool>
-                        </property>
-                      </widget>
-                    </item>
-                    <item>
-                      <widget class="QPushButton" name="btnSelectPicture">
-                        <property name="maximumSize">
-                          <size>
-                            <width>40</width>
-                            <height>40</height>
-                          </size>
-                        </property>
-                        <property name="text">
-                          <string/>
-                        </property>
-                        <property name="icon">
-                          <iconset>select-file.png</iconset>
-                        </property>
-                      </widget>
-                    </item>
-                    <item>
-                      <widget class="QPushButton" name="btnClearPicture">
-                        <property name="maximumSize">
-                          <size>
-                            <width>40</width>
-                            <height>40</height>
-                          </size>
-                        </property>
-                        <property name="text">
-                          <string/>
-                        </property>
-                        <property name="icon">
-                          <iconset>delete.png</iconset>
-                        </property>
-                      </widget>
-                    </item>
-                  </layout>
-                </item>
-                <item>
-                  <widget class="QLabel" name="labelPicture">
-                    <property name="minimumSize">
-                      <size>
-                        <width>300</width>
-                        <height>300</height>
-                      </size>
-                    </property>
-                    <property name="maximumSize">
-                      <size>
-                        <width>300</width>
-                        <height>300</height>
-                      </size>
-                    </property>
-                    <property name="scaledContents">
-                      <bool>true</bool>
-                    </property>
-                    <property name="wordWrap">
-                      <bool>false</bool>
-                    </property>
-                  </widget>
-                </item>
-              </layout>
-            </item>
-          </layout>
-        </widget>
-      </item>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
     </layout>
-  </widget>
-  <layoutdefault spacing="6" margin="11"/>
-  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
-  <tabstops>
-    <tabstop>editName</tabstop>
-    <tabstop>editExternalCode</tabstop>
-    <tabstop>editPrice</tabstop>
-    <tabstop>editHydroCarbonat</tabstop>
-    <tabstop>editFat</tabstop>
-    <tabstop>editCalories</tabstop>
-    <tabstop>editProtein</tabstop>
-    <tabstop>editDescription</tabstop>
-    <tabstop>btnSelectPicture</tabstop>
-    <tabstop>btnClearPicture</tabstop>
-    <tabstop>buttonOk</tabstop>
-    <tabstop>buttonCancel</tabstop>
-  </tabstops>
-  <includes>
-    <include location="global">q3textedit.h</include>
-    <include location="global">qmenubar.h</include>
-    <include location="global">qaction.h</include>
-    <include location="local">data/datagoods.h</include>
-  </includes>
-  <connections>
-    <connection>
-      <sender>buttonOk</sender>
-      <signal>clicked()</signal>
-      <receiver>GoodsElement</receiver>
-      <slot>ok()</slot>
-    </connection>
-    <connection>
-      <sender>buttonCancel</sender>
-      <signal>clicked()</signal>
-      <receiver>GoodsElement</receiver>
-      <slot>reject()</slot>
-    </connection>
-    <connection>
-      <sender>btnSelectPicture</sender>
-      <signal>clicked()</signal>
-      <receiver>GoodsElement</receiver>
-      <slot>selectPicture()</slot>
-    </connection>
-    <connection>
-      <sender>btnClearPicture</sender>
-      <signal>clicked()</signal>
-      <receiver>GoodsElement</receiver>
-      <slot>clearPicture()</slot>
-    </connection>
-  </connections>
+   </item>
+   <item row="1" column="1">
+    <widget class="QFrame" name="frame17">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <property name="spacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <layout class="QVBoxLayout">
+        <item>
+         <layout class="QHBoxLayout">
+          <item>
+           <widget class="QLabel" name="lblPicture">
+            <property name="text">
+             <string>Picture</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnSelectPicture">
+            <property name="maximumSize">
+             <size>
+              <width>40</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../aldebaran.qrc">
+              <normaloff>:/images/select-file.png</normaloff>:/images/select-file.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnClearPicture">
+            <property name="maximumSize">
+             <size>
+              <width>40</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../aldebaran.qrc">
+              <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelPicture">
+          <property name="minimumSize">
+           <size>
+            <width>300</width>
+            <height>300</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>300</height>
+           </size>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <tabstops>
+  <tabstop>editName</tabstop>
+  <tabstop>editExternalCode</tabstop>
+  <tabstop>editPrice</tabstop>
+  <tabstop>editHydroCarbonat</tabstop>
+  <tabstop>editFat</tabstop>
+  <tabstop>editCalories</tabstop>
+  <tabstop>editProtein</tabstop>
+  <tabstop>editDescription</tabstop>
+  <tabstop>btnSelectPicture</tabstop>
+  <tabstop>btnClearPicture</tabstop>
+  <tabstop>buttonOk</tabstop>
+  <tabstop>buttonCancel</tabstop>
+ </tabstops>
+ <includes>
+  <include location="global">qtextedit.h</include>
+  <include location="global">qmenubar.h</include>
+  <include location="global">qaction.h</include>
+  <include location="local">data/datagoods.h</include>
+ </includes>
+ <resources>
+  <include location="../aldebaran.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonOk</sender>
+   <signal>clicked()</signal>
+   <receiver>GoodsElement</receiver>
+   <slot>ok()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>GoodsElement</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnSelectPicture</sender>
+   <signal>clicked()</signal>
+   <receiver>GoodsElement</receiver>
+   <slot>selectPicture()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnClearPicture</sender>
+   <signal>clicked()</signal>
+   <receiver>GoodsElement</receiver>
+   <slot>clearPicture()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

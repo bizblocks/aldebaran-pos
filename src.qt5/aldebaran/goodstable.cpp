@@ -1,7 +1,7 @@
 #include <qmessagebox.h>
 #include <QMenu>
 #include "data/datagoods.h"
-//#include "data/.ui/goodselement.h"
+#include "ui_goodselement.h"
 //#include "data/.ui/goodsgroup.h"
 #include "goodstable.h"
 #include "engine.h"
@@ -38,14 +38,14 @@ void alGoodsTable::init(alEngine * e)
 //    connect(this, SIGNAL(doubleClicked(int, int, int, const QPoint&)), this, SLOT(defaultAction(int, int, int, const QPoint&)));
     connect(this, SIGNAL(clicked(int, int, int, const QPoint&)), this, SLOT(defaultAction(int, int, int, const QPoint&)));
     fData = new alDataGoods(fEngine);
-
+    alDataTable::init(e);
     QStringList headers;
     headers << tr("name") << tr("price") << tr("ext.code");
     addHeaders(headers);
 
     hideVerticalHeader();
     setSelectionMode(NoSelection);    
-    alDataTable::init();
+
     load(currentGroup);
 }
 
@@ -70,29 +70,30 @@ QPixmap alGoodsTable::pixmap(int r)
 
 bool alGoodsTable::internalNew(bool isgroup)
 {
-//    QDialog * dlg;
-//    alGoodsRecord * rec;
-//    if(isgroup)
-//    {
-//        dlg = new GoodsGroup();
+    QDialog dlg;
+    alGoodsRecord * rec;
+    Ui::GoodsElement el;
+    if(isgroup)
+    {
+//        el.setupUi(&dlg);
 //        rec = alGoodsRecord::newGroup((alDataGoods*)fData, currentGroup);
 //        ((GoodsGroup*)dlg)->setData(rec);
-//    }
-//    else
-//    {
-//        dlg = new GoodsElement();
-//        rec = alGoodsRecord::newElement((alDataGoods*)fData, currentGroup);
+    }
+    else
+    {
+        el.setupUi(&dlg);
+        rec = alGoodsRecord::newElement((alDataGoods*)fData, currentGroup);
 //        ((GoodsElement*)dlg)->setData(rec);
-//    }
-//    int res = dlg->exec();
+    }
+    int res = dlg.exec();
 //    if(res)
 //    {
 //        rec->update();
 //        fEngine->sendElement(rec);
 //        load(currentGroup);
 //    }
-//    delete dlg;
-//    return res;
+    return 0;
+    return res;
 }
 
 bool alGoodsTable::newElement()
@@ -162,8 +163,10 @@ bool alGoodsTable::deleteRowData()
 
 bool alGoodsTable::levelUp()
 {
-    if(currentGroup) load(currentGroup->parent());
-    else return false;
+    if(currentGroup)
+        load(currentGroup->parent());
+    else
+        return false;
     return true;
 }
 
