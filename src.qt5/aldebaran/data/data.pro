@@ -1,56 +1,48 @@
 TEMPLATE	= lib
-LANGUAGE	= C++
 
-CONFIG	+= qt warn_on release
-QT += widgets
+QT += core gui sql widgets
 
 DEFINES	+= DEBUG
 
 INCLUDEPATH	+= .. ../../impexp ../../tradeequip/equip
 
-HEADERS	+= datadiscount.h \
-	dataeq.h \
-	datagoods.h \
-	data.h \
-	dataorder.h \
-	dataordert.h \
-	datapictures.h \
-	datarights.h \
-	datausers.h \
-	datawaiters.h \
-	datasettings.h \
-	queries.h
+HEADERS	+= $$PWD/datadiscount.h \
+        $$PWD/dataeq.h \
+        $$PWD/datagoods.h \
+        $$PWD/data.h \
+        $$PWD/dataorder.h \
+        $$PWD/dataordert.h \
+        $$PWD/datapictures.h \
+        $$PWD/datarights.h \
+        $$PWD/datausers.h \
+        $$PWD/datawaiters.h \
+        $$PWD/datasettings.h \
+        $$PWD/queries.h
 
-SOURCES	+= data.cpp \
-	datadiscount.cpp \
-	dataeq.cpp \
-	datagoods.cpp \
-	dataorder.cpp \
-	dataordert.cpp \
-	datapictures.cpp \
-	datarights.cpp \
-	datausers.cpp \
-	datasettings.cpp \
-	queries.cpp
+SOURCES	+= $$PWD/data.cpp \
+        $$PWD/datadiscount.cpp \
+        $$PWD/dataeq.cpp \
+        $$PWD/datagoods.cpp \
+        $$PWD/dataorder.cpp \
+        $$PWD/dataordert.cpp \
+        $$PWD/datapictures.cpp \
+        $$PWD/datarights.cpp \
+        $$PWD/datausers.cpp \
+        $$PWD/datasettings.cpp \
+        $$PWD/queries.cpp
 
-FORMS	= dlgdiscount.ui \
-	dlgdevice.ui \
-	dlguser.ui \
-	goodselement.ui \
-	goodsgroup.ui
-
-IMAGES	= images/ok.png \
-	images/stop_cancel.png \
-	images/select-file.png \
-	images/save.png \
-	images/delete.png
+FORMS	= $$PWD/dlgdiscount.ui \
+        $$PWD/dlgdevice.ui \
+        $$PWD/dlguser.ui \
+        $$PWD/goodselement.ui \
+        $$PWD/goodsgroup.ui
 
 TRANSLATIONS = \
     ../../../translations/aldebaran-data-en.ts \
     ../../../translations/aldebaran-data-ru.ts
 
 TARGET      = aldebarandata
-DESTDIR     = ../../lib
+DESTDIR     = ../../../lib
 
 unix {
   UI_DIR = .ui
@@ -64,6 +56,6 @@ unix {
 INSTALLS += aldebarandata
 
 RESOURCES += \
-    data.qrc
+    $$PWD/data.qrc
 
 DISTFILES +=

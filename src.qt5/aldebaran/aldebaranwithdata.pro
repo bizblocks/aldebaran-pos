@@ -36,7 +36,8 @@ SOURCES += main.cpp \
     dclock.cpp \
     whall.cpp \
     wtable.cpp \
-    goodstable.cpp
+    goodstable.cpp \
+    data/goodselement.cpp
 
 INCLUDEPATH += ../impexp \
     ../tradeequip/equip
@@ -62,7 +63,6 @@ HEADERS += \
     data/dlgdevice.ui.h \
     data/dlgdiscount.ui.h \
     data/dlguser.ui.h \
-    data/goodselement.ui.h \
     data/goodsgroup.ui.h \
     data/queries.h \
     data/alsqltablemodel.h \
@@ -72,7 +72,8 @@ HEADERS += \
     whall.h \
     wtable.h \
     settingsdialog.ui.h \
-    goodstable.h
+    goodstable.h \
+    data/goodselement.h
 
 FORMS += \
     calculator.ui \

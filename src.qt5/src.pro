@@ -7,3 +7,5 @@ else:unix: LIBS += -L$$OUT_PWD/aldebaran/data/ -laldebarandata
 
 INCLUDEPATH += $$PWD/aldebaran/data
 DEPENDPATH += $$PWD/aldebaran/data
+
+
