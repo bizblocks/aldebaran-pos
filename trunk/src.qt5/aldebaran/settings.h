@@ -58,7 +58,6 @@ private slots:
     void initDialog(alEngine * e);
     void setData(QMap<QString, alValueList> data);
     QMap<QString, alValueList> getData();
-
 private:
     alEngine * fEngine;
     QStringList dbParams;

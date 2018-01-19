@@ -27,26 +27,15 @@ HEADERS += \
     settings.h \
     engine.h \
     valuetable.h \
-    ddbsettings.ui.h \
-    dlglogin.ui.h \
     userstable.h \
     datatable.h
 
-FORMS += \
-    calculator.ui \
-    dlglogin.ui \
-    equipmentdialog.ui \
-    ddbsettings.ui \
-    settingsdialog.ui
+
 
 DISTFILES +=
 
 RESOURCES += \
     aldebaran.qrc
-
-
-INCLUDEPATH += $$PWD/data
-DEPENDPATH += $$PWD/data
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/data/release/ -laldebarandata
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/data/debug/ -laldebarandata
@@ -54,3 +43,14 @@ else:unix: LIBS += -L$$OUT_PWD/data/ -laldebarandata
 
 INCLUDEPATH += $$PWD/data
 DEPENDPATH += $$PWD/data
+
+include(data/data.pro)
+
+FORMS += \
+    calculator.ui \
+    dlglogin.ui \
+    equipmentdialog.ui \
+    ddbsettings.ui \
+    settingsdialog.ui \
+    dlgexportsales.ui \
+    dlgadvreport.ui

@@ -1,7 +1,7 @@
 #include <qmessagebox.h>
 #include <QMenu>
 #include "data/datagoods.h"
-#include "ui_goodselement.h"
+#include "goodselement.h"
 //#include "data/.ui/goodsgroup.h"
 #include "goodstable.h"
 #include "engine.h"
@@ -55,7 +55,6 @@ void alGoodsTable::load(alGoodsRecord * parent)
     alDataTable::load(QString("parent=%1").arg((!parent ? 0 : parent->id()))); 
 }
 
-
 /*
 *	возвращает иконку элемента или группы
 *	return pixmap of element or group
@@ -72,7 +71,6 @@ bool alGoodsTable::internalNew(bool isgroup)
 {
     QDialog dlg;
     alGoodsRecord * rec;
-    Ui::GoodsElement el;
     if(isgroup)
     {
 //        el.setupUi(&dlg);
@@ -81,18 +79,17 @@ bool alGoodsTable::internalNew(bool isgroup)
     }
     else
     {
-        el.setupUi(&dlg);
+        GoodsElement el(&dlg);
         rec = alGoodsRecord::newElement((alDataGoods*)fData, currentGroup);
-//        ((GoodsElement*)dlg)->setData(rec);
+        el.setData(rec);
     }
     int res = dlg.exec();
-//    if(res)
-//    {
-//        rec->update();
-//        fEngine->sendElement(rec);
-//        load(currentGroup);
-//    }
-    return 0;
+    if(res)
+    {
+        rec->update();
+        fEngine->sendElement(rec);
+        load(currentGroup);
+    }
     return res;
 }
 

@@ -309,12 +309,12 @@ void alSettings::initDialog( alEngine * engine )
 //    frameDiscount->layout()->add(discountTab);
 //    discountTab->init();
 
-//    connect(btnNew, SIGNAL(clicked()), goodsTab, SLOT(newElement()));
-//    connect(btnNewGroup, SIGNAL(clicked()), goodsTab, SLOT(newGroup()));
-//    connect(btnEdit, SIGNAL(clicked()), goodsTab, SLOT(editRowData()));
-//    connect(btnDelete, SIGNAL(clicked()), goodsTab, SLOT(deleteRowData()));
-//    connect(btnLevelUp, SIGNAL(clicked()), goodsTab, SLOT(levelUp()));
-//    connect(btnHome, SIGNAL(clicked()), goodsTab, SLOT(home()));
+    connect(settingsDialog->btnNew, SIGNAL(clicked()), settingsDialog->goodsTab, SLOT(newElement()));
+//    connect(settingsDialog->btnNewGroup, SIGNAL(clicked()), settingsDialog->goodsTab, SLOT(newGroup()));
+    connect(settingsDialog->btnEdit, SIGNAL(clicked()), settingsDialog->goodsTab, SLOT(editRowData()));
+    connect(settingsDialog->btnDelete, SIGNAL(clicked()), settingsDialog->goodsTab, SLOT(deleteRowData()));
+    connect(settingsDialog->btnLevelUp, SIGNAL(clicked()), settingsDialog->goodsTab, SLOT(levelUp()));
+    connect(settingsDialog->btnHome, SIGNAL(clicked()), settingsDialog->goodsTab, SLOT(home()));
 
 //    connect(btnUsersNew, SIGNAL(clicked()), usersTab, SLOT(newElement()));
 //    connect(btnUsersEdit, SIGNAL(clicked()), usersTab, SLOT(editRowData()));
