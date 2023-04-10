@@ -20,7 +20,7 @@ TARGET =	i586
 first: all
 
 all: tr Makefile
-	$(QMAKE) src/src.pro -o src/$(MAKEFILE) && cd src && $(MAKE)
+	$(QMAKE) src/src.pro.3 -o src/$(MAKEFILE) && cd src && $(MAKE)
 clean:
 	rm -fr rpm
 	rm -f $(NAME).spec
