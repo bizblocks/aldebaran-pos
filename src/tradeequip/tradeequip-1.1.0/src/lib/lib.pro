@@ -15,6 +15,8 @@ win32:HEADERS	+= win_qextserialport.h
 
 unix:HEADERS	+= posix_qextserialport.h
 
+QMAKE_CXXFLAGS	+= -Wno-return-type
+
 HEADERS	+= md5.h \
 	qextserialbase.h \
 	qextserialport.h \

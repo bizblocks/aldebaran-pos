@@ -1,7 +1,7 @@
 TEMPLATE	= lib
 LANGUAGE	= C++
 
-CONFIG	+= qt warn_on release
+CONFIG	+= qt warn_on release thread
 
 DEFINES	+= DEBUG
 
@@ -50,6 +50,8 @@ TRANSLATIONS = \
 
 TARGET      = aldebarandata
 DESTDIR     = ../../../lib
+
+QMAKE_CXXFLAGS_RELEASE = -fpermissive
 
 unix {
   UI_DIR = .ui

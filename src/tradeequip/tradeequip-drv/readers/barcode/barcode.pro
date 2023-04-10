@@ -5,7 +5,6 @@ CONFIG	+= qt warn_on
 
 win32:CONFIG	+= dll
 
-LIBS	+= -L$${TREQPATH}/lib -ltradeequip
 
 DEFINES	+= TRBARCODE_BUILD
 
@@ -18,11 +17,9 @@ SOURCES	+= tereaderbarcode.cpp
 include ( ../../config.pri )
 TARGET      = tereader-barcode
 
-
-
-
 TREQPATH = ../../../tradeequip-1.1.0
 
+LIBS	+= -L$${TREQPATH}/lib -ltradeequip
 
 
 DESTDIR     = ../../lib

@@ -3,6 +3,8 @@ LANGUAGE	= C++
 
 CONFIG	+= qt warn_on dll
 
+QMAKE_CXXFLAGS	+= -Wno-return-type
+
 LIBS	+= -L../../../../tradeequip-1.1.0/lib -ltradeequip
 
 DEFINES	+= FELIX_BUILD

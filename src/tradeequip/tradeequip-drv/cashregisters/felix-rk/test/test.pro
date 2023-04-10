@@ -3,6 +3,8 @@ LANGUAGE	= C++
 
 CONFIG	+= qt warn_on
 
+QMAKE_CXXFLAGS	+= -Wno-return-type
+
 LIBS	+= -L../../../../tradeequip-1.1.0/lib -L../../../lib -ltradeequip -ltecashregister-felix-rk
 
 DEFINES	+= _CRT_SECURE_NO_DEPRECATE

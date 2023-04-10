@@ -19,7 +19,7 @@ public:
     ~eqVirtualMart();
     virtual eqJob * createJob(QString action="");
     virtual void prepare() {};
-    virtual void end() {};    
+    virtual void end() {};
     virtual void setOption(QString option, QVariant value);
     virtual QStringList options();
     virtual QString option(QString name);

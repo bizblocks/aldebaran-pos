@@ -1,7 +1,7 @@
 TEMPLATE	= lib
 LANGUAGE	= C++
 
-CONFIG	+= qt warn_on release
+CONFIG	+= qt warn_on release thread
 
 unix:LIBS	+= -L../tardeequip-1.1.0/lib -L../tradeequip-drv/lib -ltereader-barcode
 

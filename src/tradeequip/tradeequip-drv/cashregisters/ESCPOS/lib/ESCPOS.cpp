@@ -301,7 +301,7 @@ int ESCPOS::openCashbox(int m)
     int res;
 //    Byte cmd[5] = {DLE, DC4,  1, m, 0xab};
     m = 1; //HACK
-    Byte cmd[5] = {ESC, 'p',  m, 0xfa, 0xff};    
+    Byte cmd[5] = {ESC, 'p',  m, (Byte)0xfa, (Byte)0xff};
     res = sendCmd(cmd, 5);
     return res;    
 }

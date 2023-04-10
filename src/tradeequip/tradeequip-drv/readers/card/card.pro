@@ -10,7 +10,7 @@ HEADERS     = tereadercard.h
 
 SOURCES     = tereadercard.cpp
 
-TREQPATH = ../../../tradeequip
+TREQPATH = ../../../tradeequip-1.1.0
 
 INCLUDEPATH += $${TREQPATH}/src/lib
 LIBS += -L$${TREQPATH}/lib -ltradeequip

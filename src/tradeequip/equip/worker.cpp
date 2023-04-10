@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <qapplication.h>
 #include <qtimer.h>
 #include <qsignal.h>
@@ -20,32 +21,32 @@ public:
     jobThread(eqJob * o, QMutex * m);
     void run();
     void stop();
-    
-    QMutex * mutex;    
+
+    QMutex * mutex;
 private:
     eqJob * job;
 };
 
 jobThread::jobThread(eqJob * o, QMutex * m) :
-	    mutex(m), job(o)
+        mutex(m), job(o)
 {
 }
 
 void jobThread::run()
 {
     mutex->lock();
-    job->device()->prepare();    
+    job->device()->prepare();
     job->process();
-    job->device()->end();        
+    job->device()->end();
     job =NULL;
-    mutex->unlock();    
+    mutex->unlock();
 }
 
 bool hasWorkers = FALSE;
 eqWorker * fWorker;
 
 eqWorker::eqWorker() :
-	QObject(NULL, "equipmentWorker")
+    QObject(NULL, "equipmentWorker")
 {
     hasWorkers = TRUE;
     fWorker = this;
@@ -54,30 +55,30 @@ eqWorker::eqWorker() :
 }
 
 eqWorker::~eqWorker()
-{    
+{
     for(QValueList<QThread*>::iterator it=threads.begin();it!=threads.end();++it)
     {
-	jobThread * thread = (jobThread*)(*it);
-	if(thread)
-	{
-	    thread->mutex->lock();
-	    thread->mutex->unlock();
-	    delete thread->mutex;
-	    delete thread;
-	}
+    jobThread * thread = (jobThread*)(*it);
+    if(thread)
+    {
+        thread->mutex->lock();
+        thread->mutex->unlock();
+        delete thread->mutex;
+        delete thread;
     }
-    
+    }
+
     for(int i=0;i<(int)devices.keys().count();i++)
     {
-	eqDriver * device = devices[devices.keys()[i]];
-	if(device) delete device;
+    eqDriver * device = devices[devices.keys()[i]];
+    if(device) delete device;
     }
 }
 
 eqWorker * eqWorker::worker()
 {
     if(hasWorkers) return fWorker;
-    eqWorker * res = new eqWorker();    
+    eqWorker * res = new eqWorker();
     return res;	    
 }
 
@@ -88,7 +89,7 @@ void eqWorker::kill()
 
 void eqWorker::runJob(eqJob * job)
 {
-    QMutex * mutex = new QMutex();    
+    QMutex * mutex = new QMutex();
     jobThread * thread = new jobThread(job, mutex);
     threads.append(thread);
 }
@@ -96,15 +97,21 @@ void eqWorker::runJob(eqJob * job)
 eqDriver * eqWorker::createDevice(QString driverName, QString deviceName, bool queue)
 {
     eqDriver * dev = NULL;
-    if(driverName=="Office Printer") dev = new eqOfficePrinter(deviceName);
-    else if(driverName=="Sirius") dev = new eqSirius(deviceName);
-    else if(driverName=="MSC Reader") dev = new eqMSCReader(deviceName);    
-    else if(driverName=="Barcode Reader") dev = new eqBarcodeReader(deviceName);
-    else if(driverName=="Virtual Mart") dev = new eqVirtualMart(deviceName);
-    else if(driverName=="ECR") dev = new eqFR(deviceName);    
+    if(driverName=="Office Printer")
+        dev = new eqOfficePrinter(deviceName);
+    else if(driverName=="Sirius")
+        dev = new eqSirius(deviceName);
+    else if(driverName=="MSC Reader")
+        dev = new eqMSCReader(deviceName);
+    else if(driverName=="Barcode Reader")
+        dev = new eqBarcodeReader(deviceName);
+    else if(driverName=="Virtual Mart")
+        dev = new eqVirtualMart(deviceName);
+    else if(driverName=="ECR")
+        dev = new eqFR(deviceName);
     if(dev && queue)
     {
-	addDevice(dev);
+		addDevice(dev);
     }	
     return dev;
 }
@@ -184,16 +191,16 @@ void eqJob::wait()
 {
     while(!processed)
     {
-	usleep(1000);
+        usleep(1000);
     }
 }
 
 bool eqJob::waitTimeout(Q_ULLONG sec)
 {
-    for(Q_ULLONG i=0;i<sec*10;i++)
+    for(Q_ULLONG i=0;i<sec;i++)
     {
-	usleep(1000);
-	if(processed) return processed;
+        usleep(1000);
+        if(processed) return processed;
     }
     return processed;    
 }

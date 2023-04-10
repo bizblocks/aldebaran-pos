@@ -1,4 +1,5 @@
 #include <qtimer.h>
+#include <unistd.h>
 #include "sirius/iesirius.h"
 #include "sirius/iesiriussqlite.h"
 #include "siriusterminal.h"
