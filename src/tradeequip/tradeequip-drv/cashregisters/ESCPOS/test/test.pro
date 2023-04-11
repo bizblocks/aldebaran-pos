@@ -3,7 +3,7 @@ LANGUAGE	= C++
 
 CONFIG	+= qt warn_on release
 
-QMAKE_CXXFLAGS	+= -Wno-return-type
+QMAKE_CXXFLAGS	+= -Wno-return-type -fpermissive -Wno-deprecated-copy -Wno-literal-suffix
 
 unix:LIBS	+= -L../../../../tradeequip-1.1.0/lib -L../../../lib -ltecashregister-ESCPOS -ltradeequip
 

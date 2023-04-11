@@ -132,7 +132,7 @@ unix {
 
 INSTALLS += aldebaran
 
-QMAKE_CXXFLAGS_RELEASE = -fpermissive
+QMAKE_CXXFLAGS_RELEASE = -fpermissive -Wno-deprecated-copy
 
 QMAKE_CLEAN = libimpexp.so*
 

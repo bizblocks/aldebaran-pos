@@ -16,12 +16,14 @@ HEADERS += receiver.h
 LIBS += -L../../lib -ltradeequip
 
 win32 {
-#LIBS += -L../../../cl32/binaries -lcl32
+    #LIBS += -L../../../cl32/binaries -lcl32
 }
 
 unix {
-LIBS += -lpthread
+    LIBS += -lpthread
 }
 
 DESTDIR     = ../../bin
 DEFINES += _CRT_SECURE_NO_DEPRECATE 
+
+QMAKE_CXXFLAGS	+= -Wno-return-type -fpermissive -Wno-deprecated-copy -Wno-literal-suffix

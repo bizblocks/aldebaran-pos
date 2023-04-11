@@ -51,7 +51,7 @@ TRANSLATIONS = \
 TARGET      = aldebarandata
 DESTDIR     = ../../../lib
 
-QMAKE_CXXFLAGS_RELEASE = -fpermissive
+QMAKE_CXXFLAGS_RELEASE = -fpermissive -Wno-deprecated-copy
 
 unix {
   UI_DIR = .ui

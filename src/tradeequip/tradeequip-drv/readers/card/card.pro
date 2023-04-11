@@ -4,6 +4,9 @@ LANGUAGE    = C++
 TARGET      = tereader-card
 
 CONFIG      += qt warn_on
+
+QMAKE_CXXFLAGS	+= -Wno-return-type -fpermissive -Wno-deprecated-copy -Wno-literal-suffix
+
 win32:CONFIG	+= dll
 
 HEADERS     = tereadercard.h

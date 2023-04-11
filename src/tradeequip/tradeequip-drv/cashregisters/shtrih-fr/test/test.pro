@@ -5,6 +5,8 @@ CONFIG	+= qt warn_on
 
 LIBS	+= -L../../../../tradeequip-1.1.0/lib -L../../../lib -ltradeequip -ltecashregister-shtrih-fr
 
+QMAKE_CXXFLAGS	+= -Wno-return-type -fpermissive -Wno-deprecated-copy -Wno-literal-suffix
+
 DEFINES	+= _CRT_SECURE_NO_DEPRECATE
 
 INCLUDEPATH	+= ../lib ../../../../tradeequip-1.1.0/src/lib

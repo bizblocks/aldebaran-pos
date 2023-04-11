@@ -3,6 +3,8 @@ LANGUAGE	= C++
 
 CONFIG	+= qt warn_on release thread
 
+QMAKE_CXXFLAGS_RELEASE = -fpermissive -Wno-deprecated-copy
+
 unix:LIBS	+= -L../tardeequip-1.1.0/lib -L../tradeequip-drv/lib -ltereader-barcode
 
 unix:DEFINES	+= DEBUG

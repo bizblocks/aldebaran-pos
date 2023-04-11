@@ -41,3 +41,5 @@ INSTALLS += target
 INSTALLS += impexp
 
 QMAKE_CLEAN = libimpexp.so*
+
+QMAKE_CXXFLAGS_RELEASE = -fpermissive -Wno-deprecated-copy

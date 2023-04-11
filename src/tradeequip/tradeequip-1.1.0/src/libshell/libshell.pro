@@ -9,3 +9,4 @@ HEADERS = teshell.h
 LIBS += -L../../lib -ltradeequip
 DESTDIR     = ../../lib
 DEFINES += _CRT_SECURE_NO_DEPRECATE 
+QMAKE_CXXFLAGS<>+= -Wno-return-type -fpermissive -Wno-deprecated-copy -Wno-literal-suffix

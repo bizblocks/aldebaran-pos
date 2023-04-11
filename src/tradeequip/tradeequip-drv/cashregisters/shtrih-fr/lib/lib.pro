@@ -5,6 +5,8 @@ CONFIG	+= qt warn_on dll
 
 LIBS	+= -L../../../../tradeequip-1.1.0/lib -ltradeequip
 
+QMAKE_CXXFLAGS	+= -Wno-return-type -fpermissive -Wno-deprecated-copy -Wno-literal-suffix
+
 DEFINES	+= SHTRIH_BUILD
 
 INCLUDEPATH	+= ../../../../tradeequip-1.1.0/src/lib
