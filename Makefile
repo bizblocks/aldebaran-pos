@@ -33,7 +33,7 @@ tr:
 	
 install:
 #	find src doc -name Makefile -delete
-	$(QMAKE) src/src.pro -o src/$(MAKEFILE)
+	$(QMAKE) src/src.pro.3 -o src/$(MAKEFILE)
 	cd src && $(MAKE) install LIBDIR=$(LIBDIR) BINDIR=$(BINDIR) INCLUDEDIR=$(INCLUDEDIR) && cd ../doc && $(QMAKE) doc.pro -o $(MAKEFILE) && $(MAKE) install DOCDIR=$(DOCDIR)
 	
 uninstall:
