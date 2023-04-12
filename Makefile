@@ -4,10 +4,10 @@ NAMEV  = $(NAME)-$(VERSION)
 MAKE = make
 QMAKE = qmake
 MAKEFILE = Makefile
-LIBDIR = /usr/lib
-BINDIR = /usr/bin
-DOCDIR = /usr/share/doc/$(NAMEV)
-INCLUDEDIR = /usr/include/aldebaran
+LIBDIR = $(DESTDIR)/usr/lib
+BINDIR = $(DESTDIR)/usr/bin
+DOCDIR = $(DESTDIR)/usr/share/doc/$(NAMEV)
+INCLUDEDIR = $(DESTDIR)/usr/include/aldebaran
 
 log =
 #BINDIR =	/usr/bin
