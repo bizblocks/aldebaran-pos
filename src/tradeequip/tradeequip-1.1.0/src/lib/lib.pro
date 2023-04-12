@@ -88,7 +88,7 @@ DEFINES	+= NOQFILE
 DEFINES += _CRT_SECURE_NO_DEPRECATE 
 
 unix {
-  lib.path = $(LIBDIR)
+  lib.path = $(DESTDIR)
   lib.files = libtradeequip.so.$$VERSION
   lib.extra = cp -df $(DESTDIR)/libtradeequip.so* $(INSTALL_ROOT)$(LIBDIR)
 }
