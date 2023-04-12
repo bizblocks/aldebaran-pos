@@ -22,8 +22,6 @@ first: all
 all: tr Makefile
 	$(QMAKE) src/src.pro.3 -o src/$(MAKEFILE) && cd src && $(MAKE)
 clean:
-	rm -fr rpm
-	rm -f $(NAME).spec
 	rm -fr *~
 	rm -f translations/*.qm
 	cd src && $(QMAKE) && $(MAKE) clean

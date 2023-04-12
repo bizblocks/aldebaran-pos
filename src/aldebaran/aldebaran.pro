@@ -126,8 +126,9 @@ unix {
   MOC_DIR = .moc
   OBJECTS_DIR = .obj
   aldebaran.path = $(BINDIR)
+  target.path    = $(BINDIR)
   aldebaran.files = aldebaran
-  aldebaran.extra = cp -df $(DESTDIR)/aldebaran $(INSTALL_ROOT)$(BINDIR)
+#  aldebaran.extra = cp -df $(DESTDIR)/aldebaran $(INSTALL_ROOT)$(BINDIR)
 }
 
 INSTALLS += aldebaran
