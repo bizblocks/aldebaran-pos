@@ -125,12 +125,13 @@ unix {
   UI_DIR = .ui
   MOC_DIR = .moc
   OBJECTS_DIR = .obj
-  aldebaran.path = $(BINDIR)
   target.path    = $(BINDIR)
+  aldebaran.path = $(DESTDIR)
   aldebaran.files = aldebaran
-#  aldebaran.extra = cp -df $(DESTDIR)/aldebaran $(INSTALL_ROOT)$(BINDIR)
+#  aldebaran.extra = cp -df $(DESTDIR)/aldebaran $(INSTALL_ROOT)$(BINDIR)/
 }
 
+INSTALLS += target
 INSTALLS += aldebaran
 
 QMAKE_CXXFLAGS_RELEASE = -fpermissive -Wno-deprecated-copy
