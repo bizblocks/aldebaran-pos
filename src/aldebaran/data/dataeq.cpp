@@ -22,18 +22,10 @@ void alDataEq::checkTable()
     if(!fEngine->db()) return;
     QStringList check = fEngine->db()->tables();
     if(check.grep(TNAME).size()>0) return;
-#ifdef DEBUG
-    qDebug(QObject::tr("creating table equipment").utf8());
-#endif    
-    QString query = Queries::tr("CREATE TABLE equipment ("
-		    "id int8 NOT NULL, name varchar(20),"
-		    "type varchar(20), enabled bool, options bytea,"
-		    "CONSTRAINT id_eq PRIMARY KEY (id))"
-		    "WITHOUT OIDS;");
+    alDBG(QObject::tr("creating table equipment").utf8());
+    QString query = Queries::tr("create_equipment");
     fEngine->db()->exec(query);
-#ifdef DEBUG    
-    qDebug(QObject::tr("lastError was %1").arg(fEngine->db()->lastError().text()).utf8());
-#endif        
+    alDBG(QObject::tr("lastError was %1").arg(fEngine->db()->lastError().text()).utf8());
 }
 
 alDataRecord* alDataEq::current()

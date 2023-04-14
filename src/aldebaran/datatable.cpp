@@ -1,20 +1,21 @@
 #include <qpopupmenu.h>
 #include "data/data.h"
 #include "datatable.h"
+#include "engine.h"
 
 alDataTable::alDataTable(QWidget * parent, alEngine * e, QString table) :
-	QTable(parent, QString("table_%1").arg(table))
+    QTable(parent, QString("table_%1").arg(table))
 {
     fData = NULL;
     contextMenu = new QPopupMenu(this, "datatable context menu");
-    tableName = table; 
+    tableName = table;
     currentFilter = "";
     maxWidthColumn = "";
     fEngine = e;
-    headers.clear();    
+    headers.clear();
     headers << "id" << "*"; // id, icon - default columns
     fields["id"] = "id";
-    connect(this, SIGNAL(contextMenuRequested(int, int, const QPoint&)), this, SLOT(popupMenu(int,int,const QPoint&)));    
+    connect(this, SIGNAL(contextMenuRequested(int, int, const QPoint&)), this, SLOT(popupMenu(int,int,const QPoint&)));
     fSelect = FALSE;
 }
 
@@ -24,8 +25,8 @@ void alDataTable::init()
     setNumCols(headers.count());
     for(int i=0;i<(int)headers.count();i++)
     {
-	QTable::horizontalHeader()->setLabel(i, headers[i]);
-	adjustColumn(i);
+        QTable::horizontalHeader()->setLabel(i, headers[i]);
+        adjustColumn(i);
     }
     hideColumn("id");
 }
@@ -33,8 +34,8 @@ void alDataTable::init()
 int alDataTable::popupMenu(int, int, const QPoint & pos)
 {    
     if(!contextMenu)
-	return -1;
-    return contextMenu->exec(pos);    
+        return -1;
+    return contextMenu->exec(pos);
 }
 
 void alDataTable::hideVerticalHeader()
@@ -46,42 +47,45 @@ void alDataTable::hideVerticalHeader()
 void alDataTable::showVerticalHeader()
 {
     if(!leftMargin())
-	setLeftMargin(savedMargin);
+        setLeftMargin(savedMargin);
 }
 
 void alDataTable::load(QString filter)
 {
+    alDBG("alDataTable::load start");
     setNumRows(0);
-    if(!fData) 
-	return;
-    if(filter.isEmpty()) 
-	fData->select();
-    else 
-	fData->select(filter);
-#ifdef DEBUG    
-    qDebug(fData->lastQuery());
-#endif    
-    if(!fData->first()) 
-	return;
+    if(!fData)
+        return;
+    if(filter.isEmpty())
+        fData->select();
+    else
+        fData->select(filter);
+    alDBG("Select query for table "+fData->tableName());
+    alDBG(fData->lastQuery());
+    if(!fData->first())
+        return;
     setUpdatesEnabled(FALSE);
     int iHeight = 0, r=0;
     int tSize = fData->size();
-    if(tSize>0) 
-	setNumRows(tSize);
+    if(tSize>-1)
+        setNumRows(tSize);
     do
     {
-	fillLine(r);
-//	setRowStretchable(r, TRUE);
-	adjustRow(r);
-	iHeight+=rowHeight(r);
-	r++;
-	if(tSize>0 && iHeight>height()) 
-	    break;	
-    } while(fData->next());    
+        if(tSize==-1)
+            setNumRows(numRows()+1);
+        fillLine(r);
+        //	setRowStretchable(r, TRUE);
+        adjustRow(r);
+        iHeight+=rowHeight(r);
+        r++;
+        if(tSize>0 && iHeight>height())
+            break;
+    } while(fData->next());
     setUpdatesEnabled( TRUE );
-    repaint(rect(), TRUE);    
+    repaint(rect(), TRUE);
     adjustColumns();
     currentFilter = filter;
+    alDBG("alDataTable::load finish");
 }
 
 QVariant alDataTable::value(int row, int col)
@@ -96,8 +100,8 @@ QVariant alDataTable::value(int row, int col)
 QVariant alDataTable::value(int row, QString attr)
 {
     int col = columnNum(attr);
-    if(col>-1) 
-	return value(row, col);
+    if(col>-1)
+        return value(row, col);
     fData->seek(row);
     return fData->value(attr);
 }
@@ -109,15 +113,18 @@ QVariant alDataTable::value(QString attr)
 
 void alDataTable::setValue(int row, int col, QVariant val)
 {
-    val = displayValue(fields[headers[col]], val);    
-    if(val.type()==QVariant::Pixmap) setPixmap(row, col, val.toPixmap());
-    else setText(row, col, val.toString());
+    val = displayValue(fields[headers[col]], val);
+    if(val.type()==QVariant::Pixmap)
+        setPixmap(row, col, val.toPixmap());
+    else
+        setText(row, col, val.toString());
 }
 
 void alDataTable::setValue(int row, QString attr, QVariant val)
 {
     int col = columnNum(attr);
-    if(col>-1) setValue(row, col, val);
+    if(col>-1)
+        setValue(row, col, val);
 }
 
 void alDataTable::setValue(QString attr, QVariant val)
@@ -129,9 +136,9 @@ void alDataTable::paintCell( QPainter * p, int row, int col, const QRect & cr, b
 {
     if(!value(row, "id").toInt())
     {
-	fData->seek(row);
-	fillLine(row);
-    }	
+        fData->seek(row);
+        fillLine(row);
+    }
     QTable::paintCell(p, row, col, cr, selected, cg);
 }
 
@@ -139,11 +146,11 @@ void alDataTable::fillLine(int r)
 {
     for(int i=0;i<(int)headers.count();i++)
     {
-	if(!fields[headers[i]].isEmpty()) 
-	    setValue(r, QString(fields[headers[i]]), fData->value(fields[headers[i]]));
+        if(!fields[headers[i]].isEmpty())
+            setValue(r, QString(fields[headers[i]]), fData->value(fields[headers[i]]));
     }
-    setValue(r, "*", pixmap(r));    
-//    adjustRow(r);
+    setValue(r, "*", pixmap(r));
+    //    adjustRow(r);
 }
 
 /*
@@ -162,7 +169,7 @@ QPixmap alDataTable::pixmap(int r)
 */
 QVariant alDataTable::displayValue(QString attr, QVariant val)
 {
-    Q_UNUSED(attr); 
+    Q_UNUSED(attr);
     return val;
 }
 
@@ -183,7 +190,7 @@ void alDataTable::setColumnWidth(QString attr, int w)
     int col = columnNum(attr);
     if(col>-1) QTable::setColumnWidth(col, w);
 }
-	
+
 int alDataTable::columnWidth(QString attr)
 {
     int col = columnNum(attr);
@@ -194,7 +201,8 @@ int alDataTable::columnWidth(QString attr)
 int alDataTable::columnNum(QString attr)
 {
     int col = fields.values().findIndex(attr);
-    if(col>-1) attr = fields.keys()[col];
+    if(col>-1)
+        attr = fields.keys()[col];
     col = headers.findIndex(attr);
     return col;
 }
@@ -204,11 +212,11 @@ void alDataTable::adjustColumns()
     int swidth = 0;
     for(int i=0;i<numCols();i++)
     {
-	if(i!=columnNum(maxWidthColumn))
-	{
-	    adjustColumn(i);
-	    swidth += QTable::columnWidth(i)+2;
-	}
+        if(i!=columnNum(maxWidthColumn))
+        {
+            adjustColumn(i);
+            swidth += QTable::columnWidth(i)+2;
+        }
     }
     int scrollWidth = verticalScrollBar()->width();
     setColumnWidth(maxWidthColumn, width()-swidth-scrollWidth-leftMargin()-rightMargin());

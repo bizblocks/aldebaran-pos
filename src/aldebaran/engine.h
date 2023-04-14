@@ -88,6 +88,12 @@ typedef QMap<QString, QVariant> alValueList;
 #define EVENT_MSCREADER		1
 #define EVENT_BARCODEREADER		2
 
+#ifdef DEBUG
+#define alDBG(x) qDebug(x)
+#else
+#define alDBG(x)
+#endif
+
 class alEngine : public QObject
 {
 Q_OBJECT

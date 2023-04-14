@@ -13,7 +13,7 @@ Queries::Queries(QString d)
 void Queries::init()
 {
     if(trans)
-	delete trans;
+        delete trans;
     trans = new QTranslator(0);
     trans->load("queries-"+fDialect.lower(), "/usr/share/aldebaran");
 }
@@ -33,10 +33,10 @@ void Queries::setDialect(QString d)
 
 QString Queries::tr(QString query)
 {
-//    qDebug(QString("source query: %1").arg(query));
-//    Queries * that = getQueries();
-//    QTranslatorMessage msg = that->trans->findMessage("Queries", query);
-//    query = msg.translation();
-//    qDebug(QString("result query: %1").arg(query));
+    qDebug(QString("source query: %1").arg(query));
+    Queries * that = getQueries();
+    QTranslatorMessage msg = that->trans->findMessage("Queries", query);
+    query = msg.translation();
+    qDebug(QString("result query: %1").arg(query));
     return query; 
 }

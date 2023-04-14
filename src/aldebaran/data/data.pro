@@ -46,7 +46,9 @@ IMAGES	= images/ok.png \
 
 TRANSLATIONS = \
     ../../../translations/aldebaran-data-en.ts \
-    ../../../translations/aldebaran-data-ru.ts 
+    ../../../translations/aldebaran-data-ru.ts \
+    ../../../translations/queries-qsqlite.ts \
+    ../../../translations/queries-qpsql7.ts 
 
 TARGET      = aldebarandata
 DESTDIR     = ../../../lib

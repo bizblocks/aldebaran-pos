@@ -319,10 +319,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>CREATE TABLE equipment (id int8 NOT NULL, name varchar(20),type varchar(20), bool enabled, options bytea,CONSTRAINT id_eq PRIMARY KEY (id))WITHOUT OIDS;</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>DELETE FROM equipment WHERE id=%1</source>
         <translation></translation>
     </message>
@@ -363,10 +359,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>CREATE TABLE orders (id int8 NOT NULL, num int8, orderdate timestamp, timeopen time, timeclose time, status int4,  id_user int8,  checknum int4, tablenum int4, guests int2, id_discount int8, comment varchar(255), externalcode varchar(50), CONSTRAINT id_orders PRIMARY KEY (id)) WITHOUT OIDS;</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>CREATE INDEX idx_num ON orders (num);</source>
         <translation></translation>
     </message>
@@ -395,20 +387,11 @@
         <translation></translation>
     </message>
     <message>
-        <source>CREATE TABLE order_table (id_order int8 NOT NULL, ln int8 NOT NULL,id_goods int8, amount numeric(8,3),price numeric(12,2), summ numeric(15,2), id_user int8,printed bool,CONSTRAINT id_ordertable PRIMARY KEY (id_order,ln))WITHOUT OIDS;</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>id_order=%1</source>
         <translation></translation>
     </message>
     <message>
         <source>DELETE FROM order_table WHERE id_order=%1;
-</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>INSERT INTO order_table VALUES (%1, %2, %3, %4, %5, %6, %7, %8);
 </source>
         <translation></translation>
     </message>
@@ -421,23 +404,11 @@
         <translation></translation>
     </message>
     <message>
-        <source>CREATE TABLE RIGHTS (id int8 NOT NULL, id_owner int8 NOT NULL,rule int4, enabled bool,CONSTRAINT id_rights PRIMARY KEY (id))WITHOUT OIDS;</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>CREATE INDEX idx_owner ON RIGHTS (id_onwer);</source>
         <translation></translation>
     </message>
     <message>
         <source>id_owner=%1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>CREATE TABLE USERS (id int8 NOT NULL, name varchar(30),role int4, password varchar(15),CONSTRAINT id_user PRIMARY KEY (id))WITHOUT OIDS;</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>CREATE INDEX idx_name ON users (name);</source>
         <translation></translation>
     </message>
     <message>
@@ -457,10 +428,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>CREATE TABLE settings (id int8 NOT NULL, subsystem varchar(20), valkey varchar(20), value bytea,CONSTRAINT id_settings PRIMARY KEY (id))WITHOUT OIDS;</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>CREATE INDEX idx_subsys ON settings (subsystem);</source>
         <translation></translation>
     </message>
@@ -475,6 +442,39 @@
     <message>
         <source>subsystem=&apos;%1&apos; AND valkey=&apos;%2&apos;</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>CREATE TABLE orders (id int8 NOT NULL, num int8, summtype int2 DEFAULT 1, orderdate timestamp, timeopen time, timeclose time, status int4,  id_user int8,  checknum int4, tablenum int4, guests int2, id_discount int8, comment varchar(255), externalcode varchar(50), CONSTRAINT id_orders PRIMARY KEY (id)) WITHOUT OIDS;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CREATE TABLE order_table (id_order int8 NOT NULL, ln int8 NOT NULL,id_goods int8, externalcode varchar(15), amount numeric(8,3),price numeric(12,2), summ numeric(15,2), id_user int8,printed bool,CONSTRAINT id_ordertable PRIMARY KEY (id_order,ln))WITHOUT OIDS;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INSERT INTO order_table VALUES (%1, %2, %3, &apos;%4&apos;, %5, %6, %7, %8, %9);
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>create_settings</source>
+        <translation>CREATE TABLE settings (id int8 NOT NULL, subsystem varchar(20), valkey varchar(20), value bytea, CONSTRAINT id_settings PRIMARY KEY (id)) WITHOUT OIDS;</translation>
+    </message>
+    <message>
+        <source>create_users</source>
+        <translation>CREATE TABLE USERS (id int8 NOT NULL, name varchar(30), role int4, password varchar(15), CONSTRAINT id_user PRIMARY KEY (id)) WITHOUT OIDS;</translation>
+    </message>
+    <message>
+        <source>create_index_users_name</source>
+        <translation>CREATE INDEX idx_name ON users (name);</translation>
+    </message>
+    <message>
+        <source>create_equipment</source>
+        <translation>CREATE TABLE equipment (id int8 NOT NULL, name varchar(20),type varchar(20), enabled bool, options bytea,CONSTRAINT id_eq PRIMARY KEY (id))WITHOUT OIDS;</translation>
+    </message>
+    <message>
+        <source>create_rights</source>
+        <translation>CREATE TABLE RIGHTS (id int8 NOT NULL, id_owner int8 NOT NULL, rule int4, enabled bool, CONSTRAINT id_rights PRIMARY KEY (id)) WITHOUT OIDS;</translation>
     </message>
 </context>
 <context>
@@ -531,12 +531,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Table #%1 Guests: %2 %3
-Opened: %3 %4 Summ: %5</source>
+        <source>Discount: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Discount: %1</source>
+        <source>Table #%1 Guests: %2 %3
+Opened: %4 %5 Summ: %6</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>GoodsElement</name>
     <message>
@@ -67,6 +65,162 @@
         <source>Picture</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open goods picture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Open...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Save...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Redo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Redo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>C&amp;opy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bullet List (Disc)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bullet List (Circle)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bullet List (Square)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ordered List (Decimal)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ordered List (Alpha lower)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ordered List (Alpha upper)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Italic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Underline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Underline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>C&amp;enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Justify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Justify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Color...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTML-Files (*.htm *.html)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GoodsGroup</name>
@@ -92,6 +246,10 @@
     </message>
     <message>
         <source>Export to equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open goods group picture</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -137,10 +295,6 @@
         <source>Service</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>lastError was: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Queries</name>
@@ -162,10 +316,6 @@
     </message>
     <message>
         <source>DELETE FROM discount WHERE id=%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CREATE TABLE equipment (id int8 NOT NULL, name varchar(20),type varchar(20), enabled bool, options bytea,CONSTRAINT id_eq PRIMARY KEY (id))WITHOUT OIDS;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -250,19 +400,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CREATE TABLE RIGHTS (id int8 NOT NULL, id_owner int8 NOT NULL,rule int4, enabled bool,CONSTRAINT id_rights PRIMARY KEY (id))WITHOUT OIDS;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>id_owner=%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CREATE TABLE USERS (id int8 NOT NULL, name varchar(30),role int4, password varchar(15),CONSTRAINT id_user PRIMARY KEY (id))WITHOUT OIDS;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CREATE INDEX idx_name ON users (name);</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -279,10 +417,6 @@
     </message>
     <message>
         <source>DELETE FROM rights WHERE id_owner=%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CREATE TABLE settings (id int8 NOT NULL, subsystem varchar(20), valkey varchar(20), value bytea,CONSTRAINT id_settings PRIMARY KEY (id))WITHOUT OIDS;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -315,7 +449,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CREATE INDEX idx_owner ON RIGHTS (id_owner);</source>
+        <source>isgroup=true</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CREATE INDEX idx_owner ON RIGHTS (id_onwer);</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>create_settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>create_users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>create_index_users_name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>create_equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>create_rights</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -412,6 +570,23 @@ Opened: %4 %5 Summ: %6</source>
         <source>Enabled</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Can&apos;t create device of type %1
+Save element first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must input device name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must input device type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Driver doesn&apos;t exist</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>dlgDiscount</name>
@@ -445,6 +620,18 @@ Opened: %4 %5 Summ: %6</source>
     </message>
     <message>
         <source>code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>procentage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>monetary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must input discount name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
