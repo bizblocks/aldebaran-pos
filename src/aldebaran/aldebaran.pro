@@ -1,7 +1,8 @@
 TEMPLATE	= app
 LANGUAGE	= C++
 
-CONFIG	+= qt warn_on release thread
+#CONFIG	+= qt warn_on release thread
+CONFIG	+= qt warn_on debug thread
 
 LIBS	+= -L$(QTDIR)/lib -lequip -limpexp -L../../lib -L../tradeequip/tradeequip-1.1.0/lib -L../tradeequip/tradeequip-drv/lib -ltradeequip -ltereader-barcode
 
@@ -134,7 +135,7 @@ unix {
 INSTALLS += target
 INSTALLS += aldebaran
 
-QMAKE_CXXFLAGS_RELEASE = -fpermissive -Wno-deprecated-copy
+QMAKE_CXXFLAGS = -fpermissive -Wno-deprecated-copy
 
 QMAKE_CLEAN = libimpexp.so*
 

@@ -7,10 +7,10 @@
 #define TNAME "equipment"
 
 alDataEq::alDataEq(alEngine * e) :
-	alData(e, TNAME)
+    alData(e, TNAME)
 {
     checkTable();
-    alData::setName(TNAME, TRUE);    
+    alData::setName(TNAME, TRUE);
 }
 
 alDataEq::~alDataEq()
@@ -25,7 +25,8 @@ void alDataEq::checkTable()
     alDBG(QObject::tr("creating table equipment").utf8());
     QString query = Queries::tr("create_equipment");
     fEngine->db()->exec(query);
-    alDBG(QObject::tr("lastError was %1").arg(fEngine->db()->lastError().text()).utf8());
+    if(fEngine->db()->lastError().number()!=0)
+        alDBG(QObject::tr("lastError was %1").arg(fEngine->db()->lastError().text()).utf8());
 }
 
 alDataRecord* alDataEq::current()
@@ -47,7 +48,7 @@ bool alDataEq::delElement()
 }
 
 alEqRecord::alEqRecord(alData * data, QSqlRecord * rec) :
-	alDataRecord(data, rec)
+    alDataRecord(data, rec)
 {
     if(!fRecord) return;
     load();
@@ -55,8 +56,8 @@ alEqRecord::alEqRecord(alData * data, QSqlRecord * rec) :
 
 alEqRecord * alEqRecord::current(alDataEq * data)
 {
-    if(!data) return NULL;    
-    return new alEqRecord(data, data->primeUpdate());    
+    if(!data) return NULL;
+    return new alEqRecord(data, data->primeUpdate());
 }
 
 alEqRecord * alEqRecord::newElement(alDataEq * data)
@@ -66,12 +67,12 @@ alEqRecord * alEqRecord::newElement(alDataEq * data)
     rec->setValue("id", data->uid());
     alEqRecord * res = new alEqRecord(data, rec);
     res->fIsNew = TRUE;
-    return res;        
+    return res;
 }
 
 void alEqRecord::load()
 {
-    fName = fRecord->value("name").toString();
+    fName = fRecord->value("name").toCString();
     fType = fRecord->value("type").toString();
     fEnabled = fRecord->value("enabled").toBool();
     QByteArray bOpt = fRecord->value("options").toByteArray();
@@ -80,24 +81,24 @@ void alEqRecord::load()
     fOptions.clear();
     for(int i=0;i<(int)slOpt.count();i++)
     {
-	QStringList pair = QStringList::split("=", slOpt[i]);
-//	qDebug(slOpt[i]);
-	pair[0] = QString::fromLocal8Bit(pair[0]);
-	if(pair.count()==1) fOptions[pair[0]] = ""; //default
-	else fOptions[pair[0]] = QString::fromLocal8Bit(pair[1]).replace('\r', '\n');
+        QStringList pair = QStringList::split("=", slOpt[i]);
+        //	qDebug(slOpt[i]);
+        pair[0] = QString::fromLocal8Bit(pair[0]);
+        if(pair.count()==1) fOptions[pair[0]] = ""; //default
+        else fOptions[pair[0]] = QString::fromLocal8Bit(pair[1]).replace('\r', '\n');
     }
 }
 
 int alEqRecord::update() 
 {
     primeUpdateInsert();
-    fRecord->setValue("name", fName);
+    fRecord->setValue("name", fName.utf8());
     fRecord->setValue("type", fType);
     fRecord->setValue("enabled", fEnabled ? "TRUE" : "FALSE");
     QString sOpt = "";
     for(int i=0;i<(int)fOptions.keys().count();i++)
-	sOpt += fOptions.keys()[i] + "=" + fOptions.values()[i].replace('\n', '\r') + "\n";
-//    qDebug(sOpt.utf8());
+        sOpt += fOptions.keys()[i] + "=" + fOptions.values()[i].replace('\n', '\r') + "\n";
+    //    qDebug(sOpt.utf8());
     QByteArray a = QByteArray(sOpt.local8Bit());
     fRecord->setValue("options", a);
     return alDataRecord::update();
@@ -110,9 +111,9 @@ bool alEqRecord::dialog(QWidget * parent)
     dlg->setData(this);
     if(dlg->exec())
     {
-	update();
-	delete dlg;
-	return TRUE;
+        update();
+        delete dlg;
+        return TRUE;
     }
     delete dlg;
     return FALSE;

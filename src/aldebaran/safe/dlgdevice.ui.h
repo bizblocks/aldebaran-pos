@@ -41,21 +41,25 @@ void dlgDevice::init(alEngine * e)
 
 void dlgDevice::driverSelected(const QString & type)
 {
-    if(type.isEmpty()) return;
+    if(type.isEmpty())
+        return;
     eqWorker * fWorker = eqWorker::worker();
-    fDevice = fWorker->getDevice(editName->text());
+    fDevice = fWorker->getDevice(editName->text());    
     if(!fDevice && fData->enabled())
     {
-	QMessageBox::warning(this, "aldebaran", QString(tr("Can't create device of type %1\nSave element first.")).arg(type));
-	return;
+        QMessageBox::warning(this, "aldebaran", QString(tr("Can't create device of type %1\nSave element first.")).arg(type));
+        return;
     }
-    if(fDevice) fDevice->init();
+    if(fDevice)
+        fDevice->init();
 }
 
 void dlgDevice::settingsDialog()
 {
-    if(!fDevice) return;
-    if(!fDevice->dialog()) return;
+    if(!fDevice)
+        return;
+    if(!fDevice->dialog())
+        return;
 }
 
 void dlgDevice::apply()

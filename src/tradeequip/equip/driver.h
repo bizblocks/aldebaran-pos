@@ -8,7 +8,8 @@ class eqDriver : public QObject
 {
     Q_OBJECT
 public:
-    eqDriver(QString name) : QObject(NULL, name) { setError(0, ""); };
+    eqDriver(QString name) : QObject(NULL) { setError(0, ""); fName = name; };
+    QString name() {return fName; };
     virtual void init()=0;    
     virtual eqJob * createJob(QString action="") = 0;    
     virtual void prepare() = 0;
@@ -26,6 +27,7 @@ protected:
     void setError(int error, QString errorMsg) { fError = error; fErrorMsg = errorMsg; };
     QString fAction, fErrorMsg;
     QVariant fResult;
+    QString fName;
     int fError;
 };
 

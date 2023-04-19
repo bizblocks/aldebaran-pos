@@ -1,7 +1,7 @@
 TEMPLATE	= lib
 LANGUAGE	= C++
 
-CONFIG	+= qt warn_on dll
+CONFIG	+= qt warn_on debug dll
 
 LIBS	+= -L../../../../tradeequip-1.1.0/lib -ltradeequip
 

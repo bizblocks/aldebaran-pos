@@ -17,8 +17,8 @@ void settingsDialog::selectPicture()
     fileDlg.setCaption(tr("Open shema picture"));
     if(fileDlg.exec()==QDialog::Accepted)
     {
-	pix = QPixmap::fromMimeSource(fileDlg.selectedFile());
-	labelPreview->setPixmap(pix);		
+        pix = QPixmap::fromMimeSource(fileDlg.selectedFile());
+        labelPreview->setPixmap(pix);
     }
 }
 
@@ -32,7 +32,7 @@ void settingsDialog::disableEnable()
 void settingsDialog::setData(QMap<QString, alValueList> data )
 {
     editOrder->setText(data[GENERAL][TPLORDER].toString());
-    editBill->setText(data[GENERAL][TPLBILL].toString());    
+    editBill->setText(data[GENERAL][TPLBILL].toString());
     editPath->setText(data[GENERAL][IMPEXPPATH].toString());
     editImport->setText(data[GENERAL][IMPEXPIMPORT].toString());
     editExport->setText(data[GENERAL][IMPEXPEXPORT].toString());
@@ -49,8 +49,8 @@ void settingsDialog::setData(QMap<QString, alValueList> data )
     editLogin->setText(data[GENERAL][IMPEXPFTPLOGIN].toString());
     editPassword->setText(data[GENERAL][IMPEXPFTPPASSWORD].toString());
     editRDir->setText(data[GENERAL][IMPEXPFTPRDIR].toString());
-    editDefPrinter->setText(data[EQUIPMENT][PRINTER].toString());
-    editDefECR->setText(data[EQUIPMENT][ECR].toString());
+    editDefPrinter->setText(QString::fromUtf8(data[EQUIPMENT][PRINTER].toString()));
+    editDefECR->setText(QString::fromUtf8(data[EQUIPMENT][ECR].toString()));
 }
 
 
@@ -58,7 +58,7 @@ QMap<QString, alValueList> settingsDialog::getData()
 {
     QMap<QString, alValueList> res;
     res[GENERAL][TPLORDER] = editOrder->text();
-    res[GENERAL][TPLBILL] = editBill->text();    
+    res[GENERAL][TPLBILL] = editBill->text();
     res[GENERAL][IMPEXPPATH] = editPath->text();
     res[GENERAL][IMPEXPIMPORT] = editImport->text();
     res[GENERAL][IMPEXPEXPORT] = editExport->text();
@@ -66,7 +66,7 @@ QMap<QString, alValueList> settingsDialog::getData()
     res[GENERAL][IMPEXPFMT] = comboFormat->currentText().utf8();
     res[GENERAL][TABLENUM] = QString("%1").arg(spinTables->value());
     res[GENERAL][SHEMA] = pixmap2bytearray(pix);
-    res[GENERAL][USESHEMA] = rbShema->isChecked();    
+    res[GENERAL][USESHEMA] = rbShema->isChecked();
     res[GENERAL][IMPEXPFTP] = cbUseFtp->isChecked();
     res[GENERAL][IMPEXPFTPHOST] = editHost->text();
     res[GENERAL][IMPEXPFTPPORT] = spinPort->value();
@@ -74,8 +74,8 @@ QMap<QString, alValueList> settingsDialog::getData()
     res[GENERAL][IMPEXPFTPPASSWORD] = editPassword->text();
     res[GENERAL][IMPEXPFTPRDIR] = editRDir->text();
     
-    res[EQUIPMENT][PRINTER] = editDefPrinter->text();
-    res[EQUIPMENT][ECR] = editDefECR->text();
+    res[EQUIPMENT][PRINTER] = editDefPrinter->text().utf8();
+    res[EQUIPMENT][ECR] = editDefECR->text().utf8();
     return res;
 }
 
@@ -87,7 +87,7 @@ void settingsDialog::init( alEngine * engine )
     for (int i = 0; (codec = QTextCodec::codecForIndex(i)); i++)
         comboCP->insertItem(codec->name());
     
-    comboFormat->insertItem("");    
+    comboFormat->insertItem("");
     comboFormat->insertStringList(importer::importersList());
     
     new QGridLayout(frameGoods);
@@ -100,7 +100,7 @@ void settingsDialog::init( alEngine * engine )
     alGoodsTable * goodsTab = new alGoodsTable(frameGoods, fEngine);
     frameGoods->layout()->add(goodsTab);
     goodsTab->init();
-        
+
     alUsersTable * usersTab = new alUsersTable(frameUsers, fEngine);
     frameUsers->layout()->add(usersTab);
     usersTab->init();
@@ -111,26 +111,26 @@ void settingsDialog::init( alEngine * engine )
     
     alDiscountTable * discountTab = new alDiscountTable(frameDiscount, fEngine);
     frameDiscount->layout()->add(discountTab);
-    discountTab->init();    
+    discountTab->init();
     
     connect(btnNew, SIGNAL(clicked()), goodsTab, SLOT(newElement()));
     connect(btnNewGroup, SIGNAL(clicked()), goodsTab, SLOT(newGroup()));
     connect(btnEdit, SIGNAL(clicked()), goodsTab, SLOT(editRowData()));
-    connect(btnDelete, SIGNAL(clicked()), goodsTab, SLOT(deleteRowData()));  
+    connect(btnDelete, SIGNAL(clicked()), goodsTab, SLOT(deleteRowData()));
     connect(btnLevelUp, SIGNAL(clicked()), goodsTab, SLOT(levelUp()));
-    connect(btnHome, SIGNAL(clicked()), goodsTab, SLOT(home()));    
+    connect(btnHome, SIGNAL(clicked()), goodsTab, SLOT(home()));
     
     connect(btnUsersNew, SIGNAL(clicked()), usersTab, SLOT(newElement()));
     connect(btnUsersEdit, SIGNAL(clicked()), usersTab, SLOT(editRowData()));
     connect(btnUsersDelete, SIGNAL(clicked()), usersTab, SLOT(deleteRowData()));
-   
+
     connect(btnDeviceNew, SIGNAL(clicked()), eqTab, SLOT(newElement()));
     connect(btnDeviceEdit, SIGNAL(clicked()), eqTab, SLOT(editRowData()));
     connect(btnDeviceDelete, SIGNAL(clicked()), eqTab, SLOT(deleteRowData()));
     
     connect(btnDiscountNew, SIGNAL(clicked()), discountTab, SLOT(newElement()));
     connect(btnDiscountEdit, SIGNAL(clicked()), discountTab, SLOT(editRowData()));
-    connect(btnDiscountDelete, SIGNAL(clicked()), discountTab, SLOT(deleteRowData()));    
+    connect(btnDiscountDelete, SIGNAL(clicked()), discountTab, SLOT(deleteRowData()));
 
 }
 

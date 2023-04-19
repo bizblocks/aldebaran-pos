@@ -16,8 +16,8 @@ void dlgDevice::setData(alEqRecord * data)
 {
     if(!fEngine)
     {
-	close();
-	return;
+        close();
+        return;
     }
     fData = data;
     refresh();
@@ -27,7 +27,7 @@ void dlgDevice::setData(alEqRecord * data)
 void dlgDevice::refresh()
 {
     editName->setText(fData->name());
-    comboType->insertItem("");    
+    comboType->insertItem("");
     comboType->insertStringList(fEngine->driverList());
     comboType->setCurrentText(fData->type());
     chkEnabled->setChecked(fData->enabled());
@@ -41,13 +41,15 @@ void dlgDevice::init(alEngine * e)
 
 void dlgDevice::driverSelected(const QString & type)
 {
-    if(type.isEmpty()) return;
+    if(type.isEmpty())
+        return;
     eqWorker * fWorker = eqWorker::worker();
     fDevice = fWorker->getDevice(editName->text());
+    alDBG(fDevice==NULL ? "fDevice is null" : "fDevice good");
     if(!fDevice && fData->enabled())
     {
-	QMessageBox::warning(this, "aldebaran", QString(tr("Can't create device of type %1\nSave element first.")).arg(type));
-	return;
+        QMessageBox::warning(this, "aldebaran", QString(tr("Can't create device of type %1\nSave element first.")).arg(type));
+        return;
     }
     if(fDevice) fDevice->init();
 }
@@ -62,32 +64,32 @@ void dlgDevice::apply()
 {
     if(editName->text().isEmpty())
     {
-	QMessageBox::information(this, "aldebaran", tr("You must input device name"));
-	return;
+        QMessageBox::information(this, "aldebaran", tr("You must input device name"));
+        return;
     }
     if(comboType->currentText().isEmpty())
-    {	
-	QMessageBox::information(this, "aldebaran", tr("You must input device type"));
-	return;    
+    {
+        QMessageBox::information(this, "aldebaran", tr("You must input device type"));
+        return;
     }
     fData->setName(editName->text());
     fData->setType(comboType->currentText());
     fData->setEnabled(chkEnabled->isChecked());
     if(!fDevice && fData->enabled())
     {
-	eqWorker * fWorker = eqWorker::worker();
-	fDevice = fWorker->createDevice(fData->type(), fData->name());
+        eqWorker * fWorker = eqWorker::worker();
+        fDevice = fWorker->createDevice(fData->type(), fData->name());
     }
-    if(!fDevice) 
+    if(!fDevice)
     {
-	QMessageBox::information(this, "aldebaran", tr("Driver doesn't exist"));
-	return;    	    
+        QMessageBox::information(this, "aldebaran", tr("Driver doesn't exist"));
+        return;
     }
     
     QStringList opts = fDevice->options();
     for(uint i=0;i<opts.count();i++)
     {
-	fData->setOption(opts[i], fDevice->option(opts[i]));
+        fData->setOption(opts[i], fDevice->option(opts[i]));
     }
     accept();
 }

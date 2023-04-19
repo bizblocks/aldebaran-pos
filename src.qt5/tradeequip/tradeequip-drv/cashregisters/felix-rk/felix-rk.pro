@@ -1,3 +1,0 @@
-TEMPLATE = subdirs
-SUBDIRS  = lib test
-DEFINES += _CRT_SECURE_NO_DEPRECATE 

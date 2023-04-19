@@ -97,7 +97,7 @@ void alEngine::initUsers()
 
 void alEngine::initEquipment()
 {
-    alDBG("initEquipment start");
+    alDBG("alEgine::initEquipment start");
     fWorker = eqWorker::worker();
     alDataEq * eq = new alDataEq(this);
     connect(fWorker, SIGNAL(deviceError(int)), this, SLOT(onError(int)));
@@ -118,11 +118,15 @@ void alEngine::initEquipment()
     }
 
     job = createECRJob("", "beep");
-    if(!job) error(tr("ERROR: default ECR not connected"));
+    if(!job)
+    {
+        error(tr("ERROR: default ECR not connected"));
+    }
     else
     {
         job->process();
-        if((err=job->error())) error(tr("default ECR error: %1").arg(err));
+        if((err=job->error()))
+            error(tr("default ECR error: %1").arg(err));
         delete job;
     }
     
@@ -166,7 +170,7 @@ void alEngine::initEquipment()
     connect(server, SIGNAL(hasData(importer*)), this, SLOT(importData(importer*)));
     server->start();
 
-    alDBG("initEquipment finish");
+    alDBG("alEgine::initEquipment finish");
 }
 
 void alEngine::importData(importer * imp)
@@ -356,7 +360,7 @@ void alEngine::exportOrder(alOrderRecord * order)
     if(eq->first()) do
     {
         alEqRecord * dev = (alEqRecord*)eq->current();
-        qDebug(QString("device name is %1, table %2").arg(dev->name()).arg(dev->option("table").toInt()));
+        alDBG(QString("device name is %1, table %2").arg(dev->name()).arg(dev->option("table").toInt()));
         if(dev->option("table").toInt()==order->table())
         {
             device = dev->name();

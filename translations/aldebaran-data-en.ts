@@ -420,18 +420,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CREATE INDEX idx_subsys ON settings (subsystem);</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CREATE INDEX idx_name ON settings (valkey);</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CREATE INDEX idx_setting ON settings (subsystem, valkey);</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>subsystem=&apos;%1&apos; AND valkey=&apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -474,6 +462,18 @@
     </message>
     <message>
         <source>create_rights</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>create_settings_idx_subsys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>create_settings_idx_name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>create_settings_idx_settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

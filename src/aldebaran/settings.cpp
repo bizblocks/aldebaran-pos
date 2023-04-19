@@ -76,9 +76,7 @@ bool alSettings::dbDialog()
     ddbsettings * dlg = new ddbsettings(0, "dbsettingsdlg", true);
     dlg->setData(dbParams);
     int res = dlg->exec();
-#ifdef DEBUG
-    qDebug(QString(tr("ddbsettings dialog returns %1")).arg(res).utf8());
-#endif
+    alDBG(QString(tr("ddbsettings dialog returns %1")).arg(res).utf8());
     if(res)
     {
         dbParams = dlg->getData();
@@ -93,9 +91,7 @@ bool alSettings::dialog()
     dlg->init(fEngine);
     dlg->setData(params);
     int res = dlg->exec();
-#ifdef DEBUG
-    qDebug(QString(tr("settings dialog returns %1")).arg(res).utf8());
-#endif
+    alDBG(QString(tr("settings dialog returns %1")).arg(res).utf8());
     if(res)
         params = dlg->getData();
     return res;
@@ -151,7 +147,8 @@ alValueList alSettings::subSystemSettings(QString subSystem)
     alValueList res;
     res.clear();
     
-    if(subSystem.isEmpty())	subSystem = "%%";
+    if(subSystem.isEmpty())
+        subSystem = "%%";
     
     alDataSettings * t = new alDataSettings(fEngine);
     t->select(QString("subsystem LIKE '%1'").arg(subSystem));

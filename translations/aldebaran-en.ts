@@ -68,6 +68,10 @@
         <source>Order: Card pay</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Order: Postpay work</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>alArchiveTable</name>

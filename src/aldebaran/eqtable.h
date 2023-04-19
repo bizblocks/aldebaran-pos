@@ -10,12 +10,14 @@ class alEqTable : public alDataTable
     Q_OBJECT
 public:
     alEqTable(QWidget * parent, alEngine * engine);
-    virtual void init();
+    virtual void init();    
     alEqRecord * current();
 public slots:
     bool newElement();
     virtual bool editRowData();
     virtual bool deleteRowData();
+protected slots:
+    virtual void fillLine(int r);
 protected:
     virtual QPixmap pixmap(int r);
     bool dialog(alEqRecord * user);

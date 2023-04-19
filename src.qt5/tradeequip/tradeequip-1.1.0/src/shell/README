@@ -1,4 +1,0 @@
-Drivers' DLLs should be place in:
-Windows: {Application path}\tradeequip subfolder 
-Linux: /usr/lib/tradeequip subfolder
-for shell to work.

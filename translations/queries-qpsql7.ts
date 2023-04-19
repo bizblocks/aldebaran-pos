@@ -428,18 +428,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>CREATE INDEX idx_subsys ON settings (subsystem);</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>CREATE INDEX idx_name ON settings (valkey);</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>CREATE INDEX idx_setting ON settings (subsystem, valkey);</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>subsystem=&apos;%1&apos; AND valkey=&apos;%2&apos;</source>
         <translation></translation>
     </message>
@@ -475,6 +463,18 @@
     <message>
         <source>create_rights</source>
         <translation>CREATE TABLE RIGHTS (id int8 NOT NULL, id_owner int8 NOT NULL, rule int4, enabled bool, CONSTRAINT id_rights PRIMARY KEY (id)) WITHOUT OIDS;</translation>
+    </message>
+    <message>
+        <source>create_settings_idx_subsys</source>
+        <translation>CREATE INDEX idx_subsys ON settings (subsystem);</translation>
+    </message>
+    <message>
+        <source>create_settings_idx_name</source>
+        <translation>CREATE INDEX idx_name ON settings (valkey);</translation>
+    </message>
+    <message>
+        <source>create_settings_idx_settings</source>
+        <translation>CREATE INDEX idx_setting ON settings (subsystem, valkey);</translation>
     </message>
 </context>
 <context>

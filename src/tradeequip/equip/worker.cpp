@@ -3,6 +3,7 @@
 #include <qtimer.h>
 #include <qsignal.h>
 #include <qthread.h>
+#include "engine.h"
 #include "worker.h"
 #include "driver.h"
 #include "officeprinter.h"
@@ -28,7 +29,7 @@ private:
 };
 
 jobThread::jobThread(eqJob * o, QMutex * m) :
-        mutex(m), job(o)
+    mutex(m), job(o)
 {
 }
 
@@ -58,20 +59,20 @@ eqWorker::~eqWorker()
 {
     for(QValueList<QThread*>::iterator it=threads.begin();it!=threads.end();++it)
     {
-    jobThread * thread = (jobThread*)(*it);
-    if(thread)
-    {
-        thread->mutex->lock();
-        thread->mutex->unlock();
-        delete thread->mutex;
-        delete thread;
-    }
+        jobThread * thread = (jobThread*)(*it);
+        if(thread)
+        {
+            thread->mutex->lock();
+            thread->mutex->unlock();
+            delete thread->mutex;
+            delete thread;
+        }
     }
 
     for(int i=0;i<(int)devices.keys().count();i++)
     {
-    eqDriver * device = devices[devices.keys()[i]];
-    if(device) delete device;
+        eqDriver * device = devices[devices.keys()[i]];
+        if(device) delete device;
     }
 }
 
@@ -79,7 +80,8 @@ eqWorker * eqWorker::worker()
 {
     if(hasWorkers) return fWorker;
     eqWorker * res = new eqWorker();
-    return res;	    
+    hasWorkers = true;
+    return res;
 }
 
 void eqWorker::kill()
@@ -111,8 +113,8 @@ eqDriver * eqWorker::createDevice(QString driverName, QString deviceName, bool q
         dev = new eqFR(deviceName);
     if(dev && queue)
     {
-		addDevice(dev);
-    }	
+        addDevice(dev);
+    }
     return dev;
 }
 
@@ -123,13 +125,22 @@ eqDriver * eqWorker::getDevice(QString deviceName)
 
 void eqWorker::addDevice(eqDriver * device)
 {
-    if(device) devices[device->name()] = device;
+    if(device)
+        devices[device->name()] = device;
 }
 
 eqJob * eqWorker::createJob(QString deviceName, QString action)
 {
+    if(deviceName.isEmpty())
+        return NULL;
+
     eqDriver * drv = devices[deviceName];
-    if(!drv) return NULL;
+
+    if(!drv)
+    {
+        alDBG(tr("No such device: %1").arg(deviceName));
+        return NULL;
+    }
     return drv->createJob(action);
 }
 
@@ -151,17 +162,17 @@ QVariant eqWorker::option(QString deviceName, QString optionName)
 QStringList eqWorker::driverList()
 {
     QStringList lst;
-    lst << "Sirius" 
-	    << "ECR"
-	    << "Office Printer" 
-	    << "MSC Reader" 
-	    << "Barcode Reader"
-	    << "Virtual Mart";
+    lst << "Sirius"
+        << "ECR"
+        << "Office Printer"
+        << "MSC Reader"
+        << "Barcode Reader"
+        << "Virtual Mart";
     return lst;
 }
-	
+
 eqJob::eqJob(eqDriver * device, QString action) : 
-	QObject(device, QString("%1_job").arg(device->name()))
+    QObject(device, QString("%1_job").arg(device->name()))
 {
     fResult = 0;
     setError(0, "");
@@ -179,12 +190,13 @@ eqJob::~eqJob()
 
 int eqJob::process()
 {
-    if(fAction.isEmpty()) return 0;
+    if(fAction.isEmpty())
+        return 0;
     fSignal->connect(this, QString(SLOT(%1())).arg(fAction));
     fSignal->activate();
     fSignal->disconnect(this, QString(SLOT(%1())).arg(fAction));
     processed = TRUE;
-    return fSignal->value().toInt();     
+    return fSignal->value().toInt();
 }
 
 void eqJob::wait()
@@ -200,13 +212,14 @@ bool eqJob::waitTimeout(Q_ULLONG sec)
     for(Q_ULLONG i=0;i<sec;i++)
     {
         usleep(1000);
-        if(processed) return processed;
+        if(processed)
+            return processed;
     }
-    return processed;    
+    return processed;
 }
 
 eqWorkerJob::eqWorkerJob() : 
-	eqJob(new eqDummyDriver("worker"), "exit thread") 
+    eqJob(new eqDummyDriver("worker"), "exit thread")
 {
 }
 
@@ -217,21 +230,22 @@ int eqWorkerJob::process()
 
 void eqWorker::initEquipment(alDataEq * eq)
 {
-    eq->select();    
+    eq->select();
     if(eq->first()) do
     {
-	alEqRecord * device = (alEqRecord*)eq->current();
-	if(!device->enabled()) continue;
-	eqDriver * dev = fWorker->createDevice(device->type(), device->name(), FALSE);
-	QStringList opts = device->options();
-	for(uint i=0;i<opts.count();i++)
-	{
-	    dev->setOption(opts[i], device->option(opts[i]));
-//	    qDebug(opts[i]+"="+device->option(opts[i]));
-	}
-	connect(dev, SIGNAL(deviceError(int)), this, SLOT(onError(int)));
-	dev->init();
-	this->addDevice(dev);
+        alEqRecord * device = (alEqRecord*)eq->current();
+        if(!device->enabled())
+            continue;
+        eqDriver * dev = fWorker->createDevice(device->type(), device->name(), FALSE);
+        QStringList opts = device->options();
+        for(uint i=0;i<opts.count();i++)
+        {
+            dev->setOption(opts[i], device->option(opts[i]));
+            //	    qDebug(opts[i]+"="+device->option(opts[i]));
+        }
+        connect(dev, SIGNAL(deviceError(int)), this, SLOT(onError(int)));
+        dev->init();
+        this->addDevice(dev);
     } while (eq->next());
 }
 

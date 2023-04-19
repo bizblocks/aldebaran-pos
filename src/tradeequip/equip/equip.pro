@@ -1,15 +1,16 @@
 TEMPLATE	= lib
 LANGUAGE	= C++
 
-CONFIG	+= qt warn_on release thread
+#CONFIG	+= qt warn_on release thread
+CONFIG	+= qt warn_on debug thread
 
-QMAKE_CXXFLAGS_RELEASE = -fpermissive -Wno-deprecated-copy
+QMAKE_CXXFLAGS = -fpermissive -Wno-deprecated-copy
 
 unix:LIBS	+= -L../tardeequip-1.1.0/lib -L../tradeequip-drv/lib -ltereader-barcode
 
 unix:DEFINES	+= DEBUG
 
-INCLUDEPATH	+= ../../aldebaran/data
+INCLUDEPATH	+= ../../aldebaran/data ../../aldebaran/
 
 unix:INCLUDEPATH	+= ../tradeequip-drv/printers/citizen-ct-s300/lib ../tradeequip-drv/printers/citizen-ct-s300/lib ../tradeequip-drv/cashregisters/felix-rk/lib ../tradeequip-drv/cashregisters/shtrih-fr/lib ../tradeequip-1.1.0/src/lib ../../impexp/ ../tradeequip-drv/readers/barcode
 

@@ -16,21 +16,21 @@
 #define SUBSYSTEM GENERAL
 
 alMainWindow::alMainWindow(alEngine * pEngine) :
-	QMainWindow(NULL, "mainWin")
+    QMainWindow(NULL, "mainWin")
 {
     fEngine = pEngine;
     if(fEngine) connect(fEngine, SIGNAL(settingsChanged()), this, SLOT(rebuild()));
-    currentWin = NULL;    
+    currentWin = NULL;
     hall = NULL;
     orderWin = NULL;
     arcWin = NULL;
-    init();    
+    init();
     showFullScreen();
 }
 
 void alMainWindow::init()
 {
-    createWidgets();	
+    createWidgets();
 }
 
 alMainWindow::~alMainWindow()
@@ -55,12 +55,12 @@ void alMainWindow::createWidgets()
     menu->insertItem(tr("Z-Report"), ZReport);
     menu->insertItem(tr("Paying"), Paying);
     menu->insertItem(tr("Payout"), Payout);
-    menu->insertSeparator();    
+    menu->insertSeparator();
     menu->insertItem(tr("Equipment"), Equipment);
     menu->insertSeparator();
     menu->insertItem(tr("Import goods"), Import);
     menu->insertItem(tr("Export sales"), Export);
-    menu->insertSeparator();    
+    menu->insertSeparator();
     menu->insertItem(tr("Settings"), Settings);
     menu->insertSeparator();
     menu->insertItem(tr("Archive"), Archive);
@@ -81,26 +81,26 @@ void alMainWindow::createWidgets()
     connect(btn, SIGNAL(clicked()), fEngine, SLOT(loginLock()));
     grid->addWidget(btn, 1, 0);
     
-//    QFrame * frameClock = new QFrame(serviceFrame, "frameClock");
-//    grid->addWidget(frameClock, 2, 0);
-//    QGridLayout * lytClock = new QGridLayout(frameClock, 1, 3);
-//    
-//    QLCDNumber * number = new QLCDNumber(frameClock)
+    //    QFrame * frameClock = new QFrame(serviceFrame, "frameClock");
+    //    grid->addWidget(frameClock, 2, 0);
+    //    QGridLayout * lytClock = new QGridLayout(frameClock, 1, 3);
+    //
+    //    QLCDNumber * number = new QLCDNumber(frameClock)
     AnalogClock * aclocks = new AnalogClock(serviceFrame, "aclocks");
     grid->addWidget(aclocks, 2, 0);
     DigitalClock * dclocks = new DigitalClock(serviceFrame, "dclocks");
-    grid->addWidget(dclocks, 3, 0);    
+    grid->addWidget(dclocks, 3, 0);
     
     btn = new QPushButton(serviceFrame, "btnExit");
     btn->setText(tr("Exit"));
     btn->setAccel(ALT+Key_X);
-    btn->setIconSet(QPixmap::fromMimeSource("exit.png"));    
+    btn->setIconSet(QPixmap::fromMimeSource("exit.png"));
     grid->addWidget(btn, 10, 0);
     connect(btn, SIGNAL(clicked()), this, SLOT(close()));
-    serviceFrame->show();    
+    serviceFrame->show();
     rebuild();
     ((QPushButton*)serviceFrame->child("btnExit"))->setEnabled(TRUE);
-    ((QPushButton*)serviceFrame->child("btnService"))->setEnabled(TRUE);    
+    ((QPushButton*)serviceFrame->child("btnService"))->setEnabled(TRUE);
 }
 
 /*
@@ -108,26 +108,26 @@ void alMainWindow::createWidgets()
 */
 void alMainWindow::closeEvent(QCloseEvent * e)
 {
-	e->accept();
-	emit(closed());
+    e->accept();
+    emit(closed());
 }
 
 void alMainWindow::showEvent(QShowEvent * e)
 {
     Q_UNUSED(e);
-    alUserRecord * user = fEngine->currentUser();    
+    alUserRecord * user = fEngine->currentUser();
     QPopupMenu * menu = ((QPushButton*)(serviceFrame->child("btnService")))->popup();
     //TODO more automated ??
     menu->setItemEnabled(ZReport, user->right(rZReport));
-    menu->setItemEnabled(XReport, user->right(rXReport));     
+    menu->setItemEnabled(XReport, user->right(rXReport));
     menu->setItemEnabled(Paying, user->right(rPaying));
     menu->setItemEnabled(Payout, user->right(rPayout));
     menu->setItemEnabled(Equipment, user->right(rEquipment));
-    menu->setItemEnabled(Import, user->right(rImport));    
-    menu->setItemEnabled(Export, user->right(rExport));        
-    menu->setItemEnabled(Archive, user->right(rArchive));        
+    menu->setItemEnabled(Import, user->right(rImport));
+    menu->setItemEnabled(Export, user->right(rExport));
+    menu->setItemEnabled(Archive, user->right(rArchive));
     menu->setItemEnabled(Settings, user->right(rSettings));
-    menu->setItemEnabled(AdvancedReport, user->right(rAdvancedReport));    
+    menu->setItemEnabled(AdvancedReport, user->right(rAdvancedReport));
 }
 
 void alMainWindow::service(int action)
@@ -136,44 +136,44 @@ void alMainWindow::service(int action)
     switch(action)
     {
     case ZReport:
-	if(QMessageBox::question(this, "aldebaran", tr("Process Z-report??"), YES, NO) == YES)  fEngine->zReport();
-	break;
+        if(QMessageBox::question(this, "aldebaran", tr("Process Z-report??"), YES, NO) == YES)  fEngine->zReport();
+        break;
     case XReport:
-	if(QMessageBox::question(this, "aldebaran", tr("Process X-report??"), YES, NO) == YES)  fEngine->xReport();
-	break;
+        if(QMessageBox::question(this, "aldebaran", tr("Process X-report??"), YES, NO) == YES)  fEngine->xReport();
+        break;
     case Paying:
-	fEngine->payin();
-	break;
+        fEngine->payin();
+        break;
     case Payout: //ECR actions
-	fEngine->payout();
-	break;
+        fEngine->payout();
+        break;
     case Equipment: // Equipment actions
-	fEngine->eqDialog();
-	break;
+        fEngine->eqDialog();
+        break;
     case Settings: // Settings
-	fEngine->settingsDialog();
-	break;
+        fEngine->settingsDialog();
+        break;
     case Import:
-	fEngine->startImport();
-	break;
+        fEngine->startImport();
+        break;
     case Export:
-	dlg = new dlgExportSales(this);
-	dlg->setCaption(tr("Export sales"));	
-	if(dlg->exec()) fEngine->exportSales(((dlgExportSales*)dlg)->period(), ((dlgExportSales*)dlg)->begin(), ((dlgExportSales*)dlg)->end());
-	delete dlg;
-	break;
+        dlg = new dlgExportSales(this);
+        dlg->setCaption(tr("Export sales"));
+        if(dlg->exec()) fEngine->exportSales(((dlgExportSales*)dlg)->period(), ((dlgExportSales*)dlg)->begin(), ((dlgExportSales*)dlg)->end());
+        delete dlg;
+        break;
     case Archive:
-	openArchive();
-	break;
+        openArchive();
+        break;
     case AdvancedReport:
-	dlg = new dlgAdvReport(this);
-	dlg->setCaption(tr("Advanced report"));
-	if(dlg->exec()) fEngine->advancedReport(((dlgAdvReport* )dlg)->period(), ((dlgAdvReport* )dlg)->type(), ((dlgAdvReport*)dlg)->begin(), ((dlgAdvReport*)dlg)->end());
-	delete dlg;
-	break;
+        dlg = new dlgAdvReport(this);
+        dlg->setCaption(tr("Advanced report"));
+        if(dlg->exec()) fEngine->advancedReport(((dlgAdvReport* )dlg)->period(), ((dlgAdvReport* )dlg)->type(), ((dlgAdvReport*)dlg)->begin(), ((dlgAdvReport*)dlg)->end());
+        delete dlg;
+        break;
     default:
-	QMessageBox::information(this, "TODO", QString(tr("unknown menu action %1")).arg(action));	
-	break;
+        QMessageBox::information(this, "TODO", QString(tr("unknown menu action %1")).arg(action));
+        break;
     }
 }
 
@@ -185,11 +185,11 @@ void alMainWindow::rebuild()
     if(!useshema) hall = new alWHall(fEngine, this, tr("Hall"), fEngine->parameter(SUBSYSTEM, TABLENUM).toString().toInt());
     else
     {
-	QPixmap px = bytearray2pixmap(fEngine->parameter(SUBSYSTEM, SHEMA).toByteArray());
-	hall = new alWHall(fEngine, this, "hall", 0, px);
+        QPixmap px = bytearray2pixmap(fEngine->parameter(SUBSYSTEM, SHEMA).toByteArray());
+        hall = new alWHall(fEngine, this, "hall", 0, px);
     }
     setWidgetGeometry(hall);
-    hall->show();    
+    hall->show();
     checkWidgets();
 }
 
@@ -197,12 +197,12 @@ void alMainWindow::openOrder(Q_ULLONG orderId, int tableNum)
 {
     if(hall) hall->hide();
     orderWin = new alOrderWindow(fEngine, this, "order window", orderId);
-    connect(orderWin, SIGNAL(exit()), this, SLOT(rebuild()));    
+    connect(orderWin, SIGNAL(exit()), this, SLOT(rebuild()));
     orderWin->init();
-    orderWin->setTable(tableNum); 
+    orderWin->setTable(tableNum);
     setWidgetGeometry(orderWin);
     orderWin->show();
-    connect(orderWin, SIGNAL(orderUpdated(alOrderRecord*)), fEngine, SLOT(exportOrder(alOrderRecord*)));    
+    connect(orderWin, SIGNAL(orderUpdated(alOrderRecord*)), fEngine, SLOT(exportOrder(alOrderRecord*)));
     checkWidgets();
 }
 
@@ -227,8 +227,8 @@ void alMainWindow::checkWidgets()
 
 void alMainWindow::setWidgetGeometry(QWidget * w)
 {
-    QDesktopWidget desktop;    
-    QRect r = desktop.screenGeometry();    
+    QDesktopWidget desktop;
+    QRect r = desktop.screenGeometry();
     w->setGeometry(r.left()+5, r.top()+5, r.right()-170, r.bottom()-10);
     currentWin = w;
 }

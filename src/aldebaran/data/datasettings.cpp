@@ -21,11 +21,11 @@ void alDataSettings::checkTable()
     QString query = Queries::tr("create_settings");
     qDebug(query);
     fEngine->db()->exec(query);
-    query = Queries::tr("CREATE INDEX idx_subsys ON settings (subsystem);");
+    query = Queries::tr("create_settings_idx_subsys");
     fEngine->db()->exec(query);
-    query = Queries::tr("CREATE INDEX idx_name ON settings (valkey);");
+    query = Queries::tr("create_settings_idx_name");
     fEngine->db()->exec(query);
-    query = Queries::tr("CREATE INDEX idx_setting ON settings (subsystem, valkey);");
+    query = Queries::tr("create_settings_idx_settings");
     fEngine->db()->exec(query);
 }
 
