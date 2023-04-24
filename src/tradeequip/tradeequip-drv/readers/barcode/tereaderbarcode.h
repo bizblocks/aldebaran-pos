@@ -19,9 +19,9 @@ public:
 	virtual bool setParameter(const QString &, const QString &); // set Scanner parameter for configurable scanners
   virtual int readerType() const {return RT_BARCODE;}
 
-  virtual QValueList<int> supportedBaudRates()
+  virtual QList<int> supportedBaudRates()
   {
-    QValueList<int> ret;
+    QList<int> ret;
     ret<<2400<<4800<<7200<<9600<<14400<<19200<<38400<<57600<<115200;
     return ret;
   }

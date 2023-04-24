@@ -1,996 +1,992 @@
-<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>alCalculator</class>
-<widget class="QDialog">
-    <property name="name">
-        <cstring>alCalculator</cstring>
-    </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>251</width>
-            <height>206</height>
-        </rect>
-    </property>
-    <property name="caption">
-        <string>Calculator</string>
-    </property>
-    <grid>
-        <property name="name">
-            <cstring>unnamed</cstring>
-        </property>
-        <property name="margin">
-            <number>1</number>
-        </property>
-        <property name="spacing">
-            <number>1</number>
-        </property>
-        <widget class="QPushButton" row="3" column="2">
-            <property name="name">
-                <cstring>btn3</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>3</string>
-            </property>
-            <property name="accel">
-                <string>3</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="3" column="0">
-            <property name="name">
-                <cstring>btn1</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>1</string>
-            </property>
-            <property name="accel">
-                <string>1</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="3" column="1">
-            <property name="name">
-                <cstring>btn2</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>2</string>
-            </property>
-            <property name="accel">
-                <string>2</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="2" column="0">
-            <property name="name">
-                <cstring>btn4</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>4</string>
-            </property>
-            <property name="accel">
-                <string>4</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="2" column="1">
-            <property name="name">
-                <cstring>btn5</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>5</string>
-            </property>
-            <property name="accel">
-                <string>5</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="2" column="2">
-            <property name="name">
-                <cstring>btn6</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>6</string>
-            </property>
-            <property name="accel">
-                <string>6</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="1" column="0">
-            <property name="name">
-                <cstring>btn7</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>7</string>
-            </property>
-            <property name="accel">
-                <string>7</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="1" column="1">
-            <property name="name">
-                <cstring>btn8</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>8</string>
-            </property>
-            <property name="accel">
-                <string>8</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="1" column="2">
-            <property name="name">
-                <cstring>btn9</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>9</string>
-            </property>
-            <property name="accel">
-                <string>9</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="4" column="0">
-            <property name="name">
-                <cstring>btn0</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>0</string>
-            </property>
-            <property name="accel">
-                <string>0</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="4" column="1">
-            <property name="name">
-                <cstring>btn_</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>.</string>
-            </property>
-            <property name="accel">
-                <string>.</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="4" column="2">
-            <property name="name">
-                <cstring>btnEq</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>0</red>
-                    <green>170</green>
-                    <blue>255</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>=</string>
-            </property>
-            <property name="accel">
-                <string>=</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="1" column="3">
-            <property name="name">
-                <cstring>btnPlus</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>0</red>
-                    <green>170</green>
-                    <blue>255</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>+</string>
-            </property>
-            <property name="accel">
-                <string>Shift++</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="2" column="3">
-            <property name="name">
-                <cstring>btnMinus</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>0</red>
-                    <green>170</green>
-                    <blue>255</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>-</string>
-            </property>
-            <property name="accel">
-                <string>-</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="3" column="3">
-            <property name="name">
-                <cstring>btnMul</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>0</red>
-                    <green>170</green>
-                    <blue>255</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>*</string>
-            </property>
-            <property name="accel">
-                <string>Shift+*</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="4" column="3">
-            <property name="name">
-                <cstring>btnDiv</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>0</red>
-                    <green>170</green>
-                    <blue>255</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>÷</string>
-            </property>
-            <property name="accel">
-                <string>/</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="2" column="4">
-            <property name="name">
-                <cstring>btnPlusMinus</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>±</string>
-            </property>
-            <property name="accel">
-                <string></string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="2" column="5">
-            <property name="name">
-                <cstring>btnBackspace</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>121</red>
-                    <green>212</green>
-                    <blue>118</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>BS</string>
-            </property>
-            <property name="accel">
-                <string>Backspace</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="1" column="4">
-            <property name="name">
-                <cstring>btnCE</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>226</red>
-                    <green>56</green>
-                    <blue>30</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>CE</string>
-            </property>
-            <property name="accel">
-                <string>Del</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="1" column="5">
-            <property name="name">
-                <cstring>btnC</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>40</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>226</red>
-                    <green>56</green>
-                    <blue>30</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>C</string>
-            </property>
-            <property name="accel">
-                <string>Ctrl+Del</string>
-            </property>
-        </widget>
-        <widget class="QLCDNumber" row="0" column="0" rowspan="1" colspan="6">
-            <property name="name">
-                <cstring>lcdNumber</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>0</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="maximumSize">
-                <size>
-                    <width>32767</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>230</red>
-                    <green>223</green>
-                    <blue>237</blue>
-                </color>
-            </property>
-            <property name="numDigits">
-                <number>12</number>
-            </property>
-            <property name="segmentStyle">
-                <enum>Filled</enum>
-            </property>
-            <property name="value" stdset="0">
-                <number>123.444</number>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="4" column="4" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>btnOK</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>0</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>0</red>
-                    <green>170</green>
-                    <blue>255</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>&amp;OK</string>
-            </property>
-            <property name="accel">
-                <string>Alt+O</string>
-            </property>
-            <property name="default">
-                <bool>true</bool>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="3" column="4" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>btnCancel</cstring>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>0</width>
-                    <height>40</height>
-                </size>
-            </property>
-            <property name="paletteBackgroundColor">
-                <color>
-                    <red>226</red>
-                    <green>56</green>
-                    <blue>30</blue>
-                </color>
-            </property>
-            <property name="font">
-                <font>
-                    <pointsize>14</pointsize>
-                </font>
-            </property>
-            <property name="text">
-                <string>&amp;Cancel</string>
-            </property>
-            <property name="accel">
-                <string>Alt+C, Esc</string>
-            </property>
-        </widget>
-    </grid>
-</widget>
-<connections>
-    <connection>
-        <sender>btnOK</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>accept()</slot>
-    </connection>
-    <connection>
-        <sender>btnCancel</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>reject()</slot>
-    </connection>
-    <connection>
-        <sender>btn0</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>on0()</slot>
-    </connection>
-    <connection>
-        <sender>btn1</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>on1()</slot>
-    </connection>
-    <connection>
-        <sender>btn2</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>on2()</slot>
-    </connection>
-    <connection>
-        <sender>btn3</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>on3()</slot>
-    </connection>
-    <connection>
-        <sender>btn4</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>on4()</slot>
-    </connection>
-    <connection>
-        <sender>btn5</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>on5()</slot>
-    </connection>
-    <connection>
-        <sender>btn6</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>on6()</slot>
-    </connection>
-    <connection>
-        <sender>btn7</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>on7()</slot>
-    </connection>
-    <connection>
-        <sender>btn8</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>on8()</slot>
-    </connection>
-    <connection>
-        <sender>btn9</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>on9()</slot>
-    </connection>
-    <connection>
-        <sender>btnEq</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>onEq()</slot>
-    </connection>
-    <connection>
-        <sender>btnMul</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>onMul()</slot>
-    </connection>
-    <connection>
-        <sender>btnPlus</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>onPlus()</slot>
-    </connection>
-    <connection>
-        <sender>btnDiv</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>onDiv()</slot>
-    </connection>
-    <connection>
-        <sender>btn_</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>on_()</slot>
-    </connection>
-    <connection>
-        <sender>btnBackspace</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>onBackspace()</slot>
-    </connection>
-    <connection>
-        <sender>btnC</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>onC()</slot>
-    </connection>
-    <connection>
-        <sender>btnCE</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>onCE()</slot>
-    </connection>
-    <connection>
-        <sender>btnMinus</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>onMinus()</slot>
-    </connection>
-    <connection>
-        <sender>btnPlusMinus</sender>
-        <signal>clicked()</signal>
-        <receiver>alCalculator</receiver>
-        <slot>onPlusMinus()</slot>
-    </connection>
-</connections>
-<includes>
-    <include location="local" impldecl="in implementation">calculator.ui.h</include>
-</includes>
-<variables>
-    <variable access="private">double cop;</variable>
-    <variable access="private">char op;</variable>
-    <variable access="private">double res;</variable>
-    <variable access="private">double sop;</variable>
-    <variable access="private">bool point;</variable>
-</variables>
-<slots>
-    <slot>add( QString num )</slot>
-    <slot>on0()</slot>
-    <slot>on1()</slot>
-    <slot>on2()</slot>
-    <slot>on3()</slot>
-    <slot>on4()</slot>
-    <slot>on5()</slot>
-    <slot>on6()</slot>
-    <slot>on7()</slot>
-    <slot>on8()</slot>
-    <slot>on9()</slot>
-    <slot>onEq()</slot>
-    <slot>onPlus()</slot>
-    <slot>onMinus()</slot>
-    <slot>onMul()</slot>
-    <slot>onDiv()</slot>
-    <slot>onPlusMinus()</slot>
-    <slot>onBackspace()</slot>
-    <slot>onC()</slot>
-    <slot>onCE()</slot>
-    <slot>on_()</slot>
-    <slot returnType="double">value()</slot>
-    <slot>setValue( double initVal )</slot>
-    <slot>init()</slot>
-</slots>
-<pixmapinproject/>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>alCalculator</class>
+ <widget class="QDialog" name="alCalculator">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>251</width>
+    <height>206</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Calculator</string>
+  </property>
+  <layout class="QGridLayout">
+   <property name="margin">
+    <number>1</number>
+   </property>
+   <property name="spacing">
+    <number>1</number>
+   </property>
+   <item row="3" column="2">
+    <widget class="QPushButton" name="btn3">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>3</string>
+     </property>
+     <property name="shortcut">
+      <string>3</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="btn1">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>1</string>
+     </property>
+     <property name="shortcut">
+      <string>1</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QPushButton" name="btn2">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>2</string>
+     </property>
+     <property name="shortcut">
+      <string>2</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="btn4">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>4</string>
+     </property>
+     <property name="shortcut">
+      <string>4</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QPushButton" name="btn5">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>5</string>
+     </property>
+     <property name="shortcut">
+      <string>5</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QPushButton" name="btn6">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>6</string>
+     </property>
+     <property name="shortcut">
+      <string>6</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="btn7">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>7</string>
+     </property>
+     <property name="shortcut">
+      <string>7</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="btn8">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>8</string>
+     </property>
+     <property name="shortcut">
+      <string>8</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="btn9">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>9</string>
+     </property>
+     <property name="shortcut">
+      <string>9</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QPushButton" name="btn0">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="shortcut">
+      <string>0</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QPushButton" name="btn_">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>.</string>
+     </property>
+     <property name="shortcut">
+      <string>.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QPushButton" name="btnEq">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>=</string>
+     </property>
+     <property name="shortcut">
+      <string>=</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="btnPlus">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>+</string>
+     </property>
+     <property name="shortcut">
+      <string>Shift++</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QPushButton" name="btnMinus">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>-</string>
+     </property>
+     <property name="shortcut">
+      <string>-</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="3">
+    <widget class="QPushButton" name="btnMul">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>*</string>
+     </property>
+     <property name="shortcut">
+      <string>Shift+*</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QPushButton" name="btnDiv">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>÷</string>
+     </property>
+     <property name="shortcut">
+      <string>/</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="4">
+    <widget class="QPushButton" name="btnPlusMinus">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>±</string>
+     </property>
+     <property name="shortcut">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="5">
+    <widget class="QPushButton" name="btnBackspace">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>BS</string>
+     </property>
+     <property name="shortcut">
+      <string>Backspace</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <widget class="QPushButton" name="btnCE">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>CE</string>
+     </property>
+     <property name="shortcut">
+      <string>Del</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="5">
+    <widget class="QPushButton" name="btnC">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>C</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Del</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="6">
+    <widget class="QLCDNumber" name="lcdNumber">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>32767</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="numDigits">
+      <number>12</number>
+     </property>
+     <property name="segmentStyle">
+      <enum>QLCDNumber::Filled</enum>
+     </property>
+     <property name="value" stdset="0">
+      <double>123.444000000000003</double>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="4" colspan="2">
+    <widget class="QPushButton" name="btnOK">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>&amp;OK</string>
+     </property>
+     <property name="shortcut">
+      <string>Alt+O</string>
+     </property>
+     <property name="default">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="4" colspan="2">
+    <widget class="QPushButton" name="btnCancel">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>&amp;Cancel</string>
+     </property>
+     <property name="shortcut">
+      <string>Alt+C, Esc</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>btnOK</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn0</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>on0()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn1</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>on1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn2</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>on2()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn3</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>on3()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn4</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>on4()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn5</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>on5()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn6</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>on6()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn7</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>on7()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn8</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>on8()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn9</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>on9()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnEq</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>onEq()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnMul</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>onMul()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnPlus</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>onPlus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnDiv</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>onDiv()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>on_()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnBackspace</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>onBackspace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnC</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>onC()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnCE</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>onCE()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnMinus</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>onMinus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnPlusMinus</sender>
+   <signal>clicked()</signal>
+   <receiver>alCalculator</receiver>
+   <slot>onPlusMinus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -46,7 +46,7 @@ private:
 	QString type;
 	QVariant data;
     };
-    QValueList<queueElement> queue;
+    QList<queueElement> queue;
 };
 
 class eqVMJob : public eqJob

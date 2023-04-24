@@ -82,7 +82,8 @@ protected:
 		m_bRunning=true;
 		while(true)
 		{
-			m_pDataReady->wait();
+            //TODO check
+            m_pDataReady->wait(m_pBufferMutex);
 			char ch;
 			while (true)
 			{
@@ -262,7 +263,7 @@ void TEDisplayBase::addToBuffer(const char * data, Q_ULONG len)
 	uint oldsize=m_pBuffer->size();
 	m_pBuffer->resize(oldsize+len);
 	for(uint i=oldsize;i<oldsize+len;i++)
-		m_pBuffer->at(i)=data[i-oldsize];
+        m_pBuffer[i]=data[i-oldsize];
 	m_pBufferMutex->unlock();
 	m_pDataReady->wakeAll();
 };

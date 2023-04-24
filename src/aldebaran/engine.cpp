@@ -1,19 +1,20 @@
 #include <qapplication.h>
-#include <qsqldatabase.h>
+#include <QSqlDatabase>
 #include <qpixmap.h>
-#include <qcstring.h>
+#include <Q3CString>
 #include <qbuffer.h>
 #include <qfile.h>
-#include <qftp.h>
-#include <qsqlcursor.h>
+#include <QFtp>
+#include <Q3SqlCursor>
 #include <qsqldriver.h>
+#include <QTranslator>
 #include "engine.h"
 #include "mainwin.h"
 #include "whall.h"
 #include "wtable.h"
 #include "settings.h"
-#include "calculator.h"
-#include "dlglogin.h"
+#include "ui_calculator.h"
+#include "ui_dlglogin.h"
 #include "worker.h"
 #include "driver.h"
 #include "mscreader.h"
@@ -22,7 +23,9 @@
 #include "virtualmart.h"
 #include "ieshtrih.h"
 #include "sirius/iesirius.h"
-#include "equipmentdialog.h"
+#include "ui_equipmentdialog.h"
+#include "equipmentdialog.ui.h"
+#include "dlglogin.ui.h"
 
 
 alEngine::alEngine(int argc, char ** argv) :
@@ -236,7 +239,7 @@ int alEngine::start()
     do
     {
         dbParams = settings->dbSettings();
-        fDB = QSqlDatabase::addDatabase(dbParams[0], dbParams[1]);
+        fDB = new QSqlDatabase(QSqlDatabase::addDatabase(dbParams[0], dbParams[1]));
         fDB->setDatabaseName(dbParams[1]);
         fDB->setHostName(dbParams[2]);
         fDB->setPort(dbParams[3].toInt());
@@ -285,7 +288,7 @@ void alEngine::eqDialog()
 {
     equipmentDialog * dlg = new equipmentDialog();
     dlg->init(this);
-    dlg->exec();
+    dlg->execute();
     delete dlg;
 }
 
@@ -419,8 +422,10 @@ bool alEngine::prepareGoods(QString deviceType)
         map m;
         alGoodsRecord * rec = (alGoodsRecord *)goods->current();
         m["01"] = (uint)rec->id();
-        if((uint)rec->parent()) m["02"] =  (uint)rec->parent()->id();
-        else m["02"] = 0;
+        if(rec->parent())
+            m["02"] =  (uint)rec->parent()->id();
+        else
+            m["02"] = 0;
         m["03"] = rec->isGroup();
         m["04"] = rec->name();
         m["05"] = rec->description();
@@ -436,7 +441,8 @@ bool alEngine::prepareGoods(QString deviceType)
         job->setData(QVariant(m));
         job->process();
         delete job;
-        if(app->hasPendingEvents()) app->processEvents(1000);
+        if(app->hasPendingEvents())
+            app->processEvents(QEventLoop::ProcessEventsFlag::AllEvents, 1000);
     }while(goods->next());
     job = drv->createJob("goodsEnd");
     job->process();
@@ -474,8 +480,10 @@ void alEngine::sendElement(alGoodsRecord * rec)
         delete job;
         map m;
         m["01"] = (uint)rec->id();
-        if((uint)rec->parent()) m["02"] =  (uint)rec->parent()->id();
-        else m["02"] = 0;
+        if(rec->parent())
+            m["02"] =  (uint)rec->parent()->id();
+        else
+            m["02"] = 0;
         m["03"] = rec->isGroup();
         m["04"] = rec->name();
         m["05"] = rec->description();
@@ -546,7 +554,7 @@ QString alEngine::centerString(QString str, int iWidth)
     return str;
 }
 
-QString alEngine::alignStrings(QStringList lst, QValueList<int> tabs, int iWidth)
+QString alEngine::alignStrings(QStringList lst, QList<int> tabs, int iWidth)
 {
     QString sRes, sRes2, tmp;
     if(!lst.count()) return QString("");
@@ -735,7 +743,7 @@ void alEngine::exitApp()
     if(dbInited)
     {
         fDB->close();
-        QSqlDatabase::removeDatabase(fDB);
+        QSqlDatabase::removeDatabase(fDB->connectionName());
     }
 #ifdef DEBUG	
     qDebug(tr("Program successfully terminated").utf8());
@@ -745,11 +753,14 @@ void alEngine::exitApp()
 
 double alEngine::calculator(double initVal)
 {
-    alCalculator * calc = new alCalculator();
-    calc->setValue(initVal);
-    int answer = calc->exec();
-    if(answer) return calc->value();
-    else return -1.0;
+    Ui::alCalculator * calc = new Ui::alCalculator();
+//TODO
+//    calc->setValue(initVal);
+//    int answer = calc->exec();
+//    if(answer)
+//        return calc->value();
+//    else
+//        return -1.0;
     return initVal;
 }
 
@@ -860,7 +871,7 @@ void alEngine::onError(int errorCode)
         eqDriver * device = (eqDriver*)sender();
         //TODO error messages
         //	error(device->errorMsg());
-        qDebug(QString("%1:%2").arg(errorCode).arg(device->errorMsg().utf8()));
+        alDBG(QString("%1:%2").arg(errorCode).arg(device->errorMsg()));
     }
 }
 
@@ -979,11 +990,11 @@ QStringList alEngine::advReportGoods(int period, QDateTime begin, QDateTime end)
                 .arg(end.time().toString()) ;
     }
     
-    QSqlQuery query(fDB);
+    QSqlQuery query(*fDB);
     if(!query.exec(queryStr))
     {
         error(tr("Error in query: %1").arg(queryStr));
-        return QString::null;
+        return QStringList();
     }
     
     QStringList str;
@@ -995,7 +1006,7 @@ QStringList alEngine::advReportGoods(int period, QDateTime begin, QDateTime end)
         else str << QString(QDateTime::currentDateTime().toString());
         str << QString("").rightJustify(pw, '-');
         QStringList lst;
-        QValueList<int> tabs;
+        QList<int> tabs;
         double sum = 0.0, sumDiscount = 0.0;
         do
         {
@@ -1054,12 +1065,12 @@ QStringList alEngine::advReportHourly(int period, QDateTime begin, QDateTime end
                 .arg(end.time().toString()) ;
     }
     
-    QSqlQuery query(fDB);
+    QSqlQuery query(*fDB);
     if(!query.exec(queryStr))
     {
         error(tr("Error in query:"));
         qDebug(queryStr);
-        return QString::null;
+        return QStringList();
     }
 
     QStringList str;
@@ -1071,7 +1082,7 @@ QStringList alEngine::advReportHourly(int period, QDateTime begin, QDateTime end
         else str << QString(QDateTime::currentDateTime().toString());
         str << QString("").rightJustify(pw, '-');
         QStringList lst;
-        QValueList<int> tabs;
+        QList<int> tabs;
         int lastHour = -1;
         double sum = 0.0, amount=0.0, total=0.0, totalDiscount=0.0;
         do
@@ -1146,12 +1157,12 @@ QStringList alEngine::advReportCheques(int period, QDateTime begin, QDateTime en
                 .arg(end.time().toString()) ;
     }
     
-    QSqlQuery query(fDB);
+    QSqlQuery query(*fDB);
     if(!query.exec(queryStr))
     {
         error(tr("Error in query:"));
         qDebug(queryStr);
-        return QString::null;
+        return QStringList();
     }
     
     QStringList str;
@@ -1163,7 +1174,7 @@ QStringList alEngine::advReportCheques(int period, QDateTime begin, QDateTime en
         else str << QString(QDateTime::currentDateTime().toString());
         str << QString("").rightJustify(pw, '-');
         QStringList lst;
-        QValueList<int> tabs;
+        QList<int> tabs;
         int lastCheck = -1;
         double sum = 0.0, amount=0.0, total=0.0, totalDiscount=0.0;
         QString discount;
@@ -1258,12 +1269,12 @@ QStringList alEngine::advReportDiscounts(int period, QDateTime begin, QDateTime 
                 .arg(end.time().toString()) ;
     }
     
-    QSqlQuery query(fDB);
+    QSqlQuery query(*fDB);
     if(!query.exec(queryStr))
     {
         error(tr("Error in query:"));
         qDebug(queryStr);
-        return QString::null;
+        return QStringList();
     }
     
     if(query.first())
@@ -1274,7 +1285,7 @@ QStringList alEngine::advReportDiscounts(int period, QDateTime begin, QDateTime 
         else str += QString(QDateTime::currentDateTime().toString())+QString("\n");
         str += QString("").rightJustify(pw, '-') + QString("\n");
         QStringList lst;
-        QValueList<int> tabs;
+        QList<int> tabs;
         double sum = 0.0, fullSumm = 0.0;
         do
         {
@@ -1310,9 +1321,9 @@ QStringList alEngine::advReportDiscounts(int period, QDateTime begin, QDateTime 
         str +=  alignStrings(lst, tabs, pw)+QString("\n");
         str += "\n\n\n";
         str = str.utf8();
-        return str;
+        return str.split("\n");
     }
-    return QString::null;
+    return QStringList();
 }
 
 void alEngine::advancedReport(int period, int type, QDateTime begin, QDateTime end)
@@ -1341,7 +1352,7 @@ void alEngine::advancedReport(int period, int type, QDateTime begin, QDateTime e
 QByteArray pixmap2bytearray(QPixmap pix)
 {
     QByteArray bytea;
-    QBuffer buffer( bytea );
+    QBuffer buffer( &bytea );
     buffer.open( IO_WriteOnly );
     pix.save( &buffer, "PNG" );
     return bytea;
@@ -1350,7 +1361,7 @@ QByteArray pixmap2bytearray(QPixmap pix)
 QPixmap bytearray2pixmap(QByteArray bytea)
 {
     QPixmap pix;
-    QBuffer buffer(bytea);
+//    QBuffer buffer(&bytea);
     pix.loadFromData(bytea);
     return pix;
 }

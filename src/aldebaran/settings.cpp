@@ -1,8 +1,10 @@
 #include <qdir.h>
 #include "settings.h"
-#include "ddbsettings.h"
-#include "settingsdialog.h"
+#include "ui_ddbsettings.h"
+#include "ui_settingsdialog.h"
 #include "data/datasettings.h"
+#include "settingsdialog.ui.h"
+#include "ddbsettings.ui.h"
 
 alSettings::alSettings(alEngine * e) : 
     QObject()
@@ -87,7 +89,7 @@ bool alSettings::dbDialog()
 
 bool alSettings::dialog()
 {
-    settingsDialog * dlg = new settingsDialog();
+    settingsDialog * dlg = new settingsDialog(NULL);
     dlg->init(fEngine);
     dlg->setData(params);
     int res = dlg->exec();

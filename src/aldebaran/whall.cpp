@@ -1,5 +1,6 @@
 #include <math.h>
-#include <qgrid.h>
+#include <Q3Grid>
+#include <QPaintEvent>
 #include <qimage.h>
 #include <qpainter.h>
 #include <qlayout.h>

@@ -25,7 +25,7 @@ public:
 private:
     friend class alValueTableRow;
     QStringList fColumns;
-    QValueList<alValueTableRow> fData;
+    QList<alValueTableRow> fData;
 };
 
 class alValueTableRow : public QObject
@@ -44,7 +44,7 @@ private:
     alValueList fRowData;
     alValueTable * fOwner;
     friend class alValueTable;
-    friend class QValueListNode<alValueTableRow>;
+    //friend class QValueListNode<alValueTableRow>;
 };
 
 #endif

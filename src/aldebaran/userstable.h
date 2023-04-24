@@ -19,7 +19,7 @@ public slots:
     virtual bool editRowData();
     virtual bool deleteRowData();
 protected:
-    virtual QPixmap pixmap(int r);
+    virtual QIcon icon(int r);
     bool dialog(alUserRecord * user);
 };
 

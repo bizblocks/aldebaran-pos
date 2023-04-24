@@ -364,7 +364,7 @@ ShtrihFR::Result ShtrihFR::internalAddOperation(int oOperation, Byte const * baO
 	else
 		memset((void*)lCmd.tax,0,sizeof(lCmd.tax));
 	memset((void*)lCmd.text,0,sizeof(lCmd.text));
-	QCString scText=utf8ToDevice(sText);
+    Q3CString scText=utf8ToDevice(sText);
 	memcpy((void*)lCmd.text,(const void*)((const char *)scText),min(sizeof(lCmd.text)-4,scText.length()));
 	Byte respbuf[4];
 	res=sendCommand((Byte*)&lCmd,sizeof(lCmd),respbuf,sizeof(respbuf));
@@ -486,13 +486,13 @@ ShtrihFR::Result ShtrihFR::toDecimal(Byte const * const pBuf,int szSize, Decimal
 	return RSP_OK;
 }
 
-QCString ShtrihFR::utf8ToDevice( const QString &text )
+Q3CString ShtrihFR::utf8ToDevice( const QString &text )
 {
 	QTextCodec * cp1251=QTextCodec::codecForName("CP1251");
 	return cp1251->fromUnicode(text);
 }
 
-QString ShtrihFR::deviceToUtf8( const QCString &text )
+QString ShtrihFR::deviceToUtf8( const Q3CString &text )
 {
 	QTextCodec * cp1251=QTextCodec::codecForName("CP1251");
 	return cp1251->toUnicode(text);
@@ -543,7 +543,7 @@ ShtrihFR::Result ShtrihFR::internalReadOptions(int /*reserved*/)
 			setValue("Model","Unknown");
 		else
 		{
-			QCString csModStr((char*)(resp.la.deviceName),szModLen+1); // +1 for null byte
+            Q3CString csModStr((char*)(resp.la.deviceName),szModLen+1); // +1 for null byte
 			setValue("Model",deviceToUtf8(csModStr));
 		}
 		if (resp.la.deviceType==0 && resp.la.deviceSubtype==0)
@@ -748,7 +748,7 @@ ShtrihFR::Result ShtrihFR::internalQueryTableInfo(int tableNum, QString & name, 
 	Result res=sendCommand((Byte*)&lCmd,sizeof(lCmd),(Byte*)&lResp,sizeof(lResp));
 	if (res==RSP_OK)
 	{
-		name=deviceToUtf8(QCString((char*)lResp.name,sizeof(lResp.name)+1));
+        name=deviceToUtf8(Q3CString((char*)lResp.name,sizeof(lResp.name)+1));
 		if (pRowCount)
 			*pRowCount=lResp.rowCount[0]+256*(int)lResp.rowCount[1];
 		if (pColumnCount)
@@ -783,7 +783,7 @@ ShtrihFR::Result ShtrihFR::internalQueryColumnInfo(int tableNum, int columnNum, 
 	Result res=sendCommand((Byte*)&lCmd,sizeof(lCmd),(Byte*)&lResp,sizeof(lResp),0,&br);
 	if (res==RSP_OK)
 	{
-		name=deviceToUtf8(QCString((char*)lResp.name,sizeof(lResp.name)+1));
+        name=deviceToUtf8(Q3CString((char*)lResp.name,sizeof(lResp.name)+1));
 		if (pType)
 			*pType=lResp.type;
 		if (pSize)
@@ -1749,7 +1749,7 @@ ShtrihFR::Result ShtrihFR::stringToByteArray(const QString & text, Byte * pBuf, 
 		setErrorText(tr("stringToByteArray: szSize<=0"));
 		return RSP_INVALIDPARAMETER3;
 	}
-	QCString devStr=utf8ToDevice(text);
+    Q3CString devStr=utf8ToDevice(text);
 	memset((void*)pBuf,0,szSize);
 	memcpy((void*)pBuf,(const void*)((const char*)devStr),min((uint)szSize,devStr.length()));
 	return RSP_OK;

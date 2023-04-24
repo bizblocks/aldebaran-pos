@@ -86,7 +86,7 @@ QString fromQVariant<QString>(const QVariant & s)
 };
 
 template <>
-QCString fromQVariant<QCString>(const QVariant & s)
+Q3CString fromQVariant<Q3CString>(const QVariant & s)
 {
     return s.toCString();
 };

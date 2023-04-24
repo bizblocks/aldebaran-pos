@@ -8,8 +8,11 @@
 **
 *****************************************************************************/
 
-#include "dclock.h"
 #include <qdatetime.h>
+#include <QTimerEvent>
+#include <QMouseEvent>
+#include "dclock.h"
+
 
 
 //
@@ -38,10 +41,10 @@ DigitalClock::DigitalClock( QWidget *parent, const char *name )
 void DigitalClock::timerEvent( QTimerEvent *e )
 {
     if ( e->timerId() == showDateTimer )	// stop showing date
-	stopDate();
+        stopDate();
     else {					// normal timer
-	if ( showDateTimer == -1 )		// not showing date
-	    showTime();
+        if ( showDateTimer == -1 )		// not showing date
+            showTime();
     }
 }
 
@@ -51,8 +54,8 @@ void DigitalClock::timerEvent( QTimerEvent *e )
 
 void DigitalClock::mousePressEvent( QMouseEvent *e )
 {
-    if ( e->button() == QMouseEvent::LeftButton )		// left button pressed
-	showDate();
+    if ( e->button() == Qt::MouseButton::LeftButton )		// left button pressed
+        showDate();
 }
 
 
@@ -64,7 +67,7 @@ void DigitalClock::mousePressEvent( QMouseEvent *e )
 void DigitalClock::showDate()
 {
     if ( showDateTimer != -1 )			// already showing date
-	return;
+        return;
     QDate date = QDate::currentDate();
     QString s;
     s.sprintf( "%2d %2d", date.month(), date.day() );
@@ -92,8 +95,8 @@ void DigitalClock::showTime()
     showingColon = !showingColon;		// toggle/blink colon
     QString s = QTime::currentTime().toString().left(5);
     if ( !showingColon )
-	s[2] = ' ';
+        s[2] = ' ';
     if ( s[0] == '0' )
-	s[0] = ' ';
+        s[0] = ' ';
     display( s );				// set LCD number/text
 }

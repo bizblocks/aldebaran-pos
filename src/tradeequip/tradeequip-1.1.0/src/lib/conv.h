@@ -28,10 +28,10 @@
 
 #include "teglobal.h"
 #include <qstring.h>
-#include <qvaluevector.h>
+#include <Q3ValueVector>
 #include <qdatetime.h>
 #include <qvariant.h>
-#include <qcstring.h>
+#include <Q3CString>
 
 template <class T>
 struct LocVarType
@@ -102,7 +102,7 @@ struct LocVarType<const double &>
 template <>
 struct LocVarType<const char *>
 {
-    typedef QCString Type;
+    typedef Q3CString Type;
 };
 
 template <class T>
@@ -157,13 +157,13 @@ template <>
 LIB_EXPORT QString fromQVariant<QString>(const QVariant &);
 
 template <>
-LIB_EXPORT QCString fromQVariant<QCString>(const QVariant &);
+LIB_EXPORT Q3CString fromQVariant<Q3CString>(const QVariant &);
 
 struct LIB_EXPORT memFunc
 {
     virtual int argc()=0;
     // This function returns zero on successful execution, and nonzero otherwise.
-    virtual int operator()(const QValueVector<QVariant> & , QString & , QString & )=0;
+    virtual int operator()(const Q3ValueVector<QVariant> & , QString & , QString & )=0;
     virtual ~memFunc(){};
 };
 
@@ -262,7 +262,7 @@ struct memFunc0 : memFunc
     T * m_pobj;
     enum {arity=0};
     memFunc0(T * pobj, memFunPtr pfunc):m_pfunc(pfunc),m_pobj(pobj){};
-    virtual int operator()(const QValueVector<QVariant> & parms, QString & res, QString & err)
+    virtual int operator()(const Q3ValueVector<QVariant> & parms, QString & res, QString & err)
     {
         if (parms.size()!=arity)
         {
@@ -287,7 +287,7 @@ struct memFunc1 : memFunc
     T * m_pobj;
     enum {arity=1};
     memFunc1(T * pobj, memFunPtr pfunc):m_pfunc(pfunc),m_pobj(pobj){};
-    virtual int operator()(const QValueVector<QVariant> & parms, QString & res, QString & err)
+    virtual int operator()(const Q3ValueVector<QVariant> & parms, QString & res, QString & err)
     {
         if (parms.size()!=arity)
         {
@@ -314,7 +314,7 @@ struct memFunc2 : memFunc
     T * m_pobj;
     enum {arity=2};
     memFunc2(T * pobj, memFunPtr pfunc):m_pfunc(pfunc),m_pobj(pobj){};
-    virtual int operator()(const QValueVector<QVariant> & parms, QString & res, QString & err)
+    virtual int operator()(const Q3ValueVector<QVariant> & parms, QString & res, QString & err)
     {
         if (parms.size()!=arity)
         {
@@ -343,7 +343,7 @@ struct memFunc3 : memFunc
     T * m_pobj;
     enum {arity=3};
     memFunc3(T * pobj, memFunPtr pfunc):m_pfunc(pfunc),m_pobj(pobj){};
-    virtual int operator()(const QValueVector<QVariant> & parms, QString & res, QString & err)
+    virtual int operator()(const Q3ValueVector<QVariant> & parms, QString & res, QString & err)
     {
         if (parms.size()!=arity)
         {
@@ -374,7 +374,7 @@ struct memFunc4 : memFunc
     T * m_pobj;
     enum {arity=4};
     memFunc4(T * pobj, memFunPtr pfunc):m_pfunc(pfunc),m_pobj(pobj){};
-    virtual int operator()(const QValueVector<QVariant> & parms, QString & res, QString & err)
+    virtual int operator()(const Q3ValueVector<QVariant> & parms, QString & res, QString & err)
     {
         if (parms.size()!=arity)
         {
@@ -408,7 +408,7 @@ struct memFunc5 : memFunc
     T * m_pobj;
     enum {arity=5};
     memFunc5(T * pobj, memFunPtr pfunc):m_pfunc(pfunc),m_pobj(pobj){};
-    virtual int operator()(const QValueVector<QVariant> & parms, QString & res, QString & err)
+    virtual int operator()(const Q3ValueVector<QVariant> & parms, QString & res, QString & err)
     {
         if (parms.size()!=arity)
         {
@@ -431,7 +431,7 @@ struct memFunc5 : memFunc
 
 struct memProc
 {
-    virtual int operator()(const QValueVector<QVariant> & , QString & )
+    virtual int operator()(const Q3ValueVector<QVariant> & , QString & )
     {
         return 0;
     };
@@ -449,7 +449,7 @@ struct memProc0 : memProc
     memProcPtr m_pproc;
     enum {arity=0};
     memProc0(T * pobj, memProcPtr pproc):m_pobj(pobj),m_pproc(pproc){};
-    virtual int operator()(const QValueVector<QVariant> & parms, QString & err)
+    virtual int operator()(const Q3ValueVector<QVariant> & parms, QString & err)
     {
         if (parms.size()!=arity)
         {
@@ -474,7 +474,7 @@ struct memProc1 : memProc
     memProcPtr m_pproc;
     enum {arity=1};
     memProc1(T * pobj, memProcPtr pproc):m_pobj(pobj),m_pproc(pproc){};
-    virtual int operator()(const QValueVector<QVariant> & parms, QString & err)
+    virtual int operator()(const Q3ValueVector<QVariant> & parms, QString & err)
     {
         if (parms.size()!=arity)
         {
@@ -501,7 +501,7 @@ struct memProc2 : memProc
     T * m_pobj;
     enum {arity=2};
     memProc2(T * pobj, memProcPtr pproc):m_pproc(pproc),m_pobj(pobj){};
-    virtual int operator()(const QValueVector<QVariant> & parms, QString & err)
+    virtual int operator()(const Q3ValueVector<QVariant> & parms, QString & err)
     {
         if (parms.size()!=arity)
         {
@@ -530,7 +530,7 @@ struct memProc3 : memProc
     T * m_pobj;
     enum {arity=3};
     memProc3(T * pobj, memProcPtr pproc):m_pproc(pproc),m_pobj(pobj){};
-    virtual int operator()(const QValueVector<QVariant> & parms, QString & err)
+    virtual int operator()(const Q3ValueVector<QVariant> & parms, QString & err)
     {
         if (parms.size()!=arity)
         {
@@ -561,7 +561,7 @@ struct memProc4 : memProc
     T * m_pobj;
     enum {arity=4};
     memProc4(T * pobj, memProcPtr pproc):m_pproc(pproc),m_pobj(pobj){};
-    virtual int operator()(const QValueVector<QVariant> & parms, QString & err)
+    virtual int operator()(const Q3ValueVector<QVariant> & parms, QString & err)
     {
         if (parms.size()!=arity)
         {
@@ -594,7 +594,7 @@ struct memProc5 : memProc
     T * m_pobj;
     enum {arity=5};
     memProc5(T * pobj, memProcPtr pproc):m_pproc(pproc),m_pobj(pobj){};
-    virtual int operator()(const QValueVector<QVariant> & parms, QString & err)
+    virtual int operator()(const Q3ValueVector<QVariant> & parms, QString & err)
     {
         if (parms.size()!=arity)
         {

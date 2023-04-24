@@ -99,14 +99,14 @@ QStringList ESCPOS::codepages()
     return prnCodepages;
 }
 
-ESCPOS::Result ESCPOS::toDeviceStr(QString str, QCString & dest)
+ESCPOS::Result ESCPOS::toDeviceStr(QString str, Q3CString & dest)
 {
     dest = "";
     QTextCodec * utf8=QTextCodec::codecForName("UTF-8");
     QString unicodetext = utf8->toUnicode(str);
     QTextCodec * cp=QTextCodec::codecForName(qtCodepages[prnCodepages.findIndex(codepage())]); 
     if(cp) dest = cp->fromUnicode(unicodetext);
-    else dest = QCString(str);
+    else dest = Q3CString(str.toUtf8());
     return RES_OK;
 }
 
@@ -121,7 +121,7 @@ int ESCPOS::setCodepage(const QString& cp)
 
 int ESCPOS::print(const QString& ln)
 {
-    QCString buf;
+    Q3CString buf;
     Result res = toDeviceStr(ln, buf);
     if(res) return res;
     const Byte * pBuf = (const char*)buf;
@@ -153,7 +153,7 @@ ESCPOS::Result ESCPOS::printBarcode(QString barcode)
     Byte cmd[3] = {GS, 'k', bcType};
     res = sendCmd(cmd, 3);
     if(res)	return res;
-    QCString bcstr;
+    Q3CString bcstr;
     res = toDeviceStr(barcode, bcstr);
     const Byte * buf = (const char*)bcstr;
     if((res=sendCmd((char *)buf, bcstr.length()))) 

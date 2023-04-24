@@ -3,6 +3,8 @@ LANGUAGE	= C++
 
 CONFIG	+= qt warn_on release
 
+QT      += qt3support sql
+
 LIBS	+= -lsqlite3
 
 HEADERS	+= impexp.h \

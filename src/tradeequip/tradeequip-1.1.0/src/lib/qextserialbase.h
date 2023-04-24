@@ -177,7 +177,7 @@ public:
     virtual bool open(const char* name);
     virtual void close()=0;
     virtual void flush()=0;
-    virtual Offset size() const=0;
+    virtual QIODevice::Offset size() const=0;
     virtual Q_LONG readLine(char *data, Q_ULONG maxlen);
     virtual int getch()=0;
     virtual int putch(int)=0;
@@ -207,8 +207,8 @@ public:
     virtual Q_LONG readBlock(char *data, uint maxlen)=0;
     virtual Q_LONG writeBlock(const char *data, uint len)=0;
 #else
-    virtual Q_LONG readBlock(char *data, unsigned long maxlen)=0;
-    virtual Q_LONG writeBlock(const char *data, unsigned long len)=0;
+    virtual qint64 readData(char *data, qint64 maxlen)=0;
+    virtual qint64 writeData(const char *data, qint64 len)=0;
 #endif
 
 protected:

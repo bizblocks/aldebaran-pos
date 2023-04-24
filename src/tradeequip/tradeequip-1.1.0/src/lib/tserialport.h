@@ -40,9 +40,9 @@
 #define _TSERIALPORT_H_
 
 #include <qobject.h>
-#include <qvaluelist.h>
+#include <QList>
 #include <qstringlist.h>
-#include <qcstring.h>
+#include <Q3CString>
 #include <qextserialport.h>
 #include <teglobal.h>
 
@@ -74,7 +74,7 @@ public:
     static const QStringList&	portList() { return m_ports; }
     static const QStringList&	generatePortList();
     static QString portName(int iPortNum);
-    static QValueList<int> generatePortNumberList();
+    static QList<int> generatePortNumberList();
     
 protected:
     static QStringList m_ports;

@@ -1,13 +1,13 @@
-#include <qpopupmenu.h>
+#include <Q3PopupMenu>
 #include "data/data.h"
 #include "datatable.h"
 #include "engine.h"
 
 alDataTable::alDataTable(QWidget * parent, alEngine * e, QString table) :
-    QTable(parent, QString("table_%1").arg(table))
+    Q3Table(parent, QString("table_%1").arg(table))
 {
     fData = NULL;
-    contextMenu = new QPopupMenu(this, "datatable context menu");
+    contextMenu = new Q3PopupMenu(this, "datatable context menu");
     tableName = table;
     currentFilter = "";
     maxWidthColumn = "";
@@ -25,7 +25,7 @@ void alDataTable::init()
     setNumCols(headers.count());
     for(int i=0;i<(int)headers.count();i++)
     {
-        QTable::horizontalHeader()->setLabel(i, headers[i]);
+        Q3Table::horizontalHeader()->setLabel(i, headers[i]);
         adjustColumn(i);
     }
     hideColumn("id");
@@ -115,7 +115,7 @@ void alDataTable::setValue(int row, int col, QVariant val)
 {
     val = displayValue(fields[headers[col]], val);
     if(val.type()==QVariant::Pixmap)
-        setPixmap(row, col, val.toPixmap());
+        setPixmap(row, col, val.value<QPixmap>());
     else
         setText(row, col, val.toString());
 }
@@ -139,7 +139,7 @@ void alDataTable::paintCell( QPainter * p, int row, int col, const QRect & cr, b
         fData->seek(row);
         fillLine(row);
     }
-    QTable::paintCell(p, row, col, cr, selected, cg);
+    Q3Table::paintCell(p, row, col, cr, selected, cg);
 }
 
 void alDataTable::fillLine(int r)
@@ -149,7 +149,7 @@ void alDataTable::fillLine(int r)
         if(!fields[headers[i]].isEmpty())
             setValue(r, QString(fields[headers[i]]), fData->value(fields[headers[i]]));
     }
-    setValue(r, "*", pixmap(r));
+    setValue(r, "*", icon(r));
     //    adjustRow(r);
 }
 
@@ -157,10 +157,10 @@ void alDataTable::fillLine(int r)
 *	реализация по-умолчанию возвращает пустую картинку
 *	default implementation, return empty pixmap
 */
-QPixmap alDataTable::pixmap(int r)
+QIcon alDataTable::icon(int r)
 {
     Q_UNUSED(r);
-    return QPixmap();
+    return QIcon();
 }
 
 /*
@@ -176,25 +176,29 @@ QVariant alDataTable::displayValue(QString attr, QVariant val)
 void alDataTable::hideColumn(QString attr)
 {
     int col = columnNum(attr);
-    if(col>-1) QTable::hideColumn(col);
+    if(col>-1)
+        Q3Table::hideColumn(col);
 }
 
 void alDataTable::showColumn(QString attr)
 {
     int col = columnNum(attr);
-    if(col>-1) QTable::hideColumn(col);
+    if(col>-1)
+        Q3Table::hideColumn(col);
 }
 
 void alDataTable::setColumnWidth(QString attr, int w)
 {
     int col = columnNum(attr);
-    if(col>-1) QTable::setColumnWidth(col, w);
+    if(col>-1)
+        Q3Table::setColumnWidth(col, w);
 }
 
 int alDataTable::columnWidth(QString attr)
 {
     int col = columnNum(attr);
-    if(col>-1) return QTable::columnWidth(col);
+    if(col>-1)
+        return Q3Table::columnWidth(col);
     return 0;
 }
 
@@ -215,7 +219,7 @@ void alDataTable::adjustColumns()
         if(i!=columnNum(maxWidthColumn))
         {
             adjustColumn(i);
-            swidth += QTable::columnWidth(i)+2;
+            swidth += Q3Table::columnWidth(i)+2;
         }
     }
     int scrollWidth = verticalScrollBar()->width();

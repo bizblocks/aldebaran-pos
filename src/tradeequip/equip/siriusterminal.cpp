@@ -3,10 +3,11 @@
 #include "sirius/iesirius.h"
 #include "sirius/iesiriussqlite.h"
 #include "siriusterminal.h"
-#include "dlgsiriussettings.h"
+#include "ui_dlgsiriussettings.h"
+#include "dlgsiriussettings.ui.h"
 
 eqSirius::eqSirius(QString name) :
-	eqDriver(name)
+    eqDriver(name)
 {
     sirius = NULL;
     port = 8096;
@@ -25,15 +26,15 @@ void eqSirius::init()
     if(sirius) delete sirius;
     if(!path.length())
     {
-	sirius = new expSirius();
-	((expSirius*)sirius)->open(host, port);	
+        sirius = new expSirius();
+        ((expSirius*)sirius)->open(host, port);
     }
     else
     {
-	sirius = new expSiriusSQLite();
-	sirius->open(path);	
+        sirius = new expSiriusSQLite();
+        sirius->open(path);
     }
-    connect(sirius, SIGNAL(error()), this, SLOT(checkError()));    
+    connect(sirius, SIGNAL(error()), this, SLOT(checkError()));
     connect(sirius, SIGNAL(connected()), this, SLOT(deviceConnected()));
     queue.clear();
 }
@@ -48,12 +49,15 @@ void eqSirius::deviceConnected()
     tailer("");
     while(queue.count())
     {
-	usleep(1000);
-	queueElement el = queue[0];
-	if(el.type=="header") header(el.data.toString());
-	else if(el.type=="line") line(el.data);
-	else if(el.type=="tailer") tailer(el.data.toString());
-	queue.remove(queue.at(0));
+        usleep(1000);
+        queueElement el = queue[0];
+        if(el.type=="header")
+            header(el.data.toString());
+        else if(el.type=="line")
+            line(el.data);
+        else if(el.type=="tailer")
+            tailer(el.data.toString());
+        queue.remove(0);
     }
 }
 
@@ -91,10 +95,10 @@ void eqSirius::checkError()
 {
     if(!sirius) return setError(SIRIUS_NODEVICE, tr("No device"));
     int e = sirius->errorCode();
-    if(e==SIRIUS_OK) 
+    if(e==SIRIUS_OK)
     {
-	setError(0, sirius->errorMsg(e));
-	return;
+        setError(0, sirius->errorMsg(e));
+        return;
     }
     else setError(e+1, sirius->errorMsg(e));
     emit deviceError(error());
@@ -116,11 +120,11 @@ void eqSirius::header(QString data)
     if(!sirius) return setError(SIRIUS_NODEVICE, tr("No device"));
     if(!sirius->isOpened())
     {
-	queueElement el;
-	el.type = "header";
-	el.data = data;
-	queue.append(el);
-	return;
+        queueElement el;
+        el.type = "header";
+        el.data = data;
+        queue.append(el);
+        return;
     }
     if(sirius->errorCode()!=SIRIUS_OK) return;
     sirius->writeHeader(data);
@@ -128,19 +132,19 @@ void eqSirius::header(QString data)
 
 void eqSirius::line(QVariant data)
 {
-    if(!sirius) return setError(SIRIUS_NODEVICE, tr("No device"));        
+    if(!sirius) return setError(SIRIUS_NODEVICE, tr("No device"));
     if(!sirius->isOpened())
     {
-	queueElement el;
-	el.type = "line";
-	el.data = data;
-	queue.append(el);
-	return;
+        queueElement el;
+        el.type = "line";
+        el.data = data;
+        queue.append(el);
+        return;
     }
     if(sirius->errorCode()!=SIRIUS_OK)
     {
-	qDebug(QString("error %1").arg(sirius->errorMsg(0)));
-	return;
+        qDebug(QString("error %1").arg(sirius->errorMsg(0)));
+        return;
     }
     if(!data.canCast(QVariant::Map)) return setError(SIRIUS_INVALIDARG, tr("Wrong parameter"));
     map m = data.toMap();
@@ -152,13 +156,13 @@ void eqSirius::tailer(QString data)
     if(!sirius) return setError(SIRIUS_NODEVICE, tr("No device"));
     if(!sirius->isOpened())
     {
-	queueElement el;
-	el.type = "tailer";
-	el.data = data;
-	queue.append(el);
-	return;
-    }        
-    if(sirius->errorCode()!=SIRIUS_OK) return;    
+        queueElement el;
+        el.type = "tailer";
+        el.data = data;
+        queue.append(el);
+        return;
+    }
+    if(sirius->errorCode()!=SIRIUS_OK) return;
     if(!sirius->writeTailer(data)) return;
 }
 
@@ -180,7 +184,7 @@ int eqSirius::serverPort()
 }
 
 eqSiriusJob::eqSiriusJob(eqDriver * device, QString action, QString data) :
-	eqJob(device, action)
+    eqJob(device, action)
 {
     fData = QVariant(data);
 }
@@ -193,19 +197,19 @@ void eqSiriusJob::connect()
 {
     if(fDevice)
     {
-	eqSirius * s = (eqSirius *)fDevice;
-	s->init();
-	setError(s->error(), s->errorMsg());
-    }    
+        eqSirius * s = (eqSirius *)fDevice;
+        s->init();
+        setError(s->error(), s->errorMsg());
+    }
 }
 
 void eqSiriusJob::line()
 {
     if(fDevice)
     {
-	eqSirius * s = (eqSirius *)fDevice;
-	s->line(fData);
-	setError(s->error(), s->errorMsg());	
+        eqSirius * s = (eqSirius *)fDevice;
+        s->line(fData);
+        setError(s->error(), s->errorMsg());
     }
 }
 
@@ -213,9 +217,9 @@ void eqSiriusJob::goodsStart()
 {
     if(fDevice)
     {
-	eqSirius * s = (eqSirius *)fDevice;
-	s->header("G");
-	setError(s->error(), s->errorMsg());
+        eqSirius * s = (eqSirius *)fDevice;
+        s->header("G");
+        setError(s->error(), s->errorMsg());
     }
 }
 
@@ -223,19 +227,19 @@ void eqSiriusJob::goodsEnd()
 {
     if(fDevice)
     {
-	eqSirius * s = (eqSirius *)fDevice;
-	s->tailer("");
-	setError(s->error(), s->errorMsg());	
-    }    
+        eqSirius * s = (eqSirius *)fDevice;
+        s->tailer("");
+        setError(s->error(), s->errorMsg());
+    }
 }
 
 void eqSiriusJob::elementStart()
 {
     if(fDevice)
     {
-	eqSirius * s = (eqSirius *)fDevice;
-	s->header("E");
-	setError(s->error(), s->errorMsg());
+        eqSirius * s = (eqSirius *)fDevice;
+        s->header("E");
+        setError(s->error(), s->errorMsg());
     }
 }
 
@@ -248,43 +252,43 @@ void eqSiriusJob::resetDevice()
 {
     if(fDevice)
     {
-	eqSirius * s = (eqSirius *)fDevice;
-	s->header("R");
-	s->tailer("");
-	setError(s->error(), s->errorMsg());
-    }    
+        eqSirius * s = (eqSirius *)fDevice;
+        s->header("R");
+        s->tailer("");
+        setError(s->error(), s->errorMsg());
+    }
 }
 
 void eqSiriusJob::haltDevice()
 {
     if(fDevice)
     {
-	eqSirius * s = (eqSirius *)fDevice;
-	s->header("H");
-	s->tailer("");
-	setError(s->error(), s->errorMsg());
-    }    
+        eqSirius * s = (eqSirius *)fDevice;
+        s->header("H");
+        s->tailer("");
+        setError(s->error(), s->errorMsg());
+    }
 }
 
 void eqSiriusJob::updateDevice()
 {
     if(fDevice)
     {
-	eqSirius * s = (eqSirius *)fDevice;
-	s->header("U");
-	s->tailer("");
-	setError(s->error(), s->errorMsg());
-    }    
+        eqSirius * s = (eqSirius *)fDevice;
+        s->header("U");
+        s->tailer("");
+        setError(s->error(), s->errorMsg());
+    }
 }
 
 void eqSiriusJob::orderStart()
 {
     if(fDevice)
     {
-	eqSirius * s = (eqSirius *)fDevice;
-	s->header("O");
-	s->line(fData);
-	setError(s->error(), s->errorMsg());
+        eqSirius * s = (eqSirius *)fDevice;
+        s->header("O");
+        s->line(fData);
+        setError(s->error(), s->errorMsg());
     }
 }
 
@@ -292,8 +296,8 @@ void eqSiriusJob::orderEnd()
 {
     if(fDevice)
     {
-	eqSirius * s = (eqSirius *)fDevice;
-	s->tailer("");
-	setError(s->error(), s->errorMsg());	
-    }    
+        eqSirius * s = (eqSirius *)fDevice;
+        s->tailer("");
+        setError(s->error(), s->errorMsg());
+    }
 }

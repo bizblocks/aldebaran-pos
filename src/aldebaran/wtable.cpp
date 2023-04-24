@@ -23,11 +23,14 @@ alWTable::~alWTable()
 void alWTable::refresh()
 {
     QString tip = "";
-    if(orderId>0) tip= QString(tr("Order #%1\nSumm %2")).arg(orderId).arg(summ,0, 'f', 2);
+    if(orderId>0)
+        tip= QString(tr("Order #%1\nSumm %2")).arg(orderId).arg(summ,0, 'f', 2);
     setTextLabel(QString(tr("Table #%1\nSumm %2")).arg(num).arg(summ,0, 'f', 2), FALSE);
     QToolTip::add(this, tip);
-    if(fStatus==1) setPixmap(QPixmap::fromMimeSource("peoples.png"));
-    else setPixmap(QPixmap());
+    if(fStatus==1)
+        setIcon(QIcon(":/images/peoples.png"));
+    else
+        setIcon(QIcon());
 }
 
 void alWTable::setOrder(Q_ULLONG ordernum, double sum)

@@ -97,10 +97,10 @@ const QStringList& TSerialPort::generatePortList()
 	return m_ports;
 }
 
-QValueList<int> TSerialPort::generatePortNumberList()
+QList<int> TSerialPort::generatePortNumberList()
 {
 	int i;
-	QValueList<int> ports;
+    QList<int> ports;
 	QextSerialPort port;
 
 	for (i = _START_CHAR_; i <= _END_CHAR_; i++) {

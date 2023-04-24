@@ -368,7 +368,8 @@ TEConnect::startPoll( bool defaultProc )
 void
 TEConnect::stopPoll()
 {
-    killTimers();
+    //TODO implement
+    //killTimers();
 }
 
 
@@ -433,14 +434,14 @@ TEConnect::execCommand( const QString &cmd )
 }
 
 
-QCString
+Q3CString
 TEConnect::utf8ToDevice( const QString &text )
 {
     return ( const char *) text;
 }
 
 QString
-TEConnect::deviceToUtf8( const QCString &text )
+TEConnect::deviceToUtf8( const Q3CString &text )
 {
     return text;
 }
@@ -520,9 +521,9 @@ void TEConnect::clearPPP()
     m_PStopBits=STOP_NOTSET;
 }
 
-QValueList<int> TEConnect::supportedBaudRates()
+QList<int> TEConnect::supportedBaudRates()
 {
-  QValueList<int> ret;
+  QList<int> ret;
   
   return ret;
 }

@@ -1,6 +1,7 @@
 #ifndef WHALL_H
 #define WHALL_H
 
+#include <QMap>
 #include <qwidget.h>
 #include <qpixmap.h>
 

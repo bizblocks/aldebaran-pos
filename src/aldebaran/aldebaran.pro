@@ -1,18 +1,28 @@
 TEMPLATE	= app
 LANGUAGE	= C++
 
+VERSION = 1.1.1a
+
 #CONFIG	+= qt warn_on release thread
 CONFIG	+= qt warn_on debug thread
 
 LIBS	+= -L$(QTDIR)/lib -lequip -limpexp -L../../lib -L../tradeequip/tradeequip-1.1.0/lib -L../tradeequip/tradeequip-drv/lib -ltradeequip -ltereader-barcode
+
+QT      += sql qt3support network
 
 DEFINES	+= DEBUG
 
 INCLUDEPATH	+= ../tradeequip/equip ../impexp
 
 HEADERS	+= engine.h \
+	ddbsettings.ui.h \
+	dlgadvreport.ui.h \
+	dlgexportsales.ui.h \
+	dlglogin.ui.h \
+	equipmentdialog.ui.h \
 	settings.h \
 	mainwin.h \
+	settingsdialog.ui.h \
 	whall.h \
 	wtable.h \
 	goodstable.h \

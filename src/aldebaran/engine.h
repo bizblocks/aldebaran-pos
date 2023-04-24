@@ -23,7 +23,6 @@
 #include <qobject.h>
 #include <qvariant.h>
 #include <qmap.h>
-#include <qintdict.h>
 
 #include "errors.h"
 #include "data/dataordert.h"
@@ -111,7 +110,7 @@ public:
     eqJob * createECRJob(QString device, QString action);    
     int printWidth();
     QString centerString(QString str, int iWidth);
-    QString alignStrings(QStringList lst, QValueList<int> tabs, int iWidth);
+    QString alignStrings(QStringList lst, QList<int> tabs, int iWidth);
     QFtp * ftpput(QString host, int port, QString login, QString password, const QFile& local, QString remotefile);
     QFtp * ftpget(QString host, int port, QString login, QString password, QString remote, const QFile& local);
     eqWorker * worker() { return fWorker; };

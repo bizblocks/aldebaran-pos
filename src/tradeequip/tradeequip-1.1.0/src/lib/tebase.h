@@ -32,11 +32,10 @@
 #include <templexports.h>
 
 //#include <qobject.h>
-#include <qdict.h>
 #include <tserialport.h>
 #include <cmdparser.h>
 
-class QSocketDevice;
+class Q3SocketDevice;
 
 //---------------------------------------------------------------------------
 class LIB_EXPORT TEBase : public QObject, public TE
@@ -73,16 +72,16 @@ public:
     int debugLevel();
     void setDebugLevel( int level );
     
-    virtual QCString utf8ToDevice( const QString &text );
-    virtual QString deviceToUtf8( const QCString &text );
+    virtual Q3CString utf8ToDevice( const QString &text );
+    virtual QString deviceToUtf8( const Q3CString &text );
     virtual int isActivationKeyValid();
     QString productSuffix() const
     {
-	return m_sProductSuffix;
+        return m_sProductSuffix;
     }
     void setProductSuffix(const QString & sProductSuffix)
     {
-	m_sProductSuffix=sProductSuffix;
+        m_sProductSuffix=sProductSuffix;
     }
     
     void setPortBaudRate(int);
@@ -101,7 +100,7 @@ public:
     StopBitsType portStopBits() const {return m_PStopBits;}
     
     
-    virtual QValueList<int> supportedBaudRates(); // Non const, just in case.
+    virtual QList<int> supportedBaudRates(); // Non const, just in case.
     
     virtual int setConnectionType( int ct );
     
@@ -148,7 +147,7 @@ private:
     bool vTimeoutFlag;
     int m_eConnectionType;
     TSerialPort *Port;
-    QSocketDevice * Socket;
+    Q3SocketDevice * Socket;
     QString vActivationKey;
     QString m_sProductSuffix; // product suffix such as 'drv','1cdrv','srv', etc.
     

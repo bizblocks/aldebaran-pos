@@ -1,8 +1,11 @@
 TEMPLATE	= lib
 LANGUAGE	= C++
+VERSION		= 1.1.1a
 
 #CONFIG	+= qt warn_on release thread
 CONFIG	+= qt warn_on debug thread
+
+QT      += sql qt3support network
 
 DEFINES	+= DEBUG
 
@@ -19,6 +22,11 @@ HEADERS	+= datadiscount.h \
 	datausers.h \
 	datawaiters.h \
 	datasettings.h \
+	dlgdevice.ui.h \
+	dlgdiscount.ui.h \
+	dlguser.ui.h \
+	goodselement.ui.h \
+	goodsgroup.ui.h \
 	queries.h
 
 SOURCES	+= data.cpp \

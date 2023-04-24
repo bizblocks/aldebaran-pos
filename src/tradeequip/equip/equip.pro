@@ -1,8 +1,12 @@
 TEMPLATE	= lib
 LANGUAGE	= C++
 
+VERSION = 1.1.1a
+
 #CONFIG	+= qt warn_on release thread
 CONFIG	+= qt warn_on debug thread
+
+QT      += sql qt3support network
 
 QMAKE_CXXFLAGS = -fpermissive -Wno-deprecated-copy
 
@@ -15,6 +19,7 @@ INCLUDEPATH	+= ../../aldebaran/data ../../aldebaran/
 unix:INCLUDEPATH	+= ../tradeequip-drv/printers/citizen-ct-s300/lib ../tradeequip-drv/printers/citizen-ct-s300/lib ../tradeequip-drv/cashregisters/felix-rk/lib ../tradeequip-drv/cashregisters/shtrih-fr/lib ../tradeequip-1.1.0/src/lib ../../impexp/ ../tradeequip-drv/readers/barcode
 
 HEADERS	+= worker.h \
+	dlgvmsettings.ui.h \
 	driver.h \
 	officeprinter.h \
 	siriusterminal.h \

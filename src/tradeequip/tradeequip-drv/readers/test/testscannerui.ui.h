@@ -10,17 +10,28 @@
 ** destructor.
 *****************************************************************************/
 
+class Form1 : public QDialog, Ui::Form1
+{
+public:
+    Form1(QWidget * parent = 0) : QDialog(parent), Ui::Form1() {};
+public slots:
+    void onDevEvent( int ev);
+    void setScanner( TEReaderBase * pS );
+private:
+    TEReaderBase * m_pS;
+};
+
 
 void Form1::onDevEvent( int ev)
 {
-	qDebug(m_pS->errorText());
+    qDebug(m_pS->errorText());
     if (ev==EVENT_READER_DATAARRIVED)
     {
-	textEdit1->append(m_pS->text());
+        textEdit1->append(m_pS->text());
     }
     else
     {
-    
+
     }
     m_pS->next();
 }

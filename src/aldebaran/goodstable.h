@@ -17,7 +17,7 @@ public:
     virtual void load(QString filter) { currentGroup = 0; alDataTable::load(filter); };
 public slots:
     virtual void editCell(int row, int col, bool replace = FALSE);
-    virtual QPixmap pixmap(int r);    
+    virtual QIcon icon(int r);
     bool newElement();
     bool newGroup();
     virtual bool editRowData();

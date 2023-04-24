@@ -10,6 +10,21 @@
 ** destructor.
 *****************************************************************************/
 
+class dlgLogin : public QDialog, Ui::dlgLogin
+{
+public:
+    dlgLogin(QWidget * parent = 0) : QDialog(parent), Ui::dlgLogin() {}
+public slots:
+    void init(alEngine * e);
+    void up();
+    void down();
+    void eqData(int, QVariant data);
+    void login();
+private:
+    alEngine * fEngine;
+    alUsersTable * userTab;
+};
+
 void dlgLogin::init(alEngine * e)
 {
     fEngine = e;
@@ -49,14 +64,14 @@ void dlgLogin::login()
     alUserRecord * user = userTab->current();
     if(user->checkPassword(p))
     {
-	if(!user->right(rLogin))
-	{
-	    QMessageBox::critical(this, "aldebaran", tr("You don't have rights to login"));
-	    return;
-	}
-	fEngine->setCurrentUser(user);
-	accept();
-	return;
+        if(!user->right(rLogin))
+        {
+            QMessageBox::critical(this, "aldebaran", QObject::tr("You don't have rights to login"));
+            return;
+        }
+        fEngine->setCurrentUser(user);
+        accept();
+        return;
     }
-    QMessageBox::critical(this, "aldebaran", tr("Incorrect password!!"));
+    QMessageBox::critical(this, "aldebaran", QObject::tr("Incorrect password!!"));
 }

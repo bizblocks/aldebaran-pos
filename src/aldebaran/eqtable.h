@@ -19,7 +19,7 @@ public slots:
 protected slots:
     virtual void fillLine(int r);
 protected:
-    virtual QPixmap pixmap(int r);
+    virtual QIcon icon(int r);
     bool dialog(alEqRecord * user);
 };
 

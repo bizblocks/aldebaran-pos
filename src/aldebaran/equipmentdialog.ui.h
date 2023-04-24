@@ -10,11 +10,32 @@
 ** destructor.
 *****************************************************************************/
 
-class alListBoxItem : public QListBoxPixmap
+#include <Q3ListBoxPixmap>
+#include <Q3ListBoxItem>
+
+class alListBoxItem : public Q3ListBoxPixmap
 {
 public:
-    alListBoxItem(QPixmap pix, QString text) : QListBoxPixmap(pix, text) { checked = FALSE; };
+    alListBoxItem(QPixmap pix, QString text) : Q3ListBoxPixmap(pix, text) { checked = FALSE; };
     bool checked;
+};
+
+class equipmentDialog : public QDialog, Ui::equipmentDialog
+{
+public:
+    equipmentDialog() {}
+public slots:
+    void init(alEngine * e);
+    void setItem(Q3ListBoxItem * item, bool checked);
+    void check(Q3ListBoxItem * item);
+    void execute();
+    void fill(int n);
+    void checkAll();
+    void unCheckAll();
+    void checkClose();
+private:
+    int inAction;
+    alEngine * fEngine;
 };
 
 void equipmentDialog::init(alEngine * e)
@@ -24,39 +45,45 @@ void equipmentDialog::init(alEngine * e)
     fill(0);
 }
 
-void equipmentDialog::setItem(QListBoxItem * item, bool checked)
+void equipmentDialog::setItem(Q3ListBoxItem * item, bool checked)
 {
-    QPixmap pxChecked = QPixmap::fromMimeSource("checked.png");
-    QPixmap pxUnChecked = QPixmap::fromMimeSource("unchecked.png");     
+    QPixmap pxChecked = QPixmap(":/images/checked.png");
+    QPixmap pxUnChecked = QPixmap(":/images/unchecked.png");
     alListBoxItem * newItem = NULL;
-    if(checked) newItem = new alListBoxItem(pxChecked, item->text());  
-    else newItem = new alListBoxItem(pxUnChecked, item->text());
+    if(checked)
+        newItem = new alListBoxItem(pxChecked, item->text());
+    else
+        newItem = new alListBoxItem(pxUnChecked, item->text());
     newItem->checked = checked;
     listDevices->changeItem(newItem, listDevices->index(item));
 }
 
-void equipmentDialog::check(QListBoxItem * item)
+void equipmentDialog::check(Q3ListBoxItem * item)
 {
-    if(item) setItem(item, !((alListBoxItem*)item)->checked);
+    if(item)
+        setItem(item, !((alListBoxItem*)item)->checked);
 }
 
 void equipmentDialog::execute()
 {
     inAction = 1;
     QString action = cbActions->currentText();
-    if(action==tr("reload data")) fEngine->prepareGoods(toolbox->itemLabel(toolbox->currentIndex()));
+    if(action==QObject::tr("reload data"))
+        fEngine->prepareGoods(toolbox->itemLabel(toolbox->currentIndex()));
     for(uint i=0;i<listDevices->count();i++)
     {
-	bool res = FALSE;
-	if(!((alListBoxItem*)listDevices->item(i))->checked) continue;
-	else if(action==tr("reload data")) res = fEngine->exportGoods(listDevices->text(i));
-	else if(action==tr("reset")) res = fEngine->resetDevice(listDevices->text(i));	
-	else if(action==tr("shutdown")) res = fEngine->shutdownDevice(listDevices->text(i));	
-	else if(action==tr("update")) res = fEngine->updateDevice(listDevices->text(i));
-	else if(action==tr("connect")) res = fEngine->connectDevice(listDevices->text(i));
-	if(res) check(listDevices->item(i));
+        bool res = FALSE;
+        if(!((alListBoxItem*)listDevices->item(i))->checked)
+            continue;
+        else if(action==tr("reload data")) res = fEngine->exportGoods(listDevices->text(i));
+        else if(action==tr("reset")) res = fEngine->resetDevice(listDevices->text(i));
+        else if(action==tr("shutdown")) res = fEngine->shutdownDevice(listDevices->text(i));
+        else if(action==tr("update")) res = fEngine->updateDevice(listDevices->text(i));
+        else if(action==tr("connect")) res = fEngine->connectDevice(listDevices->text(i));
+        if(res) check(listDevices->item(i));
     }
-    if(inAction>2) reject();
+    if(inAction>2)
+        reject();
 }
 
 void equipmentDialog::fill(int n)
@@ -66,20 +93,20 @@ void equipmentDialog::fill(int n)
     QString type="nothing";
     if(!n)
     {
-	cbActions->insertItem("");
-	cbActions->insertItem(tr("reload data"));
-	cbActions->insertItem(tr("reset"));
-	cbActions->insertItem(tr("shutdown"));
-	cbActions->insertItem(tr("update"));	
-	cbActions->insertItem(tr("connect"));
-	type = toolbox->itemLabel(n);
+        cbActions->insertItem("");
+        cbActions->insertItem(tr("reload data"));
+        cbActions->insertItem(tr("reset"));
+        cbActions->insertItem(tr("shutdown"));
+        cbActions->insertItem(tr("update"));
+        cbActions->insertItem(tr("connect"));
+        type = toolbox->itemLabel(n);
     }
-    alDataEq * eq = new alDataEq(fEngine);    
+    alDataEq * eq = new alDataEq(fEngine);
     eq->select(QString("type='%1'").arg(type));
     if(eq->first()) do
     {
-	alListBoxItem * item = new alListBoxItem(QPixmap::fromMimeSource("unchecked.png"), eq->value("name").toString());
-	listDevices->insertItem(item);
+        alListBoxItem * item = new alListBoxItem(QPixmap(":/images/unchecked.png"), eq->value("name").toString());
+        listDevices->insertItem(item);
     }while(eq->next());
 }
 
@@ -87,8 +114,8 @@ void equipmentDialog::checkAll()
 {
     for(uint i=0;i<listDevices->count();i++)
     {
-	if(((alListBoxItem*)listDevices->item(i))->checked) continue;
-	check(listDevices->item(i));
+        if(((alListBoxItem*)listDevices->item(i))->checked) continue;
+        check(listDevices->item(i));
     }
 }
 
@@ -96,8 +123,8 @@ void equipmentDialog::unCheckAll()
 {
     for(uint i=0;i<listDevices->count();i++)
     {
-	if(!((alListBoxItem*)listDevices->item(i))->checked) continue;
-	check(listDevices->item(i));
+        if(!((alListBoxItem*)listDevices->item(i))->checked) continue;
+        check(listDevices->item(i));
     }
 }
 

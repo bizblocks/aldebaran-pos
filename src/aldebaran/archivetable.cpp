@@ -1,4 +1,4 @@
-#include <qpopupmenu.h>
+#include <Q3PopupMenu>
 #include "engine.h"
 #include "orderwin.h"
 #include "archivetable.h"
@@ -7,10 +7,10 @@
 #define TABLE "orders"
 
 alArchiveTable::alArchiveTable(QWidget * parent, alEngine * engine) :
-	alDataTable(parent, engine, TABLE)
+    alDataTable(parent, engine, TABLE)
 {
-    headers << tr("number") << tr("date") << tr("check number") 
-	    << tr("table") << tr("sum") << tr("user");
+    headers << tr("number") << tr("date") << tr("check number")
+            << tr("table") << tr("sum") << tr("user");
     fields[tr("number")] = "num";
     fields[tr("date")] = "orderdate";
     fields[tr("check number")] = "checknum";
@@ -25,18 +25,18 @@ void alArchiveTable::init()
     contextMenu->clear();
     if(!fSelect)
     {
-	contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("edit.png")), tr("Edit"), this, SLOT(editRowData()));
-	contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("delete.png")), tr("Delete"), this, SLOT(deleteRowData()));
-	contextMenu->insertSeparator();    
+        contextMenu->insertItem(QIconSet(QIcon(":/images/edit.png")), tr("Edit"), this, SLOT(editRowData()));
+        contextMenu->insertItem(QIconSet(QIcon(":/images/delete.png")), tr("Delete"), this, SLOT(deleteRowData()));
+        contextMenu->insertSeparator();
     }
     
     connect(this, SIGNAL(doubleClicked(int, int, int, const QPoint&)), this, SLOT(defaultAction(int, int, int, const QPoint&)));
     
     fData = new alDataOrder(fEngine);
     hideVerticalHeader();
-    setSelectionMode(NoSelection);    
+    setSelectionMode(NoSelection);
     alDataTable::init();
-    QDate today = QDate::currentDate();    
+    QDate today = QDate::currentDate();
     load(QString("orderdate='%1'").arg(today.toString("yyyy-MM-dd")));
 }
 
@@ -52,27 +52,30 @@ void alArchiveTable::fillLine(int r)
     setValue(r, "checknum", order->checkNum());
     setValue(r, "table", order->table());
     setValue(r, "sum", QString("%1").arg(order->total("summ"), 15, 'F', 2));
-    setValue(r, "*", pixmap(r));
-    adjustRow(r);    
+    setValue(r, "*", icon(r));
+    adjustRow(r);
 }
 
-QPixmap alArchiveTable::pixmap(int r)
+QIcon alArchiveTable::icon(int r)
 {
-    QPixmap p;
+    QIcon p;
     fData->seek(r);
     alOrderRecord * order = (alOrderRecord *)fData->current();
     if(!order) return QPixmap();
     alDataOrder::Status status = order->status();
-    if(status == alDataOrder::Closed) p = QPixmap::fromMimeSource("document-closed.png");
-    else if(status == alDataOrder::Canceled) p = QPixmap::fromMimeSource("document-cancelled.png");
-    else p = QPixmap::fromMimeSource("document.png");
+    if(status == alDataOrder::Closed)
+        p = QIcon(":/images/document-closed.png");
+    else if(status == alDataOrder::Canceled)
+        p = QIcon(":/images/document-cancelled.png");
+    else
+        p = QIcon(":/images/document.png");
     return p;
 }
 
 bool alArchiveTable::editRowData()
 {
     orderWin = new alOrderWindow(fEngine, NULL, "order window", value("id").toULongLong());
-    connect(orderWin, SIGNAL(exit()), this, SLOT(closeOrder()));    
+    connect(orderWin, SIGNAL(exit()), this, SLOT(closeOrder()));
     orderWin->init();
     orderWin->showFullScreen();
     return TRUE;

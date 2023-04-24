@@ -68,7 +68,7 @@ public slots:
     
 protected:
     Result sendCmd(Byte * pBuf, int iSize);
-    Result toDeviceStr(QString str, QCString & dest);
+    Result toDeviceStr(QString str, Q3CString & dest);
     void clear();
 private:
     Byte m_maxPrn;

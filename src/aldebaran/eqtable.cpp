@@ -67,13 +67,13 @@ void alEqTable::fillLine(int r)
         if(!fields[headers[i]].isEmpty())
             setValue(r, QString(fields[headers[i]]), fields[headers[i]]=="name" ? QString::fromUtf8(fData->value(fields[headers[i]]).toString()) : fData->value(fields[headers[i]]));
     }
-    setValue(r, "*", pixmap(r));
+    setValue(r, "*", icon(r));
 }
 
-QPixmap alEqTable::pixmap(int r)
+QIcon alEqTable::icon(int r)
 {
     Q_UNUSED(r);
-    return QPixmap::fromMimeSource("device.png");
+    return QIcon(":/images/device.png");
 }
 
 bool alEqTable::newElement()

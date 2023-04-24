@@ -30,8 +30,9 @@
 #define TEINTERFACE_H
 
 #include <teglobal.h>
+#include <QUuid>
 #ifndef QT_H
-#include <private/qcom_p.h>
+//#include <private/qcom_p.h>
 #endif // QT_H
 
 #ifndef QT_NO_COMPONENT
@@ -43,7 +44,8 @@
 
 class TEBase;
 
-struct LIB_EXPORT TEFactoryInterface : public QFeatureListInterface
+//struct LIB_EXPORT TEFactoryInterface : public QFeatureListInterface
+struct LIB_EXPORT TEFactoryInterface : public QObject
 {
     virtual TEBase* create( const QString& name ) = 0;
 };

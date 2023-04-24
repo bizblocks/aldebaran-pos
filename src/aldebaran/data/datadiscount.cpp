@@ -1,7 +1,8 @@
-#include <qsqldatabase.h>
+#include <QtSql/QSqlDatabase>
 #include <qbuffer.h>
 #include "engine.h"
-#include "dlgdiscount.h"
+#include "ui_dlgdiscount.h"
+#include "dlgdiscount.ui.h"
 
 #define TNAME "discount"
 

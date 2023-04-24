@@ -1,4 +1,4 @@
-#include <qsqldatabase.h>
+#include <QtSql/QSqlDatabase>
 #include <qobject.h>
 #include "datasettings.h"
 #include "engine.h"

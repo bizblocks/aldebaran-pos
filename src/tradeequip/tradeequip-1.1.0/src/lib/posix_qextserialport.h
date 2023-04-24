@@ -32,11 +32,11 @@
 #endif
 
 //weird scoping issue with gcc 2.95 - this should fix it
-#ifdef QT_LARGE_FILE_SUPPORT
-    typedef off_t Offset;
-#else
-    typedef Q_ULONG Offset;
-#endif
+//#ifdef QT_LARGE_FILE_SUPPORT
+//    typedef off_t Offset;
+//#else
+//    typedef Q_ULONG TOffset;
+//#endif
 
 class Posix_QextSerialPort:public QextSerialBase {
 public:
@@ -50,7 +50,7 @@ public:
     virtual bool open(int mode=0);
     virtual void close();
     virtual void flush();
-    virtual Offset size() const;
+    virtual QIODevice::Offset size() const;
     virtual int getch();
     virtual int putch(int);
     virtual int ungetch(int);
@@ -72,8 +72,9 @@ public:
     virtual Q_LONG readBlock(char *data, uint maxlen);
     virtual Q_LONG writeBlock(const char *data, uint len);
 #else
-    virtual Q_LONG readBlock(char *data, unsigned long maxlen);
-    virtual Q_LONG writeBlock(const char *data, unsigned long len);
+    virtual qint64 readData(char *data, qint64 maxlen);
+    virtual qint64 writeData(const char *data, qint64 len);
+
 #endif
 
 protected:

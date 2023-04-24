@@ -50,66 +50,66 @@ typedef QMapIterator<QString, QString> type_ValueListIterator;
 class LIB_EXPORT TEIniFile
 {
 public:
-	TEIniFile(const QString &name = QString::null);
-	~TEIniFile();
+    TEIniFile(const QString &name = QString::null);
+    ~TEIniFile();
 
-	void	setFileName(const QString &name);
-  QString fileName() const {return f.name();}
-	bool	openWrite();
-	bool	openRead();
-	void	close();
+    void	setFileName(const QString &name);
+    QString fileName() const {return f.name();}
+    bool	openWrite();
+    bool	openRead();
+    void	close();
 
-	void	writeBreak();
-	void	writeSection(const QString &section);
-	void	writeComment(const QString &comment);
-	void	writeString(const QString &name, const QString &value);
-	void	writeData(const QString &name, const QString &value);
-	void	writeNumber(const QString &name, const int value, const int base = 10);
-	void	writeStringList(const QString &name, const QStringList &value);
-	void	writeDataList(const QString &name, const QStringList &value);
-	void	writeBool(const QString &name, const bool value);
-	void	writeColor(const QString &name, const QColor& color);
-	void	writeRect(const QString &name, const QRect& rect);
+    void	writeBreak();
+    void	writeSection(const QString &section);
+    void	writeComment(const QString &comment);
+    void	writeString(const QString &name, const QString &value);
+    void	writeData(const QString &name, const QString &value);
+    void	writeNumber(const QString &name, const int value, const int base = 10);
+    void	writeStringList(const QString &name, const QStringList &value);
+    void	writeDataList(const QString &name, const QStringList &value);
+    void	writeBool(const QString &name, const bool value);
+    void	writeColor(const QString &name, const QColor& color);
+    void	writeRect(const QString &name, const QRect& rect);
 
-	bool	sectionExists(const QString &section)
-			{ return SectionList.contains(section); }
-	bool	useSection(const QString &section);
-	const QString&	readString(const QString &name, const QString &def = QString::null);
-	int		readNumber(const QString &name, const int def = 0, const int base = 10);
-	bool	readBool(const QString &name, const bool def = false);
-	const QColor&	readColor(const QString &name, const QColor& def = QColor());
-	const QRect&	readRect(const QString &name, const QRect& def = QRect());
+    bool	sectionExists(const QString &section)
+    { return SectionList.contains(section); }
+    bool	useSection(const QString &section);
+    const QString&	readString(const QString &name, const QString &def = QString::null);
+    int		readNumber(const QString &name, const int def = 0, const int base = 10);
+    bool	readBool(const QString &name, const bool def = false);
+    const QColor&	readColor(const QString &name, const QColor& def = QColor());
+    const QRect&	readRect(const QString &name, const QRect& def = QRect());
 
-	void	setString(const QString &name, const QString &value);
-	void	setData(const QString &name, const QString &value);
-	void	setNumber(const QString &name, const int value, const int base = 10);
-	void	setStringList(const QString &name, const QStringList &value);
-	void	setDataList(const QString &name, const QStringList &value);
-	void	setBool(const QString &name, const bool value);
-	void	setColor(const QString &name, const QColor& color);
-	void	setRect(const QString &name, const QRect& rect);
+    void	setString(const QString &name, const QString &value);
+    void	setData(const QString &name, const QString &value);
+    void	setNumber(const QString &name, const int value, const int base = 10);
+    void	setStringList(const QString &name, const QStringList &value);
+    void	setDataList(const QString &name, const QStringList &value);
+    void	setBool(const QString &name, const bool value);
+    void	setColor(const QString &name, const QColor& color);
+    void	setRect(const QString &name, const QRect& rect);
 
-  /*! Deletes name from current section */
-  void deleteName(const QString &name);
+    /*! Deletes name from current section */
+    void deleteName(const QString &name);
 
-  bool isNameExists(const QString &name);
-  // These functions return true if readXXX function was called with the same /name/ value already.
-  bool getString(const QString & name, QString & value);
-//  bool getData(const QString & name, QString & value);
-  bool getNumber(const QString & name, int & value, const int base=10);
-  bool getBool(const QString & name, bool & value);
+    bool isNameExists(const QString &name);
+    // These functions return true if readXXX function was called with the same /name/ value already.
+    bool getString(const QString & name, QString & value);
+    //  bool getData(const QString & name, QString & value);
+    bool getNumber(const QString & name, int & value, const int base=10);
+    bool getBool(const QString & name, bool & value);
 
-  bool update();
+    bool update();
 
-  QStringList usedValues();
+    QStringList usedValues();
 protected:
-	QTextStream ts;
-	QFile		f;
-	QMap<QString, type_ValueList> SectionList;
-  QMap<QString, type_ValueList> SectionListDef;
-	QMapIterator<QString, type_ValueList>	mi;
-  QString m_sCurSection;
-	bool		m_break;
+    QTextStream ts;
+    QFile		f;
+    QMap<QString, type_ValueList> SectionList;
+    QMap<QString, type_ValueList> SectionListDef;
+    QMapIterator<QString, type_ValueList>	mi;
+    QString m_sCurSection;
+    bool		m_break;
 };
 
 #endif

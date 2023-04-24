@@ -5,6 +5,8 @@ LANGUAGE    = C++
 
 CONFIG  += qt warn_on console
 
+QT      += qt3support
+
 QMAKE_CXXFLAGS	+= -Wno-return-type -fpermissive -Wno-deprecated-copy -Wno-literal-suffix
 
 TREQPATH = ../../../tradeequip-1.1.0

@@ -1,14 +1,15 @@
 #ifndef DATA_H
 #define DATA_H
 
-#include <qsqlcursor.h>
+#include <Q3SqlCursor>
+#include <QtSql/QSqlError>
 #include <qsqlrecord.h>
 #include "queries.h"
 
 class alEngine;
 class alDataRecord;
 
-class alData : public QSqlCursor
+class alData : public Q3SqlCursor
 {
 public:
     alData(alEngine * e, QString table);

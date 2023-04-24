@@ -10,6 +10,17 @@
 ** destructor.
 *****************************************************************************/
 
+class dlgSiriusSettings : public QDialog, Ui::dlgSiriusSettings
+{
+public:
+    dlgSiriusSettings(QWidget * parent = 0) : QDialog(parent), Ui::dlgSiriusSettings() {};
+public slots:
+    void init( eqDriver * device );
+    void apply();
+private:
+    eqDriver * fDevice;
+};
+
 void dlgSiriusSettings::init( eqDriver * device )
 {
     fDevice = device;
@@ -23,10 +34,10 @@ void dlgSiriusSettings::apply()
 {
     if(fDevice)
     {
-	fDevice->setOption("host", editHost->text());
-	fDevice->setOption("port", spinPort->value());
-	fDevice->setOption("table", spinTable->value());	
-	accept();	
-    } 
+        fDevice->setOption("host", editHost->text());
+        fDevice->setOption("port", spinPort->value());
+        fDevice->setOption("table", spinTable->value());
+        accept();
+    }
     else reject();
 }

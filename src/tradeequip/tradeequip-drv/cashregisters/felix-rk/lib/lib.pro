@@ -3,6 +3,8 @@ LANGUAGE	= C++
 
 CONFIG	+= qt warn_on dll
 
+QT      += qt3support sql
+
 QMAKE_CXXFLAGS	+= -Wno-return-type -fpermissive -Wno-deprecated-copy -Wno-literal-suffix
 
 LIBS	+= -L../../../../tradeequip-1.1.0/lib -ltradeequip

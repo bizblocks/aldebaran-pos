@@ -10,6 +10,18 @@
 ** destructor.
 *****************************************************************************/
 
+class dlgExportSales : public Ui::dlgExportSales
+{
+public:
+    dlgExportSales(QWidget * parent) : Ui::dlgExportSales() {};
+public slots:
+    void init();
+    void refresh(int t);
+    QDateTime begin();
+    QDateTime end();
+    int period();
+};
+
 void dlgExportSales::init()
 {
     cmbType->setCurrentItem(0);

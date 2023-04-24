@@ -3,7 +3,8 @@
 
 #include <qobject.h>
 #include <qmap.h>
-#include <qvaluelist.h>
+#include <QList>
+#include <Q3Signal>
 #include <qvariant.h>
 #include <qthread.h>
 
@@ -42,7 +43,7 @@ private:
     eqWorker();
     ~eqWorker();
     QMap<QString, eqDriver*> devices;
-    QValueList<QThread*> threads;
+    QList<QThread*> threads;
 };
 
 class eqJob : public QObject
@@ -66,7 +67,7 @@ protected:
     void setError(int e, QString msg) { fError = e; fErrorMsg = msg; };
     eqDriver * fDevice;
     QString fAction;
-    QSignal * fSignal;
+    Q3Signal * fSignal;
     QVariant fData, fResult;
     int fError;
     QString fErrorMsg;

@@ -32,7 +32,8 @@
 #define TEPLUGIN_H
 
 #ifndef QT_H
-#include "qgplugin.h"
+//#include "qgplugin.h"
+#include <QtPlugin>
 #include "qstringlist.h"
 #endif // QT_H
 #include "teglobal.h"
@@ -53,7 +54,7 @@ class TEPluginPrivate;
  * \ru
  * \_ru
  */
-class  LIB_EXPORT TEPluginBase : public QGPlugin
+class  LIB_EXPORT TEPluginBase : public QObject
 {
     Q_OBJECT
 public:

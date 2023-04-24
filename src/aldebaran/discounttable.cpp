@@ -66,16 +66,18 @@ QVariant alDiscountTable::displayValue(QString attr, QVariant val)
 {
     if(attr=="protect" || attr==tr("protect"))
     {
-	if(val.toBool()) return QPixmap::fromMimeSource("checked.png");
-	else return QPixmap::fromMimeSource("unchecked.png");
+    if(val.toBool())
+        return QPixmap(":/images/checked.png");
+    else
+        return QPixmap(":/images/unchecked.png");
     }
     else return val;
 }
 
-QPixmap alDiscountTable::pixmap(int r)
+QIcon alDiscountTable::icon(int r)
 {
     Q_UNUSED(r);
-    return QPixmap::fromMimeSource("element.png");
+    return QIcon(":/images/element.png");
 }
 
 bool alDiscountTable::newElement()

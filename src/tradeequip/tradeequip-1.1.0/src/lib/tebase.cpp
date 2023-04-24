@@ -29,8 +29,8 @@
 */
 #ifndef TEBASE_CPP
 #define TEBASE_CPP
-#include <qsocket.h>
-#include <qsocketdevice.h> 
+#include <Q3Socket>
+#include <Q3SocketDevice>
 #include "tebase.h"
 #include <tserialport.h>
 #include <stdarg.h>
@@ -56,44 +56,44 @@
  */
 TEBase::TEBase( int pname )
 {
-	init(0);
+    init(0);
 }
 
 TEBase::TEBase( QString device )
 {
-	init(0, device);
+    init(0, device);
 }
 
 void TEBase::init(int pn, QString device)
 {
     m_ee.addFuncBinding1<TEBase,int,int>(
-        this, &TEBase::setPortNumber, "setPortNumber");
+                this, &TEBase::setPortNumber, "setPortNumber");
     m_ee.addFuncBinding0<TEBase,int, ConstFunc0<TEBase,int> >(
-        this, &TEBase::portNumber, "portNumber");
+                this, &TEBase::portNumber, "portNumber");
     m_ee.addFuncBinding1<TEBase,int,QString>(
-        this, &TEBase::setPortDevice, "setPortDevice");
+                this, &TEBase::setPortDevice, "setPortDevice");
     m_ee.addFuncBinding0<TEBase,QString, ConstFunc0<TEBase,QString> >(
-        this, &TEBase::portDevice, "portDevice");        
+                this, &TEBase::portDevice, "portDevice");
     m_ee.addProcBinding1<TEBase,int>(
-        this,&TEBase::setPollInterval,"setPollInterval");
+                this,&TEBase::setPollInterval,"setPollInterval");
     m_ee.addFuncBinding0<TEBase,int>(
-        this,&TEBase::pollInterval,"pollInterval");
+                this,&TEBase::pollInterval,"pollInterval");
     m_ee.addFuncBinding0<TEBase,QString, ConstFunc0<TEBase,QString> >(this,&TEBase::activationKey,"activationKey");
-//    addFuncBinding(m_ee,this,&TEBase::activationKey,"activationKey");
+    //    addFuncBinding(m_ee,this,&TEBase::activationKey,"activationKey");
     m_ee.addProcBinding1<TEBase,const QString &>(
-        this,&TEBase::setActivationKey,"setActivationKey");
+                this,&TEBase::setActivationKey,"setActivationKey");
     m_ee.addFuncBinding0<TEBase,int>(
-        this,&TEBase::isActivationKeyValid,"isActivationKeyValid");
+                this,&TEBase::isActivationKeyValid,"isActivationKeyValid");
     m_ee.addFuncBinding0<TEBase,int>(
-        this,&TEBase::open,"open");
+                this,&TEBase::open,"open");
     m_ee.addFuncBinding0<TEBase,int>(
-        this,&TEBase::close,"close");
+                this,&TEBase::close,"close");
     m_ee.addProcBinding1<TEBase,int>(
-        this,&TEBase::setDebugLevel,"setDebugLevel");
+                this,&TEBase::setDebugLevel,"setDebugLevel");
     m_ee.addProcBinding1<TEBase,bool>(
-        this,&TEBase::startPoll,"startPoll");
+                this,&TEBase::startPoll,"startPoll");
     m_ee.addProcBinding0<TEBase>(
-        this,&TEBase::stopPoll,"stopPoll");
+                this,&TEBase::stopPoll,"stopPoll");
 
     clearPPP();
 
@@ -104,14 +104,14 @@ void TEBase::init(int pn, QString device)
     vTimeoutFlag = false;
     m_eConnectionType = ECT_SERIAL;
     Port = new TSerialPort();
-    Socket = new QSocketDevice();
+    Socket = new Q3SocketDevice();
 }
 
 /*!
 */
 TEBase::~TEBase()
 {
-//    close();
+    //    close();
     delete Port;
 }
 
@@ -119,15 +119,15 @@ TEBase::~TEBase()
 int
 TEBase::setConnectionType( int ct )
 {
-    switch (ct) 
+    switch (ct)
     {
     case ECT_SERIAL: case ECT_KEYBOARD: case ECT_TCP:
-	m_eConnectionType = ct;
-	break;
+        m_eConnectionType = ct;
+        break;
     default:
-	setErrorText(tr("Unknown connection type."));
-	return 1;
-	break;
+        setErrorText(tr("Unknown connection type."));
+        return 1;
+        break;
     }
     return 0;
 }
@@ -161,8 +161,8 @@ int TEBase::setPortDevice(QString device)
     QDEBUG(QString("setPortDevice: %1").arg(device));
     if(device.left(2).upper()=="IP")
     {
-	setConnectionType(ECT_TCP);
-	device = device.mid(2);
+        setConnectionType(ECT_TCP);
+        device = device.mid(2);
     }
     bool o = isOpen();
     if(o) o = close();
@@ -173,23 +173,23 @@ int TEBase::setPortDevice(QString device)
 
 QString TEBase::portDevice() const
 {
-    return vPortDevice;    
+    return vPortDevice;
 }
 
 int TEBase::serialOpen()
 {
-    QString pname;   
+    QString pname;
 #ifdef Q_OS_WIN32
     pname=QString("COM%1:").arg( portNumber() );
 #else
     pname=QString("%1").arg( portDevice() );
 #endif    
-    QDEBUG(QString("Opening port: %1").arg(pname));    
+    QDEBUG(QString("Opening port: %1").arg(pname));
     Port->setName( pname );
     if (!Port->open())
     {
-	setErrorText(tr("Cannot open serial port '%1'.").arg(pname));
-	return 0;
+        setErrorText(tr("Cannot open serial port '%1'.").arg(pname));
+        return 0;
     }
     if (m_iPBaudRate!=0)
         Port->setCustomBaudRate((Q_ULONG)m_iPBaudRate);
@@ -202,7 +202,7 @@ int TEBase::serialOpen()
     if (m_PStopBits!=STOP_NOTSET)
         Port->setStopBits(m_PStopBits);
     Port->setTimeout(0,(unsigned long)vTimeout);
-    return 1;    
+    return 1;
 }
 
 /*
@@ -210,10 +210,10 @@ int TEBase::waitConnection()
 {
     for(int i=0;i<10;i++)
     {
-	QSocket::State state = Socket->state();
-	if(state!=QSocket::Connecting)
-	    return state==QSocket::Connected ? 1 : 0;
-	usleep(100000);
+    QSocket::State state = Socket->state();
+    if(state!=QSocket::Connecting)
+        return state==QSocket::Connected ? 1 : 0;
+    usleep(100000);
     }
     return 0;
 }
@@ -227,8 +227,8 @@ int TEBase::tcpOpen()
     QDEBUG(QString("IP address: %1 port: %2").arg(hostaddr.toString()).arg(addr[1].toUInt()));
     if(!Socket->connect(hostaddr, addr[1].toUInt()))
     {
-	QDEBUG(QString("connection error: %1").arg(Socket->error()));
-	return 0;
+        QDEBUG(QString("connection error: %1").arg(Socket->error()));
+        return 0;
     }
     return 1;
 }
@@ -240,11 +240,11 @@ TEBase::open()
     switch(m_eConnectionType)
     {
     case ECT_SERIAL:
-	res = serialOpen();
-	break;
+        res = serialOpen();
+        break;
     case ECT_TCP:
-	res = tcpOpen();
-	break;
+        res = tcpOpen();
+        break;
     }
     return res;
 }
@@ -253,9 +253,9 @@ int
 TEBase::close()
 {
     if (Port->isOpen())
-	Port->close();
+        Port->close();
     if(Socket->isOpen())
-	Socket->close();
+        Socket->close();
     return 1;
 }
 
@@ -270,9 +270,9 @@ TEBase::isOpen()
     switch(m_eConnectionType)
     {
     case ECT_SERIAL:
-	return Port->isOpen();
+        return Port->isOpen();
     case ECT_TCP:
-	return false;//Socket->state() & IO_Open;
+        return false;//Socket->state() & IO_Open;
     }
 }
 
@@ -337,19 +337,19 @@ TEBase::putch( int b )
     switch(m_eConnectionType)
     {
     case ECT_SERIAL:
-	res=Port->putch( b );
-	break;
+        res=Port->putch( b );
+        break;
     case ECT_TCP:
-	res = Socket->putch(b)==b ? 0 : 1;
-	break;
+        res = Socket->putch(b)==b ? 0 : 1;
+        break;
     default:
-	break;
+        break;
     }
 #ifdef DEBUG
     if ( vDebugLevel ){
-	    printf(">%02X ", b & 0xff );
-    	    fflush(stdout);
-	}
+        printf(">%02X ", b & 0xff );
+        fflush(stdout);
+    }
 #endif
     return res;
 }
@@ -361,35 +361,35 @@ Get character.
 int
 TEBase::getch()
 {
-//    int t = vTimeout;
-//    vTimeoutFlag = true;
-//    while ( readCount()<=0 && (t--)>0) Sleep(1);
-//    if (readCount()>0)
-//    {
-    int res = -1;    
+    //    int t = vTimeout;
+    //    vTimeoutFlag = true;
+    //    while ( readCount()<=0 && (t--)>0) Sleep(1);
+    //    if (readCount()>0)
+    //    {
+    int res = -1;
     switch(m_eConnectionType)
     {
     case ECT_SERIAL:
-	res=Port->getch();
-	vTimeoutFlag = res==-1;	
-	break;
+        res=Port->getch();
+        vTimeoutFlag = res==-1;
+        break;
     case ECT_TCP:
-	Socket->waitForMore(vTimeout, &vTimeoutFlag);
-	if(vTimeoutFlag) break;
-	res=Socket->getch();
-	break;
+        Socket->waitForMore(vTimeout, &vTimeoutFlag);
+        if(vTimeoutFlag) break;
+        res=Socket->getch();
+        break;
     default:
-	break;
-    }        
-//    }
-//    else
-//        i=-1;
+        break;
+    }
+    //    }
+    //    else
+    //        i=-1;
 #ifdef DEBUG
     if ( vDebugLevel )
     {
-	if (res==-1) printf("<XX "); 
-	else printf("<%02X ", res & 0xff );
-	fflush(stdout);
+        if (res==-1) printf("<XX ");
+        else printf("<%02X ", res & 0xff );
+        fflush(stdout);
     }
 #endif
     return res;
@@ -424,7 +424,7 @@ TEBase::readBlock( char *data, Q_ULONG maxlen )
 #ifdef DEBUG
     if ( vDebugLevel ) printf("\n-");
 #endif
-//  if ( readCount()< maxlen )
+    //  if ( readCount()< maxlen )
     while (offs< maxlen ) {
         b = getch() & 0xff;
         if ( isTimeout() ) break;
@@ -443,13 +443,13 @@ TEBase::readCount()
     switch(m_eConnectionType)
     {
     case ECT_SERIAL:
-	c = Port->bytesWaiting();
-	break;
+        c = Port->bytesWaiting();
+        break;
     case ECT_TCP:
-	c = Socket->bytesAvailable();
-	break;
+        c = Socket->bytesAvailable();
+        break;
     default:
-	break;
+        break;
     }
     if ( c < 0 ) c = 0;
     return (Q_ULONG)c;
@@ -486,7 +486,8 @@ TEBase::startPoll( bool defaultProc )
 void
 TEBase::stopPoll()
 {
-    killTimers();
+//TODO implement
+//    killTimers();
 }
 
 
@@ -537,7 +538,7 @@ TEBase::port()
 QStringList
 TEBase::execCommand( const QString &cmd )
 {
-//    Q_UNUSED( cmd )
+    //    Q_UNUSED( cmd )
     QStringList l;
     int res=m_ee.execute(cmd);
     if (res)
@@ -551,14 +552,14 @@ TEBase::execCommand( const QString &cmd )
 }
 
 
-QCString
+Q3CString
 TEBase::utf8ToDevice( const QString &text )
 {
     return ( const char *) text;
 }
 
 QString
-TEBase::deviceToUtf8( const QCString &text )
+TEBase::deviceToUtf8( const Q3CString &text )
 {
     return text;
 }
@@ -638,11 +639,11 @@ void TEBase::clearPPP()
     m_PStopBits=STOP_NOTSET;
 }
 
-QValueList<int> TEBase::supportedBaudRates()
+QList<int> TEBase::supportedBaudRates()
 {
-  QValueList<int> ret;
-  
-  return ret;
+    QList<int> ret;
+
+    return ret;
 }
 
 #endif // TEBASE_CPP

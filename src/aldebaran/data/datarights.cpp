@@ -1,4 +1,4 @@
-#include <qsqldatabase.h>
+#include <QtSql/QSqlDatabase>
 #include "engine.h"
 
 #define TNAME "rights"

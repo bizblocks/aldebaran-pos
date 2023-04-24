@@ -4,6 +4,7 @@
 #include <qobject.h>
 #include <qvariant.h>
 #include <qmap.h>
+#include <QStringList>
 
 #define MAX_RETRY_COUNT	10
 
@@ -75,7 +76,7 @@ protected:
 private:
 	sqlite3 * fSqlite3;
 	sDataRow row;
-	QValueList<sDataRow> rows;
+    QList<sDataRow> rows;
 	ulong fSize;
 	ulong fPos;
 	QStringList names;

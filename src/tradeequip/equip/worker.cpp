@@ -1,8 +1,9 @@
 #include <unistd.h>
 #include <qapplication.h>
 #include <qtimer.h>
-#include <qsignal.h>
+#include <Q3Signal>
 #include <qthread.h>
+#include <QMutex>
 #include "engine.h"
 #include "worker.h"
 #include "driver.h"
@@ -57,7 +58,7 @@ eqWorker::eqWorker() :
 
 eqWorker::~eqWorker()
 {
-    for(QValueList<QThread*>::iterator it=threads.begin();it!=threads.end();++it)
+    for(QList<QThread*>::iterator it=threads.begin();it!=threads.end();++it)
     {
         jobThread * thread = (jobThread*)(*it);
         if(thread)
@@ -178,7 +179,7 @@ eqJob::eqJob(eqDriver * device, QString action) :
     setError(0, "");
     fDevice = device;
     fAction = action;
-    fSignal = new QSignal(this);
+    fSignal = new Q3Signal(this);
     fData.clear();
     processed = FALSE;
 }

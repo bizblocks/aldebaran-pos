@@ -1,5 +1,6 @@
-#include <qtranslator.h>
+#include <QTranslator>
 #include "queries.h"
+#include "engine.h"
 
 Queries * Queries::instance = NULL;
 
@@ -33,10 +34,9 @@ void Queries::setDialect(QString d)
 
 QString Queries::tr(QString query)
 {
-    qDebug(QString("source query: %1").arg(query));
+    alDBG(QString("source query: %1").arg(query));
     Queries * that = getQueries();
-    QTranslatorMessage msg = that->trans->findMessage("Queries", query);
-    query = msg.translation();
-    qDebug(QString("result query: %1").arg(query));
+    query = that->trans->translate("Queries", query);
+    alDBG(QString("result query: %1").arg(query));
     return query; 
 }

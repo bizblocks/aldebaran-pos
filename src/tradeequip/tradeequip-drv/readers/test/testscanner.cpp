@@ -1,5 +1,6 @@
 #include "testscanner.h"
-#include "testscannerui.h"
+#include "ui_testscannerui.h"
+#include "testscannerui.ui.h"
 #include <tereaderbarcode.h>
 
 int main(int argc, char * argv [])
@@ -7,11 +8,12 @@ int main(int argc, char * argv [])
 	QApplication app(argc,argv);
 	cout << "Starting test..." << endl;
 	TEReaderBase * sc=new TEReaderBarcode;
-	Form1 ui;
-	app.setMainWidget(&ui);
-	ui.setScanner(sc);
-	ui.connect(sc,SIGNAL(deviceEvent(int)),&ui,SLOT(onDevEvent(int)));
-	ui.show();
+//TODO implement
+    Form1 ui;
+    app.setMainWidget(&ui);
+    ui.setScanner(sc);
+    ui.connect(sc,SIGNAL(deviceEvent(int)),&ui,SLOT(onDevEvent(int)));
+    ui.show();
 	sc->setDebugLevel(1);
 	sc->setPortDevice("/dev/ttyS0");
 	sc->startDriver();

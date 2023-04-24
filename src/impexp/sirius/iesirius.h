@@ -2,11 +2,11 @@
 #define SIRIUS_H
 
 #include <qobject.h>
-#include <qserversocket.h>
-#include <qcstring.h>
+#include <Q3ServerSocket>
+#include <Q3CString>
 #include "impexp.h"
 
-class QSocket;
+class Q3Socket;
 class sirius;
 class sServerSocket;
 class impSirius;
@@ -20,13 +20,13 @@ public:
     virtual bool stop();
     virtual bool restart();
 protected slots:
-    void readData(QSocket * s);
+    void readData(Q3Socket * s);
 private:
     sServerSocket * server;
     sirius * fSirius;    
 };
 
-class sServerSocket : public QServerSocket
+class sServerSocket : public Q3ServerSocket
 {
     Q_OBJECT
 public:
@@ -37,7 +37,7 @@ public slots:
 signals:
     void newConnect();
     void endConnect();
-    void readClient(QSocket*);	
+    void readClient(Q3Socket*);
 private slots:
     void emitRead();
     void discardClient();
@@ -74,7 +74,7 @@ protected slots:
     void setError(int e);
     void deviceConnected();
 private:
-    QSocket * fSocket;
+    Q3Socket * fSocket;
     int fError;
 };
 

@@ -1,6 +1,7 @@
 #ifndef ORDERTABLE_H
 #define ORDERTABLE_H
 
+#include <Q3Table>
 #include "datatable.h"
 #include "rights.h"
 
@@ -19,7 +20,8 @@ public:
     alOrderLine * newLine();
     alOrderLine * getLine(int r);
     bool delLine(int r);
-    virtual void paintCell( QPainter * p, int row, int col, const QRect & cr, bool selected, const QColorGroup & cg ) { QTable::paintCell(p, row, col, cr, selected, cg); } ;        
+    virtual void paintCell( QPainter * p, int row, int col, const QRect & cr, bool selected, const QColorGroup & cg )
+    { Q3Table::paintCell(p, row, col, cr, selected, cg); } ;
 //    QString info();
     double total(QString attr);
 public slots:

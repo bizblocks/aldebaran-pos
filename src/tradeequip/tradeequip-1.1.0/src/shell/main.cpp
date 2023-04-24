@@ -1,7 +1,7 @@
 #include <cmdparser.h>
 #include <iostream>
 #include <qstring.h>
-#include <qvaluevector.h>
+#include <Q3ValueVector>
 #include <qvariant.h>
 #include <tebase.h>
 #include <qstringlist.h>
@@ -12,7 +12,7 @@
 #include <qthread.h>
 #include <qeventloop.h>
 #include <qmutex.h>
-#include <qptrqueue.h>
+#include <Q3PtrQueue>
 #include <qwaitcondition.h>
 #include <qevent.h>
 #include <string>
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
 //			}
         };
         g_bufmut.unlock();
-        app.eventLoop()->processEvents(QEventLoop::AllEvents | QEventLoop::WaitForMore);
+        app.processEvents(QEventLoop::AllEvents | QEventLoop::WaitForMore);
     };
 exitcommand:
 //    debprintf("before disconnect.\n");

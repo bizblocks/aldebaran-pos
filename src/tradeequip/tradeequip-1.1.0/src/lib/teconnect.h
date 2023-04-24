@@ -32,7 +32,7 @@
 #include <templexports.h>
 
 //#include <qobject.h>
-#include <qdict.h>
+#include <Q3Dict>
 #include <tserialport.h>
 #include <cmdparser.h>
 
@@ -66,8 +66,8 @@ public:
     int debugLevel();
     void setDebugLevel( int level );
 
-    virtual QCString utf8ToDevice( const QString &text );
-    virtual QString deviceToUtf8( const QCString &text );
+    virtual Q3CString utf8ToDevice( const QString &text );
+    virtual QString deviceToUtf8( const Q3CString &text );
     virtual int isActivationKeyValid();
     QString productSuffix() const
     {
@@ -94,7 +94,7 @@ public:
     StopBitsType portStopBits() const {return m_PStopBits;}
 
 
-    virtual QValueList<int> supportedBaudRates(); // Non const, just in case.
+    virtual QList<int> supportedBaudRates(); // Non const, just in case.
 
     virtual int setConnectionType( int ct );
 

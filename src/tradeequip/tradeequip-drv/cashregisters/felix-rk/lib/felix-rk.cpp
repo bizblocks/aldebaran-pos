@@ -481,7 +481,7 @@ FelixRK::Result FelixRK::toDecimal(Byte const * const pBuf,int szSize, Decimal *
 	return RSP_OK;
 }
 
-QCString FelixRK::utf8ToDevice( const QString &text )
+Q3CString FelixRK::utf8ToDevice( const QString &text )
 {
 	QTextCodec * utf8=QTextCodec::codecForName("UTF-8");
 	QString unicodetext = utf8->toUnicode(text);
@@ -489,7 +489,7 @@ QCString FelixRK::utf8ToDevice( const QString &text )
 	return ibm866->fromUnicode(unicodetext);
 }
 
-QString FelixRK::deviceToUtf8( const QCString &text )
+QString FelixRK::deviceToUtf8( const Q3CString &text )
 {
 	QTextCodec * ibm866=QTextCodec::codecForName("IBM 866");
 	QString unicodetext = ibm866->toUnicode(text);
@@ -948,7 +948,8 @@ FelixRK::Result FelixRK::internalDeviceType(Byte * pProtocol, Byte * pType, Byte
     if(pVersion) memcpy(pVersion, answer+6, 5);
     char model[255];
     memcpy(model, answer+9, 246);
-    if(name) name.fromUtf8(deviceToUtf8(QCString((const char *)model, 246)));
+    if(name.isEmpty())
+        name.fromUtf8(deviceToUtf8(Q3CString((const char *)model, 246)));
     return RSP_OK;
 }
 
@@ -1216,7 +1217,7 @@ FelixRK::Result FelixRK::stringToByteArray(const QString & text, Byte * pBuf, in
 		setErrorText(tr("stringToByteArray: szSize<=0"));
 		return RSP_INVALIDPARAMETER3;
 	}
-	QCString devStr=utf8ToDevice(text);
+    Q3CString devStr=utf8ToDevice(text);
 	memset((void*)pBuf,0,szSize);
 	memcpy((void*)pBuf,(const void*)((const char*)devStr),min((uint)szSize,devStr.length()));
 	return RSP_OK;

@@ -13,7 +13,7 @@ public:
     alArchiveTable(QWidget * parent, alEngine * engine);
     virtual void init();
 public slots:
-    virtual QPixmap pixmap(int r);
+    virtual QIcon icon(int r);
     virtual bool editRowData();
     virtual bool deleteRowData();
     void closeOrder();

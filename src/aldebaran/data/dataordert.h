@@ -29,7 +29,7 @@ protected:
     virtual QSqlIndex defaultSort();    
 private:
     alOrderRecord * fOrder;
-    QValueList<alOrderLine*> lines;
+    QList<alOrderLine*> lines;
 };
 
 typedef alUserRecord * pUserRecord;

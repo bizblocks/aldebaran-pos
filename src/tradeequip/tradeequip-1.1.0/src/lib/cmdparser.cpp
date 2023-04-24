@@ -33,7 +33,7 @@
 
 
 /*! /en Constructs an object, which can be used to bind text commands to arbitrary object's member function call. /_en
- *  /ru Создает объект, позволяющий привязать текстовую команду к вызову функции-члена заданного объекта. /_ru
+ *  /ru РЎРѕР·РґР°РµС‚ РѕР±СЉРµРєС‚, РїРѕР·РІРѕР»СЏСЋС‰РёР№ РїСЂРёРІСЏР·Р°С‚СЊ С‚РµРєСЃС‚РѕРІСѓСЋ РєРѕРјР°РЅРґСѓ Рє РІС‹Р·РѕРІСѓ С„СѓРЅРєС†РёРё-С‡Р»РµРЅР° Р·Р°РґР°РЅРЅРѕРіРѕ РѕР±СЉРµРєС‚Р°. /_ru
  */
 ExecEngine::ExecEngine() : m_pTextCodec(0)
 {
@@ -56,7 +56,7 @@ ExecEngine::~ExecEngine()
 };
 
 /*! /en Sets character encoding for nonunicode parse(). /_en
- *  /ru Устанавливает кодировку для неюникодной версии parse(). /_ru
+ *  /ru РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РєРѕРґРёСЂРѕРІРєСѓ РґР»СЏ РЅРµСЋРЅРёРєРѕРґРЅРѕР№ РІРµСЂСЃРёРё parse(). /_ru
  */
 void ExecEngine::setEncoding(const QString & encoding)
 {
@@ -64,9 +64,9 @@ void ExecEngine::setEncoding(const QString & encoding)
 };
 
 /*! /en  /_en
- *  /ru Неюникодная версия parse(). Использует кодировку указанную функцией setEncoding(). /_ru
+ *  /ru РќРµСЋРЅРёРєРѕРґРЅР°СЏ РІРµСЂСЃРёСЏ parse(). РСЃРїРѕР»СЊР·СѓРµС‚ РєРѕРґРёСЂРѕРІРєСѓ СѓРєР°Р·Р°РЅРЅСѓСЋ С„СѓРЅРєС†РёРµР№ setEncoding(). /_ru
  */
-int ExecEngine::parse(const char * cmd, QString & func, QValueVector<QVariant> & parms)
+int ExecEngine::parse(const char * cmd, QString & func, Q3ValueVector<QVariant> & parms)
 {
     QString ucmd;
     m_error="";
@@ -78,14 +78,14 @@ int ExecEngine::parse(const char * cmd, QString & func, QValueVector<QVariant> &
 };
 
 /*! /en  /_en
- *  /ru Выполняет синтаксический разбор строки ucmd.
+ *  /ru Р’С‹РїРѕР»РЅСЏРµС‚ СЃРёРЅС‚Р°РєСЃРёС‡РµСЃРєРёР№ СЂР°Р·Р±РѕСЂ СЃС‚СЂРѕРєРё ucmd.
  * /_ru
  * command ::= <function> '(' [ <parameter> ',' ... ] ')'
  * parameter ::= number | string
  * number ::= common number representation
  * string ::= '"' <non-double-quote-chars>|'\"' '"'
  */
-int ExecEngine::parse(const QString & ucmd, QString & func, QValueVector<QVariant> & parms)
+int ExecEngine::parse(const QString & ucmd, QString & func, Q3ValueVector<QVariant> & parms)
 {
 // All chars from begin to first '(' character go into funcname
     int lparapos=ucmd.find('(');
@@ -213,12 +213,12 @@ stateerror:
 };
 
 /*! /en  /_en
- *  /ru Неюникодная версия execute() /_ru
+ *  /ru РќРµСЋРЅРёРєРѕРґРЅР°СЏ РІРµСЂСЃРёСЏ execute() /_ru
  */
 int ExecEngine::execute(const char * cmd)
 {
     QString func;
-    QValueVector<QVariant> parms;
+    Q3ValueVector<QVariant> parms;
     int res=parse(cmd,func,parms);
     if (res)
         return res;
@@ -240,12 +240,12 @@ int ExecEngine::execute(const char * cmd)
 };
 
 /*! /en  /_en
- *  /ru Вызывает функцию связанную с именем полученным после разбора строки ucmd. /_ru
+ *  /ru Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃРІСЏР·Р°РЅРЅСѓСЋ СЃ РёРјРµРЅРµРј РїРѕР»СѓС‡РµРЅРЅС‹Рј РїРѕСЃР»Рµ СЂР°Р·Р±РѕСЂР° СЃС‚СЂРѕРєРё ucmd. /_ru
  */
 int ExecEngine::execute(const QString & ucmd)
 {
     QString func;
-    QValueVector<QVariant> parms;
+    Q3ValueVector<QVariant> parms;
     int res=parse(ucmd,func,parms);
     if (res)
         return res;
@@ -267,7 +267,7 @@ int ExecEngine::execute(const QString & ucmd)
 };
 
 /*! /en  /_en
- *  /ru Возвращает список зарегистрированных имен функций (в скобках количество параметров), разделенных запятыми. /_ru
+ *  /ru Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅРЅС‹С… РёРјРµРЅ С„СѓРЅРєС†РёР№ (РІ СЃРєРѕР±РєР°С… РєРѕР»РёС‡РµСЃС‚РІРѕ РїР°СЂР°РјРµС‚СЂРѕРІ), СЂР°Р·РґРµР»РµРЅРЅС‹С… Р·Р°РїСЏС‚С‹РјРё. /_ru
  */
 QString ExecEngine::help() const
 {

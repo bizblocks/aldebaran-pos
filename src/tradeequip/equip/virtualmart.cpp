@@ -1,9 +1,10 @@
 #include <qtimer.h>
 #include "virtualmart.h"
-#include "dlgvmsettings.h"
+#include "ui_dlgvmsettings.h"
+#include "dlgvmsettings.ui.h"
 
 eqVirtualMart::eqVirtualMart(QString name) :
-	eqDriver(name)
+    eqDriver(name)
 {
     vMart = NULL;
     port = 3306;
@@ -21,9 +22,9 @@ void eqVirtualMart::init()
     if(vMart) delete vMart;
     vMart = new impVMart();
     vMart->setTable(table);
-    connect(vMart, SIGNAL(error()), this, SLOT(checkError()));    
+    connect(vMart, SIGNAL(error()), this, SLOT(checkError()));
     connect(vMart, SIGNAL(connected()), this, SLOT(deviceConnected()));
-    connect(vMart, SIGNAL(error()), this, SLOT(checkError()));    
+    connect(vMart, SIGNAL(error()), this, SLOT(checkError()));
     vMart->open(host, port, db, login, password, prefix);
     queue.clear();
 }
@@ -37,7 +38,7 @@ void eqVirtualMart::setOption(QString o, QVariant v)
 {
     if(o=="host") host = v.toString();
     else if(o=="port") port = v.toInt();
-    else if(o=="db") db = v.toString();    
+    else if(o=="db") db = v.toString();
     else if(o=="login") login = v.toString();
     else if(o=="password") password = v.toString();
     else if(o=="table") table = v.toInt();
@@ -57,7 +58,7 @@ QString eqVirtualMart::option(QString name)
     else if(name=="port") return QString("%1").arg(port);
     else if(name=="db") return QString("%1").arg(db);
     else if(name=="login") return QString("%1").arg(login);
-    else if(name=="table") return QString("%1").arg(table);    
+    else if(name=="table") return QString("%1").arg(table);
     else if(name=="prefix") return QString("%1").arg(prefix);
     else if(name=="password") return QString("%1").arg(password);
     return "";
@@ -77,10 +78,10 @@ void eqVirtualMart::checkError()
 {
     if(!vMart) return setError(VMART_NODEVICE, tr("No device"));
     int e = vMart->errorCode();
-    if(e==VMART_OK) 
+    if(e==VMART_OK)
     {
-	setError(0, vMart->errorMsg(e));
-	return;
+        setError(0, vMart->errorMsg(e));
+        return;
     }
     else setError(e+1, vMart->errorMsg(e));
     emit deviceError(error());
@@ -95,11 +96,11 @@ void eqVirtualMart::header(QVariant data)
     if(!vMart) return setError(VMART_NODEVICE, tr("No device"));
     if(!vMart->isOpened())
     {
-	queueElement el;
-	el.type = "header";
-	el.data = data;
-	queue.append(el);
-	return;
+        queueElement el;
+        el.type = "header";
+        el.data = data;
+        queue.append(el);
+        return;
     }
     if(vMart->errorCode()!=VMART_OK) return;
     vMart->writeHeader(data);
@@ -107,19 +108,23 @@ void eqVirtualMart::header(QVariant data)
 
 void eqVirtualMart::line(QVariant data)
 {
-    if(!vMart) return setError(VMART_NODEVICE, tr("No device"));        
+    if(!vMart) return setError(VMART_NODEVICE, tr("No device"));
     if(!vMart->isOpened())
     {
-	queueElement el;
-	el.type = "line";
-	el.data = data;
-	queue.append(el);
-	return;
-    }    
+        queueElement el;
+        el.type = "line";
+        el.data = data;
+        queue.append(el);
+        return;
+    }
     if(vMart->errorCode()!=VMART_OK) return;
     if(!data.canCast(QVariant::Map)) return setError(VMART_INVALIDARG, tr("Wrong parameter"));
     map m = data.toMap();
-    if(!vMart->fromMap(m));
+    //TODO ??
+    if(!vMart->fromMap(m))
+    {
+        ;
+    }
 }
 
 void eqVirtualMart::tailer(QString data)
@@ -127,13 +132,13 @@ void eqVirtualMart::tailer(QString data)
     if(!vMart) return setError(VMART_NODEVICE, tr("No device"));
     if(!vMart->isOpened())
     {
-	queueElement el;
-	el.type = "tailer";
-	el.data = data;
-	queue.append(el);
-	return;
-    }        
-    if(vMart->errorCode()!=VMART_OK) return;    
+        queueElement el;
+        el.type = "tailer";
+        el.data = data;
+        queue.append(el);
+        return;
+    }
+    if(vMart->errorCode()!=VMART_OK) return;
     if(!vMart->writeTailer(data)) return;
 }
 
@@ -155,7 +160,7 @@ int eqVirtualMart::serverPort()
 }
 
 eqVMJob::eqVMJob(eqDriver * device, QString action, QString data) :
-	eqJob(device, action)
+    eqJob(device, action)
 {
     fData = QVariant(data);
 }
@@ -168,19 +173,19 @@ void eqVMJob::connect()
 {
     if(fDevice)
     {
-	eqVirtualMart * s = (eqVirtualMart *)fDevice;
-	s->init();
-	setError(s->error(), s->errorMsg());
-    }    
+        eqVirtualMart * s = (eqVirtualMart *)fDevice;
+        s->init();
+        setError(s->error(), s->errorMsg());
+    }
 }
 
 void eqVMJob::line()
 {
     if(fDevice)
     {
-	eqVirtualMart * s = (eqVirtualMart *)fDevice;
-	s->line(fData);
-	setError(s->error(), s->errorMsg());	
+        eqVirtualMart * s = (eqVirtualMart *)fDevice;
+        s->line(fData);
+        setError(s->error(), s->errorMsg());
     }
 }
 
@@ -188,9 +193,9 @@ void eqVMJob::line()
 {
     if(fDevice)
     {
-	eqVirtualMart * s = (eqVirtualMart *)fDevice;
-	s->header("G");
-	setError(s->error(), s->errorMsg());
+    eqVirtualMart * s = (eqVirtualMart *)fDevice;
+    s->header("G");
+    setError(s->error(), s->errorMsg());
     }
 }
 
@@ -198,19 +203,19 @@ void eqVMJob::goodsEnd()
 {
     if(fDevice)
     {
-	eqVirtualMart * s = (eqVirtualMart *)fDevice;
-	s->tailer("");
-	setError(s->error(), s->errorMsg());	
-    }    
+    eqVirtualMart * s = (eqVirtualMart *)fDevice;
+    s->tailer("");
+    setError(s->error(), s->errorMsg());
+    }
 }
 
 void eqVMJob::elementStart()
 {
     if(fDevice)
     {
-	eqVirtualMart * s = (eqVirtualMart *)fDevice;
-	s->header("E");
-	setError(s->error(), s->errorMsg());
+    eqVirtualMart * s = (eqVirtualMart *)fDevice;
+    s->header("E");
+    setError(s->error(), s->errorMsg());
     }
 }
 
@@ -223,42 +228,42 @@ void eqVMJob::resetDevice()
 {
     if(fDevice)
     {
-	eqVirtualMart * s = (eqVirtualMart *)fDevice;
-	s->header("R");
-	s->tailer("");
-	setError(s->error(), s->errorMsg());
-    }    
+    eqVirtualMart * s = (eqVirtualMart *)fDevice;
+    s->header("R");
+    s->tailer("");
+    setError(s->error(), s->errorMsg());
+    }
 }
 
 void eqVMJob::haltDevice()
 {
     if(fDevice)
     {
-	eqVirtualMart * s = (eqVirtualMart *)fDevice;
-	s->header("H");
-	s->tailer("");
-	setError(s->error(), s->errorMsg());
-    }    
+    eqVirtualMart * s = (eqVirtualMart *)fDevice;
+    s->header("H");
+    s->tailer("");
+    setError(s->error(), s->errorMsg());
+    }
 }
 
 void eqVMJob::updateDevice()
 {
     if(fDevice)
     {
-	eqVirtualMart * s = (eqVirtualMart *)fDevice;
-	s->header("U");
-	s->tailer("");
-	setError(s->error(), s->errorMsg());
-    }    
+    eqVirtualMart * s = (eqVirtualMart *)fDevice;
+    s->header("U");
+    s->tailer("");
+    setError(s->error(), s->errorMsg());
+    }
 }*/
 
 void eqVMJob::orderStart()
 {
     if(fDevice)
     {
-	eqVirtualMart * s = (eqVirtualMart *)fDevice;
-	s->header(fData);
-	setError(s->error(), s->errorMsg());
+        eqVirtualMart * s = (eqVirtualMart *)fDevice;
+        s->header(fData);
+        setError(s->error(), s->errorMsg());
     }
 }
 
@@ -266,8 +271,8 @@ void eqVMJob::orderEnd()
 {
     if(fDevice)
     {
-	eqVirtualMart * s = (eqVirtualMart *)fDevice;
-	s->tailer("");
-	setError(s->error(), s->errorMsg());	
-    }    
+        eqVirtualMart * s = (eqVirtualMart *)fDevice;
+        s->tailer("");
+        setError(s->error(), s->errorMsg());
+    }
 }

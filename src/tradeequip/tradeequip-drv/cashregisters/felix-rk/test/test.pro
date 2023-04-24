@@ -3,6 +3,8 @@ LANGUAGE	= C++
 
 CONFIG	+= qt warn_on
 
+QT      += qt3support sql
+
 QMAKE_CXXFLAGS	+= -Wno-return-type -fpermissive -Wno-deprecated-copy -Wno-literal-suffix
 
 LIBS	+= -L../../../../tradeequip-1.1.0/lib -L../../../lib -ltradeequip -ltecashregister-felix-rk
@@ -18,7 +20,7 @@ FORMS	= mainform.ui
 include ( ../../../config.pri )
 TARGET      = tecashregister-felix-rk-test
 # -ltecashregister-felix-rk
-INCLUDEPATH += ../../../../tradeequip/src/lib
+INCLUDEPATH += ../../../../tradeequip/src/lib .
 DESTDIR     = ../../../bin
 
 TRANSLATIONS = \

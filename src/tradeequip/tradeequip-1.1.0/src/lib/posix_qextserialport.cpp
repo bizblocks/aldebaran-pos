@@ -258,7 +258,7 @@ It is included primarily to provide a complete QIODevice interface, and will not
 in the lastErr member (because it is const).  This function is also not thread-safe - in 
 multithreading situations, use Posix_QextSerialPort::bytesWaiting() instead.
 */
-Offset Posix_QextSerialPort::size() const {
+QIODevice::Offset Posix_QextSerialPort::size() const {
     int availBytes;
 #ifdef NOQFILE
     if (ioctl(m_fdFile, FIONREAD, &availBytes)<0) {
@@ -346,11 +346,11 @@ the serial port and place them in the buffer pointed to by data.  Return value i
 bytes actually read, or -1 on error.  This function will have no effect if the serial port 
 associated with the class is not currently open.
 */
-Q_LONG Posix_QextSerialPort::readBlock(char *data, 
 #ifdef QTVER_PRE_30
+Q_LONG Posix_QextSerialPort::readBlock(char *data, 
                                        uint maxlen) 
 #else
-                                       unsigned long maxlen)
+qint64 Posix_QextSerialPort::readData(char *data, qint64 maxlen)
 #endif
 {
     LOCK_MUTEX();
@@ -376,18 +376,18 @@ from the buffer pointed to by data to the serial port.  Return value is the numb
 of bytes actually written, or -1 on error.  This function will have no effect if the serial 
 port associated with the class is not currently open.
 */
-Q_LONG Posix_QextSerialPort::writeBlock(const char *data, 
 #ifdef QTVER_PRE_30
+Q_LONG Posix_QextSerialPort::writeBlock(const char *data, 
                                         uint len) 
 #else
-unsigned long len)
+qint64 Posix_QextSerialPort::writeData(const char *data, qint64 maxlen)
 #endif
 {
     LOCK_MUTEX();
     int retVal=0;
     if (portOpen) {
 #ifdef NOQFILE
-        retVal=::write(m_fdFile,(const void*)data,(size_t)len);
+        retVal=::write(m_fdFile,(const void*)data,(size_t)maxlen);
 #else
         retVal=Posix_File->writeBlock(data, len);
 #endif        
@@ -438,8 +438,8 @@ int Posix_QextSerialPort::putch(int ch) {
     int retVal=0;
     if (portOpen) {
 #ifdef NOQFILE
-        unsigned char uch;
-        uch=(unsigned char)ch;
+//        unsigned char uch;
+//        uch=(unsigned char)ch;
         retVal=::write(m_fdFile,(void*)&ch,1);
         if (retVal==0 || retVal==-1)
             retVal=-1;

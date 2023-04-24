@@ -33,7 +33,7 @@
 #include <templexports.h>
 
 //#include <qobject.h>
-#include <qdict.h>
+#include <Q3Dict>
 #include <tserialport.h>
 #include <cmdparser.h>
 

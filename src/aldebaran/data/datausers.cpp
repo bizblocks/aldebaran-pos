@@ -1,6 +1,7 @@
-#include <qsqldatabase.h>
+#include <QtSql/QSqlDatabase>
 #include "engine.h"
-#include "dlguser.h"
+#include "ui_dlguser.h"
+#include "dlguser.ui.h"
 
 #define TNAME "users"
 
@@ -37,7 +38,7 @@ void alDataUsers::checkTable()
 
 QSqlIndex alDataUsers::defaultSort()
 {
-    return QSqlIndex::fromStringList(QStringList::split(",", "name"), this);
+    return this->index(QStringList::split(",", "name"));
 }
 
 alDataRecord * alDataUsers::current()

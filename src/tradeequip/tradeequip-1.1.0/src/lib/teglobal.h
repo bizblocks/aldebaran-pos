@@ -26,7 +26,7 @@
 #ifndef TEGLOBAL_H
 #define TEGLOBAL_H
 #include <qglobal.h>
-#include <qgplugin.h>
+//#include <qgplugin.h>
 #include <qstringlist.h>
 
 #define DEBUG 1
@@ -160,6 +160,14 @@ public:
 };
 
 class TEBase;
+
+#ifndef Q_EXTERN_C
+#ifdef __cplusplus
+#define Q_EXTERN_C    extern "C"
+#else
+#define Q_EXTERN_C    extern
+#endif
+#endif
 
 Q_EXTERN_C LIB_EXPORT QStringList te_drivers( const QString &baseClass = QString::null );
 Q_EXTERN_C LIB_EXPORT bool te_driverExists( const QString &className, const QString &baseClass = QString::null );

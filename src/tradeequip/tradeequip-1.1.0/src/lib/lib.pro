@@ -3,6 +3,8 @@ LANGUAGE	= C++
 
 CONFIG	+= qt warn_on
 
+QT      += qt3support sql xml
+
 win32:CONFIG	+= dll
 
 DEFINES	+= TRADEEQUIP_EXPORT DEBUG

@@ -10,6 +10,19 @@
 ** destructor.
 *****************************************************************************/
 
+class dlgAdvReport : public QDialog, Ui::dlgAdvReport
+{
+public:
+    dlgAdvReport(QWidget * parent) : QDialog(parent), Ui::dlgAdvReport() {};
+public slots:
+    void init();
+    void refresh(int t);
+    QDateTime begin();
+    QDateTime end();
+    int period();
+    int type();
+};
+
 void dlgAdvReport::init()
 {
     cmbType->setCurrentItem(0);

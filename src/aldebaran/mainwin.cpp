@@ -1,8 +1,9 @@
 #include <qdesktopwidget.h>
 #include <qlayout.h>
-#include <qpopupmenu.h>
+#include <Q3PopupMenu>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
+#include <QCloseEvent>
 #include "engine.h"
 #include "mainwin.h"
 #include "whall.h"
@@ -10,8 +11,10 @@
 #include "archivewin.h"
 #include "aclock.h"
 #include "dclock.h"
-#include "dlgexportsales.h"
-#include "dlgadvreport.h"
+#include "ui_dlgexportsales.h"
+#include "dlgexportsales.ui.h"
+#include "ui_dlgadvreport.h"
+#include "dlgadvreport.ui.h"
 
 #define SUBSYSTEM GENERAL
 
@@ -50,7 +53,7 @@ void alMainWindow::createWidgets()
     serviceFrame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     serviceFrame->setGeometry(r.right()-165, r.top()+5, 160, r.bottom()-10);
     
-    QPopupMenu * menu = new QPopupMenu(serviceFrame, "serviceMenu");
+    Q3PopupMenu * menu = new Q3PopupMenu(serviceFrame, "serviceMenu");
     menu->insertItem(tr("X-Report"), XReport);
     menu->insertItem(tr("Z-Report"), ZReport);
     menu->insertItem(tr("Paying"), Paying);
@@ -71,13 +74,13 @@ void alMainWindow::createWidgets()
     QGridLayout * grid = new QGridLayout(serviceFrame, 1, 1, 11, 6, "serviceLayout");
     QPushButton * btn = new QPushButton(serviceFrame, "btnService");
     btn->setText(tr("Service"));
-    btn->setIconSet(QPixmap::fromMimeSource("settings.png"));
+    btn->setIconSet(QIcon(":/images/settings.png"));
     btn->setPopup(menu);
     grid->addWidget(btn, 0, 0);
     
     btn = new QPushButton(serviceFrame, "btnLock");
     btn->setText(tr("Lock"));
-    btn->setIconSet(QPixmap::fromMimeSource("lock.png"));
+    btn->setIconSet(QIcon(":/images/lock.png"));
     connect(btn, SIGNAL(clicked()), fEngine, SLOT(loginLock()));
     grid->addWidget(btn, 1, 0);
     
@@ -93,8 +96,8 @@ void alMainWindow::createWidgets()
     
     btn = new QPushButton(serviceFrame, "btnExit");
     btn->setText(tr("Exit"));
-    btn->setAccel(ALT+Key_X);
-    btn->setIconSet(QPixmap::fromMimeSource("exit.png"));
+    btn->setAccel(Qt::ALT+Qt::Key_X);
+    btn->setIconSet(QIcon(":/images/exit.png"));
     grid->addWidget(btn, 10, 0);
     connect(btn, SIGNAL(clicked()), this, SLOT(close()));
     serviceFrame->show();
@@ -116,7 +119,7 @@ void alMainWindow::showEvent(QShowEvent * e)
 {
     Q_UNUSED(e);
     alUserRecord * user = fEngine->currentUser();
-    QPopupMenu * menu = ((QPushButton*)(serviceFrame->child("btnService")))->popup();
+    Q3PopupMenu * menu = (Q3PopupMenu*)((QPushButton*)(serviceFrame->child("btnService")))->popup();
     //TODO more automated ??
     menu->setItemEnabled(ZReport, user->right(rZReport));
     menu->setItemEnabled(XReport, user->right(rXReport));
@@ -157,9 +160,10 @@ void alMainWindow::service(int action)
         fEngine->startImport();
         break;
     case Export:
-        dlg = new dlgExportSales(this);
+        dlg = (QDialog*) new dlgExportSales(this);
         dlg->setCaption(tr("Export sales"));
-        if(dlg->exec()) fEngine->exportSales(((dlgExportSales*)dlg)->period(), ((dlgExportSales*)dlg)->begin(), ((dlgExportSales*)dlg)->end());
+        if(dlg->exec())
+            fEngine->exportSales(((dlgExportSales*)dlg)->period(), ((dlgExportSales*)dlg)->begin(), ((dlgExportSales*)dlg)->end());
         delete dlg;
         break;
     case Archive:
@@ -168,7 +172,8 @@ void alMainWindow::service(int action)
     case AdvancedReport:
         dlg = new dlgAdvReport(this);
         dlg->setCaption(tr("Advanced report"));
-        if(dlg->exec()) fEngine->advancedReport(((dlgAdvReport* )dlg)->period(), ((dlgAdvReport* )dlg)->type(), ((dlgAdvReport*)dlg)->begin(), ((dlgAdvReport*)dlg)->end());
+        if(dlg->exec())
+            fEngine->advancedReport(((dlgAdvReport* )dlg)->period(), ((dlgAdvReport* )dlg)->type(), ((dlgAdvReport*)dlg)->begin(), ((dlgAdvReport*)dlg)->end());
         delete dlg;
         break;
     default:

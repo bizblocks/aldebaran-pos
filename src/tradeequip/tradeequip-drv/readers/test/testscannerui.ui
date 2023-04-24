@@ -1,49 +1,49 @@
-<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>Form1</class>
-<widget class="QDialog">
-    <property name="name">
-        <cstring>Form1</cstring>
-    </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>379</width>
-            <height>194</height>
-        </rect>
-    </property>
-    <property name="caption">
-        <string>Scanner Test</string>
-    </property>
-    <vbox>
-        <property name="name">
-            <cstring>unnamed</cstring>
-        </property>
-        <widget class="QTextEdit">
-            <property name="name">
-                <cstring>textEdit1</cstring>
-            </property>
-            <property name="textFormat">
-                <enum>LogText</enum>
-            </property>
-            <property name="autoFormatting">
-                <set>AutoAll</set>
-            </property>
-        </widget>
-    </vbox>
-</widget>
-<includes>
-    <include location="global" impldecl="in declaration">tereaderbase.h</include>
-    <include location="local" impldecl="in implementation">testscannerui.ui.h</include>
-</includes>
-<variables>
-    <variable>TEReaderBase * m_pS;</variable>
-</variables>
-<slots>
-    <slot specifier="non virtual">onDevEvent( int ev )</slot>
-</slots>
-<functions>
-    <function specifier="non virtual">setScanner( TEReaderBase * pS )</function>
-</functions>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form1</class>
+ <widget class="QDialog" name="Form1">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>379</width>
+    <height>194</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Scanner Test</string>
+  </property>
+  <layout class="QVBoxLayout">
+   <item>
+    <widget class="Q3TextEdit" name="textEdit1">
+     <property name="textFormat">
+      <enum>Qt::LogText</enum>
+     </property>
+     <property name="autoFormatting">
+      <set>Q3TextEdit::AutoAll</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>Q3Frame</class>
+   <extends>QFrame</extends>
+   <header>Qt3Support/Q3Frame</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Q3TextEdit</class>
+   <extends>Q3Frame</extends>
+   <header>q3textedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <includes>
+  <include location="global">tereaderbase.h</include>
+ </includes>
+ <resources/>
+ <connections/>
+</ui>

@@ -19,7 +19,7 @@ public slots:
     virtual bool deleteRowData();
     virtual QVariant displayValue(QString attr, QVariant val);    
 protected:
-    virtual QPixmap pixmap(int r);
+    virtual QIcon icon(int r);
     bool dialog(alDiscountRecord * user);
 };
 

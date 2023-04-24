@@ -11,12 +11,27 @@
 *****************************************************************************/
 #include <qmessagebox.h>
 
+class dlgDiscount : public QDialog, Ui::dlgDiscount
+{
+public:
+    dlgDiscount(QWidget * parent = 0) : QDialog(parent), Ui::dlgDiscount() {};
+public slots:
+    void setData(alDiscountRecord * data);
+    void refresh();
+    void init(alEngine * e);
+    void typeSelected(int type);
+    void apply();
+private:
+    alEngine * fEngine;
+    alDiscountRecord * fData;
+};
+
 void dlgDiscount::setData(alDiscountRecord * data)
 {
     if(!fEngine)
     {
-	close();
-	return;
+        close();
+        return;
     }
     fData = data;
     refresh();
@@ -26,7 +41,7 @@ void dlgDiscount::setData(alDiscountRecord * data)
 void dlgDiscount::refresh()
 {
     editName->setText(fData->name());
-    editCode->setText(fData->code());    
+    editCode->setText(fData->code());
     comboType->insertItem(tr("procentage"));
     comboType->insertItem(tr("monetary"));
     comboType->setCurrentItem(fData->type());
@@ -43,13 +58,13 @@ void dlgDiscount::typeSelected(int type)
 {
     if(type==0)
     {
-	spinValue->setMaxValue(100);
-	if(spinValue->value()>100) spinValue->setValue(100);
+        spinValue->setMaxValue(100);
+        if(spinValue->value()>100) spinValue->setValue(100);
     }
     else if(type==1)
     {
-	spinValue->setMaxValue(10000);
-	if(spinValue->value()>10000) spinValue->setValue(10000);	
+        spinValue->setMaxValue(10000);
+        if(spinValue->value()>10000) spinValue->setValue(10000);
     }
 }
 
@@ -57,8 +72,8 @@ void dlgDiscount::apply()
 {
     if(editName->text().isEmpty())
     {
-	QMessageBox::information(this, "aldebaran", tr("You must input discount name"));
-	return;
+        QMessageBox::information(this, "aldebaran", tr("You must input discount name"));
+        return;
     }
     fData->setName(editName->text());
     fData->setType(comboType->currentItem());

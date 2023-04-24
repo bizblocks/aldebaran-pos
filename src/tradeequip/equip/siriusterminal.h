@@ -47,7 +47,7 @@ private:
 	QString type;
 	QVariant data;
     };
-    QValueList<queueElement> queue;
+    QList<queueElement> queue;
 };
 
 class eqSiriusJob : public eqJob

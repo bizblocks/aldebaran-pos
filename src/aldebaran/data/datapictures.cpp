@@ -1,4 +1,4 @@
-#include <qsqldatabase.h>
+#include <QtSql/QSqlDatabase>
 #include <qbuffer.h>
 #include "datapictures.h"
 #include "engine.h"

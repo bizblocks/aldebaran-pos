@@ -1,3 +1,4 @@
+#include <Q3Frame>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qlayout.h>
@@ -17,7 +18,7 @@ void alArchiveWindow::init()
 {
     if(!fEngine) return;
     
-    QFrame * btnGroup = new QFrame(this, "grpOrderButtons");
+    Q3Frame * btnGroup = new Q3Frame(this, "grpOrderButtons");
     btnGroup->setMargin(5);
     grid->addWidget(btnGroup, 0, 0);
     
@@ -30,27 +31,29 @@ void alArchiveWindow::init()
     connect(arcTab, SIGNAL(exitOrder()), this, SLOT(refresh()));
 	    
     QPushButton * btn = new QPushButton(btnGroup, "btnEdit");
-    btn->setPixmap(QPixmap::fromMimeSource("edit.png"));
+    btn->setIcon(QIcon(":/images/edit.png"));
     btn->setFixedSize(60,60);
     connect(btn, SIGNAL(clicked()), arcTab, SLOT(editRowData()));
     btnGrid->addWidget(btn, 0, 0);     
     
     btn = new QPushButton(btnGroup, "btnDelete");
-    btn->setPixmap(QPixmap::fromMimeSource("delete.png"));
+    btn->setIcon(QIcon(":/images/delete.png"));
     btn->setFixedSize(60,60);
     connect(btn, SIGNAL(clicked()), arcTab, SLOT(deleteRowData()));
     btnGrid->addWidget(btn, 0, 1);     
 
-    dBegin = new QDateEdit(QDate::currentDate(), btnGroup, "dBegin");
+    dBegin = new QDateEdit(QDate::currentDate(), btnGroup);
+    dBegin->setName("dBegin");
     connect(dBegin, SIGNAL(valueChanged(const QDate &)), this, SLOT(applyFilter()));
     btnGrid->addWidget(dBegin, 0, 2);
-    dEnd = new QDateEdit(QDate::currentDate(), btnGroup, "dEnd");
+    dEnd = new QDateEdit(QDate::currentDate(), btnGroup);
+    dEnd->setName("dEnd");
     connect(dEnd, SIGNAL(valueChanged(const QDate &)), this, SLOT(applyFilter()));    
     btnGrid->addWidget(dEnd, 0, 3);    
     
     btn = new QPushButton(btnGroup, "btnExit");
-    btn->setAccel(Key_Escape);
-    btn->setPixmap(QPixmap::fromMimeSource("exit.png"));
+    btn->setAccel(Qt::Key_Escape);
+    btn->setIcon(QIcon(":/images/exit.png"));
     btn->setFixedSize(60,60);
     connect(btn, SIGNAL(clicked()), this, SLOT(close()));
     btnGrid->addWidget(btn, 0, 4);    

@@ -5,6 +5,8 @@ TARGET = teshell
 
 CONFIG += qt warn_on console
 
+QT     += qt3support
+
 LANGUAGE = C++
 
 INCLUDEPATH += ../lib

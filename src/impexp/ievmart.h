@@ -2,8 +2,8 @@
 #define IEVMART_H
 
 #include <qobject.h>
-#include <qserversocket.h>
-#include <qcstring.h>
+#include <Q3ServerSocket>
+#include <Q3CString>
 #include "impexp.h"
 
 class QSqlDatabase;

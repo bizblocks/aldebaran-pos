@@ -1,8 +1,9 @@
-#include <qsqldatabase.h>
+#include <QtSql/QSqlDatabase>
 #include <qbuffer.h>
 #include "dataeq.h"
 #include "engine.h"
-#include "dlgdevice.h"
+#include "ui_dlgdevice.h"
+#include "dlgdevice.ui.h"
 
 #define TNAME "equipment"
 

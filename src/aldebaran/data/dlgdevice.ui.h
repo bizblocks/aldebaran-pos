@@ -12,6 +12,23 @@
 
 #include <qmessagebox.h>
 
+class dlgDevice : public QDialog, Ui::dlgDevice
+{
+public:
+    dlgDevice(QWidget * parent = 0) : QDialog(parent), Ui::dlgDevice() {};
+public slots:
+    void setData(alEqRecord * data);
+    void refresh();
+    void init(alEngine * e);
+    void driverSelected(const QString & type);
+    void settingsDialog();
+    void apply();
+private:
+    alEngine * fEngine;
+    alEqRecord * fData;
+    eqDriver * fDevice;
+};
+
 void dlgDevice::setData(alEqRecord * data)
 {
     if(!fEngine)
@@ -87,7 +104,7 @@ void dlgDevice::apply()
     }
     
     QStringList opts = fDevice->options();
-    for(uint i=0;i<opts.count();i++)
+    for(int i=0;i<opts.count();i++)
     {
         fData->setOption(opts[i], fDevice->option(opts[i]));
     }

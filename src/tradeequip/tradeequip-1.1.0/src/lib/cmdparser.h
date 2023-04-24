@@ -32,7 +32,7 @@
 #include <qpair.h>
 #include <qtextcodec.h>
 #include <qvariant.h>
-#include <qvaluevector.h>
+#include <Q3ValueVector>
 #include "conv.h"
 
 // This class is intended to parse command lines and to handle different encodings,
@@ -68,8 +68,8 @@ public:
     QString help() const; // it returns list of all functions
 
     void setEncoding(const QString & encoding);
-    int parse(const char * cmd, QString & func, QValueVector<QVariant> & parms);
-    int parse(const QString & ucmd, QString & func, QValueVector<QVariant> & parms);
+    int parse(const char * cmd, QString & func, Q3ValueVector<QVariant> & parms);
+    int parse(const QString & ucmd, QString & func, Q3ValueVector<QVariant> & parms);
 
     template <class T, class R>
         int addFuncBinding(T * pobj, R (T::*pfunc)(void), const QString & name)

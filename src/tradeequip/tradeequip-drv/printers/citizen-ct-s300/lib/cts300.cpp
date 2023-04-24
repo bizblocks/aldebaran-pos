@@ -4,9 +4,9 @@
 #include "cts300.h"
 
 CTS300::CTS300(QString pname) :
-	TEBase( pname )
+    TEBase( pname )
 {    
-    codepages.clear();    
+    codepages.clear();
     qtCodepages.clear();
     init();
     setPortDevice(pname);
@@ -19,7 +19,7 @@ CTS300::~CTS300()
 void CTS300::init()
 {
     setName("TEPrinterCTS300");
-/*
+    /*
     m_ee.addFuncBinding(this,&FelixRK::readMachineNumber,"readMachineNumber");
     m_ee.addFuncBinding<FelixRK,int>(this,&FelixRK::open,"open");
     m_ee.addFuncBinding<FelixRK,int>(this,&FelixRK::close,"close");
@@ -37,7 +37,7 @@ void CTS300::init()
     m_ee.addFuncBinding(this,&FelixRK::internalCancelCheck,"internalCancelCheck");
     m_ee.addFuncBinding<FelixRK,QVariant,const QString &>(this,&FelixRK::value,"value");
 */
-    m_maxPrn = 0; 
+    m_maxPrn = 0;
 
     codepages << "PC473" << "Katakana" << "PC850" << "PC860" << "PC863";
     codepages << "PC865" << "PC852" << "PC866" << "PC857" << "WPC1252";
@@ -45,8 +45,8 @@ void CTS300::init()
     qtCodepages << "" << "" << "IBM 850" << "" << "";
     qtCodepages << "" << "" << "IBM 866" << "" << "CP1252";
     fCodepage = "PC866";
-/*    qtCodepages[19] = "";
-    qtCodepages[26] = "TIS-620";	
+    /*    qtCodepages[19] = "";
+    qtCodepages[26] = "TIS-620";
     qtCodepages[40] = "TIS-620";
     qtCodepages[255] = "";    */
 }
@@ -58,7 +58,7 @@ void CTS300::setAbort()
     int h = p->handle();
     int abort = 1;
     int offset = 0, irq;
-    /* We don't understand the new ioctls */    
+    /* We don't understand the new ioctls */
     if (LPGETIRQ >= 0x0600 && ioctl(h, LPGETIRQ, &irq) < 0 && errno == EINVAL) offset = 0x0600;
     if (ioctl(h, LPABORT - offset, &abort) < 0) qDebug("tunelp: ioctl");
 }
@@ -66,15 +66,15 @@ void CTS300::setAbort()
 CTS300::Result CTS300::sendCmd(Byte * pBuf, int iSize)
 {
     setAbort();
-//    int count = 0;
+    //    int count = 0;
     for(int b=0;b<iSize;b++)
     {
-	if(port()->putch(pBuf[b])==-1)
-	{
-//		if(!b || (count++<3)) sendCmd(pBuf, iSize);
-		return RES_TIMEOUT;
-	}
-	usleep(1);    
+        if(port()->putch(pBuf[b])==-1)
+        {
+            //		if(!b || (count++<3)) sendCmd(pBuf, iSize);
+            return RES_TIMEOUT;
+        }
+        usleep(1);
     }
     return RES_OK;
 }
@@ -84,14 +84,17 @@ QStringList CTS300::getCodepages()
     return codepages;
 }
 
-CTS300::Result CTS300::toDeviceStr(QString str, QCString & dest)
+CTS300::Result CTS300::toDeviceStr(QString str, Q3CString & dest)
 {
     dest = "";
     QTextCodec * utf8=QTextCodec::codecForName("UTF-8");
     QString unicodetext = utf8->toUnicode(str);
-    QTextCodec * cp=QTextCodec::codecForName(qtCodepages[codepages.findIndex(fCodepage)]); 
-    if(cp) dest = cp->fromUnicode(unicodetext);
-    else dest = QCString(str);
+    QTextCodec * cp=QTextCodec::codecForName(qtCodepages[codepages.findIndex(fCodepage)]);
+    if(cp)
+        dest = cp->fromUnicode(unicodetext);
+    else
+        //TODO check
+        dest = Q3CString(str.toUtf8());
     return RES_OK;
 }
 
@@ -106,7 +109,7 @@ CTS300::Result CTS300::setCodepage(QString cp)
 
 CTS300::Result CTS300::printLine(QString ln)
 {
-    QCString buf;
+    Q3CString buf;
     Result res = toDeviceStr(ln, buf);
     if(res) return res;
     const Byte * pBuf = (const char*)buf;
@@ -138,7 +141,7 @@ CTS300::Result CTS300::printBarcode(QString barcode)
     Byte cmd[3] = {GS, 'k', bcType};
     res = sendCmd(cmd, 3);
     if(res) return res;
-    QCString bcstr;
+    Q3CString bcstr;
     res = toDeviceStr(barcode, bcstr);
     const Byte * buf = (const char*)bcstr;
     if((res=sendCmd((char *)buf, bcstr.length()))) return res;

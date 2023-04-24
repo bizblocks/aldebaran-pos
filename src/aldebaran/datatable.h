@@ -1,7 +1,9 @@
 #ifndef DATATABLE_H
 #define DATATABLE_H
 
-#include <qtable.h>
+#include <QMap>
+#include <Q3Table>
+#include <Q3PopupMenu>
 
 class QWidget;
 class QPopupMenu;
@@ -9,7 +11,7 @@ class alEngine;
 class alData;
 class alDataRecord;
 
-class alDataTable : public QTable
+class alDataTable : public Q3Table
 {
 Q_OBJECT
 public:
@@ -33,7 +35,7 @@ public slots:
     virtual void setValue(int row, QString attr, QVariant val);
     virtual void setValue(QString attr, QVariant val);
     virtual QVariant displayValue(QString attr, QVariant val);
-    virtual QPixmap pixmap(int r);
+    virtual QIcon icon(int r);
     virtual void setCurrentRow(int row) { setCurrentCell(row, 0); };
     int popupMenu(int row, int col, const QPoint & pos);
     void setSelectable(bool s) { fSelect = s; };
@@ -52,13 +54,13 @@ protected:
     QMap<QString, QString> fields;    
     alEngine * fEngine;
     alData * fData;
-    QPopupMenu * contextMenu;
+    Q3PopupMenu * contextMenu;
     bool fSelect;
     QString maxWidthColumn;
 private:
     QString tableName;
     QString currentFilter;
-    QValueList<int> ids;
+    QList<int> ids;
     QWidget * rowEditor;
     int savedMargin;
 };	

@@ -28,11 +28,10 @@
 
 #include "tecashregisterbase.h"
 #include <stdarg.h>
-#include <qdict.h>
+#include <Q3Dict>
 //#ifdef Q_OS_UNIX
 //    #include "setserial_linux.inc"
 //#endif
-
 
 
 //=======================================
@@ -325,7 +324,7 @@ QStringList
 TECashRegisterBase::valueNamesList()
 {
     QStringList l;
-	QDictIterator<QVariant> it(values);
+    Q3DictIterator<QVariant> it(values);
 	for(;it.current()!=0;++it)
 		l+=it.currentKey();
     return l;
@@ -423,8 +422,8 @@ QString TECashRegisterBase::addEAN13Checksum(const QString & code)
 			return code; // there's non digits in code. It's not EAN
 	for (i=0;i<12;i+=2)
 	{
-		odd+=code.at(i)-QChar('0');
-		even+=code.at(i+1)-QChar('0');
+        odd+=code[i].toAscii()-QChar('0').toAscii();
+        even+=code[i+1].toAscii()-QChar('0').toAscii();
 	}
 	return code+QChar('0'+((10-((odd+3*even)%10))%10));
 };

@@ -11,13 +11,24 @@
 *****************************************************************************/
 #include "mscreader.h"
 
+class dlgMSCReader : public QDialog, Ui::dlgMSCReader
+{
+public:
+    dlgMSCReader(QWidget * parent = 0) : QDialog(parent), Ui::dlgMSCReader() {};
+public slots:
+    void init( eqDriver * device );
+    void apply();
+private:
+    eqDriver * fDevice;
+};
+
 void dlgMSCReader::init( eqDriver * device )
 {
     fDevice = device;
     if(!fDevice) return;
     editDevice->setText(fDevice->option("device"));
     editHeader->setText(fDevice->option("header"));
-    editTrailer->setText(fDevice->option("trailer")); 
+    editTrailer->setText(fDevice->option("trailer"));
     comboBaudRate->insertStringList(((eqMSCReader*)fDevice)->supportedBaudRates());
     comboDataBits->insertStringList(((eqMSCReader*)fDevice)->supportedDataBits());
     comboParity->insertStringList(((eqMSCReader*)fDevice)->supportedParity());
@@ -27,22 +38,22 @@ void dlgMSCReader::init( eqDriver * device )
     comboDataBits->setCurrentItem(fDevice->option("data bits").toInt());
     comboParity->setCurrentItem(fDevice->option("parity").toInt());
     comboStopBits->setCurrentItem(fDevice->option("stopbits").toInt());
-    comboFlowControl->setCurrentItem(fDevice->option("flow control").toInt());    
+    comboFlowControl->setCurrentItem(fDevice->option("flow control").toInt());
 }
 
 void dlgMSCReader::apply()
 {
     if(fDevice)
     {
-	fDevice->setOption("device", editDevice->text());
-	fDevice->setOption("baudrate", comboBaudRate->currentText());
-	fDevice->setOption("parity", comboParity->currentItem());
-	fDevice->setOption("data bits", comboDataBits->currentItem());
-	fDevice->setOption("stopbits", comboStopBits->currentItem());
-	fDevice->setOption("flow control", comboFlowControl->currentItem());
-	fDevice->setOption("header", editHeader->text().left(1));
-	fDevice->setOption("trailer", editTrailer->text().left(1));	
-	accept();
+        fDevice->setOption("device", editDevice->text());
+        fDevice->setOption("baudrate", comboBaudRate->currentText());
+        fDevice->setOption("parity", comboParity->currentItem());
+        fDevice->setOption("data bits", comboDataBits->currentItem());
+        fDevice->setOption("stopbits", comboStopBits->currentItem());
+        fDevice->setOption("flow control", comboFlowControl->currentItem());
+        fDevice->setOption("header", editHeader->text().left(1));
+        fDevice->setOption("trailer", editTrailer->text().left(1));
+        accept();
     }
     else reject();
 }

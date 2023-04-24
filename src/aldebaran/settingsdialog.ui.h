@@ -1,4 +1,5 @@
 /****************************************************************************
+ *
 ** ui.h extension file, included from the uic-generated form implementation.
 **
 ** If you want to add, delete, or rename functions or slots, use
@@ -9,15 +10,38 @@
 ** These will automatically be called by the form's constructor and
 ** destructor.
 *****************************************************************************/
+#include <QFileDialog>
+#include <QTextCodec>
 #include "settings.h"
+#include "goodstable.h"
+#include "userstable.h"
+#include "eqtable.h"
+#include "discounttable.h"
+
+class settingsDialog : public QDialog, Ui::settingsDialog
+{
+public:
+    settingsDialog(QWidget * parent) : QDialog(parent), Ui::settingsDialog() {};
+public slots:
+    void selectPicture();
+    void disableEnable();
+    void setData(QMap<QString, alValueList> data );
+    QMap<QString, alValueList> getData();
+    void init( alEngine * engine );
+    void selectImpExpDir();
+    void selectBill();
+    void selectOrder();
+private:
+    QPixmap pix;
+    alEngine * fEngine;
+};
 
 void settingsDialog::selectPicture()
 {
-    QFileDialog fileDlg(QDir::currentDirPath(), "Images (*.png *.jpg *.bmp)");
-    fileDlg.setCaption(tr("Open shema picture"));
+    QFileDialog fileDlg(this, tr("Open shema picture") ,QDir::currentDirPath(), "Images (*.png *.jpg *.bmp)");
     if(fileDlg.exec()==QDialog::Accepted)
     {
-        pix = QPixmap::fromMimeSource(fileDlg.selectedFile());
+        pix = QPixmap(fileDlg.selectedFile());
         labelPreview->setPixmap(pix);
     }
 }

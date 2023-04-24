@@ -30,11 +30,11 @@
 #include <tebase.h> // Damn, We should place that 'include' before 'define TECASHREG...', see templexports.h
 #ifndef TECASHREGISTERBASE_H
 #define TECASHREGISTERBASE_H
-#include <qdict.h>
+#include <Q3Dict>
 #include <qstring.h>
 #include <qvariant.h>
-#include <qsqldatabase.h>
-#include <qvaluelist.h>
+#include <QSqlDatabase>
+#include <QList>
 //#include <vector>
 
 //using std::vector;
@@ -158,7 +158,7 @@ struct LIB_EXPORT PurchaseInfo
 	double m_price;
 	double m_quantity;
 	int m_qdec;
-	QValueList<int> m_taxes;
+    QList<int> m_taxes;
 	double m_dDiscount;
 	bool m_isDiscountInPercent;
 	int m_iOperation;
@@ -255,7 +255,7 @@ enum CROperations
 
 struct LIB_EXPORT CheckInfo
 {
-	QValueList<int> m_vTaxes;
+    QList<int> m_vTaxes;
 	QMap<int,double> m_mPayment;
 	int m_DefaultOperation;
 	int m_CheckOperation;
@@ -431,7 +431,7 @@ private:
     enum Mode vMode;
     QString vBarcode;
     int vEvent;
-    QDict <QVariant> values;
+    Q3Dict <QVariant> values;
     double vCashSum; // sum of cash in hand
     bool m_bPollPausing;
     
@@ -451,7 +451,7 @@ private:
     
     QString fCodepage;
 protected:    
-    QValueList<PurchaseInfo> m_vCheckBuffer;
+    QList<PurchaseInfo> m_vCheckBuffer;
     CheckInfo m_CheckInfo;
     bool m_bWaitingForConfirmation;
     

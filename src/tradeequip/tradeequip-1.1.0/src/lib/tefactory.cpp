@@ -31,7 +31,7 @@
 #include <tebase.h>
 
 #include <stdlib.h>
-#include <private/qpluginmanager_p.h>
+//#include <private/qpluginmanager_p.h>
 #ifndef QT_NO_COMPONENT
 #include <qapplication.h>
 #include <qobject.h>
@@ -41,27 +41,28 @@ class TEFactoryPrivate : public QObject
 public:
     TEFactoryPrivate();
     ~TEFactoryPrivate();
-
-    static QPluginManager<TEFactoryInterface> *manager;
+    //TODO implement
+    //    static QPluginManager<TEFactoryInterface> *manager;
 };
 
 static TEFactoryPrivate *instance = 0;
-QPluginManager<TEFactoryInterface> *TEFactoryPrivate::manager = 0;
+//QPluginManager<TEFactoryInterface> *TEFactoryPrivate::manager = 0;
 
 TEFactoryPrivate::TEFactoryPrivate()
-: QObject( qApp )
+    : QObject( qApp )
 {
+//TODO implement
 #ifdef Q_OS_WIN32
-  manager = new QPluginManager<TEFactoryInterface>( IID_TEFactory, qApp->applicationDirPath(), "/tradeequip", FALSE );
-#else
-    manager = new QPluginManager<TEFactoryInterface>( IID_TEFactory, "/usr/lib", "/tradeequip", FALSE );
+//    manager = new QPluginManager<TEFactoryInterface>( IID_TEFactory, qApp->applicationDirPath(), "/tradeequip", FALSE );
+//#else
+//    manager = new QPluginManager<TEFactoryInterface>( IID_TEFactory, "/usr/lib", "/tradeequip", FALSE );
 #endif
 }
 
 TEFactoryPrivate::~TEFactoryPrivate()
 {
-    delete manager;
-    manager = 0;
+//    delete manager;
+//    manager = 0;
 
     instance = 0;
 }
@@ -93,25 +94,25 @@ TEBase *TEFactory::create( const QString& key )
     TEBase *ret = 0;
     QString extension = key; //key.lower();
 #ifndef TE_NO_DRIVER_XXXX
-//    if ( extension == "TEBase" )
-//        ret = new TEBase(0);
+    //    if ( extension == "TEBase" )
+    //        ret = new TEBase(0);
 #endif
 
     { } // Keep these here - they make the #ifdefery above work
 
 #ifndef QT_NO_COMPONENT
     if(!ret) {
-	if ( !instance )
-	    instance = new TEFactoryPrivate;
+        if ( !instance )
+            instance = new TEFactoryPrivate;
 
-	QInterfacePtr<TEFactoryInterface> iface;
-	TEFactoryPrivate::manager->queryInterface( extension, &iface );
+//        QInterfacePtr<TEFactoryInterface> iface;
+//        TEFactoryPrivate::manager->queryInterface( extension, &iface );
 
-	if ( iface )
-	    ret = iface->create( extension );
+//        if ( iface )
+//            ret = iface->create( extension );
     }
     if(ret)
-	ret->setName(key);
+        ret->setName(key);
 #endif
     return ret;
 }
@@ -127,13 +128,13 @@ QStringList TEFactory::keys()
     QStringList list;
 #ifndef QT_NO_COMPONENT
     if ( !instance )
-	instance = new TEFactoryPrivate;
+        instance = new TEFactoryPrivate;
 
-    list = TEFactoryPrivate::manager->featureList();
+//    list = TEFactoryPrivate::manager->featureList();
 #endif //QT_NO_COMPONENT
 
 #ifndef TE_NO_DRIVER_XXXX
-//    if ( !list.contains( "TEBase" ) ) list << "TEBase";
+    //    if ( !list.contains( "TEBase" ) ) list << "TEBase";
 #endif
 
     return list;

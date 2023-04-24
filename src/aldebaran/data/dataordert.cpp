@@ -1,5 +1,5 @@
 #include <math.h>
-#include <qsqldatabase.h>
+#include <QtSql/QSqlDatabase>
 #include "engine.h"
 
 #define TNAME "order_table"
@@ -52,7 +52,7 @@ bool alDataOrderTable::select()
 
 QSqlIndex alDataOrderTable::defaultSort()
 {
-    return QSqlIndex::fromStringList(QStringList::split(",", "ln"), this);
+    return this->index(QStringList::split(",", "ln"));
 }
 
 alOrderLine * alDataOrderTable::getLine(int row)

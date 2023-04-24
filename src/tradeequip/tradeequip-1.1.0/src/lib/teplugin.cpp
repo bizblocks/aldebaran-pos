@@ -45,8 +45,8 @@
 
     Writing a Trade equipment plugin is achieved by subclassing this base class,
     reimplementing the pure virtual functions keys() and create(), and
-    exporting the class with the \c TE_EXPORT_PLUGIN macro. See the 
-    Ananas extensions plugins that come with Ananas for example 
+    exporting the class with the \c TE_EXPORT_PLUGIN macro. See the
+    Ananas extensions plugins that come with Ananas for example
     implementations (in the
     \c{extensions} subdirectory of the source
     distribution). Read the \link plugins-howto.html plugins
@@ -77,13 +77,14 @@ class TEPluginPrivate : public TEFactoryInterface
 {
 public:
     TEPluginPrivate( TEPluginBase *p )
-	: plugin( p )
+        : plugin( p )
     {
     }
     virtual ~TEPluginPrivate();
 
-    QRESULT queryInterface( const QUuid &iid, QUnknownInterface **iface );
-    Q_REFCOUNT;
+//TODO
+    //QRESULT queryInterface( const QUuid &iid, QUnknownInterface **iface );
+    //Q_REFCOUNT;
 
     QStringList featureList() const;
     TEBase *create( const QString &key );
@@ -97,22 +98,23 @@ TEPluginPrivate::~TEPluginPrivate()
     delete plugin;
 }
 
-QRESULT TEPluginPrivate::queryInterface( const QUuid &iid, QUnknownInterface **iface )
-{
-    *iface = 0;
+//TODO
+//QRESULT TEPluginPrivate::queryInterface( const QUuid &iid, QUnknownInterface **iface )
+//{
+//    *iface = 0;
 
-    if ( iid == IID_QUnknown )
-	*iface = this;
-    else if ( iid == IID_QFeatureList )
-	*iface = this;
-    else if ( iid == IID_TEFactory )
-	*iface = this;
-    else
-	return QE_NOINTERFACE;
+//    if ( iid == IID_QUnknown )
+//        *iface = this;
+//    else if ( iid == IID_QFeatureList )
+//        *iface = this;
+//    else if ( iid == IID_TEFactory )
+//        *iface = this;
+//    else
+//        return QE_NOINTERFACE;
 
-    (*iface)->addRef();
-    return QS_OK;
-}
+//    (*iface)->addRef();
+//    return QS_OK;
+//}
 
 QStringList TEPluginPrivate::featureList() const
 {
@@ -130,7 +132,7 @@ TEBase *TEPluginPrivate::create( const QString &key )
 */
 
 TEPluginBase::TEPluginBase()
-    : QGPlugin( d = new TEPluginPrivate( this ) )
+//    : QGPlugin( d = new TEPluginPrivate( this ) )
 {
 }
 

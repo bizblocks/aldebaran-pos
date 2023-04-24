@@ -28,9 +28,9 @@
 
 // TODO: Fix up error reporting
 
-#include <qdom.h>
 #include <qfile.h>
 #include <qtextstream.h>
+#include <QDomDocument>
 
 #include "preferences.h"
 

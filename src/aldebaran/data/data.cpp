@@ -1,17 +1,17 @@
-#include <qsqldatabase.h>
-#include <qmessagebox.h>
+#include <QtSql/QSqlDatabase>
+#include <QtGui/QMessageBox>
 #include "data.h"
 #include "engine.h"
 
 alData::alData(alEngine * e, QString table) :
-	QSqlCursor(table, FALSE, e->db())
+    Q3SqlCursor(table, FALSE, *e->db())
 {
     fTableName = table;
     fEngine = e;
 }
 
 alData::alData(const alData & other) :
-	QSqlCursor(other)
+    Q3SqlCursor(other)
 {
     fTableName = other.fTableName;
     fEngine = other.fEngine;
@@ -40,17 +40,17 @@ alDataRecord* alData::current()
 int alData::update (Q_ULLONG id, bool invalidate )
 {
     if(!id) return 0;
-    return QSqlCursor::update(Queries::tr("id=%1").arg(id), invalidate);    
+    return Q3SqlCursor::update(Queries::tr("id=%1").arg(id), invalidate);
 }
 
 QSqlIndex alData::defaultSort()
 {
-    return QSqlIndex::fromStringList(QStringList::split(",", "id"), this);
+    return this->index(QStringList::split(",", "id"));
 }
 
 bool alData::select(const QString filter)
 {
-    return QSqlCursor::select(filter, defaultSort());
+    return Q3SqlCursor::select(filter, defaultSort());
 }
 
 alDataRecord::alDataRecord(alData * data) : QObject()

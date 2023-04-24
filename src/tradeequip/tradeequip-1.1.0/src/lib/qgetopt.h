@@ -106,8 +106,8 @@ private:
 
 #include "templexports.h"
     
-    QValueList<Option> options;
-    typedef QValueList<Option>::const_iterator OptionConstIterator;
+    QList<Option> options;
+    typedef QList<Option>::const_iterator OptionConstIterator;
 //    template class LIB_EXPORT QMap<QString, int>;
     QMap<QString, int> setOptions;
 
@@ -126,9 +126,9 @@ private:
     int currArg;
 };
 
-template class LIB_EXPORT QValueList<GetOpt::Option>;
-template class LIB_EXPORT QValueListIterator<GetOpt::Option>;
-template class LIB_EXPORT QValueListConstIterator<GetOpt::Option>;
+template class LIB_EXPORT QList<GetOpt::Option>;
+template class LIB_EXPORT QMutableListIterator<GetOpt::Option>;
+template class LIB_EXPORT QListIterator<GetOpt::Option>;
 
 #endif
 

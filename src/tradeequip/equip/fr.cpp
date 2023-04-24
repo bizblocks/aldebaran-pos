@@ -1,7 +1,8 @@
+#include "fr.h"
 #include "teglobal.h"
 #include "tecashregisterbase.h"
-#include "fr.h"
-#include "dlgecrsettings.h"
+#include "ui_dlgecrsettings.h"
+#include "dlgecrsettings.ui.h"
 
 eqFR::eqFR(const QString& name) :
     eqDriver(name)
@@ -246,8 +247,8 @@ QStringList eqFR::supportedBaudRates()
 {
     QStringList res;
     if(!device) return res;
-    QValueList<int> lst = device->supportedBaudRates();
-    for(uint i=0;i<lst.count();i++)
+    QList<int> lst = device->supportedBaudRates();
+    for(int i=0;i<lst.count();i++)
         res << QString("%1").arg(lst[i]);
     if(!res.count()) res << "NONE";
     return res;
@@ -304,7 +305,7 @@ void eqFRJob::print()
     eqFR * device = (eqFR*)fDevice;
     if(!device) return;
     QStringList lines = QStringList::split("\n", QString::fromUtf8(fData.toString()), TRUE);
-    for(uint l=0;l<lines.count();l++)
+    for(int l=0;l<lines.count();l++)
     {
         device->print(QString(lines[l]+"\n").utf8());
         fResult = device->result();

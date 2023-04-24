@@ -10,6 +10,18 @@
 ** destructor.
 *****************************************************************************/
 
+class dlgECRSettings : public QDialog, Ui::dlgECRSettings
+{
+public:
+    dlgECRSettings(QWidget * parent = 0) : QDialog(parent), Ui::dlgECRSettings() {};
+public slots:
+    void init( eqDriver * device );
+    void apply();
+private:
+    eqFR * fDevice;
+};
+
+
 void dlgECRSettings::init( eqDriver * device )
 {
     fDevice = (eqFR*)device;
@@ -17,7 +29,7 @@ void dlgECRSettings::init( eqDriver * device )
     
     QStringList drvList = fDevice->driverList();
     for(int i=0;i<drvList.size();i++) drvList[i] = drvList[i].replace("TECashRegister", "");
-	
+
     comboDriver->insertStringList(drvList);
     comboBaudRate->insertStringList(fDevice->supportedBaudRates());
     comboDataBits->insertStringList(fDevice->supportedDataBits());
@@ -39,27 +51,27 @@ void dlgECRSettings::init( eqDriver * device )
     editOperatorPassword->setText(fDevice->option("operator password"));
     editAdminPassword->setText(fDevice->option("administrator password"));
     editHeader->setText(fDevice->option("header"));
-    editFooter->setText(fDevice->option("footer"));    
+    editFooter->setText(fDevice->option("footer"));
 }
 
 void dlgECRSettings::apply()
 {
     if(fDevice)
     {
-	fDevice->setOption("driver", comboDriver->currentText());
-	fDevice->setOption("device", editDevice->text());
-	fDevice->setOption("baudrate", comboBaudRate->currentText());
-	fDevice->setOption("parity", comboParity->currentItem());
-	fDevice->setOption("data bits", comboDataBits->currentItem());
-	fDevice->setOption("stopbits", comboStopBits->currentItem());
-	fDevice->setOption("flow control", comboFlowControl->currentItem());
-	fDevice->setOption("access password", editAccessPassword->text());
-	fDevice->setOption("operator password", editOperatorPassword->text());
-	fDevice->setOption("administrator password", editAdminPassword->text());
-	fDevice->setOption("codepage", comboCP->currentText());
-	fDevice->setOption("header", editHeader->text());
-	fDevice->setOption("footer", editFooter->text());
-	accept();
+        fDevice->setOption("driver", comboDriver->currentText());
+        fDevice->setOption("device", editDevice->text());
+        fDevice->setOption("baudrate", comboBaudRate->currentText());
+        fDevice->setOption("parity", comboParity->currentItem());
+        fDevice->setOption("data bits", comboDataBits->currentItem());
+        fDevice->setOption("stopbits", comboStopBits->currentItem());
+        fDevice->setOption("flow control", comboFlowControl->currentItem());
+        fDevice->setOption("access password", editAccessPassword->text());
+        fDevice->setOption("operator password", editOperatorPassword->text());
+        fDevice->setOption("administrator password", editAdminPassword->text());
+        fDevice->setOption("codepage", comboCP->currentText());
+        fDevice->setOption("header", editHeader->text());
+        fDevice->setOption("footer", editFooter->text());
+        accept();
     }
     else reject();
 }
