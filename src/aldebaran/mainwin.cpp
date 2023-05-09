@@ -75,12 +75,14 @@ void alMainWindow::createWidgets()
     QPushButton * btn = new QPushButton(serviceFrame, "btnService");
     btn->setText(tr("Service"));
     btn->setIconSet(QIcon(":/images/settings.png"));
-    btn->setPopup(menu);
+    btn->setIconSize(QSize(42, 42));
+    btn->setPopup(menu);    
     grid->addWidget(btn, 0, 0);
     
     btn = new QPushButton(serviceFrame, "btnLock");
     btn->setText(tr("Lock"));
     btn->setIconSet(QIcon(":/images/lock.png"));
+    btn->setIconSize(QSize(42, 42));
     connect(btn, SIGNAL(clicked()), fEngine, SLOT(loginLock()));
     grid->addWidget(btn, 1, 0);
     
@@ -93,12 +95,14 @@ void alMainWindow::createWidgets()
     grid->addWidget(aclocks, 2, 0);
     DigitalClock * dclocks = new DigitalClock(serviceFrame, "dclocks");
     grid->addWidget(dclocks, 3, 0);
+    grid->setRowStretch(4, 1);
     
     btn = new QPushButton(serviceFrame, "btnExit");
     btn->setText(tr("Exit"));
     btn->setAccel(Qt::ALT+Qt::Key_X);
     btn->setIconSet(QIcon(":/images/exit.png"));
-    grid->addWidget(btn, 10, 0);
+    btn->setIconSize(QSize(42, 42));
+    grid->addWidget(btn, 5, 0);
     connect(btn, SIGNAL(clicked()), this, SLOT(close()));
     serviceFrame->show();
     rebuild();
@@ -185,9 +189,13 @@ void alMainWindow::service(int action)
 void alMainWindow::rebuild()
 {
     orderWin = NULL;
-    if(currentWin) delete currentWin;
+    if(currentWin)
+        delete currentWin;
     bool useshema = fEngine->parameter(SUBSYSTEM, USESHEMA).toString().toInt();
-    if(!useshema) hall = new alWHall(fEngine, this, tr("Hall"), fEngine->parameter(SUBSYSTEM, TABLENUM).toString().toInt());
+    if(!useshema)
+    {
+        hall = new alWHall(fEngine, this, tr("Hall"), fEngine->parameter(SUBSYSTEM, TABLENUM).toString().toInt());
+    }
     else
     {
         QPixmap px = bytearray2pixmap(fEngine->parameter(SUBSYSTEM, SHEMA).toByteArray());

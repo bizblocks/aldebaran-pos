@@ -26,6 +26,7 @@ AnalogClock::AnalogClock( QWidget *parent, const char *name )
     internalTimer = new QTimer( this );	// create internal timer
     connect( internalTimer, SIGNAL(timeout()), SLOT(timeout()) );
     internalTimer->start( 5000 );		// emit signal every 5 seconds
+    setMinimumHeight(150);
 }
 
 void AnalogClock::mousePressEvent( QMouseEvent *e )

@@ -29,6 +29,7 @@ DigitalClock::DigitalClock( QWidget *parent, const char *name )
     showTime();					// display the current time
     normalTimer = startTimer( 500 );		// 1/2 second timer events
     showDateTimer = -1;				// not showing date
+    setMinimumHeight(80);
 }
 
 
@@ -70,7 +71,7 @@ void DigitalClock::showDate()
         return;
     QDate date = QDate::currentDate();
     QString s;
-    s.sprintf( "%2d %2d", date.month(), date.day() );
+    s.sprintf( "%2d %2d", date.day(), date.month() );
     display( s );				// sets the LCD number/text
     showDateTimer = startTimer( 2000 );		// keep this state for 2 secs
 }
