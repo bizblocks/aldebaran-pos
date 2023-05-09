@@ -6,15 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>480</height>
+    <width>510</width>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>User</string>
   </property>
   <layout class="QGridLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <property name="spacing">
@@ -25,7 +34,16 @@
      <property name="spacing">
       <number>6</number>
      </property>
-     <property name="margin">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
       <number>0</number>
      </property>
      <item>
@@ -92,7 +110,16 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>1</number>
+      </property>
+      <property name="topMargin">
+       <number>1</number>
+      </property>
+      <property name="rightMargin">
+       <number>1</number>
+      </property>
+      <property name="bottomMargin">
        <number>1</number>
       </property>
       <property name="spacing">
@@ -100,14 +127,20 @@
       </property>
       <item row="0" column="0">
        <widget class="Q3ListBox" name="listRights">
-        <property name="currentItem">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>500</height>
+         </size>
+        </property>
+        <property name="currentItem" stdset="0">
          <number>-1</number>
-        </property>
-        <property name="columnMode">
-         <enum>Q3ListBox::FixedNumber</enum>
-        </property>
-        <property name="rowMode">
-         <enum>Q3ListBox::Variable</enum>
         </property>
        </widget>
       </item>
@@ -186,6 +219,7 @@
    <class>Q3ListBox</class>
    <extends>Q3Frame</extends>
    <header>q3listbox.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <includes>

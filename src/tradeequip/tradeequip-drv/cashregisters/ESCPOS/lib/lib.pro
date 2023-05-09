@@ -23,9 +23,10 @@ unix {
   UI_DIR = .ui
   MOC_DIR = .moc
   OBJECTS_DIR = .obj
-  target.path = $(LIBDIR)/tradeequip
-  tecashregister-ESCPOS.path = $(LIBDIR)/tradeequip
-  tecashregister-ESCPOS.extra = cd $(INSTALL_ROOT)$(LIBDIR) && ln -sf  tradeequip/libtecashregister-ESCPOS.so* $(INSTALL_ROOT)$(LIBDIR)
+  LIBDIR = /usr/lib
+  target.path = $${LIBDIR}/tradeequip
+  tecashregister-ESCPOS.path = $${LIBDIR}/tradeequip
+  tecashregister-ESCPOS.extra = cd $${INSTALL_ROOT}$${LIBDIR} && ln -sf  tradeequip/libtecashregister-ESCPOS.so* $${INSTALL_ROOT}$${LIBDIR}
 }
 
 INSTALLS += target 

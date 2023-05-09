@@ -1,7 +1,6 @@
 #include <QtSql/QSqlDatabase>
 #include "engine.h"
-#include "ui_dlguser.h"
-#include "dlguser.ui.h"
+#include "dlguser.h"
 
 #define TNAME "users"
 

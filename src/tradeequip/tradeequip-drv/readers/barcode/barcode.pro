@@ -32,9 +32,10 @@ unix {
   UI_DIR = .ui
   MOC_DIR = .moc
   OBJECTS_DIR = .obj
-  target.path = $(LIBDIR)/tradeequip
-  tereaderbarcode.path = $(LIBDIR)/tradeequip
-  tereaderbarcode.extra = cd $(INSTALL_ROOT)$(LIBDIR) && ln -sf  tradeequip/libtereader-barcode.so* $(INSTALL_ROOT)$(LIBDIR)
+  LIBDIR = /usr/lib
+  target.path = $${LIBDIR}/tradeequip
+  tereaderbarcode.path = $${LIBDIR}/tradeequip
+  tereaderbarcode.extra = cd $${INSTALL_ROOT}$${LIBDIR} && ln -sf  tradeequip/libtereader-barcode.so* $${INSTALL_ROOT}$${LIBDIR}
 }
 
 INSTALLS += target

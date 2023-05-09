@@ -1,4 +1,5 @@
 #include <qmessagebox.h>
+#include <QDirIterator>
 #include "userstable.h"
 #include "engine.h"
 
@@ -15,14 +16,12 @@ alUsersTable::alUsersTable(QWidget * parent, alEngine * engine) :
 
 void alUsersTable::init()
 {
-    alDBG("alUsersTable::init start");
     hideVerticalHeader();
     fData = new alDataUsers(fEngine);
     setSelectionMode(NoSelection);
     alDataTable::init();
     load();
     setCurrentRow(0);
-    alDBG("alUsersTable::init finish");
 }
 
 /*

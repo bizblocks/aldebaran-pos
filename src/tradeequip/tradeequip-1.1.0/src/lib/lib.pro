@@ -5,17 +5,18 @@ CONFIG	+= qt warn_on
 
 QT      += qt3support sql xml
 
-win32:CONFIG	+= dll
+win32 {
+    CONFIG	+= dll
+    SOURCES	+= win_qextserialport.cpp
+    HEADERS	+= win_qextserialport.h
+}
 
 DEFINES	+= TRADEEQUIP_EXPORT DEBUG
 
-win32:SOURCES	+= win_qextserialport.cpp
-
-unix:SOURCES	+= posix_qextserialport.cpp
-
-win32:HEADERS	+= win_qextserialport.h
-
-unix:HEADERS	+= posix_qextserialport.h
+unix {
+    SOURCES	+= posix_qextserialport.cpp
+    HEADERS	+= posix_qextserialport.h
+}
 
 QMAKE_CXXFLAGS	+= -Wno-return-type -fpermissive -Wno-deprecated-copy -Wno-literal-suffix
 
@@ -93,11 +94,10 @@ unix {
   UI_DIR = .ui
   MOC_DIR = .moc
   OBJECTS_DIR = .obj
-  target.path = $(LIBDIR)
+  target.path = /usr/lib
   lib.path = $(DESTDIR)
   lib.files = libtradeequip.so.$$VERSION
   lib.extra = cp -df $(DESTDIR)/libtradeequip.so* $(INSTALL_ROOT)$(LIBDIR)/tradeequip
 }
 
 INSTALLS += target
-INSTALLS += lib

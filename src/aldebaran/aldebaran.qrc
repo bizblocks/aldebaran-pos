@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="ok">images/ok.png</file>
+        <file alias="stop-cancel">images/stop_cancel.png</file>
+        <file>images/up.png</file>
+        <file>images/down.png</file>
+        <file>images/people.png</file>
+        <file>images/edit.png</file>
+        <file>images/settings.png</file>
+        <file>images/lock.png</file>
+        <file>images/exit.png</file>
+        <file>images/delete.png</file>
+        <file>images/new.svg</file>
+    </qresource>
+</RCC>

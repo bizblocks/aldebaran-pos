@@ -24,12 +24,13 @@ HEADERS	+= datadiscount.h \
 	datasettings.h \
 	dlgdevice.ui.h \
 	dlgdiscount.ui.h \
-	dlguser.ui.h \
+	dlguser.h \
 	goodselement.ui.h \
 	goodsgroup.ui.h \
 	queries.h
 
 SOURCES	+= data.cpp \
+        dlguser.cpp \
 	datadiscount.cpp \
 	dataeq.cpp \
 	datagoods.cpp \
@@ -68,9 +69,13 @@ unix {
   UI_DIR = .ui
   MOC_DIR = .moc
   OBJECTS_DIR = .obj  
-  aldebarandata.path = $(LIBDIR)
+  LIBDIR = /usr/lib
+  aldebarandata.path = $${LIBDIR}
   aldebarandata.files = libaldebaran.so.$$VERSION
-  aldebarandata.extra = cp -df $(DESTDIR)/libaldebarandata.so* $(INSTALL_ROOT)$(LIBDIR)  
+  aldebarandata.extra = cp -df $(DESTDIR)/libaldebarandata.so* $${INSTALL_ROOT}$${LIBDIR}
 }
 
 INSTALLS += aldebarandata
+
+RESOURCES += \
+    data.qrc

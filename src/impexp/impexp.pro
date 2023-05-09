@@ -34,8 +34,9 @@ unix {
   UI_DIR = .ui
   MOC_DIR = .moc
   OBJECTS_DIR = .obj
-  target.path = $(LIBDIR)
-  impexp.path = $(LIBDIR)
+  LIBDIR = /usr/lib
+  target.path = $${LIBDIR}
+  impexp.path = $${LIBDIR}
   impexp.files = libimpexp.so.$$VERSION
 }
 

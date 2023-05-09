@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>765</width>
-    <height>457</height>
+    <height>470</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,16 @@
      <property name="spacing">
       <number>6</number>
      </property>
-     <property name="margin">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
       <number>0</number>
      </property>
      <item>
@@ -47,8 +56,14 @@
         <string>&amp;OK</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>ok.png</normaloff>ok.png</iconset>
+        <iconset resource="aldebaran.qrc">
+         <normaloff>:/ok</normaloff>:/ok</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>42</width>
+         <height>42</height>
+        </size>
        </property>
        <property name="shortcut">
         <string>Alt+O</string>
@@ -67,8 +82,14 @@
         <string>&amp;Cancel</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>stop_cancel.png</normaloff>stop_cancel.png</iconset>
+        <iconset resource="aldebaran.qrc">
+         <normaloff>:/stop-cancel</normaloff>:/stop-cancel</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>42</width>
+         <height>42</height>
+        </size>
        </property>
        <property name="shortcut">
         <string/>
@@ -82,6 +103,9 @@
    </item>
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabDiscounts">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
        <string>General</string>
@@ -276,8 +300,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>424</width>
-               <height>152</height>
+               <width>423</width>
+               <height>146</height>
               </rect>
              </property>
              <attribute name="label">
@@ -426,8 +450,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>273</width>
-               <height>109</height>
+               <width>271</width>
+               <height>116</height>
               </rect>
              </property>
              <attribute name="label">
@@ -562,7 +586,16 @@
        <string>Users</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>1</number>
+       </property>
+       <property name="topMargin">
+        <number>1</number>
+       </property>
+       <property name="rightMargin">
+        <number>1</number>
+       </property>
+       <property name="bottomMargin">
         <number>1</number>
        </property>
        <property name="spacing">
@@ -582,11 +615,20 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <property name="margin">
+         <property name="margin" stdset="0">
           <number>1</number>
          </property>
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>1</number>
+          </property>
+          <property name="topMargin">
+           <number>1</number>
+          </property>
+          <property name="rightMargin">
+           <number>1</number>
+          </property>
+          <property name="bottomMargin">
            <number>1</number>
           </property>
           <property name="spacing">
@@ -608,6 +650,16 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/edit.png</normaloff>:/images/edit.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>42</width>
+              <height>42</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -644,6 +696,16 @@
             <property name="text">
              <string/>
             </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/new.svg</normaloff>:/images/new.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="0" column="2">
@@ -662,6 +724,16 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="aldebaran.qrc">
+              <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>42</width>
+              <height>42</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -705,11 +777,20 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <property name="margin">
+         <property name="margin" stdset="0">
           <number>1</number>
          </property>
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>1</number>
+          </property>
+          <property name="topMargin">
+           <number>1</number>
+          </property>
+          <property name="rightMargin">
+           <number>1</number>
+          </property>
+          <property name="bottomMargin">
            <number>1</number>
           </property>
           <property name="spacing">
@@ -882,7 +963,16 @@
        <string>Goods</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>1</number>
+       </property>
+       <property name="topMargin">
+        <number>1</number>
+       </property>
+       <property name="rightMargin">
+        <number>1</number>
+       </property>
+       <property name="bottomMargin">
         <number>1</number>
        </property>
        <property name="spacing">
@@ -902,7 +992,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <property name="margin">
+         <property name="margin" stdset="0">
           <number>1</number>
          </property>
         </widget>
@@ -921,11 +1011,20 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <property name="margin">
+         <property name="margin" stdset="0">
           <number>1</number>
          </property>
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>1</number>
+          </property>
+          <property name="topMargin">
+           <number>1</number>
+          </property>
+          <property name="rightMargin">
+           <number>1</number>
+          </property>
+          <property name="bottomMargin">
            <number>1</number>
           </property>
           <property name="spacing">
@@ -1081,7 +1180,16 @@
        <string>Discounts</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>1</number>
+       </property>
+       <property name="topMargin">
+        <number>1</number>
+       </property>
+       <property name="rightMargin">
+        <number>1</number>
+       </property>
+       <property name="bottomMargin">
         <number>1</number>
        </property>
        <property name="spacing">
@@ -1101,11 +1209,20 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <property name="margin">
+         <property name="margin" stdset="0">
           <number>1</number>
          </property>
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>1</number>
+          </property>
+          <property name="topMargin">
+           <number>1</number>
+          </property>
+          <property name="rightMargin">
+           <number>1</number>
+          </property>
+          <property name="bottomMargin">
            <number>1</number>
           </property>
           <property name="spacing">
@@ -1213,15 +1330,15 @@
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
-   <class>Q3GroupBox</class>
-   <extends>QGroupBox</extends>
-   <header>Qt3Support/Q3GroupBox</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>Q3Frame</class>
    <extends>QFrame</extends>
    <header>Qt3Support/Q3Frame</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Q3GroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>Qt3Support/Q3GroupBox</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -1235,7 +1352,9 @@
   <include location="local">engine.h</include>
   <include location="global">qpixmap.h</include>
  </includes>
- <resources/>
+ <resources>
+  <include location="aldebaran.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>btnOk</sender>

@@ -32,9 +32,10 @@ unix {
   UI_DIR = .ui
   MOC_DIR = .moc
   OBJECTS_DIR = .obj
-  target.path = $(LIBDIR)/tradeequip
-  tecashregister-shtrih-fr.path = $(LIBDIR)/tradeequip
-  tecashregister-shtrih-fr.extra = cd $(INSTALL_ROOT)$(LIBDIR) && ln -sf tradeequip/libtecashregister-shtrih-fr.so* $(INSTALL_ROOT)$(LIBDIR)
+  LIBDIR = /usr/lib
+  target.path = $${LIBDIR}/tradeequip
+  tecashregister-shtrih-fr.path = $${LIBDIR}/tradeequip
+  tecashregister-shtrih-fr.extra = cd $${INSTALL_ROOT}$${LIBDIR} && ln -sf tradeequip/libtecashregister-shtrih-fr.so* $${INSTALL_ROOT}$${LIBDIR}
 }
 
 INSTALLS += target

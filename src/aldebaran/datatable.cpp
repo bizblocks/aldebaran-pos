@@ -52,7 +52,6 @@ void alDataTable::showVerticalHeader()
 
 void alDataTable::load(QString filter)
 {
-    alDBG("alDataTable::load start");
     setNumRows(0);
     if(!fData)
         return;
@@ -85,7 +84,6 @@ void alDataTable::load(QString filter)
     repaint(rect(), TRUE);
     adjustColumns();
     currentFilter = filter;
-    alDBG("alDataTable::load finish");
 }
 
 QVariant alDataTable::value(int row, int col)
@@ -116,6 +114,8 @@ void alDataTable::setValue(int row, int col, QVariant val)
     val = displayValue(fields[headers[col]], val);
     if(val.type()==QVariant::Pixmap)
         setPixmap(row, col, val.value<QPixmap>());
+    else if(val.type()==QVariant::Icon)
+        setPixmap(row, col, val.value<QIcon>().pixmap());
     else
         setText(row, col, val.toString());
 }

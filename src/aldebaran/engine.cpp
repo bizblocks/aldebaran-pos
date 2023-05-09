@@ -25,11 +25,12 @@
 #include "sirius/iesirius.h"
 #include "ui_equipmentdialog.h"
 #include "equipmentdialog.ui.h"
-#include "dlglogin.ui.h"
+#include "dlglogin.cpp"
 
 
 alEngine::alEngine(int argc, char ** argv) :
-    QObject()
+    QObject(),
+    settings(NULL)
 {
     app = new QApplication( argc, argv );
     mainWindow = NULL;
@@ -73,7 +74,8 @@ void alEngine::init()
 
 QSqlDatabase * alEngine::db()
 {
-    if(dbInited) return fDB;
+    if(dbInited)
+        return fDB;
     return NULL;
 }
 
@@ -246,13 +248,19 @@ int alEngine::start()
         if(!fDB->open(dbParams[4], dbParams[5]))
         {
             if(!settings->dbDialog())
+            {
                 exitApp();
+                return -1;
+            }
         }
         else break;
     }while(true);
+
     Queries::setDialect(dbParams[0]);
+
     dbInited = TRUE;
     emit(initialized());
+
     initUsers();
     initEquipment();
     if(!loginLock()) return -1;

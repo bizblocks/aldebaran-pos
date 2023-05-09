@@ -23,9 +23,10 @@ unix {
   UI_DIR = .ui
   MOC_DIR = .moc
   OBJECTS_DIR = .obj
-  target.path = $(LIBDIR)/tradeequip
-  teprinter-cts300.path = $(LIBDIR)/tradeequip
-  teprinter-cts300.extra = cd $(INSTALL_ROOT)$(LIBDIR) && ln -sf  tradeequip/libteprinter-cts300.so* $(INSTALL_ROOT)$(LIBDIR)
+  LIBDIR = /usr/lib
+  target.path = $${LIBDIR}/tradeequip
+  teprinter-cts300.path = $${LIBDIR}/tradeequip
+  teprinter-cts300.extra = cd $${INSTALL_ROOT}$${LIBDIR} && ln -sf  tradeequip/libteprinter-cts300.so* $${INSTALL_ROOT}$${LIBDIR}
 }
 
 INSTALLS += target 

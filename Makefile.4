@@ -1,9 +1,10 @@
-NAME    =aldebaran
+NAME    = aldebaran
 VERSION = $(shell cat VERSION)
 NAMEV  = $(NAME)-$(VERSION)
 MAKE = make
 QMAKE = qmake-qt4
-MAKEFILE = Makefile
+MAKEFILE = Makefile.4
+DESTDIR = /
 LIBDIR = $(DESTDIR)/usr/lib
 BINDIR = $(DESTDIR)/usr/bin
 DOCDIR = $(DESTDIR)/usr/share/doc/$(NAMEV)
@@ -20,7 +21,7 @@ TARGET =	i586
 first: all
 
 all: tr Makefile
-	$(QMAKE) src/src.pro.4 -o src/$(MAKEFILE) && cd src && $(MAKE)
+	$(QMAKE) src/src.pro.4 -o $(MAKEFILE) && cd src && $(MAKE) -f $(MAKEFILE)
 clean:
 	rm -fr *~
 	rm -f translations/*.qm
@@ -30,12 +31,12 @@ tr:
 	lrelease translations/*.ts
 	
 install:
-#	find src doc -name Makefile -delete
-	$(QMAKE) src/src.pro.3 -o src/$(MAKEFILE)
-	cd src && $(MAKE) install LIBDIR=$(LIBDIR) BINDIR=$(BINDIR) INCLUDEDIR=$(INCLUDEDIR) && cd ../doc && $(QMAKE) doc.pro -o $(MAKEFILE) && $(MAKE) install DOCDIR=$(DOCDIR)
+#	find src doc -name $(MAKEFILE) -delete
+	$(QMAKE) src/src.pro.4 -o $(MAKEFILE)
+	cd src && $(MAKE) -f $(MAKEFILE) install LIBDIR=$(LIBDIR) BINDIR=$(BINDIR) INCLUDEDIR=$(INCLUDEDIR) && cd ../doc && $(QMAKE) doc.pro -o $(MAKEFILE) && $(MAKE) -f $(MAKEFILE) install DOCDIR=$(DOCDIR)
 	
 uninstall:
-	cd src && $(MAKE) uninstall
+	cd src && $(MAKE) -f $(MAKEFILE) uninstall
 
 tgz:	dummy
 	mkdir -p rpm

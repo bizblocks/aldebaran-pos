@@ -15,14 +15,14 @@ DEFINES	+= DEBUG
 INCLUDEPATH	+= ../tradeequip/equip ../impexp
 
 HEADERS	+= engine.h \
-	ddbsettings.ui.h \
+	ddbsettings.h \
 	dlgadvreport.ui.h \
 	dlgexportsales.ui.h \
-	dlglogin.ui.h \
+	dlglogin.h \
 	equipmentdialog.ui.h \
 	settings.h \
 	mainwin.h \
-	settingsdialog.ui.h \
+	settingsdialog.h \
 	whall.h \
 	wtable.h \
 	goodstable.h \
@@ -42,6 +42,9 @@ HEADERS	+= engine.h \
 	errors.h
 
 SOURCES	+= engine.cpp \
+        ddbsettings.cpp \
+        dlglogin.cpp \
+        settingsdialog.cpp \
 	settings.cpp \
 	mainwin.cpp \
 	main.cpp \
@@ -136,10 +139,11 @@ unix {
   UI_DIR = .ui
   MOC_DIR = .moc
   OBJECTS_DIR = .obj
-  target.path    = $(BINDIR)
+  BINDIR	 = /usr/bin
+  target.path    = $${BINDIR}
   aldebaran.path = $(DESTDIR)
   aldebaran.files = aldebaran
-#  aldebaran.extra = cp -df $(DESTDIR)/aldebaran $(INSTALL_ROOT)$(BINDIR)/
+#  aldebaran.extra = cp -df $(DESTDIR)/aldebaran $${INSTALL_ROOT}$${BINDIR}/
 }
 
 INSTALLS += target
@@ -155,3 +159,6 @@ else:unix: LIBS += -L$$OUT_PWD/data/ -laldebarandata
 
 INCLUDEPATH += $$PWD/data
 DEPENDPATH += $$PWD/data
+
+RESOURCES += \
+    aldebaran.qrc

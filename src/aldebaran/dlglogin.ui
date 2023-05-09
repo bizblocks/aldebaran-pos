@@ -29,7 +29,16 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <property name="spacing">
@@ -60,7 +69,16 @@
      <property name="spacing">
       <number>6</number>
      </property>
-     <property name="margin">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
       <number>0</number>
      </property>
      <item>
@@ -85,8 +103,14 @@
         <string>&amp;OK</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>ok.png</normaloff>ok.png</iconset>
+        <iconset resource="aldebaran.qrc">
+         <normaloff>:/ok</normaloff>:/ok</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>42</width>
+         <height>42</height>
+        </size>
        </property>
        <property name="shortcut">
         <string>Return</string>
@@ -105,8 +129,14 @@
         <string>&amp;Cancel</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>stop_cancel.png</normaloff>stop_cancel.png</iconset>
+        <iconset resource="aldebaran.qrc">
+         <normaloff>:/stop-cancel</normaloff>:/stop-cancel</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>42</width>
+         <height>42</height>
+        </size>
        </property>
        <property name="shortcut">
         <string>Esc</string>
@@ -168,6 +198,16 @@
          <property name="text">
           <string/>
          </property>
+         <property name="icon">
+          <iconset resource="aldebaran.qrc">
+           <normaloff>:/images/up.png</normaloff>:/images/up.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>42</width>
+           <height>42</height>
+          </size>
+         </property>
          <property name="shortcut">
           <string>Up</string>
          </property>
@@ -186,6 +226,16 @@
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="aldebaran.qrc">
+           <normaloff>:/images/down.png</normaloff>:/images/down.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>42</width>
+           <height>42</height>
+          </size>
          </property>
          <property name="shortcut">
           <string>Down</string>
@@ -232,7 +282,9 @@
   <include location="global">qmessagebox.h</include>
   <include location="local">userstable.h</include>
  </includes>
- <resources/>
+ <resources>
+  <include location="aldebaran.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonOk</sender>

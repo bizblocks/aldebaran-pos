@@ -1,10 +1,9 @@
 #include <qdir.h>
 #include "settings.h"
-#include "ui_ddbsettings.h"
 #include "ui_settingsdialog.h"
 #include "data/datasettings.h"
-#include "settingsdialog.ui.h"
-#include "ddbsettings.ui.h"
+#include "settingsdialog.h"
+#include "ddbsettings.h"
 
 alSettings::alSettings(alEngine * e) : 
     QObject()

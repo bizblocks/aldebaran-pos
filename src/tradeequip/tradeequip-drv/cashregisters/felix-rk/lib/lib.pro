@@ -33,9 +33,10 @@ unix {
     UI_DIR = .ui
     MOC_DIR = .moc
     OBJECTS_DIR = .obj
-    target.path = $(LIBDIR)/tradeequip
-    tecashregister-felix-rk.path = $(LIBDIR)/tradeequip
-    tecashregister-felix-rk.extra = cd $(INSTALL_ROOT)$(LIBDIR) && ln -sf tradeequip/libtecashregister-felix-rk.so* $(INSTALL_ROOT)$(LIBDIR)/
+    LIBDIR = /usr/lib
+    target.path = $${LIBDIR}/tradeequip
+    tecashregister-felix-rk.path = $${LIBDIR}/tradeequip
+    tecashregister-felix-rk.extra = cd $${INSTALL_ROOT}$${LIBDIR} && ln -sf tradeequip/libtecashregister-felix-rk.so* $${INSTALL_ROOT}$${LIBDIR}/
 }
 
 INSTALLS += target
